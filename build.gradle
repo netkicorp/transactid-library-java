@@ -1,0 +1,92 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+    id 'jacoco'
+    id 'org.jetbrains.dokka' version '0.10.0'
+}
+
+ext {
+    dokkaVersion = '0.9.17'
+    protoVersion = '3.10.0'
+    bouncyCastleVersion = '1.64'
+    junitVersion = '5.3.1'
+    jacocoVersion = '0.8.4'
+}
+
+group 'com.netki'
+version '0.1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "com.google.protobuf:protobuf-java:$protoVersion"
+    implementation "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
+    implementation "org.bouncycastle:bcpkix-jdk15on:$bouncyCastleVersion"
+
+    implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaVersion"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/testCoverage")
+    }
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                            'com/netki/bip75/protocol/**',
+                    ])
+        })
+    }
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/documentation"
+
+    configuration {
+        perPackageOption {
+            prefix = "kotlin.internal"
+            suppress = false
+        }
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'TransactId-SDK',
+                'Implementation-Version': version,
+                'Main-Class': 'com.netki.TransactId'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
