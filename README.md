@@ -2,11 +2,27 @@
 
 This library is a wrapper for using [BIP70][1] and [BIP75][2]
 
-There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
+## Download
+
+If you are using maven you can download the latest JAR or grab via [Maven][3]:
+```
+<dependency>
+    <groupId>com.netki</groupId>
+    <artifactId>transactid</artifactId>
+    <version>0.1.0-alpha0</version>
+    <type>pom</type>
+</dependency>
+```
+Or using gradle
+```
+compile group: 'com.netki', name: 'transactid', version: '0.1.0-alpha0', ext: 'pom'
+```
 
 ## General Usage
 
 To use the methods to create the BIP messages you can use the static methods in the class TransactId.
+
+There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
 ## Invoice Request
 
@@ -237,3 +253,4 @@ Where:
 
 [1]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [2]: https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki
+[3]: https://mvnrepository.com/artifact/com.netki/transactid
