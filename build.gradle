@@ -2,6 +2,9 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.50'
     id 'jacoco'
     id 'org.jetbrains.dokka' version '0.10.0'
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
 }
 
 ext {
@@ -10,17 +13,17 @@ ext {
     bouncyCastleVersion = '1.64'
     junitVersion = '5.3.1'
     jacocoVersion = '0.8.4'
+
+    groupId = 'com.netki'
+    versionRelease = '0.1.0-alpha0'
+    artifactId = 'transactid'
 }
 
-group 'com.netki'
-version '0.1.0-SNAPSHOT'
+group "$groupId"
+version "$versionRelease"
 
 repositories {
     mavenCentral()
-}
-
-test {
-    useJUnitPlatform()
 }
 
 repositories {
@@ -89,4 +92,134 @@ task fatJar(type: Jar) {
     baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            customizePom(pom)
+            groupId = "$groupId"
+            artifactId = "$artifactId"
+            version = "$versionRelease"
+
+            from components.java
+
+            pom.withXml {
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+                artifact(pomAscFile) {
+                    classifier = null
+                    extension = 'pom.asc'
+                }
+            }
+
+            artifact(sourceJar) {
+                classifier = 'sources'
+            }
+
+            artifact(javadocJar) {
+                classifier = 'javadoc'
+            }
+
+            project.tasks.signArchives.signatureFiles.each {
+                artifact(it) {
+                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                    if (matcher.find()) {
+                        classifier = matcher.group(1)
+                    } else {
+                        classifier = null
+                    }
+                    extension = 'jar.asc'
+                }
+            }
+
+        }
+    }
+    repositories {
+        maven {
+            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description 'Transactid Java Library'
+            name 'Transactid Java Library'
+            url 'https://github.com/netkicorp/transactid-library-java'
+            organization {
+                name 'com.netki'
+                url 'https://netki.com'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/netkicorp/transactid-library-java/issues'
+            }
+            licenses {
+                license {
+                    name 'BSD 3-Clause'
+                    url 'https://github.com/netkicorp/transactid-library-java/blob/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/netkicorp/transactid-library-java'
+                connection 'scm:git:git://github.com/netkicorp/transactid-library-java.git'
+                developerConnection 'scm:git:ssh://git@github.com:/netkicorp/transactid-library-java.git'
+            }
+            developers {
+                developer {
+                    name 'Netki Development'
+                }
+            }
+        }
+    }
+}
+
+model {
+    tasks.generatePomFileForMavenJavaPublication {
+        destination = file("$buildDir/generated-pom.xml")
+    }
+
+    tasks.publishMavenJavaPublicationToMavenLocal {
+        dependsOn project.tasks.signArchives
+    }
+
+    tasks.publishMavenJavaPublicationToMavenRepository {
+        dependsOn project.tasks.signArchives
+    }
 }
