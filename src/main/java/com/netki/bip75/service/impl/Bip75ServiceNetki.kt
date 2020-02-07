@@ -1,11 +1,14 @@
 package com.netki.bip75.service.impl
 
+import com.google.protobuf.ByteString
 import com.netki.bip75.protocol.Protos
 import com.netki.bip75.service.Bip75Service
 import com.netki.model.*
 import com.netki.security.CryptoModule
 import com.netki.util.toByteString
 import com.netki.util.toStringLocal
+import com.sun.org.apache.xml.internal.security.signature.InvalidSignatureValueException
+import java.io.InvalidObjectException
 import java.sql.Timestamp
 
 /**
@@ -50,7 +53,7 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest {
-        val invoiceRequestProto = Protos.InvoiceRequest.parseFrom(invoiceRequestBinary)
+        val invoiceRequestProto = parseInvoiceRequestBinary(invoiceRequestBinary)
         return InvoiceRequest(
             senderPublicKey = invoiceRequestProto.senderPublicKey.toStringLocal(),
             amount = invoiceRequestProto.amount,
@@ -66,27 +69,43 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean {
-        val invoiceRequest = try {
-            Protos.InvoiceRequest.parseFrom(invoiceRequestBinary)
-        } catch (exception: Exception) {
-            return false
-        }
+        val invoiceRequestProto = parseInvoiceRequestBinary(invoiceRequestBinary)
 
-        return when (invoiceRequest.pkiType) {
+        return when (invoiceRequestProto.pkiType) {
             PkiType.NONE.value -> true
             PkiType.X509SHA256.value -> {
-                val certificate = invoiceRequest.pkiData.toStringLocal()
-                val signatureString: String = invoiceRequest.signature.toStringLocal()
+                val certificate = invoiceRequestProto.pkiData.toStringLocal()
+                val signatureString: String = invoiceRequestProto.signature.toStringLocal()
 
                 val paymentRequestModified = Protos.InvoiceRequest.newBuilder()
-                    .mergeFrom(invoiceRequest)
+                    .mergeFrom(invoiceRequestProto)
                     .setSignature("".toByteString())
                     .build()
 
                 val hash = CryptoModule.getHash256(paymentRequestModified.toByteArray())
-                return CryptoModule.validateSignature(signatureString, hash, certificate)
+                return try {
+                    if (CryptoModule.validateSignature(signatureString, hash, certificate)) {
+                        true
+                    } else {
+                        throw InvalidSignatureValueException("Invalid signature for invoiceRequest")
+                    }
+                } catch (exception: Exception) {
+                    throw InvalidSignatureValueException("Invalid signature for invoiceRequest")
+                }
             }
-            else -> throw IllegalArgumentException("Type not supported")
+            else -> throw IllegalArgumentException("Type: ${invoiceRequestProto.pkiType}, not supported")
+        }
+    }
+
+    /**
+     * Parse binary InvoiceRequest to Protos.InvoiceRequest
+     */
+    private fun parseInvoiceRequestBinary(invoiceRequestBinary: ByteArray): Protos.InvoiceRequest {
+        return try {
+            Protos.InvoiceRequest.parseFrom(invoiceRequestBinary)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            throw InvalidObjectException("Invalid object for invoiceRequest, exception: ${exception.message}")
         }
     }
 
@@ -139,8 +158,8 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest {
-        val paymentRequestProto = Protos.PaymentRequest.parseFrom(paymentRequestBinary)
-        val paymentDetailsProto = Protos.PaymentDetails.parseFrom(paymentRequestProto.serializedPaymentDetails)
+        val paymentRequestProto = parsePaymentRequestBinary(paymentRequestBinary)
+        val paymentDetailsProto = parsePaymentDetailsBinary(paymentRequestProto.serializedPaymentDetails)
         val outputs = mutableListOf<Output>()
         for (outputProto in paymentDetailsProto.outputsList) {
             outputs.add(Output(outputProto.amount, outputProto.script.toStringLocal()))
@@ -168,27 +187,55 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean {
-        val paymentRequest = try {
-            Protos.PaymentRequest.parseFrom(paymentRequestBinary)
-        } catch (exception: Exception) {
-            return false
-        }
+        val paymentRequestProto = parsePaymentRequestBinary(paymentRequestBinary)
 
-        return when (paymentRequest.pkiType) {
+        return when (paymentRequestProto.pkiType) {
             PkiType.NONE.value -> true
             PkiType.X509SHA256.value -> {
-                val certificate = paymentRequest.pkiData.toStringLocal()
-                val signatureString: String = paymentRequest.signature.toStringLocal()
+                val certificate = paymentRequestProto.pkiData.toStringLocal()
+                val signatureString: String = paymentRequestProto.signature.toStringLocal()
 
                 val paymentRequestModified = Protos.PaymentRequest.newBuilder()
-                    .mergeFrom(paymentRequest)
+                    .mergeFrom(paymentRequestProto)
                     .setSignature("".toByteString())
                     .build()
 
                 val hash = CryptoModule.getHash256(paymentRequestModified.toByteArray())
-                return CryptoModule.validateSignature(signatureString, hash, certificate)
+                return try {
+                    if (CryptoModule.validateSignature(signatureString, hash, certificate)) {
+                        true
+                    } else {
+                        throw InvalidSignatureValueException("Invalid signature for paymentRequest")
+                    }
+                } catch (exception: Exception) {
+                    throw InvalidSignatureValueException("Invalid signature for paymentRequest")
+                }
             }
-            else -> throw IllegalArgumentException("Type not supported")
+            else -> throw IllegalArgumentException("Type: ${paymentRequestProto.pkiType}, not supported")
+        }
+    }
+
+    /**
+     * Parse binary PaymentRequest to Protos.PaymentRequest
+     */
+    private fun parsePaymentRequestBinary(paymentRequestBinary: ByteArray): Protos.PaymentRequest {
+        return try {
+            Protos.PaymentRequest.parseFrom(paymentRequestBinary)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            throw InvalidObjectException("Invalid object for paymentRequest, exception: ${exception.message}")
+        }
+    }
+
+    /**
+     * Parse binary PaymentDetails to Protos.PaymentDetails
+     */
+    private fun parsePaymentDetailsBinary(serializedPaymentDetails: ByteString): Protos.PaymentDetails {
+        return try {
+            Protos.PaymentDetails.parseFrom(serializedPaymentDetails)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            throw InvalidObjectException("Invalid object for paymentDetails, exception: ${exception.message}")
         }
     }
 
@@ -201,7 +248,7 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun parsePayment(paymentBinary: ByteArray): Payment {
-        val paymentProto = Protos.Payment.parseFrom(paymentBinary)
+        val paymentProto = parsePaymentBinary(paymentBinary)
 
         val transactionList = mutableListOf<ByteArray>()
         for (transaction in paymentProto.transactionsList) {
@@ -224,12 +271,20 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun isPaymentValid(paymentBinary: ByteArray): Boolean {
-        try {
+        parsePaymentBinary(paymentBinary)
+        return true
+    }
+
+    /**
+     * Parse binary Payment to Protos.Payment
+     */
+    private fun parsePaymentBinary(paymentBinary: ByteArray): Protos.Payment {
+        return try {
             Protos.Payment.parseFrom(paymentBinary)
         } catch (exception: Exception) {
-            return false
+            exception.printStackTrace()
+            throw InvalidObjectException("Invalid object for payment, exception: ${exception.message}")
         }
-        return true
     }
 
     /**
@@ -245,7 +300,7 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun parsePaymentAck(paymentAckBinary: ByteArray): PaymentAck {
-        val paymentAckProto = Protos.PaymentACK.parseFrom(paymentAckBinary)
+        val paymentAckProto = parsePaymentAckBinary(paymentAckBinary)
         return PaymentAck(parsePayment(paymentAckProto.payment.toByteArray()), paymentAckProto.memo)
     }
 
@@ -253,12 +308,20 @@ class Bip75ServiceNetki() : Bip75Service {
      * {@inheritDoc}
      */
     override fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean {
-        try {
+        parsePaymentAckBinary(paymentAckBinary)
+        return true
+    }
+
+    /**
+     * Parse binary PaymentAck to Protos.PaymentAck
+     */
+    private fun parsePaymentAckBinary(paymentAckBinary: ByteArray): Protos.PaymentACK {
+        return try {
             Protos.PaymentACK.parseFrom(paymentAckBinary)
         } catch (exception: Exception) {
-            return false
+            exception.printStackTrace()
+            throw InvalidObjectException("Invalid object for paymentAck, exception: ${exception.message}")
         }
-        return true
     }
 
     /**

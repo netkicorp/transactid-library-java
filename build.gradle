@@ -13,9 +13,10 @@ ext {
     bouncyCastleVersion = '1.64'
     junitVersion = '5.3.1'
     jacocoVersion = '0.8.4'
+    xmlSecurityVersion = '1.0'
 
     groupId = 'com.netki'
-    versionRelease = '0.1.0-alpha0'
+    versionRelease = '0.1.0-alpha1'
     artifactId = 'transactid'
 }
 
@@ -35,6 +36,7 @@ dependencies {
     implementation "com.google.protobuf:protobuf-java:$protoVersion"
     implementation "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
     implementation "org.bouncycastle:bcpkix-jdk15on:$bouncyCastleVersion"
+    implementation "com.sun.xml.security:xml-security-impl:$xmlSecurityVersion"
 
     implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaVersion"
 
