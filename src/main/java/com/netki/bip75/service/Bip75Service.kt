@@ -1,5 +1,7 @@
 package com.netki.bip75.service
 
+import com.netki.exceptions.InvalidObjectException
+import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 
 /**
@@ -8,7 +10,7 @@ import com.netki.model.*
 interface Bip75Service {
 
     /**
-     * Create InvoiceRequest message.
+     * Create binary InvoiceRequest.
      *
      * @param invoiceRequestParameters data to create the InvoiceRequest.
      * @param keyPairPem keys to do crypto operations for the InvoiceRequest.
@@ -17,23 +19,31 @@ interface Bip75Service {
     fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters, keyPairPem: KeyPairPem): ByteArray
 
     /**
-     * Validate if an InvoiceRequest message is valid.
+     * Validate if a binary InvoiceRequest is valid.
      *
      * @param invoiceRequestBinary binary data to validate.
-     * @return true if is valid, false otherwise.
+     * @return true if is valid.
+     * @exception InvalidObjectException if the binary is malformed.
+     * @exception InvalidSignatureException if the signature in the binary is not valid.
      */
+    @Throws(
+        InvalidObjectException::class,
+        InvalidSignatureException::class
+    )
     fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean
 
     /**
-     * Parse binary InvoiceRequest message.
+     * Parse binary InvoiceRequest.
      *
      * @param invoiceRequestBinary binary data with the message to parse.
      * @return InvoiceRequest parsed.
+     * @exception InvalidObjectException if the binary is malformed.
      */
+    @Throws(InvalidObjectException::class)
     fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest
 
     /**
-     * Create PaymentRequest message.
+     * Create binary PaymentRequest.
      *
      * @param paymentDetails data to create the PaymentRequest.
      * @param keyPairPem keys to do crypto operations for the invoice request.
@@ -47,23 +57,31 @@ interface Bip75Service {
     ): ByteArray
 
     /**
-     * Validate if a PaymentRequest message is valid.
+     * Validate if a binary PaymentRequest is valid.
      *
      * @param paymentRequestBinary binary data to validate.
-     * @return true if is valid, false otherwise.
+     * @return true if is valid, exception otherwise.
+     * @exception InvalidObjectException if the binary is malformed
+     * @exception InvalidSignatureException if the signature in the binary is not valid
      */
+    @Throws(
+        InvalidObjectException::class,
+        InvalidSignatureException::class
+    )
     fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean
 
     /**
-     * Parse binary PaymentRequest message.
+     * Parse binary PaymentRequest.
      *
      * @param paymentRequestBinary binary data with the message to parse.
      * @return PaymentRequest parsed.
+     * @exception InvalidObjectException if the binary is malformed.
      */
+    @Throws(InvalidObjectException::class)
     fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest
 
     /**
-     * Create Payment message.
+     * Create binary Payment.
      *
      * @param payment data to create the Payment.
      * @return binary object of the message created.
@@ -71,23 +89,27 @@ interface Bip75Service {
     fun createPayment(payment: Payment): ByteArray
 
     /**
-     * Validate if a Payment message is valid.
+     * Validate if a binary Payment is valid.
      *
      * @param paymentBinary binary data to validate.
-     * @return true if is valid, false otherwise.
+     * @return true if is valid.
+     * @exception InvalidObjectException if the binary is malformed.
      */
+    @Throws(InvalidObjectException::class)
     fun isPaymentValid(paymentBinary: ByteArray): Boolean
 
     /**
-     * Parse binary Payment message.
+     * Parse binary Payment.
      *
      * @param paymentBinary binary data with the message to parse.
      * @return Payment parsed.
+     * @exception InvalidObjectException if the binary is malformed.
      */
+    @Throws(InvalidObjectException::class)
     fun parsePayment(paymentBinary: ByteArray): Payment
 
     /**
-     * Create PaymentAck message.
+     * Create binary PaymentAck.
      *
      * @param payment data to create the Payment.
      * @param memo note that should be displayed to the customer.
@@ -96,18 +118,22 @@ interface Bip75Service {
     fun createPaymentAck(payment: Payment, memo: String): ByteArray
 
     /**
-     * Validate if a PaymentAck message is valid.
+     * Validate if a binary PaymentAck is valid.
      *
      * @param paymentAckBinary binary data to validate.
-     * @return true if is valid, false otherwise.
+     * @return true if is valid.
+     * @exception InvalidObjectException if the binary is malformed.
      */
+    @Throws(InvalidObjectException::class)
     fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean
 
     /**
-     * Parse binary PaymentAck message.
+     * Parse binary PaymentAck.
      *
      * @param paymentAckBinary binary data with the message to parse.
      * @return PaymentAck parsed.
+     * @exception InvalidObjectException if the binary is malformed.
      */
+    @Throws(InvalidObjectException::class)
     fun parsePaymentAck(paymentAckBinary: ByteArray): PaymentAck
 }

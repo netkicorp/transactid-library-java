@@ -1,6 +1,8 @@
 package com.netki
 
 import com.netki.bip75.protocol.Protos
+import com.netki.exceptions.InvalidObjectException
+import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.KeyPairPem
 import com.netki.model.PkiType
 import com.netki.security.CryptoModule
@@ -10,7 +12,6 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.security.SignatureException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class TransactIdTest {
@@ -64,7 +65,9 @@ internal class TransactIdTest {
             )
             .build()
 
-        assert(!TransactId.isInvoiceRequestValid(invoiceRequestInvalidSignature.toByteArray()))
+        assertThrows(InvalidSignatureException::class.java) {
+            TransactId.isInvoiceRequestValid(invoiceRequestInvalidSignature.toByteArray())
+        }
     }
 
     @Test
@@ -76,7 +79,7 @@ internal class TransactIdTest {
             .setSignature("".toByteString())
             .build()
 
-        assertThrows(SignatureException::class.java) {
+        assertThrows(InvalidSignatureException::class.java) {
             TransactId.isInvoiceRequestValid(invoiceRequestInvalidSignature.toByteArray())
         }
     }
@@ -115,7 +118,9 @@ internal class TransactIdTest {
 
     @Test
     fun `Validate invalid InvoiceRequestBinary`() {
-        assert(!TransactId.isInvoiceRequestValid("fakeInvoiceRequest".toByteArray()))
+        assertThrows(InvalidObjectException::class.java) {
+            TransactId.isInvoiceRequestValid("fakeInvoiceRequest".toByteArray())
+        }
     }
 
     @Test
@@ -148,7 +153,9 @@ internal class TransactIdTest {
             )
             .build()
 
-        assert(!TransactId.isPaymentRequestValid(paymentRequestInvalidSignature.toByteArray()))
+        assertThrows(InvalidSignatureException::class.java) {
+            TransactId.isPaymentRequestValid(paymentRequestInvalidSignature.toByteArray())
+        }
     }
 
     @Test
@@ -160,7 +167,7 @@ internal class TransactIdTest {
             .setSignature("".toByteString())
             .build()
 
-        assertThrows(SignatureException::class.java) {
+        assertThrows(InvalidSignatureException::class.java) {
             TransactId.isPaymentRequestValid(paymentRequestInvalidSignature.toByteArray())
         }
     }
@@ -226,7 +233,9 @@ internal class TransactIdTest {
 
     @Test
     fun `Validate invalid PaymentRequestBinary`() {
-        assert(!TransactId.isPaymentRequestValid("fakePaymentRequest".toByteArray()))
+        assertThrows(InvalidObjectException::class.java) {
+            TransactId.isPaymentRequestValid("fakePaymentRequest".toByteArray())
+        }
     }
 
     @Test
@@ -249,7 +258,9 @@ internal class TransactIdTest {
 
     @Test
     fun `Validate invalid PaymentBinary`() {
-        assert(!TransactId.isPaymentValid("fakePaymentBinary".toByteArray()))
+        assertThrows(InvalidObjectException::class.java) {
+            TransactId.isPaymentValid("fakePaymentBinary".toByteArray())
+        }
     }
 
     @Test
@@ -273,6 +284,8 @@ internal class TransactIdTest {
 
     @Test
     fun `Validate invalid PaymentAckBinary`() {
-        assert(!TransactId.isPaymentAckValid("fakePaymentAckBinary".toByteArray()))
+        assertThrows(InvalidObjectException::class.java) {
+            TransactId.isPaymentAckValid("fakePaymentAckBinary".toByteArray())
+        }
     }
 }
