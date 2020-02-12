@@ -4,11 +4,12 @@ import com.google.protobuf.ByteString
 import com.netki.bip75.protocol.Protos
 import com.netki.bip75.service.Bip75Service
 import com.netki.exceptions.InvalidObjectException
-import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
+import com.netki.security.CertificateValidator
 import com.netki.security.CryptoModule
 import com.netki.util.toByteString
 import com.netki.util.toStringLocal
+import java.security.cert.X509Certificate
 import java.sql.Timestamp
 
 /**
@@ -83,15 +84,11 @@ class Bip75ServiceNetki() : Bip75Service {
                     .build()
 
                 val hash = CryptoModule.getHash256(paymentRequestModified.toByteArray())
-                return try {
-                    if (CryptoModule.validateSignature(signatureString, hash, certificate)) {
-                        true
-                    } else {
-                        throw InvalidSignatureException("Invalid signature for invoiceRequest")
-                    }
-                } catch (exception: Exception) {
-                    throw InvalidSignatureException("Invalid signature for invoiceRequest")
-                }
+                !CertificateValidator.validateCertificateChain(
+                    CryptoModule.certificatePemToObject(certificate) as X509Certificate
+                )
+                CryptoModule.validateSignature(signatureString, hash, certificate)
+                return true
             }
             else -> throw IllegalArgumentException("Type: ${invoiceRequestProto.pkiType}, not supported")
         }
@@ -200,15 +197,11 @@ class Bip75ServiceNetki() : Bip75Service {
                     .build()
 
                 val hash = CryptoModule.getHash256(paymentRequestModified.toByteArray())
-                return try {
-                    if (CryptoModule.validateSignature(signatureString, hash, certificate)) {
-                        true
-                    } else {
-                        throw InvalidSignatureException("Invalid signature for paymentRequest")
-                    }
-                } catch (exception: Exception) {
-                    throw InvalidSignatureException("Invalid signature for paymentRequest")
-                }
+                !CertificateValidator.validateCertificateChain(
+                    CryptoModule.certificatePemToObject(certificate) as X509Certificate
+                )
+                CryptoModule.validateSignature(signatureString, hash, certificate)
+                return true
             }
             else -> throw IllegalArgumentException("Type: ${paymentRequestProto.pkiType}, not supported")
         }

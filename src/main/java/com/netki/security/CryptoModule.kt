@@ -1,5 +1,6 @@
 package com.netki.security
 
+import com.netki.exceptions.InvalidSignatureException
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.cert.X509CertificateHolder
@@ -75,13 +76,19 @@ object CryptoModule {
      * @param data that was signed.
      * @param certificate to validate the signature.
      * @return true if is valid, false otherwise.
+     * @exception InvalidS
      */
     fun validateSignature(signature: String, data: String, certificate: Certificate): Boolean {
         val signBytes = getDecoder().decode(signature.toByteArray(Charsets.UTF_8))
-        return Signature.getInstance(SIGNATURE_ALGORITHM).run {
+        val validSignature = Signature.getInstance(SIGNATURE_ALGORITHM).run {
             initVerify(certificate)
             update(data.toByteArray())
             verify(signBytes)
+        }
+        return if (validSignature) {
+            true
+        } else {
+            throw InvalidSignatureException("Signature not valid")
         }
     }
 

@@ -2,8 +2,7 @@ package com.netki
 
 import com.netki.bip75.config.Bip75Factory
 import com.netki.bip75.main.Bip75
-import com.netki.exceptions.InvalidObjectException
-import com.netki.exceptions.InvalidSignatureException
+import com.netki.exceptions.*
 import com.netki.model.InvoiceRequestParameters
 import com.netki.model.KeyPairPem
 import com.netki.model.Payment
@@ -38,10 +37,16 @@ object TransactId {
      * @return true if is valid.
      * @exception InvalidObjectException if the binary is malformed.
      * @exception InvalidSignatureException if the signature in the binary is not valid.
+     * @exception InvalidCertificateException if there is a problem with the certificates.
+     * @exception InvalidCertificateChainException if the certificate chain is not valid.
+     * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
      */
     @Throws(
         InvalidObjectException::class,
-        InvalidSignatureException::class
+        InvalidSignatureException::class,
+        InvalidCertificateException::class,
+        InvalidCertificateChainException::class,
+        InvalidKeystoreException::class
     )
     fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray) = bip75.isInvoiceRequestValid(invoiceRequestBinary)
 
@@ -76,10 +81,16 @@ object TransactId {
      * @return true if is valid.
      * @exception InvalidObjectException if the binary is malformed.
      * @exception InvalidSignatureException if the signature in the binary is not valid.
+     * @exception InvalidCertificateException if there is a problem with the certificates.
+     * @exception InvalidCertificateChainException if the certificate chain is not valid.
+     * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
      */
     @Throws(
         InvalidObjectException::class,
-        InvalidSignatureException::class
+        InvalidSignatureException::class,
+        InvalidCertificateException::class,
+        InvalidCertificateChainException::class,
+        InvalidKeystoreException::class
     )
     fun isPaymentRequestValid(paymentRequestBinary: ByteArray) = bip75.isPaymentRequestValid(paymentRequestBinary)
 
