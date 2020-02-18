@@ -1,6 +1,7 @@
 package com.netki
 
 import com.netki.bip75.protocol.Protos
+import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.KeyPairPem
@@ -18,20 +19,27 @@ internal class TransactIdTest {
 
     private lateinit var keyPairPemX509: KeyPairPem
     private lateinit var keyPairPemNone: KeyPairPem
+    private lateinit var invalidCertKeyPairPemX509: KeyPairPem
 
     @BeforeAll
     fun setUp() {
-        val keyPair = TestData.Keys.generateKeyPair()
-        val certificate = TestData.Keys.generateCertificate(keyPair, TestData.Keys.HASH_ALGORITHM, "test")
+        val privateKey = CryptoModule.privateKeyPemToObject(TestData.KeyPairs.CLIENT_PRIVATE_KEY_PEM)
+        val certificate = CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_PEM)
+        val randomCertificate = CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM_PEM)
         keyPairPemX509 = KeyPairPem(
-            CryptoModule.objectToPrivateKeyPem(keyPair.private),
+            CryptoModule.objectToPrivateKeyPem(privateKey),
             CryptoModule.objectToCertificatePem(certificate),
             PkiType.X509SHA256
         )
         keyPairPemNone = KeyPairPem(
-            CryptoModule.objectToPrivateKeyPem(keyPair.private),
+            CryptoModule.objectToPrivateKeyPem(privateKey),
             CryptoModule.objectToCertificatePem(certificate),
             PkiType.NONE
+        )
+        invalidCertKeyPairPemX509 = KeyPairPem(
+            CryptoModule.objectToPrivateKeyPem(privateKey),
+            CryptoModule.objectToCertificatePem(randomCertificate),
+            PkiType.X509SHA256
         )
     }
 
@@ -49,6 +57,16 @@ internal class TransactIdTest {
             TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemNone)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create an invalid InvoiceRequestBinary with PkiData and invalid certificate chain`() {
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, invalidCertKeyPairPemX509)
+
+        assertThrows(InvalidCertificateChainException::class.java) {
+            TransactId.isInvoiceRequestValid(invoiceRequestBinary)
+        }
     }
 
     @Test
@@ -76,7 +94,12 @@ internal class TransactIdTest {
             TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemX509)
         val invoiceRequestInvalidSignature = Protos.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary)
-            .setSignature("".toByteString())
+            .setSignature(
+                ("OJ5cmg/1HHvmnAIlEYhu7GLGHISeZTYehmMA5uvmakxB/qZDduhw7ZKgxs8hFf/SiY0m/Nw/aICAbxtighLG3Bn+jRTy" +
+                        "x5lGECceuLeCgqhrXGDK9p6q853gKFibe1uw+dQWWCF/SuJ1wvs4p2uHTzUCxnginAcSdLiRqukUPSlZVN+Md" +
+                        "BXLEhMCOvkkrY4yDIcWDDKBJH7BRtI4hJ7fDEypC1e65QT5pYHkYySWrNku65zGfS2w6VccUYyXy2hqulJYKg" +
+                        "QzEOoAj7CyULIDMnab/OYKJYcOcg98VbKBhh91GrCIXtQBsba5TD93lJNjIaznhJlatvB+QkWYbXfhNA==").toByteString()
+            )
             .build()
 
         assertThrows(InvalidSignatureException::class.java) {
@@ -132,6 +155,16 @@ internal class TransactIdTest {
     }
 
     @Test
+    fun `Create and invalid PaymentRequestBinary with PkiData and invalid certificate chain`() {
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, invalidCertKeyPairPemX509)
+
+        assertThrows(InvalidCertificateChainException::class.java) {
+            TransactId.isPaymentRequestValid(paymentRequestBinary)
+        }
+    }
+
+    @Test
     fun `Create and validate PaymentRequestBinary without PkiData`() {
         val paymentRequestBinary =
             TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemNone)
@@ -164,7 +197,12 @@ internal class TransactIdTest {
             TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemX509)
         val paymentRequestInvalidSignature = Protos.PaymentRequest.newBuilder()
             .mergeFrom(paymentRequestBinary)
-            .setSignature("".toByteString())
+            .setSignature(
+                ("OJ5cmg/1HHvmnAIlEYhu7GLGHISeZTYehmMA5uvmakxB/qZDduhw7ZKgxs8hFf/SiY0m/Nw/aICAbxtighLG3Bn+jRTy" +
+                        "x5lGECceuLeCgqhrXGDK9p6q853gKFibe1uw+dQWWCF/SuJ1wvs4p2uHTzUCxnginAcSdLiRqukUPSlZVN+Md" +
+                        "BXLEhMCOvkkrY4yDIcWDDKBJH7BRtI4hJ7fDEypC1e65QT5pYHkYySWrNku65zGfS2w6VccUYyXy2hqulJYKg" +
+                        "QzEOoAj7CyULIDMnab/OYKJYcOcg98VbKBhh91GrCIXtQBsba5TD93lJNjIaznhJlatvB+QkWYbXfhNA==").toByteString()
+            )
             .build()
 
         assertThrows(InvalidSignatureException::class.java) {
