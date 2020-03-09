@@ -3,7 +3,7 @@ syntax = "proto2";
 package payments;
 
 option java_package = "com.netki.bip75.protocol";
-option java_outer_classname = "Protos";
+option java_outer_classname = "Messages";
 
 message Output {
     optional uint64 amount = 1 [default = 0]; // amount is integer-number-of-satoshis
@@ -23,9 +23,9 @@ message PaymentDetails {
 message PaymentRequest {
     optional uint32 payment_details_version = 1 [default = 1];
     required bytes serialized_payment_details = 2;              // PaymentDetails
-    repeated Owners owners = 3;                                 // Account owners
+    repeated Owner owners = 3;                                  // Account owners
     required string sender_pki_type = 4 [default = "none"];     // none / x509+sha256
-    required bytes  sender_pki_data_sender = 5;                 // Sender's pki data, depends on pki_type
+    required bytes  sender_pki_data = 5;                        // Sender's pki data, depends on pki_type
     required bytes  sender_signature = 6;                       // Sender's Signature of the whole message
 }
 
@@ -50,18 +50,18 @@ message InvoiceRequest {
     optional uint64 amount = 1 [default = 0];                   // amount is integer-number-of-satoshis
     optional string memo = 2;                                   // Human-readable description of invoice request for the receiver
     optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
-    repeated Owners owners = 4;                                 // Account owners
+    repeated Owner owners = 4;                                  // Account owners
     required string sender_pki_type = 5 [default = "none"];     // none / x509+sha256
-    required bytes  sender_pki_data_sender = 6;                 // Sender's pki data, depends on pki_type
+    required bytes  sender_pki_data = 6;                        // Sender's pki data, depends on pki_type
     required bytes  sender_signature = 7;                       // Sender's Signature of the whole message
 }
 
-message Owners {
+message Owner {
     required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
-    repeated Signatures signatures = 2;                             // All the owner signatures for the message
+    repeated Signature signatures = 2;                             // All the owner signatures for the message
 }
 
-message Signatures {
+message Signature {
     required string attestation = 1;                    // Type of certificate
     required string pki_type = 2 [default = "none"];    // none / x509+sha256 / x509+sha1
     required bytes  pki_data = 3;                       // Depends on pki_type

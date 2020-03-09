@@ -1,16 +1,18 @@
 package com.netki.bip75.service.impl
 
-import com.google.protobuf.ByteString
-import com.netki.bip75.protocol.Protos
+import com.netki.bip75.protocol.Messages
 import com.netki.bip75.service.Bip75Service
-import com.netki.exceptions.InvalidObjectException
+import com.netki.exceptions.InvalidCertificateChainException
+import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator
 import com.netki.security.CryptoModule
-import com.netki.util.toByteString
-import com.netki.util.toStringLocal
+import com.netki.util.*
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
+import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
+import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
 import java.security.cert.X509Certificate
-import java.sql.Timestamp
 
 /**
  * {@inheritDoc}
@@ -22,339 +24,242 @@ class Bip75ServiceNetki() : Bip75Service {
      */
     override fun createInvoiceRequest(
         invoiceRequestParameters: InvoiceRequestParameters,
-        keyPairPem: KeyPairPem
+        ownersParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters
     ): ByteArray {
-        val certificate = CryptoModule.certificatePemToObject(keyPairPem.certificatePem)
-        val invoiceRequest = Protos.InvoiceRequest.newBuilder()
-            .setSenderPublicKey(CryptoModule.objectToPublicKeyPem(certificate.publicKey).toByteString())
-            .setAmount(invoiceRequestParameters.amount)
-            .setPkiType(keyPairPem.type.value)
-            .setPkiData(keyPairPem.certificatePem.toByteString())
-            .setMemo(invoiceRequestParameters.memo)
-            .setNotificationUrl(invoiceRequestParameters.notificationUrl)
-            .setSignature("".toByteString())
-            .build()
 
-        return when (keyPairPem.type) {
-            PkiType.NONE -> invoiceRequest.toByteArray()
-            PkiType.X509SHA256 -> {
-                val hash = CryptoModule.getHash256(invoiceRequest.toByteArray())
-                val signature = CryptoModule.signString(hash, keyPairPem.privateKeyPem)
+        ownersParameters.validate()
 
-                Protos.InvoiceRequest.newBuilder()
-                    .mergeFrom(invoiceRequest)
-                    .setSignature(signature.toByteString())
-                    .build()
-                    .toByteArray()
-            }
+        val messageInvoiceRequestBuilder =
+            invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(senderParameters)
+
+        ownersParameters.forEachIndexed { index, owner ->
+            messageInvoiceRequestBuilder.addOwners(index, owner.toMessageOwner())
         }
+
+        val messageInvoiceRequest = messageInvoiceRequestBuilder.build()
+
+        val ownersSignatures = ownersParameters.signMessage(messageInvoiceRequest)
+
+        val messageInvoiceRequestWithOwnersBuilder = Messages.InvoiceRequest.newBuilder()
+            .mergeFrom(messageInvoiceRequest)
+
+        ownersParameters.forEachIndexed { index, owner ->
+            val ownerSignatures = ownersSignatures[index]
+            messageInvoiceRequestWithOwnersBuilder.removeOwners(index)
+            messageInvoiceRequestWithOwnersBuilder.addOwners(index, owner.toOwnerMessageWithSignature(ownerSignatures))
+        }
+
+        val messageInvoiceRequestWithOwners = messageInvoiceRequestWithOwnersBuilder.build()
+
+        return messageInvoiceRequestWithOwners.signMessage(senderParameters).toByteArray()
     }
 
     /**
      * {@inheritDoc}
      */
     override fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest {
-        val invoiceRequestProto = parseInvoiceRequestBinary(invoiceRequestBinary)
-        return InvoiceRequest(
-            senderPublicKey = invoiceRequestProto.senderPublicKey.toStringLocal(),
-            amount = invoiceRequestProto.amount,
-            pkiType = invoiceRequestProto.pkiType,
-            pkiData = invoiceRequestProto.pkiData?.toStringLocal(),
-            memo = invoiceRequestProto.memo,
-            notificationUrl = invoiceRequestProto.notificationUrl,
-            signature = invoiceRequestProto.signature?.toStringLocal()
-        )
+        val messageInvoiceRequest = invoiceRequestBinary.toMessageInvoiceRequest()
+        return messageInvoiceRequest.toInvoiceRequest()
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean {
-        val invoiceRequestProto = parseInvoiceRequestBinary(invoiceRequestBinary)
+        val messageInvoiceRequest = invoiceRequestBinary.toMessageInvoiceRequest()
 
-        return when (invoiceRequestProto.pkiType) {
-            PkiType.NONE.value -> true
-            PkiType.X509SHA256.value -> {
-                val certificate = invoiceRequestProto.pkiData.toStringLocal()
-                val signatureString: String = invoiceRequestProto.signature.toStringLocal()
+        val messageInvoiceRequestUnsigned = messageInvoiceRequest.removeSenderSignature()
 
-                val paymentRequestModified = Protos.InvoiceRequest.newBuilder()
-                    .mergeFrom(invoiceRequestProto)
-                    .setSignature("".toByteString())
-                    .build()
+        val isSenderSignatureValid =
+            messageInvoiceRequestUnsigned.validateMessageSignature(messageInvoiceRequest.senderSignature.toStringLocal())
 
-                val hash = CryptoModule.getHash256(paymentRequestModified.toByteArray())
-                !CertificateValidator.validateCertificateChain(
-                    CryptoModule.certificatePemToObject(certificate) as X509Certificate
-                )
-                CryptoModule.validateSignature(signatureString, hash, certificate)
-                return true
+        check(isSenderSignatureValid) {
+            throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
+        }
+
+        val isCertificateChainValid = CertificateValidator.validateCertificateChain(
+            CryptoModule.certificatePemToObject(messageInvoiceRequest.senderPkiData.toStringLocal()) as X509Certificate
+        )
+
+        check(isCertificateChainValid) {
+            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+        }
+
+        val invoiceRequestWithoutOwnersSignatureBuilder = Messages.InvoiceRequest.newBuilder()
+            .mergeFrom(messageInvoiceRequestUnsigned)
+
+        val signatures = messageInvoiceRequestUnsigned.ownersList.getSignatures()
+        val ownersWithoutSignature = messageInvoiceRequestUnsigned.ownersList.removeOwnersSignatures()
+
+        invoiceRequestWithoutOwnersSignatureBuilder.clearOwners()
+        invoiceRequestWithoutOwnersSignatureBuilder.addAllOwners(ownersWithoutSignature)
+
+        val invoiceRequestWithoutOwnerSignatureHash =
+            CryptoModule.getHash256(invoiceRequestWithoutOwnersSignatureBuilder.build().toByteArray())
+
+        signatures.forEach { (key, value) ->
+            val isOwnerSignatureValid = CryptoModule.validateSignature(
+                value.second,
+                invoiceRequestWithoutOwnerSignatureHash,
+                value.first
+            )
+            check(isOwnerSignatureValid) {
+                throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
             }
-            else -> throw IllegalArgumentException("Type: ${invoiceRequestProto.pkiType}, not supported")
-        }
-    }
 
-    /**
-     * Parse binary InvoiceRequest to Protos.InvoiceRequest
-     */
-    private fun parseInvoiceRequestBinary(invoiceRequestBinary: ByteArray): Protos.InvoiceRequest {
-        return try {
-            Protos.InvoiceRequest.parseFrom(invoiceRequestBinary)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            throw InvalidObjectException("Invalid object for invoiceRequest, exception: ${exception.message}")
+            val isCertificateOwnerChainValid = CertificateValidator.validateCertificateChain(value.first)
+
+            check(isCertificateOwnerChainValid) {
+                throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(key))
+            }
         }
+
+        return true
     }
 
     /**
      * {@inheritDoc}
      */
     override fun createPaymentRequest(
-        paymentDetails: PaymentDetails,
-        keyPairPem: KeyPairPem,
-        paymentDetailsVersion: Int
+        paymentParameters: PaymentParameters,
+        ownersParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters,
+        paymentParametersVersion: Int
     ): ByteArray {
-        val paymentDetailsBuilder = Protos.PaymentDetails.newBuilder()
-            .setNetwork(paymentDetails.network)
-            .setTime(paymentDetails.time.time)
-            .setExpires(paymentDetails.expires?.time ?: 0)
-            .setMemo(paymentDetails.memo)
-            .setPaymentUrl(paymentDetails.paymentUrl)
-            .setMerchantData(paymentDetails.merchantData?.toByteString())
 
-        for (output in paymentDetails.outputs) {
-            paymentDetailsBuilder.addOutputs(outputToProtoOutput(output))
+        ownersParameters.validate()
+
+        val messagePaymentRequestBuilder = paymentParameters
+            .toMessagePaymentDetails()
+            .toPaymentRequest(senderParameters, paymentParametersVersion)
+
+        ownersParameters.forEachIndexed { index, owner ->
+            messagePaymentRequestBuilder.addOwners(index, owner.toMessageOwner())
         }
 
-        val paymentDetailsProto = paymentDetailsBuilder.build()
+        val messagePaymentRequest = messagePaymentRequestBuilder.build()
 
-        val paymentRequest = Protos.PaymentRequest.newBuilder()
-            .setPaymentDetailsVersion(paymentDetailsVersion)
-            .setPkiType(keyPairPem.type.value)
-            .setPkiData(keyPairPem.certificatePem.toByteString())
-            .setSerializedPaymentDetails(paymentDetailsProto.toByteString())
-            .setSignature("".toByteString())
-            .build()
+        val ownersSignatures = ownersParameters.signMessage(messagePaymentRequest)
 
-        return when (keyPairPem.type) {
-            PkiType.NONE -> paymentRequest.toByteArray()
-            PkiType.X509SHA256 -> {
-                val hash = CryptoModule.getHash256(paymentRequest.toByteArray())
-                val signature = CryptoModule.signString(hash, keyPairPem.privateKeyPem)
+        val messagePaymentRequestWithOwnersBuilder = Messages.PaymentRequest.newBuilder()
+            .mergeFrom(messagePaymentRequest)
 
-                Protos.PaymentRequest.newBuilder()
-                    .mergeFrom(paymentRequest)
-                    .setSignature(signature.toByteString())
-                    .build()
-                    .toByteArray()
-            }
+        ownersParameters.forEachIndexed { index, owner ->
+            val ownerSignatures = ownersSignatures[index]
+            messagePaymentRequestWithOwnersBuilder.removeOwners(index)
+            messagePaymentRequestWithOwnersBuilder.addOwners(index, owner.toOwnerMessageWithSignature(ownerSignatures))
         }
+
+        val messagePaymentRequestWithOwners = messagePaymentRequestWithOwnersBuilder.build()
+
+        return messagePaymentRequestWithOwners.signMessage(senderParameters).toByteArray()
     }
 
     /**
      * {@inheritDoc}
      */
     override fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest {
-        val paymentRequestProto = parsePaymentRequestBinary(paymentRequestBinary)
-        val paymentDetailsProto = parsePaymentDetailsBinary(paymentRequestProto.serializedPaymentDetails)
-        val outputs = mutableListOf<Output>()
-        for (outputProto in paymentDetailsProto.outputsList) {
-            outputs.add(Output(outputProto.amount, outputProto.script.toStringLocal()))
-        }
-
-        return PaymentRequest(
-            paymentDetailsVersion = paymentRequestProto.paymentDetailsVersion,
-            pkiType = paymentRequestProto.pkiType,
-            pkiData = paymentRequestProto.pkiData.toStringLocal(),
-            paymentDetails = PaymentDetails(
-                network = paymentDetailsProto.network,
-                outputs = outputs,
-                time = Timestamp(paymentDetailsProto.time),
-                expires = Timestamp(paymentDetailsProto.expires),
-                memo = paymentDetailsProto.memo,
-                paymentUrl = paymentDetailsProto.paymentUrl,
-                merchantData = paymentDetailsProto.merchantData.toStringLocal()
-            ),
-            signature = paymentRequestProto.signature.toStringLocal()
-        )
+        val messagePaymentRequest = paymentRequestBinary.toMessagePaymentRequest()
+        return messagePaymentRequest.toPaymentRequest()
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean {
-        val paymentRequestProto = parsePaymentRequestBinary(paymentRequestBinary)
+        val messagePaymentRequest = paymentRequestBinary.toMessagePaymentRequest()
 
-        return when (paymentRequestProto.pkiType) {
-            PkiType.NONE.value -> true
-            PkiType.X509SHA256.value -> {
-                val certificate = paymentRequestProto.pkiData.toStringLocal()
-                val signatureString: String = paymentRequestProto.signature.toStringLocal()
+        val messagePaymentRequestUnsigned = messagePaymentRequest.removeSenderSignature()
 
-                val paymentRequestModified = Protos.PaymentRequest.newBuilder()
-                    .mergeFrom(paymentRequestProto)
-                    .setSignature("".toByteString())
-                    .build()
+        val isSenderSignatureValid =
+            messagePaymentRequestUnsigned.validateMessageSignature(messagePaymentRequest.senderSignature.toStringLocal())
 
-                val hash = CryptoModule.getHash256(paymentRequestModified.toByteArray())
-                !CertificateValidator.validateCertificateChain(
-                    CryptoModule.certificatePemToObject(certificate) as X509Certificate
-                )
-                CryptoModule.validateSignature(signatureString, hash, certificate)
-                return true
+        check(isSenderSignatureValid) {
+            throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
+        }
+
+        val isCertificateChainValid = CertificateValidator.validateCertificateChain(
+            CryptoModule.certificatePemToObject(messagePaymentRequest.senderPkiData.toStringLocal()) as X509Certificate
+        )
+
+        check(isCertificateChainValid) {
+            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+        }
+
+        val paymentRequestWithoutOwnersSignatureBuilder = Messages.PaymentRequest.newBuilder()
+            .mergeFrom(messagePaymentRequestUnsigned)
+
+        val signatures = messagePaymentRequestUnsigned.ownersList.getSignatures()
+        val ownersWithoutSignature = messagePaymentRequestUnsigned.ownersList.removeOwnersSignatures()
+
+        paymentRequestWithoutOwnersSignatureBuilder.clearOwners()
+        paymentRequestWithoutOwnersSignatureBuilder.addAllOwners(ownersWithoutSignature)
+
+        val invoiceRequestWithoutOwnerSignatureHash =
+            CryptoModule.getHash256(paymentRequestWithoutOwnersSignatureBuilder.build().toByteArray())
+
+        signatures.forEach { (key, value) ->
+            val isOwnerSignatureValid = CryptoModule.validateSignature(
+                value.second,
+                invoiceRequestWithoutOwnerSignatureHash,
+                value.first
+            )
+            check(isOwnerSignatureValid) {
+                throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
             }
-            else -> throw IllegalArgumentException("Type: ${paymentRequestProto.pkiType}, not supported")
-        }
-    }
 
-    /**
-     * Parse binary PaymentRequest to Protos.PaymentRequest
-     */
-    private fun parsePaymentRequestBinary(paymentRequestBinary: ByteArray): Protos.PaymentRequest {
-        return try {
-            Protos.PaymentRequest.parseFrom(paymentRequestBinary)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            throw InvalidObjectException("Invalid object for paymentRequest, exception: ${exception.message}")
-        }
-    }
+            val isCertificateOwnerChainValid = CertificateValidator.validateCertificateChain(value.first)
 
-    /**
-     * Parse binary PaymentDetails to Protos.PaymentDetails
-     */
-    private fun parsePaymentDetailsBinary(serializedPaymentDetails: ByteString): Protos.PaymentDetails {
-        return try {
-            Protos.PaymentDetails.parseFrom(serializedPaymentDetails)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            throw InvalidObjectException("Invalid object for paymentDetails, exception: ${exception.message}")
+            check(isCertificateOwnerChainValid) {
+                throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(key))
+            }
         }
+
+        return true
     }
 
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(payment: Payment): ByteArray = createPaymentProto(payment).toByteArray()
+    override fun createPayment(payment: Payment): ByteArray = payment.toMessagePayment().toByteArray()
 
     /**
      * {@inheritDoc}
      */
     override fun parsePayment(paymentBinary: ByteArray): Payment {
-        val paymentProto = parsePaymentBinary(paymentBinary)
-
-        val transactionList = mutableListOf<ByteArray>()
-        for (transaction in paymentProto.transactionsList) {
-            transactionList.add(transaction.toByteArray())
-        }
-
-        val outputs = mutableListOf<Output>()
-        for (protoOutput in paymentProto.refundToList) {
-            outputs.add(protoOutputToOutput(protoOutput))
-        }
-        return Payment(
-            merchantData = paymentProto.merchantData.toStringLocal(),
-            transactions = transactionList,
-            outputs = outputs,
-            memo = paymentProto.memo
-        )
+        val messagePayment = paymentBinary.toMessagePayment()
+        return messagePayment.toPayment()
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isPaymentValid(paymentBinary: ByteArray): Boolean {
-        parsePaymentBinary(paymentBinary)
+        paymentBinary.toMessagePayment()
         return true
-    }
-
-    /**
-     * Parse binary Payment to Protos.Payment
-     */
-    private fun parsePaymentBinary(paymentBinary: ByteArray): Protos.Payment {
-        return try {
-            Protos.Payment.parseFrom(paymentBinary)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            throw InvalidObjectException("Invalid object for payment, exception: ${exception.message}")
-        }
     }
 
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentAck(payment: Payment, memo: String): ByteArray = Protos.PaymentACK.newBuilder()
-        .setPayment(createPaymentProto(payment))
-        .setMemo(memo)
-        .build()
-        .toByteArray()
+    override fun createPaymentAck(payment: Payment, memo: String): ByteArray =
+        payment.toMessagePaymentAck().toByteArray()
 
     /**
      * {@inheritDoc}
      */
     override fun parsePaymentAck(paymentAckBinary: ByteArray): PaymentAck {
-        val paymentAckProto = parsePaymentAckBinary(paymentAckBinary)
-        return PaymentAck(parsePayment(paymentAckProto.payment.toByteArray()), paymentAckProto.memo)
+        val messagePaymentAck = paymentAckBinary.toMessagePaymentAck()
+        return messagePaymentAck.toPaymentAck()
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean {
-        parsePaymentAckBinary(paymentAckBinary)
+        paymentAckBinary.toMessagePaymentAck()
         return true
     }
-
-    /**
-     * Parse binary PaymentAck to Protos.PaymentAck
-     */
-    private fun parsePaymentAckBinary(paymentAckBinary: ByteArray): Protos.PaymentACK {
-        return try {
-            Protos.PaymentACK.parseFrom(paymentAckBinary)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            throw InvalidObjectException("Invalid object for paymentAck, exception: ${exception.message}")
-        }
-    }
-
-    /**
-     * Transform Payment object to ProtoBuffer object.
-     *
-     * @param payment to transform.
-     * @return Protos.Payment.
-     */
-    private fun createPaymentProto(payment: Payment): Protos.Payment {
-        val paymentBuilder = Protos.Payment.newBuilder()
-            .setMerchantData(payment.merchantData?.toByteString())
-            .setMemo(payment.memo)
-
-        for (transaction in payment.transactions) {
-            paymentBuilder.addTransactions(transaction.toByteString())
-        }
-
-        for (output in payment.outputs) {
-            paymentBuilder.addRefundTo(outputToProtoOutput(output))
-        }
-
-        return paymentBuilder.build()
-    }
-
-    /**
-     * Transform Output object to ProtoBuffer object.
-     *
-     * @param output to transform.
-     * @return Protos.Output.
-     */
-    private fun outputToProtoOutput(output: Output) = Protos.Output.newBuilder()
-        .setAmount(output.amount)
-        .setScript(output.script.toByteString())
-        .build()
-
-    /**
-     * Transform ProtoBuffer object to Output object.
-     *
-     * @param protoOutput to transform.
-     * @return Output.
-     */
-    private fun protoOutputToOutput(protoOutput: Protos.Output) =
-        Output(protoOutput.amount, protoOutput.script.toStringLocal())
 }
+

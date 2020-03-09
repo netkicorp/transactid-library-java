@@ -5,7 +5,7 @@ import java.sql.Timestamp
 /**
  * Representation of PaymentDetails message.
  */
-data class PaymentDetails(
+data class PaymentParameters(
 
     /**
      * Either "main" for payments on the production Bitcoin network, or "test" for payments on test network.

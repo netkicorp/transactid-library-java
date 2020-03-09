@@ -12,10 +12,17 @@ interface Bip75Service {
      * Create binary InvoiceRequest.
      *
      * @param invoiceRequestParameters data to create the InvoiceRequest.
-     * @param keyPairPem keys to do crypto operations for the InvoiceRequest.
+     * @param ownersParameters of the accounts for this transaction.
+     * @param senderParameters of the protocol message.
      * @return binary object of the message created.
+     * @throws InvalidOwnersException if the provided list of owners is not valid
      */
-    fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters, keyPairPem: KeyPairPem): ByteArray
+    @Throws(InvalidOwnersException::class)
+    fun createInvoiceRequest(
+        invoiceRequestParameters: InvoiceRequestParameters,
+        ownersParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters
+    ): ByteArray
 
     /**
      * Validate if a binary InvoiceRequest is valid.
@@ -50,15 +57,19 @@ interface Bip75Service {
     /**
      * Create binary PaymentRequest.
      *
-     * @param paymentDetails data to create the PaymentRequest.
-     * @param keyPairPem keys to do crypto operations for the invoice request.
-     * @param paymentDetailsVersion version of the PaymentDetails message.
+     * @param paymentParameters data to create the PaymentRequest.
+     * @param ownersParameters of the accounts for this transaction.
+     * @param senderParameters of the protocol message.
+     * @param paymentParametersVersion version of the PaymentDetails message.
      * @return binary object of the message created.
+     * @throws InvalidOwnersException if the provided list of owners is not valid
      */
+    @Throws(InvalidOwnersException::class)
     fun createPaymentRequest(
-        paymentDetails: PaymentDetails,
-        keyPairPem: KeyPairPem,
-        paymentDetailsVersion: Int = 1
+        paymentParameters: PaymentParameters,
+        ownersParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters,
+        paymentParametersVersion: Int = 1
     ): ByteArray
 
     /**

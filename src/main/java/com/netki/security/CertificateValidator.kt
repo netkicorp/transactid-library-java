@@ -22,7 +22,6 @@ object CertificateValidator {
      * @param clientCertificate certificate to validate.
      * @return true if the chain is valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
-     * @exception InvalidCertificateChainException if the certificate chain is not valid.
      * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
      */
     @Throws(
@@ -46,7 +45,6 @@ object CertificateValidator {
      * @param rootCertificates list of all root certificates to validate in the chain.
      * @return true if the chain is valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
-     * @exception InvalidCertificateChainException if the certificate chain is not valid.
      */
     @Throws(
         InvalidCertificateException::class,
@@ -116,9 +114,9 @@ object CertificateValidator {
             builder.build(pkixParameters) as PKIXCertPathBuilderResult
             true
         } catch (pathBuildException: CertPathBuilderException) {
-            throw InvalidCertificateChainException(pathBuildException.message, pathBuildException)
+            false
         } catch (invalidAlgorithmException: InvalidAlgorithmParameterException) {
-            throw InvalidCertificateChainException(invalidAlgorithmException.message, invalidAlgorithmException)
+            false
         }
     }
 

@@ -11,23 +11,29 @@ data class PaymentRequest(
     val paymentDetailsVersion: Int? = 1,
 
     /**
-     * Public-key infrastructure (PKI) system being used to identify the merchant.
-     * One of none / x509+sha256 / pgp+sha256 / ecdsa+sha256.
-     */
-    val pkiType: String? = "none",
-
-    /**
-     * PKI-system data that identifies the merchant and can be used to create a digital signature.
-     */
-    val pkiData: String? = null,
-
-    /**
      * Bulk of the information that contains PaymentDetails message.
      */
-    val paymentDetails: PaymentDetails,
+    val paymentParameters: PaymentParameters,
 
     /**
-     * Digital signature over a hash of the protocol buffer serialized variation of the PaymentRequest message.
+     * Account owners
      */
-    val signature: String? = null
+    val owners: List<Owner> = emptyList(),
+
+    /**
+     * Type of sender's pki data.
+     */
+    val senderPkiType: PkiType? = PkiType.NONE,
+
+    /**
+     * Sender's pki data, depends on senderPkiType.
+     */
+    val senderPkiData: String? = null,
+
+    /**
+     * Sender's Signature of the whole message.
+     */
+    val senderSignature: String? = null
+
+
 )

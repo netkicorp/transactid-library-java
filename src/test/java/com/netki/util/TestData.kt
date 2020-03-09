@@ -1,9 +1,9 @@
 package com.netki.util
 
-import com.netki.model.InvoiceRequestParameters
-import com.netki.model.Output
-import com.netki.model.PaymentAck
-import com.netki.model.PaymentDetails
+import com.netki.model.*
+import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_PEM
+import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_PEM
+import com.netki.util.TestData.PkiData.PKI_DATA_OWNER_X509SHA256
 import org.bouncycastle.asn1.oiw.OIWObjectIdentifiers
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.*
@@ -94,7 +94,7 @@ object TestData {
             Output(1000, "Script 1"),
             Output(2000, "Script 2")
         )
-        val PAYMENT_DETAILS = PaymentDetails(
+        val PAYMENT_DETAILS = PaymentParameters(
             network = "main",
             outputs = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
@@ -276,6 +276,45 @@ object TestData {
                 "QQaG87Sk3847WJruAr1aZZG8ZWL5Nh5/a+gk5HspO02cZc9rCb/ZrxnduKRgKOzk\n" +
                 "cMq173vFYQTtL5fN7PGXTcwjRxt7MsqCCSSPFkTMc84=\n" +
                 "-----END CERTIFICATE-----"
+    }
+
+    object Owners {
+        val PRIMARY_OWNER = OwnerParameters(
+            true,
+            listOf(PKI_DATA_OWNER_X509SHA256)
+        )
+        val NO_PRIMARY_OWNER = OwnerParameters(
+            false,
+            listOf(PKI_DATA_OWNER_X509SHA256)
+        )
+    }
+
+    object PkiData {
+        val PKI_DATA_OWNER_X509SHA256 = PkiDataParameters(
+            attestation = "address_attestation",
+            privateKeyPem = CLIENT_PRIVATE_KEY_PEM,
+            certificatePem = CLIENT_CERTIFICATE_PEM,
+            type = PkiType.X509SHA256
+        )
+
+        val PKI_DATA_OWNER_NONE = PkiDataParameters(
+            attestation = "address_attestation",
+            privateKeyPem = "",
+            certificatePem = "",
+            type = PkiType.NONE
+        )
+
+        val PKI_DATA_SENDER_X509SHA256 = PkiDataParameters(
+            privateKeyPem = CLIENT_PRIVATE_KEY_PEM,
+            certificatePem = CLIENT_CERTIFICATE_PEM,
+            type = PkiType.X509SHA256
+        )
+
+        val PKI_DATA_SENDER_NONE = PkiDataParameters(
+            privateKeyPem = "",
+            certificatePem = "",
+            type = PkiType.NONE
+        )
     }
 
 }
