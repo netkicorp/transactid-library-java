@@ -20,7 +20,7 @@ data class InvoiceRequest(
     val notificationUrl: String? = null,
 
     /**
-     * Account owners
+     * Account owners.
      */
     val owners: List<Owner> = emptyList(),
 

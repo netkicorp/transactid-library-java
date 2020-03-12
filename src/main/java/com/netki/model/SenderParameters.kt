@@ -5,7 +5,7 @@ package com.netki.model
  */
 data class SenderParameters(
     /**
-     * PkiData associated to the sender
+     * PkiData associated to the sender.
      */
     val pkiDataParameters: PkiDataParameters
 )

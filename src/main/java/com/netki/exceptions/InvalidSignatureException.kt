@@ -1,7 +1,7 @@
 package com.netki.exceptions
 
 /**
- * Represents an error related with the signature
+ * Represents an error related with the signature.
  * For example if is a malformed or not valid.
  */
 class InvalidSignatureException : Exception {

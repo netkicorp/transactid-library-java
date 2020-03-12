@@ -15,7 +15,7 @@ interface Bip75Service {
      * @param ownersParameters of the accounts for this transaction.
      * @param senderParameters of the protocol message.
      * @return binary object of the message created.
-     * @throws InvalidOwnersException if the provided list of owners is not valid
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
     fun createInvoiceRequest(
@@ -62,7 +62,7 @@ interface Bip75Service {
      * @param senderParameters of the protocol message.
      * @param paymentParametersVersion version of the PaymentDetails message.
      * @return binary object of the message created.
-     * @throws InvalidOwnersException if the provided list of owners is not valid
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
     fun createPaymentRequest(

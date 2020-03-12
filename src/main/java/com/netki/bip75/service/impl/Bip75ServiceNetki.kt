@@ -5,14 +5,12 @@ import com.netki.bip75.service.Bip75Service
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
-import com.netki.security.CertificateValidator
 import com.netki.security.CryptoModule
 import com.netki.util.*
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
-import java.security.cert.X509Certificate
 
 /**
  * {@inheritDoc}
@@ -69,7 +67,15 @@ class Bip75ServiceNetki() : Bip75Service {
     override fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean {
         val messageInvoiceRequest = invoiceRequestBinary.toMessageInvoiceRequest()
 
-        val messageInvoiceRequestUnsigned = messageInvoiceRequest.removeSenderSignature()
+        val messageInvoiceRequestUnsigned =
+            messageInvoiceRequest.removeMessageSenderSignature() as Messages.InvoiceRequest
+
+        val isCertificateChainValid = messageInvoiceRequest.senderPkiData.toStringLocal()
+            .validateCertificateChain(messageInvoiceRequest.getMessageSenderPkiType())
+
+        check(isCertificateChainValid) {
+            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+        }
 
         val isSenderSignatureValid =
             messageInvoiceRequestUnsigned.validateMessageSignature(messageInvoiceRequest.senderSignature.toStringLocal())
@@ -78,12 +84,19 @@ class Bip75ServiceNetki() : Bip75Service {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
 
-        val isCertificateChainValid = CertificateValidator.validateCertificateChain(
-            CryptoModule.certificatePemToObject(messageInvoiceRequest.senderPkiData.toStringLocal()) as X509Certificate
-        )
+        messageInvoiceRequestUnsigned.ownersList.forEach { owner ->
+            owner.signaturesList.forEach { signature ->
+                val isCertificateOwnerChainValid =
+                    signature.pkiData.toStringLocal().validateCertificateChain(signature.getSignaturePkiType())
 
-        check(isCertificateChainValid) {
-            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+                check(isCertificateOwnerChainValid) {
+                    throw InvalidCertificateChainException(
+                        CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                            signature.attestation
+                        )
+                    )
+                }
+            }
         }
 
         val invoiceRequestWithoutOwnersSignatureBuilder = Messages.InvoiceRequest.newBuilder()
@@ -106,12 +119,6 @@ class Bip75ServiceNetki() : Bip75Service {
             )
             check(isOwnerSignatureValid) {
                 throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
-            }
-
-            val isCertificateOwnerChainValid = CertificateValidator.validateCertificateChain(value.first)
-
-            check(isCertificateOwnerChainValid) {
-                throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(key))
             }
         }
 
@@ -170,7 +177,15 @@ class Bip75ServiceNetki() : Bip75Service {
     override fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean {
         val messagePaymentRequest = paymentRequestBinary.toMessagePaymentRequest()
 
-        val messagePaymentRequestUnsigned = messagePaymentRequest.removeSenderSignature()
+        val messagePaymentRequestUnsigned =
+            messagePaymentRequest.removeMessageSenderSignature() as Messages.PaymentRequest
+
+        val isCertificateChainValid = messagePaymentRequest.senderPkiData.toStringLocal()
+            .validateCertificateChain(messagePaymentRequest.getMessageSenderPkiType())
+
+        check(isCertificateChainValid) {
+            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+        }
 
         val isSenderSignatureValid =
             messagePaymentRequestUnsigned.validateMessageSignature(messagePaymentRequest.senderSignature.toStringLocal())
@@ -179,12 +194,19 @@ class Bip75ServiceNetki() : Bip75Service {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
 
-        val isCertificateChainValid = CertificateValidator.validateCertificateChain(
-            CryptoModule.certificatePemToObject(messagePaymentRequest.senderPkiData.toStringLocal()) as X509Certificate
-        )
+        messagePaymentRequestUnsigned.ownersList.forEach { owner ->
+            owner.signaturesList.forEach { signature ->
+                val isCertificateOwnerChainValid =
+                    signature.pkiData.toStringLocal().validateCertificateChain(signature.getSignaturePkiType())
 
-        check(isCertificateChainValid) {
-            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+                check(isCertificateOwnerChainValid) {
+                    throw InvalidCertificateChainException(
+                        CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                            signature.attestation
+                        )
+                    )
+                }
+            }
         }
 
         val paymentRequestWithoutOwnersSignatureBuilder = Messages.PaymentRequest.newBuilder()
@@ -207,12 +229,6 @@ class Bip75ServiceNetki() : Bip75Service {
             )
             check(isOwnerSignatureValid) {
                 throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
-            }
-
-            val isCertificateOwnerChainValid = CertificateValidator.validateCertificateChain(value.first)
-
-            check(isCertificateOwnerChainValid) {
-                throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(key))
             }
         }
 

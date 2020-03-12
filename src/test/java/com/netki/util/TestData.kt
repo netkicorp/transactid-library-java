@@ -1,9 +1,17 @@
 package com.netki.util
 
 import com.netki.model.*
+import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_PEM
+import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM_PEM
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_PEM
-import com.netki.util.TestData.PkiData.PKI_DATA_OWNER_X509SHA256
+import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256
+import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE
+import com.netki.util.TestData.PkiData.PKI_DATA_OWNER_NONE
+import com.netki.util.TestData.PkiData.PKI_DATA_SENDER_NONE
+import com.netki.util.TestData.PkiData.PKI_DATA_SENDER_X509SHA256
+import com.netki.util.TestData.PkiData.PKI_DATA_SENDER_X509SHA256_INVALID_CERTIFICATE
+import com.netki.util.TestData.PkiData.PKI_DATA_TWO_OWNER_X509SHA256
 import org.bouncycastle.asn1.oiw.OIWObjectIdentifiers
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.*
@@ -279,18 +287,55 @@ object TestData {
     }
 
     object Owners {
-        val PRIMARY_OWNER = OwnerParameters(
+        val PRIMARY_OWNER_PKI_X509SHA256 = OwnerParameters(
             true,
-            listOf(PKI_DATA_OWNER_X509SHA256)
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
         )
-        val NO_PRIMARY_OWNER = OwnerParameters(
+
+        val PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE = OwnerParameters(
+            true,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val PRIMARY_OWNER_PKI_NONE = OwnerParameters(
+            true,
+            listOf(PKI_DATA_OWNER_NONE)
+        )
+
+        val NO_PRIMARY_OWNER_PKI_X509SHA256 = OwnerParameters(
             false,
-            listOf(PKI_DATA_OWNER_X509SHA256)
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val NO_PRIMARY_OWNER_PKI_NONE = OwnerParameters(
+            false,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+    }
+
+    object Senders {
+        val SENDER_PKI_X509SHA256 = SenderParameters(
+            PKI_DATA_SENDER_X509SHA256
+        )
+
+        val SENDER_PKI_NONE = SenderParameters(
+            PKI_DATA_SENDER_NONE
+        )
+
+        val SENDER_PKI_X509SHA256_INVALID_CERTIFICATE = SenderParameters(
+            PKI_DATA_SENDER_X509SHA256_INVALID_CERTIFICATE
         )
     }
 
     object PkiData {
-        val PKI_DATA_OWNER_X509SHA256 = PkiDataParameters(
+        val PKI_DATA_ONE_OWNER_X509SHA256 = PkiDataParameters(
+            attestation = "name_attestation",
+            privateKeyPem = CLIENT_PRIVATE_KEY_PEM,
+            certificatePem = CLIENT_CERTIFICATE_PEM,
+            type = PkiType.X509SHA256
+        )
+
+        val PKI_DATA_TWO_OWNER_X509SHA256 = PkiDataParameters(
             attestation = "address_attestation",
             privateKeyPem = CLIENT_PRIVATE_KEY_PEM,
             certificatePem = CLIENT_CERTIFICATE_PEM,
@@ -298,10 +343,17 @@ object TestData {
         )
 
         val PKI_DATA_OWNER_NONE = PkiDataParameters(
-            attestation = "address_attestation",
+            attestation = "",
             privateKeyPem = "",
             certificatePem = "",
             type = PkiType.NONE
+        )
+
+        val PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE = PkiDataParameters(
+            attestation = INVALID_ATTESTATION,
+            privateKeyPem = CLIENT_PRIVATE_KEY_PEM,
+            certificatePem = CLIENT_CERTIFICATE_RANDOM_PEM,
+            type = PkiType.X509SHA256
         )
 
         val PKI_DATA_SENDER_X509SHA256 = PkiDataParameters(
@@ -315,6 +367,15 @@ object TestData {
             certificatePem = "",
             type = PkiType.NONE
         )
+
+        val PKI_DATA_SENDER_X509SHA256_INVALID_CERTIFICATE = PkiDataParameters(
+            privateKeyPem = CLIENT_PRIVATE_KEY_PEM,
+            certificatePem = CLIENT_CERTIFICATE_RANDOM_PEM,
+            type = PkiType.X509SHA256
+        )
     }
 
+    object Attestations {
+        const val INVALID_ATTESTATION = "invalid_attestation"
+    }
 }

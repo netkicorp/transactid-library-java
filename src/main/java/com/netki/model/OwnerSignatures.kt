@@ -1,6 +1,6 @@
 package com.netki.model
 
 /**
- * Object with signatures per attestation per user
+ * Object with signatures per attestation per user.
  */
 class OwnerSignatures : HashMap<Int, MutableMap<String, String>>()

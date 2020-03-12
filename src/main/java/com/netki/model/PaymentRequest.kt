@@ -16,7 +16,7 @@ data class PaymentRequest(
     val paymentParameters: PaymentParameters,
 
     /**
-     * Account owners
+     * Account owners.
      */
     val owners: List<Owner> = emptyList(),
 

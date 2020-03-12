@@ -37,8 +37,8 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
         paymentParameters: PaymentParameters,
         ownerParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
-        paymentDetailsVersion: Int
-    ) = bip75Service.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentDetailsVersion)
+        paymentParametersVersion: Int
+    ) = bip75Service.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentParametersVersion)
 
     /**
      * {@inheritDoc}

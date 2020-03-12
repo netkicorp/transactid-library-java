@@ -24,10 +24,14 @@ object TransactId {
      * @param ownerParameters of the accounts for this transaction.
      * @param senderParameters of the protocol message.
      * @return binary object of the message created.
-     * @throws InvalidOwnersException if the provided list of owners is not valid
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
-    fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters, ownerParameters: List<OwnerParameters>, senderParameters: SenderParameters) =
+    fun createInvoiceRequest(
+        invoiceRequestParameters: InvoiceRequestParameters,
+        ownerParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters
+    ) =
         bip75.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
 
     /**
@@ -40,15 +44,13 @@ object TransactId {
      * @exception InvalidCertificateException if there is a problem with the certificates.
      * @exception InvalidCertificateChainException if the certificate chain is not valid.
      * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
-     * @exception InvalidOwnersException if the list of owners is not valid
      */
     @Throws(
         InvalidObjectException::class,
         InvalidSignatureException::class,
         InvalidCertificateException::class,
         InvalidCertificateChainException::class,
-        InvalidKeystoreException::class,
-        InvalidOwnersException::class
+        InvalidKeystoreException::class
     )
     fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray) = bip75.isInvoiceRequestValid(invoiceRequestBinary)
 
@@ -68,9 +70,9 @@ object TransactId {
      * @param paymentParameters data to create the PaymentRequest.
      * @param ownerParameters of the accounts for this transaction.
      * @param senderParameters of the protocol message.
-     * @param paymentDetailsVersion version of the PaymentDetails message.
+     * @param paymentParametersVersion version of the PaymentDetails message.
      * @return binary object of the message created.
-     * @throws InvalidOwnersException if the provided list of owners is not valid
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
     fun createPaymentRequest(
