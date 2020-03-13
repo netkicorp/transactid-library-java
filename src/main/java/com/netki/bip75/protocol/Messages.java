@@ -3,8 +3,8 @@
 
 package com.netki.bip75.protocol;
 
-public final class Protos {
-  private Protos() {}
+public final class Messages {
+  private Messages() {}
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistryLite registry) {
   }
@@ -114,7 +114,7 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.getDescriptor().getEnumTypes().get(0);
+      return com.netki.bip75.protocol.Messages.getDescriptor().getEnumTypes().get(0);
     }
 
     private static final ProtocolMessageType[] VALUES = values();
@@ -257,15 +257,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Output_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Output_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Output_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Output_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.Output.class, com.netki.bip75.protocol.Protos.Output.Builder.class);
+              com.netki.bip75.protocol.Messages.Output.class, com.netki.bip75.protocol.Messages.Output.Builder.class);
     }
 
     private int bitField0_;
@@ -370,10 +370,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.Output)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.Output)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.Output other = (com.netki.bip75.protocol.Protos.Output) obj;
+      com.netki.bip75.protocol.Messages.Output other = (com.netki.bip75.protocol.Messages.Output) obj;
 
       if (hasAmount() != other.hasAmount()) return false;
       if (hasAmount()) {
@@ -410,69 +410,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Output parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Output parseFrom(
+    public static com.netki.bip75.protocol.Messages.Output parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -485,7 +485,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.Output prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.Output prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -506,21 +506,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.Output)
-        com.netki.bip75.protocol.Protos.OutputOrBuilder {
+        com.netki.bip75.protocol.Messages.OutputOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Output_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Output_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Output_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Output_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.Output.class, com.netki.bip75.protocol.Protos.Output.Builder.class);
+                com.netki.bip75.protocol.Messages.Output.class, com.netki.bip75.protocol.Messages.Output.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.Output.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.Output.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -548,17 +548,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Output_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Output_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Output getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.Output.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.Output getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.Output.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Output build() {
-        com.netki.bip75.protocol.Protos.Output result = buildPartial();
+      public com.netki.bip75.protocol.Messages.Output build() {
+        com.netki.bip75.protocol.Messages.Output result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -566,8 +566,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Output buildPartial() {
-        com.netki.bip75.protocol.Protos.Output result = new com.netki.bip75.protocol.Protos.Output(this);
+      public com.netki.bip75.protocol.Messages.Output buildPartial() {
+        com.netki.bip75.protocol.Messages.Output result = new com.netki.bip75.protocol.Messages.Output(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -617,16 +617,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.Output) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.Output)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.Output) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.Output)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.Output other) {
-        if (other == com.netki.bip75.protocol.Protos.Output.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.Output other) {
+        if (other == com.netki.bip75.protocol.Messages.Output.getDefaultInstance()) return this;
         if (other.hasAmount()) {
           setAmount(other.getAmount());
         }
@@ -651,11 +651,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.Output parsedMessage = null;
+        com.netki.bip75.protocol.Messages.Output parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.Output) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.Output) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -791,12 +791,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.Output)
-    private static final com.netki.bip75.protocol.Protos.Output DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.Output DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.Output();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.Output();
     }
 
-    public static com.netki.bip75.protocol.Protos.Output getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.Output getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -821,7 +821,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.Output getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.Output getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -867,7 +867,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    java.util.List<com.netki.bip75.protocol.Protos.Output> 
+    java.util.List<com.netki.bip75.protocol.Messages.Output> 
         getOutputsList();
     /**
      * <pre>
@@ -876,7 +876,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    com.netki.bip75.protocol.Protos.Output getOutputs(int index);
+    com.netki.bip75.protocol.Messages.Output getOutputs(int index);
     /**
      * <pre>
      * Where payment should be sent
@@ -892,7 +892,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    java.util.List<? extends com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+    java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
         getOutputsOrBuilderList();
     /**
      * <pre>
@@ -901,7 +901,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    com.netki.bip75.protocol.Protos.OutputOrBuilder getOutputsOrBuilder(
+    com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
         int index);
 
     /**
@@ -1078,11 +1078,11 @@ public final class Protos {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Output>();
+                outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
                 mutable_bitField0_ |= 0x00000002;
               }
               outputs_.add(
-                  input.readMessage(com.netki.bip75.protocol.Protos.Output.PARSER, extensionRegistry));
+                  input.readMessage(com.netki.bip75.protocol.Messages.Output.PARSER, extensionRegistry));
               break;
             }
             case 24: {
@@ -1136,15 +1136,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentDetails_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentDetails_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentDetails_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentDetails_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.PaymentDetails.class, com.netki.bip75.protocol.Protos.PaymentDetails.Builder.class);
+              com.netki.bip75.protocol.Messages.PaymentDetails.class, com.netki.bip75.protocol.Messages.PaymentDetails.Builder.class);
     }
 
     private int bitField0_;
@@ -1206,7 +1206,7 @@ public final class Protos {
     }
 
     public static final int OUTPUTS_FIELD_NUMBER = 2;
-    private java.util.List<com.netki.bip75.protocol.Protos.Output> outputs_;
+    private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_;
     /**
      * <pre>
      * Where payment should be sent
@@ -1214,7 +1214,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Protos.Output> getOutputsList() {
+    public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
       return outputs_;
     }
     /**
@@ -1224,7 +1224,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    public java.util.List<? extends com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+    public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
         getOutputsOrBuilderList() {
       return outputs_;
     }
@@ -1245,7 +1245,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    public com.netki.bip75.protocol.Protos.Output getOutputs(int index) {
+    public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
       return outputs_.get(index);
     }
     /**
@@ -1255,7 +1255,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output outputs = 2;</code>
      */
-    public com.netki.bip75.protocol.Protos.OutputOrBuilder getOutputsOrBuilder(
+    public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
         int index) {
       return outputs_.get(index);
     }
@@ -1538,10 +1538,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.PaymentDetails)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.PaymentDetails)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.PaymentDetails other = (com.netki.bip75.protocol.Protos.PaymentDetails) obj;
+      com.netki.bip75.protocol.Messages.PaymentDetails other = (com.netki.bip75.protocol.Messages.PaymentDetails) obj;
 
       if (hasNetwork() != other.hasNetwork()) return false;
       if (hasNetwork()) {
@@ -1621,69 +1621,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentDetails parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentDetails parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1696,7 +1696,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.PaymentDetails prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.PaymentDetails prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -1717,21 +1717,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.PaymentDetails)
-        com.netki.bip75.protocol.Protos.PaymentDetailsOrBuilder {
+        com.netki.bip75.protocol.Messages.PaymentDetailsOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentDetails_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentDetails_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentDetails_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentDetails_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.PaymentDetails.class, com.netki.bip75.protocol.Protos.PaymentDetails.Builder.class);
+                com.netki.bip75.protocol.Messages.PaymentDetails.class, com.netki.bip75.protocol.Messages.PaymentDetails.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.PaymentDetails.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.PaymentDetails.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1774,17 +1774,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentDetails_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentDetails_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentDetails getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.PaymentDetails.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.PaymentDetails getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.PaymentDetails.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentDetails build() {
-        com.netki.bip75.protocol.Protos.PaymentDetails result = buildPartial();
+      public com.netki.bip75.protocol.Messages.PaymentDetails build() {
+        com.netki.bip75.protocol.Messages.PaymentDetails result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -1792,8 +1792,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentDetails buildPartial() {
-        com.netki.bip75.protocol.Protos.PaymentDetails result = new com.netki.bip75.protocol.Protos.PaymentDetails(this);
+      public com.netki.bip75.protocol.Messages.PaymentDetails buildPartial() {
+        com.netki.bip75.protocol.Messages.PaymentDetails result = new com.netki.bip75.protocol.Messages.PaymentDetails(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1868,16 +1868,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.PaymentDetails) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.PaymentDetails)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.PaymentDetails) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.PaymentDetails)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.PaymentDetails other) {
-        if (other == com.netki.bip75.protocol.Protos.PaymentDetails.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.PaymentDetails other) {
+        if (other == com.netki.bip75.protocol.Messages.PaymentDetails.getDefaultInstance()) return this;
         if (other.hasNetwork()) {
           bitField0_ |= 0x00000001;
           network_ = other.network_;
@@ -1951,11 +1951,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.PaymentDetails parsedMessage = null;
+        com.netki.bip75.protocol.Messages.PaymentDetails parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.PaymentDetails) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.PaymentDetails) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2074,17 +2074,17 @@ public final class Protos {
         return this;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Protos.Output> outputs_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_ =
         java.util.Collections.emptyList();
       private void ensureOutputsIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
-          outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Output>(outputs_);
+          outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(outputs_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Output, com.netki.bip75.protocol.Protos.Output.Builder, com.netki.bip75.protocol.Protos.OutputOrBuilder> outputsBuilder_;
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> outputsBuilder_;
 
       /**
        * <pre>
@@ -2093,7 +2093,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Output> getOutputsList() {
+      public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
         if (outputsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(outputs_);
         } else {
@@ -2121,7 +2121,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output getOutputs(int index) {
+      public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
         if (outputsBuilder_ == null) {
           return outputs_.get(index);
         } else {
@@ -2136,7 +2136,7 @@ public final class Protos {
        * <code>repeated .payments.Output outputs = 2;</code>
        */
       public Builder setOutputs(
-          int index, com.netki.bip75.protocol.Protos.Output value) {
+          int index, com.netki.bip75.protocol.Messages.Output value) {
         if (outputsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2157,7 +2157,7 @@ public final class Protos {
        * <code>repeated .payments.Output outputs = 2;</code>
        */
       public Builder setOutputs(
-          int index, com.netki.bip75.protocol.Protos.Output.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
         if (outputsBuilder_ == null) {
           ensureOutputsIsMutable();
           outputs_.set(index, builderForValue.build());
@@ -2174,7 +2174,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public Builder addOutputs(com.netki.bip75.protocol.Protos.Output value) {
+      public Builder addOutputs(com.netki.bip75.protocol.Messages.Output value) {
         if (outputsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2195,7 +2195,7 @@ public final class Protos {
        * <code>repeated .payments.Output outputs = 2;</code>
        */
       public Builder addOutputs(
-          int index, com.netki.bip75.protocol.Protos.Output value) {
+          int index, com.netki.bip75.protocol.Messages.Output value) {
         if (outputsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2216,7 +2216,7 @@ public final class Protos {
        * <code>repeated .payments.Output outputs = 2;</code>
        */
       public Builder addOutputs(
-          com.netki.bip75.protocol.Protos.Output.Builder builderForValue) {
+          com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
         if (outputsBuilder_ == null) {
           ensureOutputsIsMutable();
           outputs_.add(builderForValue.build());
@@ -2234,7 +2234,7 @@ public final class Protos {
        * <code>repeated .payments.Output outputs = 2;</code>
        */
       public Builder addOutputs(
-          int index, com.netki.bip75.protocol.Protos.Output.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
         if (outputsBuilder_ == null) {
           ensureOutputsIsMutable();
           outputs_.add(index, builderForValue.build());
@@ -2252,7 +2252,7 @@ public final class Protos {
        * <code>repeated .payments.Output outputs = 2;</code>
        */
       public Builder addAllOutputs(
-          java.lang.Iterable<? extends com.netki.bip75.protocol.Protos.Output> values) {
+          java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Output> values) {
         if (outputsBuilder_ == null) {
           ensureOutputsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2304,7 +2304,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output.Builder getOutputsBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder getOutputsBuilder(
           int index) {
         return getOutputsFieldBuilder().getBuilder(index);
       }
@@ -2315,7 +2315,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.OutputOrBuilder getOutputsOrBuilder(
+      public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
           int index) {
         if (outputsBuilder_ == null) {
           return outputs_.get(index);  } else {
@@ -2329,7 +2329,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public java.util.List<? extends com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+      public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
            getOutputsOrBuilderList() {
         if (outputsBuilder_ != null) {
           return outputsBuilder_.getMessageOrBuilderList();
@@ -2344,9 +2344,9 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output.Builder addOutputsBuilder() {
+      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder() {
         return getOutputsFieldBuilder().addBuilder(
-            com.netki.bip75.protocol.Protos.Output.getDefaultInstance());
+            com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
        * <pre>
@@ -2355,10 +2355,10 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output.Builder addOutputsBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder(
           int index) {
         return getOutputsFieldBuilder().addBuilder(
-            index, com.netki.bip75.protocol.Protos.Output.getDefaultInstance());
+            index, com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
        * <pre>
@@ -2367,16 +2367,16 @@ public final class Protos {
        *
        * <code>repeated .payments.Output outputs = 2;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Output.Builder> 
+      public java.util.List<com.netki.bip75.protocol.Messages.Output.Builder> 
            getOutputsBuilderList() {
         return getOutputsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Output, com.netki.bip75.protocol.Protos.Output.Builder, com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> 
           getOutputsFieldBuilder() {
         if (outputsBuilder_ == null) {
           outputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.netki.bip75.protocol.Protos.Output, com.netki.bip75.protocol.Protos.Output.Builder, com.netki.bip75.protocol.Protos.OutputOrBuilder>(
+              com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder>(
                   outputs_,
                   ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
@@ -2780,12 +2780,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.PaymentDetails)
-    private static final com.netki.bip75.protocol.Protos.PaymentDetails DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.PaymentDetails DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.PaymentDetails();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.PaymentDetails();
     }
 
-    public static com.netki.bip75.protocol.Protos.PaymentDetails getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.PaymentDetails getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2810,7 +2810,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.PaymentDetails getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.PaymentDetails getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2855,24 +2855,24 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    java.util.List<com.netki.bip75.protocol.Protos.Owners> 
+    java.util.List<com.netki.bip75.protocol.Messages.Owner> 
         getOwnersList();
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    com.netki.bip75.protocol.Protos.Owners getOwners(int index);
+    com.netki.bip75.protocol.Messages.Owner getOwners(int index);
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
     int getOwnersCount();
     /**
@@ -2880,18 +2880,18 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    java.util.List<? extends com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+    java.util.List<? extends com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
         getOwnersOrBuilderList();
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    com.netki.bip75.protocol.Protos.OwnersOrBuilder getOwnersOrBuilder(
+    com.netki.bip75.protocol.Messages.OwnerOrBuilder getOwnersOrBuilder(
         int index);
 
     /**
@@ -2928,19 +2928,19 @@ public final class Protos {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 5;</code>
-     * @return Whether the senderPkiDataSender field is set.
+     * <code>required bytes sender_pki_data = 5;</code>
+     * @return Whether the senderPkiData field is set.
      */
-    boolean hasSenderPkiDataSender();
+    boolean hasSenderPkiData();
     /**
      * <pre>
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 5;</code>
-     * @return The senderPkiDataSender.
+     * <code>required bytes sender_pki_data = 5;</code>
+     * @return The senderPkiData.
      */
-    com.google.protobuf.ByteString getSenderPkiDataSender();
+    com.google.protobuf.ByteString getSenderPkiData();
 
     /**
      * <pre>
@@ -2978,7 +2978,7 @@ public final class Protos {
       serializedPaymentDetails_ = com.google.protobuf.ByteString.EMPTY;
       owners_ = java.util.Collections.emptyList();
       senderPkiType_ = "none";
-      senderPkiDataSender_ = com.google.protobuf.ByteString.EMPTY;
+      senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
       senderSignature_ = com.google.protobuf.ByteString.EMPTY;
     }
 
@@ -3025,11 +3025,11 @@ public final class Protos {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-                owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Owners>();
+                owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Owner>();
                 mutable_bitField0_ |= 0x00000004;
               }
               owners_.add(
-                  input.readMessage(com.netki.bip75.protocol.Protos.Owners.PARSER, extensionRegistry));
+                  input.readMessage(com.netki.bip75.protocol.Messages.Owner.PARSER, extensionRegistry));
               break;
             }
             case 34: {
@@ -3040,7 +3040,7 @@ public final class Protos {
             }
             case 42: {
               bitField0_ |= 0x00000008;
-              senderPkiDataSender_ = input.readBytes();
+              senderPkiData_ = input.readBytes();
               break;
             }
             case 50: {
@@ -3072,15 +3072,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentRequest_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentRequest_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.PaymentRequest.class, com.netki.bip75.protocol.Protos.PaymentRequest.Builder.class);
+              com.netki.bip75.protocol.Messages.PaymentRequest.class, com.netki.bip75.protocol.Messages.PaymentRequest.Builder.class);
     }
 
     private int bitField0_;
@@ -3127,15 +3127,15 @@ public final class Protos {
     }
 
     public static final int OWNERS_FIELD_NUMBER = 3;
-    private java.util.List<com.netki.bip75.protocol.Protos.Owners> owners_;
+    private java.util.List<com.netki.bip75.protocol.Messages.Owner> owners_;
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Protos.Owners> getOwnersList() {
+    public java.util.List<com.netki.bip75.protocol.Messages.Owner> getOwnersList() {
       return owners_;
     }
     /**
@@ -3143,9 +3143,9 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    public java.util.List<? extends com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+    public java.util.List<? extends com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
         getOwnersOrBuilderList() {
       return owners_;
     }
@@ -3154,7 +3154,7 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
     public int getOwnersCount() {
       return owners_.size();
@@ -3164,9 +3164,9 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    public com.netki.bip75.protocol.Protos.Owners getOwners(int index) {
+    public com.netki.bip75.protocol.Messages.Owner getOwners(int index) {
       return owners_.get(index);
     }
     /**
@@ -3174,9 +3174,9 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 3;</code>
+     * <code>repeated .payments.Owner owners = 3;</code>
      */
-    public com.netki.bip75.protocol.Protos.OwnersOrBuilder getOwnersOrBuilder(
+    public com.netki.bip75.protocol.Messages.OwnerOrBuilder getOwnersOrBuilder(
         int index) {
       return owners_.get(index);
     }
@@ -3238,17 +3238,17 @@ public final class Protos {
       }
     }
 
-    public static final int SENDER_PKI_DATA_SENDER_FIELD_NUMBER = 5;
-    private com.google.protobuf.ByteString senderPkiDataSender_;
+    public static final int SENDER_PKI_DATA_FIELD_NUMBER = 5;
+    private com.google.protobuf.ByteString senderPkiData_;
     /**
      * <pre>
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 5;</code>
-     * @return Whether the senderPkiDataSender field is set.
+     * <code>required bytes sender_pki_data = 5;</code>
+     * @return Whether the senderPkiData field is set.
      */
-    public boolean hasSenderPkiDataSender() {
+    public boolean hasSenderPkiData() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -3256,11 +3256,11 @@ public final class Protos {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 5;</code>
-     * @return The senderPkiDataSender.
+     * <code>required bytes sender_pki_data = 5;</code>
+     * @return The senderPkiData.
      */
-    public com.google.protobuf.ByteString getSenderPkiDataSender() {
-      return senderPkiDataSender_;
+    public com.google.protobuf.ByteString getSenderPkiData() {
+      return senderPkiData_;
     }
 
     public static final int SENDER_SIGNATURE_FIELD_NUMBER = 6;
@@ -3303,7 +3303,7 @@ public final class Protos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasSenderPkiDataSender()) {
+      if (!hasSenderPkiData()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -3337,7 +3337,7 @@ public final class Protos {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, senderPkiType_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        output.writeBytes(5, senderPkiDataSender_);
+        output.writeBytes(5, senderPkiData_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         output.writeBytes(6, senderSignature_);
@@ -3368,7 +3368,7 @@ public final class Protos {
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, senderPkiDataSender_);
+          .computeBytesSize(5, senderPkiData_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.CodedOutputStream
@@ -3384,10 +3384,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.PaymentRequest)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.PaymentRequest)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.PaymentRequest other = (com.netki.bip75.protocol.Protos.PaymentRequest) obj;
+      com.netki.bip75.protocol.Messages.PaymentRequest other = (com.netki.bip75.protocol.Messages.PaymentRequest) obj;
 
       if (hasPaymentDetailsVersion() != other.hasPaymentDetailsVersion()) return false;
       if (hasPaymentDetailsVersion()) {
@@ -3406,10 +3406,10 @@ public final class Protos {
         if (!getSenderPkiType()
             .equals(other.getSenderPkiType())) return false;
       }
-      if (hasSenderPkiDataSender() != other.hasSenderPkiDataSender()) return false;
-      if (hasSenderPkiDataSender()) {
-        if (!getSenderPkiDataSender()
-            .equals(other.getSenderPkiDataSender())) return false;
+      if (hasSenderPkiData() != other.hasSenderPkiData()) return false;
+      if (hasSenderPkiData()) {
+        if (!getSenderPkiData()
+            .equals(other.getSenderPkiData())) return false;
       }
       if (hasSenderSignature() != other.hasSenderSignature()) return false;
       if (hasSenderSignature()) {
@@ -3443,9 +3443,9 @@ public final class Protos {
         hash = (37 * hash) + SENDER_PKI_TYPE_FIELD_NUMBER;
         hash = (53 * hash) + getSenderPkiType().hashCode();
       }
-      if (hasSenderPkiDataSender()) {
-        hash = (37 * hash) + SENDER_PKI_DATA_SENDER_FIELD_NUMBER;
-        hash = (53 * hash) + getSenderPkiDataSender().hashCode();
+      if (hasSenderPkiData()) {
+        hash = (37 * hash) + SENDER_PKI_DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getSenderPkiData().hashCode();
       }
       if (hasSenderSignature()) {
         hash = (37 * hash) + SENDER_SIGNATURE_FIELD_NUMBER;
@@ -3456,69 +3456,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3531,7 +3531,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.PaymentRequest prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.PaymentRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -3552,21 +3552,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.PaymentRequest)
-        com.netki.bip75.protocol.Protos.PaymentRequestOrBuilder {
+        com.netki.bip75.protocol.Messages.PaymentRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentRequest_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentRequest_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.PaymentRequest.class, com.netki.bip75.protocol.Protos.PaymentRequest.Builder.class);
+                com.netki.bip75.protocol.Messages.PaymentRequest.class, com.netki.bip75.protocol.Messages.PaymentRequest.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.PaymentRequest.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.PaymentRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3597,7 +3597,7 @@ public final class Protos {
         }
         senderPkiType_ = "none";
         bitField0_ = (bitField0_ & ~0x00000008);
-        senderPkiDataSender_ = com.google.protobuf.ByteString.EMPTY;
+        senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000010);
         senderSignature_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -3607,17 +3607,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentRequest_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentRequest_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentRequest getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.PaymentRequest.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.PaymentRequest getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.PaymentRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentRequest build() {
-        com.netki.bip75.protocol.Protos.PaymentRequest result = buildPartial();
+      public com.netki.bip75.protocol.Messages.PaymentRequest build() {
+        com.netki.bip75.protocol.Messages.PaymentRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -3625,8 +3625,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentRequest buildPartial() {
-        com.netki.bip75.protocol.Protos.PaymentRequest result = new com.netki.bip75.protocol.Protos.PaymentRequest(this);
+      public com.netki.bip75.protocol.Messages.PaymentRequest buildPartial() {
+        com.netki.bip75.protocol.Messages.PaymentRequest result = new com.netki.bip75.protocol.Messages.PaymentRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -3653,7 +3653,7 @@ public final class Protos {
         if (((from_bitField0_ & 0x00000010) != 0)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.senderPkiDataSender_ = senderPkiDataSender_;
+        result.senderPkiData_ = senderPkiData_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -3697,16 +3697,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.PaymentRequest) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.PaymentRequest)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.PaymentRequest) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.PaymentRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.PaymentRequest other) {
-        if (other == com.netki.bip75.protocol.Protos.PaymentRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.PaymentRequest other) {
+        if (other == com.netki.bip75.protocol.Messages.PaymentRequest.getDefaultInstance()) return this;
         if (other.hasPaymentDetailsVersion()) {
           setPaymentDetailsVersion(other.getPaymentDetailsVersion());
         }
@@ -3744,8 +3744,8 @@ public final class Protos {
           senderPkiType_ = other.senderPkiType_;
           onChanged();
         }
-        if (other.hasSenderPkiDataSender()) {
-          setSenderPkiDataSender(other.getSenderPkiDataSender());
+        if (other.hasSenderPkiData()) {
+          setSenderPkiData(other.getSenderPkiData());
         }
         if (other.hasSenderSignature()) {
           setSenderSignature(other.getSenderSignature());
@@ -3763,7 +3763,7 @@ public final class Protos {
         if (!hasSenderPkiType()) {
           return false;
         }
-        if (!hasSenderPkiDataSender()) {
+        if (!hasSenderPkiData()) {
           return false;
         }
         if (!hasSenderSignature()) {
@@ -3782,11 +3782,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.PaymentRequest parsedMessage = null;
+        com.netki.bip75.protocol.Messages.PaymentRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.PaymentRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.PaymentRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3890,26 +3890,26 @@ public final class Protos {
         return this;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Protos.Owners> owners_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Owner> owners_ =
         java.util.Collections.emptyList();
       private void ensureOwnersIsMutable() {
         if (!((bitField0_ & 0x00000004) != 0)) {
-          owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Owners>(owners_);
+          owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Owner>(owners_);
           bitField0_ |= 0x00000004;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Owners, com.netki.bip75.protocol.Protos.Owners.Builder, com.netki.bip75.protocol.Protos.OwnersOrBuilder> ownersBuilder_;
+          com.netki.bip75.protocol.Messages.Owner, com.netki.bip75.protocol.Messages.Owner.Builder, com.netki.bip75.protocol.Messages.OwnerOrBuilder> ownersBuilder_;
 
       /**
        * <pre>
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Owners> getOwnersList() {
+      public java.util.List<com.netki.bip75.protocol.Messages.Owner> getOwnersList() {
         if (ownersBuilder_ == null) {
           return java.util.Collections.unmodifiableList(owners_);
         } else {
@@ -3921,7 +3921,7 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public int getOwnersCount() {
         if (ownersBuilder_ == null) {
@@ -3935,9 +3935,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners getOwners(int index) {
+      public com.netki.bip75.protocol.Messages.Owner getOwners(int index) {
         if (ownersBuilder_ == null) {
           return owners_.get(index);
         } else {
@@ -3949,10 +3949,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder setOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners value) {
+          int index, com.netki.bip75.protocol.Messages.Owner value) {
         if (ownersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3970,10 +3970,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder setOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Owner.Builder builderForValue) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           owners_.set(index, builderForValue.build());
@@ -3988,9 +3988,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public Builder addOwners(com.netki.bip75.protocol.Protos.Owners value) {
+      public Builder addOwners(com.netki.bip75.protocol.Messages.Owner value) {
         if (ownersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4008,10 +4008,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder addOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners value) {
+          int index, com.netki.bip75.protocol.Messages.Owner value) {
         if (ownersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4029,10 +4029,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder addOwners(
-          com.netki.bip75.protocol.Protos.Owners.Builder builderForValue) {
+          com.netki.bip75.protocol.Messages.Owner.Builder builderForValue) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           owners_.add(builderForValue.build());
@@ -4047,10 +4047,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder addOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Owner.Builder builderForValue) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           owners_.add(index, builderForValue.build());
@@ -4065,10 +4065,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder addAllOwners(
-          java.lang.Iterable<? extends com.netki.bip75.protocol.Protos.Owners> values) {
+          java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Owner> values) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -4084,7 +4084,7 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder clearOwners() {
         if (ownersBuilder_ == null) {
@@ -4101,7 +4101,7 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
       public Builder removeOwners(int index) {
         if (ownersBuilder_ == null) {
@@ -4118,9 +4118,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners.Builder getOwnersBuilder(
+      public com.netki.bip75.protocol.Messages.Owner.Builder getOwnersBuilder(
           int index) {
         return getOwnersFieldBuilder().getBuilder(index);
       }
@@ -4129,9 +4129,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.OwnersOrBuilder getOwnersOrBuilder(
+      public com.netki.bip75.protocol.Messages.OwnerOrBuilder getOwnersOrBuilder(
           int index) {
         if (ownersBuilder_ == null) {
           return owners_.get(index);  } else {
@@ -4143,9 +4143,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public java.util.List<? extends com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+      public java.util.List<? extends com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
            getOwnersOrBuilderList() {
         if (ownersBuilder_ != null) {
           return ownersBuilder_.getMessageOrBuilderList();
@@ -4158,41 +4158,41 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners.Builder addOwnersBuilder() {
+      public com.netki.bip75.protocol.Messages.Owner.Builder addOwnersBuilder() {
         return getOwnersFieldBuilder().addBuilder(
-            com.netki.bip75.protocol.Protos.Owners.getDefaultInstance());
+            com.netki.bip75.protocol.Messages.Owner.getDefaultInstance());
       }
       /**
        * <pre>
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners.Builder addOwnersBuilder(
+      public com.netki.bip75.protocol.Messages.Owner.Builder addOwnersBuilder(
           int index) {
         return getOwnersFieldBuilder().addBuilder(
-            index, com.netki.bip75.protocol.Protos.Owners.getDefaultInstance());
+            index, com.netki.bip75.protocol.Messages.Owner.getDefaultInstance());
       }
       /**
        * <pre>
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 3;</code>
+       * <code>repeated .payments.Owner owners = 3;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Owners.Builder> 
+      public java.util.List<com.netki.bip75.protocol.Messages.Owner.Builder> 
            getOwnersBuilderList() {
         return getOwnersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Owners, com.netki.bip75.protocol.Protos.Owners.Builder, com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+          com.netki.bip75.protocol.Messages.Owner, com.netki.bip75.protocol.Messages.Owner.Builder, com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
           getOwnersFieldBuilder() {
         if (ownersBuilder_ == null) {
           ownersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.netki.bip75.protocol.Protos.Owners, com.netki.bip75.protocol.Protos.Owners.Builder, com.netki.bip75.protocol.Protos.OwnersOrBuilder>(
+              com.netki.bip75.protocol.Messages.Owner, com.netki.bip75.protocol.Messages.Owner.Builder, com.netki.bip75.protocol.Messages.OwnerOrBuilder>(
                   owners_,
                   ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
@@ -4310,16 +4310,16 @@ public final class Protos {
         return this;
       }
 
-      private com.google.protobuf.ByteString senderPkiDataSender_ = com.google.protobuf.ByteString.EMPTY;
+      private com.google.protobuf.ByteString senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 5;</code>
-       * @return Whether the senderPkiDataSender field is set.
+       * <code>required bytes sender_pki_data = 5;</code>
+       * @return Whether the senderPkiData field is set.
        */
-      public boolean hasSenderPkiDataSender() {
+      public boolean hasSenderPkiData() {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
@@ -4327,27 +4327,27 @@ public final class Protos {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 5;</code>
-       * @return The senderPkiDataSender.
+       * <code>required bytes sender_pki_data = 5;</code>
+       * @return The senderPkiData.
        */
-      public com.google.protobuf.ByteString getSenderPkiDataSender() {
-        return senderPkiDataSender_;
+      public com.google.protobuf.ByteString getSenderPkiData() {
+        return senderPkiData_;
       }
       /**
        * <pre>
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 5;</code>
-       * @param value The senderPkiDataSender to set.
+       * <code>required bytes sender_pki_data = 5;</code>
+       * @param value The senderPkiData to set.
        * @return This builder for chaining.
        */
-      public Builder setSenderPkiDataSender(com.google.protobuf.ByteString value) {
+      public Builder setSenderPkiData(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000010;
-        senderPkiDataSender_ = value;
+        senderPkiData_ = value;
         onChanged();
         return this;
       }
@@ -4356,12 +4356,12 @@ public final class Protos {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 5;</code>
+       * <code>required bytes sender_pki_data = 5;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSenderPkiDataSender() {
+      public Builder clearSenderPkiData() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        senderPkiDataSender_ = getDefaultInstance().getSenderPkiDataSender();
+        senderPkiData_ = getDefaultInstance().getSenderPkiData();
         onChanged();
         return this;
       }
@@ -4438,12 +4438,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.PaymentRequest)
-    private static final com.netki.bip75.protocol.Protos.PaymentRequest DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.PaymentRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.PaymentRequest();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.PaymentRequest();
     }
 
-    public static com.netki.bip75.protocol.Protos.PaymentRequest getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.PaymentRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4468,7 +4468,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.PaymentRequest getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.PaymentRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4586,15 +4586,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_X509Certificates_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_X509Certificates_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_X509Certificates_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_X509Certificates_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.X509Certificates.class, com.netki.bip75.protocol.Protos.X509Certificates.Builder.class);
+              com.netki.bip75.protocol.Messages.X509Certificates.class, com.netki.bip75.protocol.Messages.X509Certificates.Builder.class);
     }
 
     public static final int CERTIFICATE_FIELD_NUMBER = 1;
@@ -4680,10 +4680,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.X509Certificates)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.X509Certificates)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.X509Certificates other = (com.netki.bip75.protocol.Protos.X509Certificates) obj;
+      com.netki.bip75.protocol.Messages.X509Certificates other = (com.netki.bip75.protocol.Messages.X509Certificates) obj;
 
       if (!getCertificateList()
           .equals(other.getCertificateList())) return false;
@@ -4707,69 +4707,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.X509Certificates parseFrom(
+    public static com.netki.bip75.protocol.Messages.X509Certificates parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -4782,7 +4782,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.X509Certificates prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.X509Certificates prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -4803,21 +4803,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.X509Certificates)
-        com.netki.bip75.protocol.Protos.X509CertificatesOrBuilder {
+        com.netki.bip75.protocol.Messages.X509CertificatesOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_X509Certificates_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_X509Certificates_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_X509Certificates_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_X509Certificates_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.X509Certificates.class, com.netki.bip75.protocol.Protos.X509Certificates.Builder.class);
+                com.netki.bip75.protocol.Messages.X509Certificates.class, com.netki.bip75.protocol.Messages.X509Certificates.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.X509Certificates.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.X509Certificates.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4843,17 +4843,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_X509Certificates_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_X509Certificates_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.X509Certificates getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.X509Certificates.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.X509Certificates getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.X509Certificates.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.X509Certificates build() {
-        com.netki.bip75.protocol.Protos.X509Certificates result = buildPartial();
+      public com.netki.bip75.protocol.Messages.X509Certificates build() {
+        com.netki.bip75.protocol.Messages.X509Certificates result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -4861,8 +4861,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.X509Certificates buildPartial() {
-        com.netki.bip75.protocol.Protos.X509Certificates result = new com.netki.bip75.protocol.Protos.X509Certificates(this);
+      public com.netki.bip75.protocol.Messages.X509Certificates buildPartial() {
+        com.netki.bip75.protocol.Messages.X509Certificates result = new com.netki.bip75.protocol.Messages.X509Certificates(this);
         int from_bitField0_ = bitField0_;
         if (((bitField0_ & 0x00000001) != 0)) {
           certificate_ = java.util.Collections.unmodifiableList(certificate_);
@@ -4907,16 +4907,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.X509Certificates) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.X509Certificates)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.X509Certificates) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.X509Certificates)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.X509Certificates other) {
-        if (other == com.netki.bip75.protocol.Protos.X509Certificates.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.X509Certificates other) {
+        if (other == com.netki.bip75.protocol.Messages.X509Certificates.getDefaultInstance()) return this;
         if (!other.certificate_.isEmpty()) {
           if (certificate_.isEmpty()) {
             certificate_ = other.certificate_;
@@ -4942,11 +4942,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.X509Certificates parsedMessage = null;
+        com.netki.bip75.protocol.Messages.X509Certificates parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.X509Certificates) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.X509Certificates) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -5086,12 +5086,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.X509Certificates)
-    private static final com.netki.bip75.protocol.Protos.X509Certificates DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.X509Certificates DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.X509Certificates();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.X509Certificates();
     }
 
-    public static com.netki.bip75.protocol.Protos.X509Certificates getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.X509Certificates getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5116,7 +5116,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.X509Certificates getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.X509Certificates getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5181,7 +5181,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    java.util.List<com.netki.bip75.protocol.Protos.Output> 
+    java.util.List<com.netki.bip75.protocol.Messages.Output> 
         getRefundToList();
     /**
      * <pre>
@@ -5190,7 +5190,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    com.netki.bip75.protocol.Protos.Output getRefundTo(int index);
+    com.netki.bip75.protocol.Messages.Output getRefundTo(int index);
     /**
      * <pre>
      * Where to send refunds, if a refund is necessary
@@ -5206,7 +5206,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    java.util.List<? extends com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+    java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
         getRefundToOrBuilderList();
     /**
      * <pre>
@@ -5215,7 +5215,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    com.netki.bip75.protocol.Protos.OutputOrBuilder getRefundToOrBuilder(
+    com.netki.bip75.protocol.Messages.OutputOrBuilder getRefundToOrBuilder(
         int index);
 
     /**
@@ -5312,11 +5312,11 @@ public final class Protos {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-                refundTo_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Output>();
+                refundTo_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
                 mutable_bitField0_ |= 0x00000004;
               }
               refundTo_.add(
-                  input.readMessage(com.netki.bip75.protocol.Protos.Output.PARSER, extensionRegistry));
+                  input.readMessage(com.netki.bip75.protocol.Messages.Output.PARSER, extensionRegistry));
               break;
             }
             case 34: {
@@ -5352,15 +5352,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Payment_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Payment_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Payment_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Payment_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.Payment.class, com.netki.bip75.protocol.Protos.Payment.Builder.class);
+              com.netki.bip75.protocol.Messages.Payment.class, com.netki.bip75.protocol.Messages.Payment.Builder.class);
     }
 
     private int bitField0_;
@@ -5428,7 +5428,7 @@ public final class Protos {
     }
 
     public static final int REFUND_TO_FIELD_NUMBER = 3;
-    private java.util.List<com.netki.bip75.protocol.Protos.Output> refundTo_;
+    private java.util.List<com.netki.bip75.protocol.Messages.Output> refundTo_;
     /**
      * <pre>
      * Where to send refunds, if a refund is necessary
@@ -5436,7 +5436,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Protos.Output> getRefundToList() {
+    public java.util.List<com.netki.bip75.protocol.Messages.Output> getRefundToList() {
       return refundTo_;
     }
     /**
@@ -5446,7 +5446,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    public java.util.List<? extends com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+    public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
         getRefundToOrBuilderList() {
       return refundTo_;
     }
@@ -5467,7 +5467,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    public com.netki.bip75.protocol.Protos.Output getRefundTo(int index) {
+    public com.netki.bip75.protocol.Messages.Output getRefundTo(int index) {
       return refundTo_.get(index);
     }
     /**
@@ -5477,7 +5477,7 @@ public final class Protos {
      *
      * <code>repeated .payments.Output refund_to = 3;</code>
      */
-    public com.netki.bip75.protocol.Protos.OutputOrBuilder getRefundToOrBuilder(
+    public com.netki.bip75.protocol.Messages.OutputOrBuilder getRefundToOrBuilder(
         int index) {
       return refundTo_.get(index);
     }
@@ -5610,10 +5610,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.Payment)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.Payment)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.Payment other = (com.netki.bip75.protocol.Protos.Payment) obj;
+      com.netki.bip75.protocol.Messages.Payment other = (com.netki.bip75.protocol.Messages.Payment) obj;
 
       if (hasMerchantData() != other.hasMerchantData()) return false;
       if (hasMerchantData()) {
@@ -5661,69 +5661,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Payment parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Payment parseFrom(
+    public static com.netki.bip75.protocol.Messages.Payment parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -5736,7 +5736,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.Payment prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.Payment prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -5757,21 +5757,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.Payment)
-        com.netki.bip75.protocol.Protos.PaymentOrBuilder {
+        com.netki.bip75.protocol.Messages.PaymentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Payment_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Payment_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Payment_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Payment_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.Payment.class, com.netki.bip75.protocol.Protos.Payment.Builder.class);
+                com.netki.bip75.protocol.Messages.Payment.class, com.netki.bip75.protocol.Messages.Payment.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.Payment.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.Payment.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -5808,17 +5808,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Payment_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Payment_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Payment getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.Payment.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.Payment getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.Payment.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Payment build() {
-        com.netki.bip75.protocol.Protos.Payment result = buildPartial();
+      public com.netki.bip75.protocol.Messages.Payment build() {
+        com.netki.bip75.protocol.Messages.Payment result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -5826,8 +5826,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Payment buildPartial() {
-        com.netki.bip75.protocol.Protos.Payment result = new com.netki.bip75.protocol.Protos.Payment(this);
+      public com.netki.bip75.protocol.Messages.Payment buildPartial() {
+        com.netki.bip75.protocol.Messages.Payment result = new com.netki.bip75.protocol.Messages.Payment(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -5891,16 +5891,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.Payment) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.Payment)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.Payment) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.Payment)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.Payment other) {
-        if (other == com.netki.bip75.protocol.Protos.Payment.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.Payment other) {
+        if (other == com.netki.bip75.protocol.Messages.Payment.getDefaultInstance()) return this;
         if (other.hasMerchantData()) {
           setMerchantData(other.getMerchantData());
         }
@@ -5965,11 +5965,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.Payment parsedMessage = null;
+        com.netki.bip75.protocol.Messages.Payment parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.Payment) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.Payment) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -6149,17 +6149,17 @@ public final class Protos {
         return this;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Protos.Output> refundTo_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Output> refundTo_ =
         java.util.Collections.emptyList();
       private void ensureRefundToIsMutable() {
         if (!((bitField0_ & 0x00000004) != 0)) {
-          refundTo_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Output>(refundTo_);
+          refundTo_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(refundTo_);
           bitField0_ |= 0x00000004;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Output, com.netki.bip75.protocol.Protos.Output.Builder, com.netki.bip75.protocol.Protos.OutputOrBuilder> refundToBuilder_;
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> refundToBuilder_;
 
       /**
        * <pre>
@@ -6168,7 +6168,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Output> getRefundToList() {
+      public java.util.List<com.netki.bip75.protocol.Messages.Output> getRefundToList() {
         if (refundToBuilder_ == null) {
           return java.util.Collections.unmodifiableList(refundTo_);
         } else {
@@ -6196,7 +6196,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output getRefundTo(int index) {
+      public com.netki.bip75.protocol.Messages.Output getRefundTo(int index) {
         if (refundToBuilder_ == null) {
           return refundTo_.get(index);
         } else {
@@ -6211,7 +6211,7 @@ public final class Protos {
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
       public Builder setRefundTo(
-          int index, com.netki.bip75.protocol.Protos.Output value) {
+          int index, com.netki.bip75.protocol.Messages.Output value) {
         if (refundToBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6232,7 +6232,7 @@ public final class Protos {
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
       public Builder setRefundTo(
-          int index, com.netki.bip75.protocol.Protos.Output.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
         if (refundToBuilder_ == null) {
           ensureRefundToIsMutable();
           refundTo_.set(index, builderForValue.build());
@@ -6249,7 +6249,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public Builder addRefundTo(com.netki.bip75.protocol.Protos.Output value) {
+      public Builder addRefundTo(com.netki.bip75.protocol.Messages.Output value) {
         if (refundToBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6270,7 +6270,7 @@ public final class Protos {
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
       public Builder addRefundTo(
-          int index, com.netki.bip75.protocol.Protos.Output value) {
+          int index, com.netki.bip75.protocol.Messages.Output value) {
         if (refundToBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6291,7 +6291,7 @@ public final class Protos {
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
       public Builder addRefundTo(
-          com.netki.bip75.protocol.Protos.Output.Builder builderForValue) {
+          com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
         if (refundToBuilder_ == null) {
           ensureRefundToIsMutable();
           refundTo_.add(builderForValue.build());
@@ -6309,7 +6309,7 @@ public final class Protos {
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
       public Builder addRefundTo(
-          int index, com.netki.bip75.protocol.Protos.Output.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
         if (refundToBuilder_ == null) {
           ensureRefundToIsMutable();
           refundTo_.add(index, builderForValue.build());
@@ -6327,7 +6327,7 @@ public final class Protos {
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
       public Builder addAllRefundTo(
-          java.lang.Iterable<? extends com.netki.bip75.protocol.Protos.Output> values) {
+          java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Output> values) {
         if (refundToBuilder_ == null) {
           ensureRefundToIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -6379,7 +6379,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output.Builder getRefundToBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder getRefundToBuilder(
           int index) {
         return getRefundToFieldBuilder().getBuilder(index);
       }
@@ -6390,7 +6390,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.OutputOrBuilder getRefundToOrBuilder(
+      public com.netki.bip75.protocol.Messages.OutputOrBuilder getRefundToOrBuilder(
           int index) {
         if (refundToBuilder_ == null) {
           return refundTo_.get(index);  } else {
@@ -6404,7 +6404,7 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public java.util.List<? extends com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+      public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
            getRefundToOrBuilderList() {
         if (refundToBuilder_ != null) {
           return refundToBuilder_.getMessageOrBuilderList();
@@ -6419,9 +6419,9 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output.Builder addRefundToBuilder() {
+      public com.netki.bip75.protocol.Messages.Output.Builder addRefundToBuilder() {
         return getRefundToFieldBuilder().addBuilder(
-            com.netki.bip75.protocol.Protos.Output.getDefaultInstance());
+            com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
        * <pre>
@@ -6430,10 +6430,10 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public com.netki.bip75.protocol.Protos.Output.Builder addRefundToBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder addRefundToBuilder(
           int index) {
         return getRefundToFieldBuilder().addBuilder(
-            index, com.netki.bip75.protocol.Protos.Output.getDefaultInstance());
+            index, com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
        * <pre>
@@ -6442,16 +6442,16 @@ public final class Protos {
        *
        * <code>repeated .payments.Output refund_to = 3;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Output.Builder> 
+      public java.util.List<com.netki.bip75.protocol.Messages.Output.Builder> 
            getRefundToBuilderList() {
         return getRefundToFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Output, com.netki.bip75.protocol.Protos.Output.Builder, com.netki.bip75.protocol.Protos.OutputOrBuilder> 
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> 
           getRefundToFieldBuilder() {
         if (refundToBuilder_ == null) {
           refundToBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.netki.bip75.protocol.Protos.Output, com.netki.bip75.protocol.Protos.Output.Builder, com.netki.bip75.protocol.Protos.OutputOrBuilder>(
+              com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder>(
                   refundTo_,
                   ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
@@ -6585,12 +6585,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.Payment)
-    private static final com.netki.bip75.protocol.Protos.Payment DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.Payment DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.Payment();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.Payment();
     }
 
-    public static com.netki.bip75.protocol.Protos.Payment getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.Payment getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -6615,7 +6615,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.Payment getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.Payment getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -6642,7 +6642,7 @@ public final class Protos {
      * <code>required .payments.Payment payment = 1;</code>
      * @return The payment.
      */
-    com.netki.bip75.protocol.Protos.Payment getPayment();
+    com.netki.bip75.protocol.Messages.Payment getPayment();
     /**
      * <pre>
      * Payment message that triggered this ACK
@@ -6650,7 +6650,7 @@ public final class Protos {
      *
      * <code>required .payments.Payment payment = 1;</code>
      */
-    com.netki.bip75.protocol.Protos.PaymentOrBuilder getPaymentOrBuilder();
+    com.netki.bip75.protocol.Messages.PaymentOrBuilder getPaymentOrBuilder();
 
     /**
      * <pre>
@@ -6729,11 +6729,11 @@ public final class Protos {
               done = true;
               break;
             case 10: {
-              com.netki.bip75.protocol.Protos.Payment.Builder subBuilder = null;
+              com.netki.bip75.protocol.Messages.Payment.Builder subBuilder = null;
               if (((bitField0_ & 0x00000001) != 0)) {
                 subBuilder = payment_.toBuilder();
               }
-              payment_ = input.readMessage(com.netki.bip75.protocol.Protos.Payment.PARSER, extensionRegistry);
+              payment_ = input.readMessage(com.netki.bip75.protocol.Messages.Payment.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(payment_);
                 payment_ = subBuilder.buildPartial();
@@ -6768,20 +6768,20 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentACK_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentACK_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentACK_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentACK_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.PaymentACK.class, com.netki.bip75.protocol.Protos.PaymentACK.Builder.class);
+              com.netki.bip75.protocol.Messages.PaymentACK.class, com.netki.bip75.protocol.Messages.PaymentACK.Builder.class);
     }
 
     private int bitField0_;
     public static final int PAYMENT_FIELD_NUMBER = 1;
-    private com.netki.bip75.protocol.Protos.Payment payment_;
+    private com.netki.bip75.protocol.Messages.Payment payment_;
     /**
      * <pre>
      * Payment message that triggered this ACK
@@ -6801,8 +6801,8 @@ public final class Protos {
      * <code>required .payments.Payment payment = 1;</code>
      * @return The payment.
      */
-    public com.netki.bip75.protocol.Protos.Payment getPayment() {
-      return payment_ == null ? com.netki.bip75.protocol.Protos.Payment.getDefaultInstance() : payment_;
+    public com.netki.bip75.protocol.Messages.Payment getPayment() {
+      return payment_ == null ? com.netki.bip75.protocol.Messages.Payment.getDefaultInstance() : payment_;
     }
     /**
      * <pre>
@@ -6811,8 +6811,8 @@ public final class Protos {
      *
      * <code>required .payments.Payment payment = 1;</code>
      */
-    public com.netki.bip75.protocol.Protos.PaymentOrBuilder getPaymentOrBuilder() {
-      return payment_ == null ? com.netki.bip75.protocol.Protos.Payment.getDefaultInstance() : payment_;
+    public com.netki.bip75.protocol.Messages.PaymentOrBuilder getPaymentOrBuilder() {
+      return payment_ == null ? com.netki.bip75.protocol.Messages.Payment.getDefaultInstance() : payment_;
     }
 
     public static final int MEMO_FIELD_NUMBER = 2;
@@ -6926,10 +6926,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.PaymentACK)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.PaymentACK)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.PaymentACK other = (com.netki.bip75.protocol.Protos.PaymentACK) obj;
+      com.netki.bip75.protocol.Messages.PaymentACK other = (com.netki.bip75.protocol.Messages.PaymentACK) obj;
 
       if (hasPayment() != other.hasPayment()) return false;
       if (hasPayment()) {
@@ -6965,69 +6965,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.PaymentACK parseFrom(
+    public static com.netki.bip75.protocol.Messages.PaymentACK parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7040,7 +7040,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.PaymentACK prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.PaymentACK prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -7061,21 +7061,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.PaymentACK)
-        com.netki.bip75.protocol.Protos.PaymentACKOrBuilder {
+        com.netki.bip75.protocol.Messages.PaymentACKOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentACK_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentACK_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentACK_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentACK_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.PaymentACK.class, com.netki.bip75.protocol.Protos.PaymentACK.Builder.class);
+                com.netki.bip75.protocol.Messages.PaymentACK.class, com.netki.bip75.protocol.Messages.PaymentACK.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.PaymentACK.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.PaymentACK.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -7108,17 +7108,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_PaymentACK_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_PaymentACK_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentACK getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.PaymentACK.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.PaymentACK getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.PaymentACK.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentACK build() {
-        com.netki.bip75.protocol.Protos.PaymentACK result = buildPartial();
+      public com.netki.bip75.protocol.Messages.PaymentACK build() {
+        com.netki.bip75.protocol.Messages.PaymentACK result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -7126,8 +7126,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.PaymentACK buildPartial() {
-        com.netki.bip75.protocol.Protos.PaymentACK result = new com.netki.bip75.protocol.Protos.PaymentACK(this);
+      public com.netki.bip75.protocol.Messages.PaymentACK buildPartial() {
+        com.netki.bip75.protocol.Messages.PaymentACK result = new com.netki.bip75.protocol.Messages.PaymentACK(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -7181,16 +7181,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.PaymentACK) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.PaymentACK)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.PaymentACK) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.PaymentACK)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.PaymentACK other) {
-        if (other == com.netki.bip75.protocol.Protos.PaymentACK.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.PaymentACK other) {
+        if (other == com.netki.bip75.protocol.Messages.PaymentACK.getDefaultInstance()) return this;
         if (other.hasPayment()) {
           mergePayment(other.getPayment());
         }
@@ -7220,11 +7220,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.PaymentACK parsedMessage = null;
+        com.netki.bip75.protocol.Messages.PaymentACK parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.PaymentACK) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.PaymentACK) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -7235,9 +7235,9 @@ public final class Protos {
       }
       private int bitField0_;
 
-      private com.netki.bip75.protocol.Protos.Payment payment_;
+      private com.netki.bip75.protocol.Messages.Payment payment_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Payment, com.netki.bip75.protocol.Protos.Payment.Builder, com.netki.bip75.protocol.Protos.PaymentOrBuilder> paymentBuilder_;
+          com.netki.bip75.protocol.Messages.Payment, com.netki.bip75.protocol.Messages.Payment.Builder, com.netki.bip75.protocol.Messages.PaymentOrBuilder> paymentBuilder_;
       /**
        * <pre>
        * Payment message that triggered this ACK
@@ -7257,9 +7257,9 @@ public final class Protos {
        * <code>required .payments.Payment payment = 1;</code>
        * @return The payment.
        */
-      public com.netki.bip75.protocol.Protos.Payment getPayment() {
+      public com.netki.bip75.protocol.Messages.Payment getPayment() {
         if (paymentBuilder_ == null) {
-          return payment_ == null ? com.netki.bip75.protocol.Protos.Payment.getDefaultInstance() : payment_;
+          return payment_ == null ? com.netki.bip75.protocol.Messages.Payment.getDefaultInstance() : payment_;
         } else {
           return paymentBuilder_.getMessage();
         }
@@ -7271,7 +7271,7 @@ public final class Protos {
        *
        * <code>required .payments.Payment payment = 1;</code>
        */
-      public Builder setPayment(com.netki.bip75.protocol.Protos.Payment value) {
+      public Builder setPayment(com.netki.bip75.protocol.Messages.Payment value) {
         if (paymentBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -7292,7 +7292,7 @@ public final class Protos {
        * <code>required .payments.Payment payment = 1;</code>
        */
       public Builder setPayment(
-          com.netki.bip75.protocol.Protos.Payment.Builder builderForValue) {
+          com.netki.bip75.protocol.Messages.Payment.Builder builderForValue) {
         if (paymentBuilder_ == null) {
           payment_ = builderForValue.build();
           onChanged();
@@ -7309,13 +7309,13 @@ public final class Protos {
        *
        * <code>required .payments.Payment payment = 1;</code>
        */
-      public Builder mergePayment(com.netki.bip75.protocol.Protos.Payment value) {
+      public Builder mergePayment(com.netki.bip75.protocol.Messages.Payment value) {
         if (paymentBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
               payment_ != null &&
-              payment_ != com.netki.bip75.protocol.Protos.Payment.getDefaultInstance()) {
+              payment_ != com.netki.bip75.protocol.Messages.Payment.getDefaultInstance()) {
             payment_ =
-              com.netki.bip75.protocol.Protos.Payment.newBuilder(payment_).mergeFrom(value).buildPartial();
+              com.netki.bip75.protocol.Messages.Payment.newBuilder(payment_).mergeFrom(value).buildPartial();
           } else {
             payment_ = value;
           }
@@ -7350,7 +7350,7 @@ public final class Protos {
        *
        * <code>required .payments.Payment payment = 1;</code>
        */
-      public com.netki.bip75.protocol.Protos.Payment.Builder getPaymentBuilder() {
+      public com.netki.bip75.protocol.Messages.Payment.Builder getPaymentBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
         return getPaymentFieldBuilder().getBuilder();
@@ -7362,12 +7362,12 @@ public final class Protos {
        *
        * <code>required .payments.Payment payment = 1;</code>
        */
-      public com.netki.bip75.protocol.Protos.PaymentOrBuilder getPaymentOrBuilder() {
+      public com.netki.bip75.protocol.Messages.PaymentOrBuilder getPaymentOrBuilder() {
         if (paymentBuilder_ != null) {
           return paymentBuilder_.getMessageOrBuilder();
         } else {
           return payment_ == null ?
-              com.netki.bip75.protocol.Protos.Payment.getDefaultInstance() : payment_;
+              com.netki.bip75.protocol.Messages.Payment.getDefaultInstance() : payment_;
         }
       }
       /**
@@ -7378,11 +7378,11 @@ public final class Protos {
        * <code>required .payments.Payment payment = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Payment, com.netki.bip75.protocol.Protos.Payment.Builder, com.netki.bip75.protocol.Protos.PaymentOrBuilder> 
+          com.netki.bip75.protocol.Messages.Payment, com.netki.bip75.protocol.Messages.Payment.Builder, com.netki.bip75.protocol.Messages.PaymentOrBuilder> 
           getPaymentFieldBuilder() {
         if (paymentBuilder_ == null) {
           paymentBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.netki.bip75.protocol.Protos.Payment, com.netki.bip75.protocol.Protos.Payment.Builder, com.netki.bip75.protocol.Protos.PaymentOrBuilder>(
+              com.netki.bip75.protocol.Messages.Payment, com.netki.bip75.protocol.Messages.Payment.Builder, com.netki.bip75.protocol.Messages.PaymentOrBuilder>(
                   getPayment(),
                   getParentForChildren(),
                   isClean());
@@ -7515,12 +7515,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.PaymentACK)
-    private static final com.netki.bip75.protocol.Protos.PaymentACK DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.PaymentACK DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.PaymentACK();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.PaymentACK();
     }
 
-    public static com.netki.bip75.protocol.Protos.PaymentACK getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.PaymentACK getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -7545,7 +7545,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.PaymentACK getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.PaymentACK getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -7637,24 +7637,24 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    java.util.List<com.netki.bip75.protocol.Protos.Owners> 
+    java.util.List<com.netki.bip75.protocol.Messages.Owner> 
         getOwnersList();
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    com.netki.bip75.protocol.Protos.Owners getOwners(int index);
+    com.netki.bip75.protocol.Messages.Owner getOwners(int index);
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
     int getOwnersCount();
     /**
@@ -7662,18 +7662,18 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    java.util.List<? extends com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+    java.util.List<? extends com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
         getOwnersOrBuilderList();
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    com.netki.bip75.protocol.Protos.OwnersOrBuilder getOwnersOrBuilder(
+    com.netki.bip75.protocol.Messages.OwnerOrBuilder getOwnersOrBuilder(
         int index);
 
     /**
@@ -7710,19 +7710,19 @@ public final class Protos {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 6;</code>
-     * @return Whether the senderPkiDataSender field is set.
+     * <code>required bytes sender_pki_data = 6;</code>
+     * @return Whether the senderPkiData field is set.
      */
-    boolean hasSenderPkiDataSender();
+    boolean hasSenderPkiData();
     /**
      * <pre>
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 6;</code>
-     * @return The senderPkiDataSender.
+     * <code>required bytes sender_pki_data = 6;</code>
+     * @return The senderPkiData.
      */
-    com.google.protobuf.ByteString getSenderPkiDataSender();
+    com.google.protobuf.ByteString getSenderPkiData();
 
     /**
      * <pre>
@@ -7764,7 +7764,7 @@ public final class Protos {
       notificationUrl_ = "";
       owners_ = java.util.Collections.emptyList();
       senderPkiType_ = "none";
-      senderPkiDataSender_ = com.google.protobuf.ByteString.EMPTY;
+      senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
       senderSignature_ = com.google.protobuf.ByteString.EMPTY;
     }
 
@@ -7818,11 +7818,11 @@ public final class Protos {
             }
             case 34: {
               if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-                owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Owners>();
+                owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Owner>();
                 mutable_bitField0_ |= 0x00000008;
               }
               owners_.add(
-                  input.readMessage(com.netki.bip75.protocol.Protos.Owners.PARSER, extensionRegistry));
+                  input.readMessage(com.netki.bip75.protocol.Messages.Owner.PARSER, extensionRegistry));
               break;
             }
             case 42: {
@@ -7833,7 +7833,7 @@ public final class Protos {
             }
             case 50: {
               bitField0_ |= 0x00000010;
-              senderPkiDataSender_ = input.readBytes();
+              senderPkiData_ = input.readBytes();
               break;
             }
             case 58: {
@@ -7865,15 +7865,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_InvoiceRequest_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_InvoiceRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_InvoiceRequest_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_InvoiceRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.InvoiceRequest.class, com.netki.bip75.protocol.Protos.InvoiceRequest.Builder.class);
+              com.netki.bip75.protocol.Messages.InvoiceRequest.class, com.netki.bip75.protocol.Messages.InvoiceRequest.Builder.class);
     }
 
     private int bitField0_;
@@ -8017,15 +8017,15 @@ public final class Protos {
     }
 
     public static final int OWNERS_FIELD_NUMBER = 4;
-    private java.util.List<com.netki.bip75.protocol.Protos.Owners> owners_;
+    private java.util.List<com.netki.bip75.protocol.Messages.Owner> owners_;
     /**
      * <pre>
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Protos.Owners> getOwnersList() {
+    public java.util.List<com.netki.bip75.protocol.Messages.Owner> getOwnersList() {
       return owners_;
     }
     /**
@@ -8033,9 +8033,9 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    public java.util.List<? extends com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+    public java.util.List<? extends com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
         getOwnersOrBuilderList() {
       return owners_;
     }
@@ -8044,7 +8044,7 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
     public int getOwnersCount() {
       return owners_.size();
@@ -8054,9 +8054,9 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    public com.netki.bip75.protocol.Protos.Owners getOwners(int index) {
+    public com.netki.bip75.protocol.Messages.Owner getOwners(int index) {
       return owners_.get(index);
     }
     /**
@@ -8064,9 +8064,9 @@ public final class Protos {
      * Account owners
      * </pre>
      *
-     * <code>repeated .payments.Owners owners = 4;</code>
+     * <code>repeated .payments.Owner owners = 4;</code>
      */
-    public com.netki.bip75.protocol.Protos.OwnersOrBuilder getOwnersOrBuilder(
+    public com.netki.bip75.protocol.Messages.OwnerOrBuilder getOwnersOrBuilder(
         int index) {
       return owners_.get(index);
     }
@@ -8128,17 +8128,17 @@ public final class Protos {
       }
     }
 
-    public static final int SENDER_PKI_DATA_SENDER_FIELD_NUMBER = 6;
-    private com.google.protobuf.ByteString senderPkiDataSender_;
+    public static final int SENDER_PKI_DATA_FIELD_NUMBER = 6;
+    private com.google.protobuf.ByteString senderPkiData_;
     /**
      * <pre>
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 6;</code>
-     * @return Whether the senderPkiDataSender field is set.
+     * <code>required bytes sender_pki_data = 6;</code>
+     * @return Whether the senderPkiData field is set.
      */
-    public boolean hasSenderPkiDataSender() {
+    public boolean hasSenderPkiData() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -8146,11 +8146,11 @@ public final class Protos {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data_sender = 6;</code>
-     * @return The senderPkiDataSender.
+     * <code>required bytes sender_pki_data = 6;</code>
+     * @return The senderPkiData.
      */
-    public com.google.protobuf.ByteString getSenderPkiDataSender() {
-      return senderPkiDataSender_;
+    public com.google.protobuf.ByteString getSenderPkiData() {
+      return senderPkiData_;
     }
 
     public static final int SENDER_SIGNATURE_FIELD_NUMBER = 7;
@@ -8189,7 +8189,7 @@ public final class Protos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasSenderPkiDataSender()) {
+      if (!hasSenderPkiData()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -8226,7 +8226,7 @@ public final class Protos {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, senderPkiType_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        output.writeBytes(6, senderPkiDataSender_);
+        output.writeBytes(6, senderPkiData_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         output.writeBytes(7, senderSignature_);
@@ -8259,7 +8259,7 @@ public final class Protos {
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, senderPkiDataSender_);
+          .computeBytesSize(6, senderPkiData_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
@@ -8275,10 +8275,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.InvoiceRequest)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.InvoiceRequest)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.InvoiceRequest other = (com.netki.bip75.protocol.Protos.InvoiceRequest) obj;
+      com.netki.bip75.protocol.Messages.InvoiceRequest other = (com.netki.bip75.protocol.Messages.InvoiceRequest) obj;
 
       if (hasAmount() != other.hasAmount()) return false;
       if (hasAmount()) {
@@ -8302,10 +8302,10 @@ public final class Protos {
         if (!getSenderPkiType()
             .equals(other.getSenderPkiType())) return false;
       }
-      if (hasSenderPkiDataSender() != other.hasSenderPkiDataSender()) return false;
-      if (hasSenderPkiDataSender()) {
-        if (!getSenderPkiDataSender()
-            .equals(other.getSenderPkiDataSender())) return false;
+      if (hasSenderPkiData() != other.hasSenderPkiData()) return false;
+      if (hasSenderPkiData()) {
+        if (!getSenderPkiData()
+            .equals(other.getSenderPkiData())) return false;
       }
       if (hasSenderSignature() != other.hasSenderSignature()) return false;
       if (hasSenderSignature()) {
@@ -8344,9 +8344,9 @@ public final class Protos {
         hash = (37 * hash) + SENDER_PKI_TYPE_FIELD_NUMBER;
         hash = (53 * hash) + getSenderPkiType().hashCode();
       }
-      if (hasSenderPkiDataSender()) {
-        hash = (37 * hash) + SENDER_PKI_DATA_SENDER_FIELD_NUMBER;
-        hash = (53 * hash) + getSenderPkiDataSender().hashCode();
+      if (hasSenderPkiData()) {
+        hash = (37 * hash) + SENDER_PKI_DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getSenderPkiData().hashCode();
       }
       if (hasSenderSignature()) {
         hash = (37 * hash) + SENDER_SIGNATURE_FIELD_NUMBER;
@@ -8357,69 +8357,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest parseFrom(
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -8432,7 +8432,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.InvoiceRequest prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.InvoiceRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -8457,21 +8457,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.InvoiceRequest)
-        com.netki.bip75.protocol.Protos.InvoiceRequestOrBuilder {
+        com.netki.bip75.protocol.Messages.InvoiceRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_InvoiceRequest_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_InvoiceRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_InvoiceRequest_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_InvoiceRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.InvoiceRequest.class, com.netki.bip75.protocol.Protos.InvoiceRequest.Builder.class);
+                com.netki.bip75.protocol.Messages.InvoiceRequest.class, com.netki.bip75.protocol.Messages.InvoiceRequest.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.InvoiceRequest.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.InvoiceRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -8504,7 +8504,7 @@ public final class Protos {
         }
         senderPkiType_ = "none";
         bitField0_ = (bitField0_ & ~0x00000010);
-        senderPkiDataSender_ = com.google.protobuf.ByteString.EMPTY;
+        senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000020);
         senderSignature_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -8514,17 +8514,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_InvoiceRequest_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_InvoiceRequest_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.InvoiceRequest getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.InvoiceRequest.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.InvoiceRequest getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.InvoiceRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.InvoiceRequest build() {
-        com.netki.bip75.protocol.Protos.InvoiceRequest result = buildPartial();
+      public com.netki.bip75.protocol.Messages.InvoiceRequest build() {
+        com.netki.bip75.protocol.Messages.InvoiceRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -8532,8 +8532,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.InvoiceRequest buildPartial() {
-        com.netki.bip75.protocol.Protos.InvoiceRequest result = new com.netki.bip75.protocol.Protos.InvoiceRequest(this);
+      public com.netki.bip75.protocol.Messages.InvoiceRequest buildPartial() {
+        com.netki.bip75.protocol.Messages.InvoiceRequest result = new com.netki.bip75.protocol.Messages.InvoiceRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -8564,7 +8564,7 @@ public final class Protos {
         if (((from_bitField0_ & 0x00000020) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.senderPkiDataSender_ = senderPkiDataSender_;
+        result.senderPkiData_ = senderPkiData_;
         if (((from_bitField0_ & 0x00000040) != 0)) {
           to_bitField0_ |= 0x00000020;
         }
@@ -8608,16 +8608,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.InvoiceRequest) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.InvoiceRequest)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.InvoiceRequest) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.InvoiceRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.InvoiceRequest other) {
-        if (other == com.netki.bip75.protocol.Protos.InvoiceRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.InvoiceRequest other) {
+        if (other == com.netki.bip75.protocol.Messages.InvoiceRequest.getDefaultInstance()) return this;
         if (other.hasAmount()) {
           setAmount(other.getAmount());
         }
@@ -8662,8 +8662,8 @@ public final class Protos {
           senderPkiType_ = other.senderPkiType_;
           onChanged();
         }
-        if (other.hasSenderPkiDataSender()) {
-          setSenderPkiDataSender(other.getSenderPkiDataSender());
+        if (other.hasSenderPkiData()) {
+          setSenderPkiData(other.getSenderPkiData());
         }
         if (other.hasSenderSignature()) {
           setSenderSignature(other.getSenderSignature());
@@ -8678,7 +8678,7 @@ public final class Protos {
         if (!hasSenderPkiType()) {
           return false;
         }
-        if (!hasSenderPkiDataSender()) {
+        if (!hasSenderPkiData()) {
           return false;
         }
         if (!hasSenderSignature()) {
@@ -8697,11 +8697,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.InvoiceRequest parsedMessage = null;
+        com.netki.bip75.protocol.Messages.InvoiceRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.InvoiceRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.InvoiceRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -8981,26 +8981,26 @@ public final class Protos {
         return this;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Protos.Owners> owners_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Owner> owners_ =
         java.util.Collections.emptyList();
       private void ensureOwnersIsMutable() {
         if (!((bitField0_ & 0x00000008) != 0)) {
-          owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Owners>(owners_);
+          owners_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Owner>(owners_);
           bitField0_ |= 0x00000008;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Owners, com.netki.bip75.protocol.Protos.Owners.Builder, com.netki.bip75.protocol.Protos.OwnersOrBuilder> ownersBuilder_;
+          com.netki.bip75.protocol.Messages.Owner, com.netki.bip75.protocol.Messages.Owner.Builder, com.netki.bip75.protocol.Messages.OwnerOrBuilder> ownersBuilder_;
 
       /**
        * <pre>
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Owners> getOwnersList() {
+      public java.util.List<com.netki.bip75.protocol.Messages.Owner> getOwnersList() {
         if (ownersBuilder_ == null) {
           return java.util.Collections.unmodifiableList(owners_);
         } else {
@@ -9012,7 +9012,7 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public int getOwnersCount() {
         if (ownersBuilder_ == null) {
@@ -9026,9 +9026,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners getOwners(int index) {
+      public com.netki.bip75.protocol.Messages.Owner getOwners(int index) {
         if (ownersBuilder_ == null) {
           return owners_.get(index);
         } else {
@@ -9040,10 +9040,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder setOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners value) {
+          int index, com.netki.bip75.protocol.Messages.Owner value) {
         if (ownersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -9061,10 +9061,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder setOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Owner.Builder builderForValue) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           owners_.set(index, builderForValue.build());
@@ -9079,9 +9079,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public Builder addOwners(com.netki.bip75.protocol.Protos.Owners value) {
+      public Builder addOwners(com.netki.bip75.protocol.Messages.Owner value) {
         if (ownersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -9099,10 +9099,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder addOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners value) {
+          int index, com.netki.bip75.protocol.Messages.Owner value) {
         if (ownersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -9120,10 +9120,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder addOwners(
-          com.netki.bip75.protocol.Protos.Owners.Builder builderForValue) {
+          com.netki.bip75.protocol.Messages.Owner.Builder builderForValue) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           owners_.add(builderForValue.build());
@@ -9138,10 +9138,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder addOwners(
-          int index, com.netki.bip75.protocol.Protos.Owners.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Owner.Builder builderForValue) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           owners_.add(index, builderForValue.build());
@@ -9156,10 +9156,10 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder addAllOwners(
-          java.lang.Iterable<? extends com.netki.bip75.protocol.Protos.Owners> values) {
+          java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Owner> values) {
         if (ownersBuilder_ == null) {
           ensureOwnersIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -9175,7 +9175,7 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder clearOwners() {
         if (ownersBuilder_ == null) {
@@ -9192,7 +9192,7 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
       public Builder removeOwners(int index) {
         if (ownersBuilder_ == null) {
@@ -9209,9 +9209,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners.Builder getOwnersBuilder(
+      public com.netki.bip75.protocol.Messages.Owner.Builder getOwnersBuilder(
           int index) {
         return getOwnersFieldBuilder().getBuilder(index);
       }
@@ -9220,9 +9220,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public com.netki.bip75.protocol.Protos.OwnersOrBuilder getOwnersOrBuilder(
+      public com.netki.bip75.protocol.Messages.OwnerOrBuilder getOwnersOrBuilder(
           int index) {
         if (ownersBuilder_ == null) {
           return owners_.get(index);  } else {
@@ -9234,9 +9234,9 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public java.util.List<? extends com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+      public java.util.List<? extends com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
            getOwnersOrBuilderList() {
         if (ownersBuilder_ != null) {
           return ownersBuilder_.getMessageOrBuilderList();
@@ -9249,41 +9249,41 @@ public final class Protos {
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners.Builder addOwnersBuilder() {
+      public com.netki.bip75.protocol.Messages.Owner.Builder addOwnersBuilder() {
         return getOwnersFieldBuilder().addBuilder(
-            com.netki.bip75.protocol.Protos.Owners.getDefaultInstance());
+            com.netki.bip75.protocol.Messages.Owner.getDefaultInstance());
       }
       /**
        * <pre>
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public com.netki.bip75.protocol.Protos.Owners.Builder addOwnersBuilder(
+      public com.netki.bip75.protocol.Messages.Owner.Builder addOwnersBuilder(
           int index) {
         return getOwnersFieldBuilder().addBuilder(
-            index, com.netki.bip75.protocol.Protos.Owners.getDefaultInstance());
+            index, com.netki.bip75.protocol.Messages.Owner.getDefaultInstance());
       }
       /**
        * <pre>
        * Account owners
        * </pre>
        *
-       * <code>repeated .payments.Owners owners = 4;</code>
+       * <code>repeated .payments.Owner owners = 4;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Owners.Builder> 
+      public java.util.List<com.netki.bip75.protocol.Messages.Owner.Builder> 
            getOwnersBuilderList() {
         return getOwnersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Owners, com.netki.bip75.protocol.Protos.Owners.Builder, com.netki.bip75.protocol.Protos.OwnersOrBuilder> 
+          com.netki.bip75.protocol.Messages.Owner, com.netki.bip75.protocol.Messages.Owner.Builder, com.netki.bip75.protocol.Messages.OwnerOrBuilder> 
           getOwnersFieldBuilder() {
         if (ownersBuilder_ == null) {
           ownersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.netki.bip75.protocol.Protos.Owners, com.netki.bip75.protocol.Protos.Owners.Builder, com.netki.bip75.protocol.Protos.OwnersOrBuilder>(
+              com.netki.bip75.protocol.Messages.Owner, com.netki.bip75.protocol.Messages.Owner.Builder, com.netki.bip75.protocol.Messages.OwnerOrBuilder>(
                   owners_,
                   ((bitField0_ & 0x00000008) != 0),
                   getParentForChildren(),
@@ -9401,16 +9401,16 @@ public final class Protos {
         return this;
       }
 
-      private com.google.protobuf.ByteString senderPkiDataSender_ = com.google.protobuf.ByteString.EMPTY;
+      private com.google.protobuf.ByteString senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 6;</code>
-       * @return Whether the senderPkiDataSender field is set.
+       * <code>required bytes sender_pki_data = 6;</code>
+       * @return Whether the senderPkiData field is set.
        */
-      public boolean hasSenderPkiDataSender() {
+      public boolean hasSenderPkiData() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
@@ -9418,27 +9418,27 @@ public final class Protos {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 6;</code>
-       * @return The senderPkiDataSender.
+       * <code>required bytes sender_pki_data = 6;</code>
+       * @return The senderPkiData.
        */
-      public com.google.protobuf.ByteString getSenderPkiDataSender() {
-        return senderPkiDataSender_;
+      public com.google.protobuf.ByteString getSenderPkiData() {
+        return senderPkiData_;
       }
       /**
        * <pre>
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 6;</code>
-       * @param value The senderPkiDataSender to set.
+       * <code>required bytes sender_pki_data = 6;</code>
+       * @param value The senderPkiData to set.
        * @return This builder for chaining.
        */
-      public Builder setSenderPkiDataSender(com.google.protobuf.ByteString value) {
+      public Builder setSenderPkiData(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000020;
-        senderPkiDataSender_ = value;
+        senderPkiData_ = value;
         onChanged();
         return this;
       }
@@ -9447,12 +9447,12 @@ public final class Protos {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data_sender = 6;</code>
+       * <code>required bytes sender_pki_data = 6;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSenderPkiDataSender() {
+      public Builder clearSenderPkiData() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        senderPkiDataSender_ = getDefaultInstance().getSenderPkiDataSender();
+        senderPkiData_ = getDefaultInstance().getSenderPkiData();
         onChanged();
         return this;
       }
@@ -9529,12 +9529,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.InvoiceRequest)
-    private static final com.netki.bip75.protocol.Protos.InvoiceRequest DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.InvoiceRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.InvoiceRequest();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.InvoiceRequest();
     }
 
-    public static com.netki.bip75.protocol.Protos.InvoiceRequest getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.InvoiceRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -9559,19 +9559,19 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.InvoiceRequest getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.InvoiceRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface OwnersOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:payments.Owners)
+  public interface OwnerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:payments.Owner)
       com.google.protobuf.MessageOrBuilder {
 
     /**
      * <pre>
-     * True if this is the primary owner, there can be only one primary owner
+     * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
      * </pre>
      *
      * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -9580,7 +9580,7 @@ public final class Protos {
     boolean hasPrimaryForTransaction();
     /**
      * <pre>
-     * True if this is the primary owner, there can be only one primary owner
+     * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
      * </pre>
      *
      * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -9593,24 +9593,24 @@ public final class Protos {
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    java.util.List<com.netki.bip75.protocol.Protos.Signatures> 
+    java.util.List<com.netki.bip75.protocol.Messages.Signature> 
         getSignaturesList();
     /**
      * <pre>
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    com.netki.bip75.protocol.Protos.Signatures getSignatures(int index);
+    com.netki.bip75.protocol.Messages.Signature getSignatures(int index);
     /**
      * <pre>
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
     int getSignaturesCount();
     /**
@@ -9618,33 +9618,33 @@ public final class Protos {
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    java.util.List<? extends com.netki.bip75.protocol.Protos.SignaturesOrBuilder> 
+    java.util.List<? extends com.netki.bip75.protocol.Messages.SignatureOrBuilder> 
         getSignaturesOrBuilderList();
     /**
      * <pre>
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    com.netki.bip75.protocol.Protos.SignaturesOrBuilder getSignaturesOrBuilder(
+    com.netki.bip75.protocol.Messages.SignatureOrBuilder getSignaturesOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code payments.Owners}
+   * Protobuf type {@code payments.Owner}
    */
-  public  static final class Owners extends
+  public  static final class Owner extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:payments.Owners)
-      OwnersOrBuilder {
+      // @@protoc_insertion_point(message_implements:payments.Owner)
+      OwnerOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Owners.newBuilder() to construct.
-    private Owners(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use Owner.newBuilder() to construct.
+    private Owner(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Owners() {
+    private Owner() {
       primaryForTransaction_ = true;
       signatures_ = java.util.Collections.emptyList();
     }
@@ -9653,7 +9653,7 @@ public final class Protos {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new Owners();
+      return new Owner();
     }
 
     @java.lang.Override
@@ -9661,7 +9661,7 @@ public final class Protos {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Owners(
+    private Owner(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -9687,11 +9687,11 @@ public final class Protos {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                signatures_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Signatures>();
+                signatures_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Signature>();
                 mutable_bitField0_ |= 0x00000002;
               }
               signatures_.add(
-                  input.readMessage(com.netki.bip75.protocol.Protos.Signatures.PARSER, extensionRegistry));
+                  input.readMessage(com.netki.bip75.protocol.Messages.Signature.PARSER, extensionRegistry));
               break;
             }
             default: {
@@ -9718,15 +9718,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Owners_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Owner_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Owners_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Owner_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.Owners.class, com.netki.bip75.protocol.Protos.Owners.Builder.class);
+              com.netki.bip75.protocol.Messages.Owner.class, com.netki.bip75.protocol.Messages.Owner.Builder.class);
     }
 
     private int bitField0_;
@@ -9734,7 +9734,7 @@ public final class Protos {
     private boolean primaryForTransaction_;
     /**
      * <pre>
-     * True if this is the primary owner, there can be only one primary owner
+     * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
      * </pre>
      *
      * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -9745,7 +9745,7 @@ public final class Protos {
     }
     /**
      * <pre>
-     * True if this is the primary owner, there can be only one primary owner
+     * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
      * </pre>
      *
      * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -9756,15 +9756,15 @@ public final class Protos {
     }
 
     public static final int SIGNATURES_FIELD_NUMBER = 2;
-    private java.util.List<com.netki.bip75.protocol.Protos.Signatures> signatures_;
+    private java.util.List<com.netki.bip75.protocol.Messages.Signature> signatures_;
     /**
      * <pre>
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Protos.Signatures> getSignaturesList() {
+    public java.util.List<com.netki.bip75.protocol.Messages.Signature> getSignaturesList() {
       return signatures_;
     }
     /**
@@ -9772,9 +9772,9 @@ public final class Protos {
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    public java.util.List<? extends com.netki.bip75.protocol.Protos.SignaturesOrBuilder> 
+    public java.util.List<? extends com.netki.bip75.protocol.Messages.SignatureOrBuilder> 
         getSignaturesOrBuilderList() {
       return signatures_;
     }
@@ -9783,7 +9783,7 @@ public final class Protos {
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
     public int getSignaturesCount() {
       return signatures_.size();
@@ -9793,9 +9793,9 @@ public final class Protos {
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    public com.netki.bip75.protocol.Protos.Signatures getSignatures(int index) {
+    public com.netki.bip75.protocol.Messages.Signature getSignatures(int index) {
       return signatures_.get(index);
     }
     /**
@@ -9803,9 +9803,9 @@ public final class Protos {
      * All the owner signatures for the message
      * </pre>
      *
-     * <code>repeated .payments.Signatures signatures = 2;</code>
+     * <code>repeated .payments.Signature signatures = 2;</code>
      */
-    public com.netki.bip75.protocol.Protos.SignaturesOrBuilder getSignaturesOrBuilder(
+    public com.netki.bip75.protocol.Messages.SignatureOrBuilder getSignaturesOrBuilder(
         int index) {
       return signatures_.get(index);
     }
@@ -9867,10 +9867,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.Owners)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.Owner)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.Owners other = (com.netki.bip75.protocol.Protos.Owners) obj;
+      com.netki.bip75.protocol.Messages.Owner other = (com.netki.bip75.protocol.Messages.Owner) obj;
 
       if (hasPrimaryForTransaction() != other.hasPrimaryForTransaction()) return false;
       if (hasPrimaryForTransaction()) {
@@ -9904,69 +9904,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Owner parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Owners parseFrom(
+    public static com.netki.bip75.protocol.Messages.Owner parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -9979,7 +9979,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.Owners prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.Owner prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -9995,26 +9995,26 @@ public final class Protos {
       return builder;
     }
     /**
-     * Protobuf type {@code payments.Owners}
+     * Protobuf type {@code payments.Owner}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:payments.Owners)
-        com.netki.bip75.protocol.Protos.OwnersOrBuilder {
+        // @@protoc_insertion_point(builder_implements:payments.Owner)
+        com.netki.bip75.protocol.Messages.OwnerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Owners_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Owner_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Owners_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Owner_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.Owners.class, com.netki.bip75.protocol.Protos.Owners.Builder.class);
+                com.netki.bip75.protocol.Messages.Owner.class, com.netki.bip75.protocol.Messages.Owner.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.Owners.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.Owner.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -10047,17 +10047,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Owners_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Owner_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Owners getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.Owners.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.Owner getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.Owner.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Owners build() {
-        com.netki.bip75.protocol.Protos.Owners result = buildPartial();
+      public com.netki.bip75.protocol.Messages.Owner build() {
+        com.netki.bip75.protocol.Messages.Owner result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -10065,8 +10065,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Owners buildPartial() {
-        com.netki.bip75.protocol.Protos.Owners result = new com.netki.bip75.protocol.Protos.Owners(this);
+      public com.netki.bip75.protocol.Messages.Owner buildPartial() {
+        com.netki.bip75.protocol.Messages.Owner result = new com.netki.bip75.protocol.Messages.Owner(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -10121,16 +10121,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.Owners) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.Owners)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.Owner) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.Owner)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.Owners other) {
-        if (other == com.netki.bip75.protocol.Protos.Owners.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.Owner other) {
+        if (other == com.netki.bip75.protocol.Messages.Owner.getDefaultInstance()) return this;
         if (other.hasPrimaryForTransaction()) {
           setPrimaryForTransaction(other.getPrimaryForTransaction());
         }
@@ -10183,11 +10183,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.Owners parsedMessage = null;
+        com.netki.bip75.protocol.Messages.Owner parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.Owners) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.Owner) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -10201,7 +10201,7 @@ public final class Protos {
       private boolean primaryForTransaction_ = true;
       /**
        * <pre>
-       * True if this is the primary owner, there can be only one primary owner
+       * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
        * </pre>
        *
        * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -10212,7 +10212,7 @@ public final class Protos {
       }
       /**
        * <pre>
-       * True if this is the primary owner, there can be only one primary owner
+       * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
        * </pre>
        *
        * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -10223,7 +10223,7 @@ public final class Protos {
       }
       /**
        * <pre>
-       * True if this is the primary owner, there can be only one primary owner
+       * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
        * </pre>
        *
        * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -10238,7 +10238,7 @@ public final class Protos {
       }
       /**
        * <pre>
-       * True if this is the primary owner, there can be only one primary owner
+       * True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
        * </pre>
        *
        * <code>required bool primary_for_transaction = 1 [default = true];</code>
@@ -10251,26 +10251,26 @@ public final class Protos {
         return this;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Protos.Signatures> signatures_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Signature> signatures_ =
         java.util.Collections.emptyList();
       private void ensureSignaturesIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
-          signatures_ = new java.util.ArrayList<com.netki.bip75.protocol.Protos.Signatures>(signatures_);
+          signatures_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Signature>(signatures_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Signatures, com.netki.bip75.protocol.Protos.Signatures.Builder, com.netki.bip75.protocol.Protos.SignaturesOrBuilder> signaturesBuilder_;
+          com.netki.bip75.protocol.Messages.Signature, com.netki.bip75.protocol.Messages.Signature.Builder, com.netki.bip75.protocol.Messages.SignatureOrBuilder> signaturesBuilder_;
 
       /**
        * <pre>
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Signatures> getSignaturesList() {
+      public java.util.List<com.netki.bip75.protocol.Messages.Signature> getSignaturesList() {
         if (signaturesBuilder_ == null) {
           return java.util.Collections.unmodifiableList(signatures_);
         } else {
@@ -10282,7 +10282,7 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public int getSignaturesCount() {
         if (signaturesBuilder_ == null) {
@@ -10296,9 +10296,9 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Signatures getSignatures(int index) {
+      public com.netki.bip75.protocol.Messages.Signature getSignatures(int index) {
         if (signaturesBuilder_ == null) {
           return signatures_.get(index);
         } else {
@@ -10310,10 +10310,10 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder setSignatures(
-          int index, com.netki.bip75.protocol.Protos.Signatures value) {
+          int index, com.netki.bip75.protocol.Messages.Signature value) {
         if (signaturesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10331,10 +10331,10 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder setSignatures(
-          int index, com.netki.bip75.protocol.Protos.Signatures.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Signature.Builder builderForValue) {
         if (signaturesBuilder_ == null) {
           ensureSignaturesIsMutable();
           signatures_.set(index, builderForValue.build());
@@ -10349,9 +10349,9 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public Builder addSignatures(com.netki.bip75.protocol.Protos.Signatures value) {
+      public Builder addSignatures(com.netki.bip75.protocol.Messages.Signature value) {
         if (signaturesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10369,10 +10369,10 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder addSignatures(
-          int index, com.netki.bip75.protocol.Protos.Signatures value) {
+          int index, com.netki.bip75.protocol.Messages.Signature value) {
         if (signaturesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10390,10 +10390,10 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder addSignatures(
-          com.netki.bip75.protocol.Protos.Signatures.Builder builderForValue) {
+          com.netki.bip75.protocol.Messages.Signature.Builder builderForValue) {
         if (signaturesBuilder_ == null) {
           ensureSignaturesIsMutable();
           signatures_.add(builderForValue.build());
@@ -10408,10 +10408,10 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder addSignatures(
-          int index, com.netki.bip75.protocol.Protos.Signatures.Builder builderForValue) {
+          int index, com.netki.bip75.protocol.Messages.Signature.Builder builderForValue) {
         if (signaturesBuilder_ == null) {
           ensureSignaturesIsMutable();
           signatures_.add(index, builderForValue.build());
@@ -10426,10 +10426,10 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder addAllSignatures(
-          java.lang.Iterable<? extends com.netki.bip75.protocol.Protos.Signatures> values) {
+          java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Signature> values) {
         if (signaturesBuilder_ == null) {
           ensureSignaturesIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -10445,7 +10445,7 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder clearSignatures() {
         if (signaturesBuilder_ == null) {
@@ -10462,7 +10462,7 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
       public Builder removeSignatures(int index) {
         if (signaturesBuilder_ == null) {
@@ -10479,9 +10479,9 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Signatures.Builder getSignaturesBuilder(
+      public com.netki.bip75.protocol.Messages.Signature.Builder getSignaturesBuilder(
           int index) {
         return getSignaturesFieldBuilder().getBuilder(index);
       }
@@ -10490,9 +10490,9 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.SignaturesOrBuilder getSignaturesOrBuilder(
+      public com.netki.bip75.protocol.Messages.SignatureOrBuilder getSignaturesOrBuilder(
           int index) {
         if (signaturesBuilder_ == null) {
           return signatures_.get(index);  } else {
@@ -10504,9 +10504,9 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public java.util.List<? extends com.netki.bip75.protocol.Protos.SignaturesOrBuilder> 
+      public java.util.List<? extends com.netki.bip75.protocol.Messages.SignatureOrBuilder> 
            getSignaturesOrBuilderList() {
         if (signaturesBuilder_ != null) {
           return signaturesBuilder_.getMessageOrBuilderList();
@@ -10519,41 +10519,41 @@ public final class Protos {
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Signatures.Builder addSignaturesBuilder() {
+      public com.netki.bip75.protocol.Messages.Signature.Builder addSignaturesBuilder() {
         return getSignaturesFieldBuilder().addBuilder(
-            com.netki.bip75.protocol.Protos.Signatures.getDefaultInstance());
+            com.netki.bip75.protocol.Messages.Signature.getDefaultInstance());
       }
       /**
        * <pre>
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public com.netki.bip75.protocol.Protos.Signatures.Builder addSignaturesBuilder(
+      public com.netki.bip75.protocol.Messages.Signature.Builder addSignaturesBuilder(
           int index) {
         return getSignaturesFieldBuilder().addBuilder(
-            index, com.netki.bip75.protocol.Protos.Signatures.getDefaultInstance());
+            index, com.netki.bip75.protocol.Messages.Signature.getDefaultInstance());
       }
       /**
        * <pre>
        * All the owner signatures for the message
        * </pre>
        *
-       * <code>repeated .payments.Signatures signatures = 2;</code>
+       * <code>repeated .payments.Signature signatures = 2;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Protos.Signatures.Builder> 
+      public java.util.List<com.netki.bip75.protocol.Messages.Signature.Builder> 
            getSignaturesBuilderList() {
         return getSignaturesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Protos.Signatures, com.netki.bip75.protocol.Protos.Signatures.Builder, com.netki.bip75.protocol.Protos.SignaturesOrBuilder> 
+          com.netki.bip75.protocol.Messages.Signature, com.netki.bip75.protocol.Messages.Signature.Builder, com.netki.bip75.protocol.Messages.SignatureOrBuilder> 
           getSignaturesFieldBuilder() {
         if (signaturesBuilder_ == null) {
           signaturesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.netki.bip75.protocol.Protos.Signatures, com.netki.bip75.protocol.Protos.Signatures.Builder, com.netki.bip75.protocol.Protos.SignaturesOrBuilder>(
+              com.netki.bip75.protocol.Messages.Signature, com.netki.bip75.protocol.Messages.Signature.Builder, com.netki.bip75.protocol.Messages.SignatureOrBuilder>(
                   signatures_,
                   ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
@@ -10575,48 +10575,48 @@ public final class Protos {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:payments.Owners)
+      // @@protoc_insertion_point(builder_scope:payments.Owner)
     }
 
-    // @@protoc_insertion_point(class_scope:payments.Owners)
-    private static final com.netki.bip75.protocol.Protos.Owners DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:payments.Owner)
+    private static final com.netki.bip75.protocol.Messages.Owner DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.Owners();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.Owner();
     }
 
-    public static com.netki.bip75.protocol.Protos.Owners getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.Owner getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Owners>
-        PARSER = new com.google.protobuf.AbstractParser<Owners>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Owner>
+        PARSER = new com.google.protobuf.AbstractParser<Owner>() {
       @java.lang.Override
-      public Owners parsePartialFrom(
+      public Owner parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Owners(input, extensionRegistry);
+        return new Owner(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Owners> parser() {
+    public static com.google.protobuf.Parser<Owner> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Owners> getParserForType() {
+    public com.google.protobuf.Parser<Owner> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.Owners getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.Owner getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface SignaturesOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:payments.Signatures)
+  public interface SignatureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:payments.Signature)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -10716,18 +10716,18 @@ public final class Protos {
     com.google.protobuf.ByteString getSignature();
   }
   /**
-   * Protobuf type {@code payments.Signatures}
+   * Protobuf type {@code payments.Signature}
    */
-  public  static final class Signatures extends
+  public  static final class Signature extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:payments.Signatures)
-      SignaturesOrBuilder {
+      // @@protoc_insertion_point(message_implements:payments.Signature)
+      SignatureOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Signatures.newBuilder() to construct.
-    private Signatures(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use Signature.newBuilder() to construct.
+    private Signature(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Signatures() {
+    private Signature() {
       attestation_ = "";
       pkiType_ = "none";
       pkiData_ = com.google.protobuf.ByteString.EMPTY;
@@ -10738,7 +10738,7 @@ public final class Protos {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new Signatures();
+      return new Signature();
     }
 
     @java.lang.Override
@@ -10746,7 +10746,7 @@ public final class Protos {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Signatures(
+    private Signature(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -10808,15 +10808,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Signatures_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Signature_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_Signatures_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_Signature_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.Signatures.class, com.netki.bip75.protocol.Protos.Signatures.Builder.class);
+              com.netki.bip75.protocol.Messages.Signature.class, com.netki.bip75.protocol.Messages.Signature.Builder.class);
     }
 
     private int bitField0_;
@@ -11059,10 +11059,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.Signatures)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.Signature)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.Signatures other = (com.netki.bip75.protocol.Protos.Signatures) obj;
+      com.netki.bip75.protocol.Messages.Signature other = (com.netki.bip75.protocol.Messages.Signature) obj;
 
       if (hasAttestation() != other.hasAttestation()) return false;
       if (hasAttestation()) {
@@ -11116,69 +11116,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.Signature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.Signatures parseFrom(
+    public static com.netki.bip75.protocol.Messages.Signature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -11191,7 +11191,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.Signatures prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.Signature prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -11207,26 +11207,26 @@ public final class Protos {
       return builder;
     }
     /**
-     * Protobuf type {@code payments.Signatures}
+     * Protobuf type {@code payments.Signature}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:payments.Signatures)
-        com.netki.bip75.protocol.Protos.SignaturesOrBuilder {
+        // @@protoc_insertion_point(builder_implements:payments.Signature)
+        com.netki.bip75.protocol.Messages.SignatureOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Signatures_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Signature_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Signatures_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Signature_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.Signatures.class, com.netki.bip75.protocol.Protos.Signatures.Builder.class);
+                com.netki.bip75.protocol.Messages.Signature.class, com.netki.bip75.protocol.Messages.Signature.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.Signatures.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.Signature.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -11258,17 +11258,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_Signatures_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_Signature_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Signatures getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.Signatures.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.Signature getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.Signature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Signatures build() {
-        com.netki.bip75.protocol.Protos.Signatures result = buildPartial();
+      public com.netki.bip75.protocol.Messages.Signature build() {
+        com.netki.bip75.protocol.Messages.Signature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -11276,8 +11276,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.Signatures buildPartial() {
-        com.netki.bip75.protocol.Protos.Signatures result = new com.netki.bip75.protocol.Protos.Signatures(this);
+      public com.netki.bip75.protocol.Messages.Signature buildPartial() {
+        com.netki.bip75.protocol.Messages.Signature result = new com.netki.bip75.protocol.Messages.Signature(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -11335,16 +11335,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.Signatures) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.Signatures)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.Signature) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.Signature)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.Signatures other) {
-        if (other == com.netki.bip75.protocol.Protos.Signatures.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.Signature other) {
+        if (other == com.netki.bip75.protocol.Messages.Signature.getDefaultInstance()) return this;
         if (other.hasAttestation()) {
           bitField0_ |= 0x00000001;
           attestation_ = other.attestation_;
@@ -11388,11 +11388,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.Signatures parsedMessage = null;
+        com.netki.bip75.protocol.Messages.Signature parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.Signatures) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.Signature) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -11743,41 +11743,41 @@ public final class Protos {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:payments.Signatures)
+      // @@protoc_insertion_point(builder_scope:payments.Signature)
     }
 
-    // @@protoc_insertion_point(class_scope:payments.Signatures)
-    private static final com.netki.bip75.protocol.Protos.Signatures DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:payments.Signature)
+    private static final com.netki.bip75.protocol.Messages.Signature DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.Signatures();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.Signature();
     }
 
-    public static com.netki.bip75.protocol.Protos.Signatures getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.Signature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Signatures>
-        PARSER = new com.google.protobuf.AbstractParser<Signatures>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Signature>
+        PARSER = new com.google.protobuf.AbstractParser<Signature>() {
       @java.lang.Override
-      public Signatures parsePartialFrom(
+      public Signature parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Signatures(input, extensionRegistry);
+        return new Signature(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Signatures> parser() {
+    public static com.google.protobuf.Parser<Signature> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Signatures> getParserForType() {
+    public com.google.protobuf.Parser<Signature> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.Signatures getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.Signature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -11842,7 +11842,7 @@ public final class Protos {
      * <code>required .payments.ProtocolMessageType message_type = 3;</code>
      * @return The messageType.
      */
-    com.netki.bip75.protocol.Protos.ProtocolMessageType getMessageType();
+    com.netki.bip75.protocol.Messages.ProtocolMessageType getMessageType();
 
     /**
      * <pre>
@@ -11976,7 +11976,7 @@ public final class Protos {
             case 24: {
               int rawValue = input.readEnum();
                 @SuppressWarnings("deprecation")
-              com.netki.bip75.protocol.Protos.ProtocolMessageType value = com.netki.bip75.protocol.Protos.ProtocolMessageType.valueOf(rawValue);
+              com.netki.bip75.protocol.Messages.ProtocolMessageType value = com.netki.bip75.protocol.Messages.ProtocolMessageType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(3, rawValue);
               } else {
@@ -12022,15 +12022,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_ProtocolMessage_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_ProtocolMessage_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_ProtocolMessage_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_ProtocolMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.ProtocolMessage.class, com.netki.bip75.protocol.Protos.ProtocolMessage.Builder.class);
+              com.netki.bip75.protocol.Messages.ProtocolMessage.class, com.netki.bip75.protocol.Messages.ProtocolMessage.Builder.class);
     }
 
     private int bitField0_;
@@ -12105,10 +12105,10 @@ public final class Protos {
      * <code>required .payments.ProtocolMessageType message_type = 3;</code>
      * @return The messageType.
      */
-    public com.netki.bip75.protocol.Protos.ProtocolMessageType getMessageType() {
+    public com.netki.bip75.protocol.Messages.ProtocolMessageType getMessageType() {
       @SuppressWarnings("deprecation")
-      com.netki.bip75.protocol.Protos.ProtocolMessageType result = com.netki.bip75.protocol.Protos.ProtocolMessageType.valueOf(messageType_);
-      return result == null ? com.netki.bip75.protocol.Protos.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
+      com.netki.bip75.protocol.Messages.ProtocolMessageType result = com.netki.bip75.protocol.Messages.ProtocolMessageType.valueOf(messageType_);
+      return result == null ? com.netki.bip75.protocol.Messages.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
     }
 
     public static final int SERIALIZED_MESSAGE_FIELD_NUMBER = 4;
@@ -12312,10 +12312,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.ProtocolMessage)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.ProtocolMessage)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.ProtocolMessage other = (com.netki.bip75.protocol.Protos.ProtocolMessage) obj;
+      com.netki.bip75.protocol.Messages.ProtocolMessage other = (com.netki.bip75.protocol.Messages.ProtocolMessage) obj;
 
       if (hasVersion() != other.hasVersion()) return false;
       if (hasVersion()) {
@@ -12388,69 +12388,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -12463,7 +12463,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.ProtocolMessage prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.ProtocolMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -12484,21 +12484,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.ProtocolMessage)
-        com.netki.bip75.protocol.Protos.ProtocolMessageOrBuilder {
+        com.netki.bip75.protocol.Messages.ProtocolMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_ProtocolMessage_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_ProtocolMessage_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_ProtocolMessage_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_ProtocolMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.ProtocolMessage.class, com.netki.bip75.protocol.Protos.ProtocolMessage.Builder.class);
+                com.netki.bip75.protocol.Messages.ProtocolMessage.class, com.netki.bip75.protocol.Messages.ProtocolMessage.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.ProtocolMessage.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.ProtocolMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -12534,17 +12534,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_ProtocolMessage_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_ProtocolMessage_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.ProtocolMessage getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.ProtocolMessage.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.ProtocolMessage getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.ProtocolMessage.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.ProtocolMessage build() {
-        com.netki.bip75.protocol.Protos.ProtocolMessage result = buildPartial();
+      public com.netki.bip75.protocol.Messages.ProtocolMessage build() {
+        com.netki.bip75.protocol.Messages.ProtocolMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -12552,8 +12552,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.ProtocolMessage buildPartial() {
-        com.netki.bip75.protocol.Protos.ProtocolMessage result = new com.netki.bip75.protocol.Protos.ProtocolMessage(this);
+      public com.netki.bip75.protocol.Messages.ProtocolMessage buildPartial() {
+        com.netki.bip75.protocol.Messages.ProtocolMessage result = new com.netki.bip75.protocol.Messages.ProtocolMessage(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -12619,16 +12619,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.ProtocolMessage) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.ProtocolMessage)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.ProtocolMessage) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.ProtocolMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.ProtocolMessage other) {
-        if (other == com.netki.bip75.protocol.Protos.ProtocolMessage.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.ProtocolMessage other) {
+        if (other == com.netki.bip75.protocol.Messages.ProtocolMessage.getDefaultInstance()) return this;
         if (other.hasVersion()) {
           setVersion(other.getVersion());
         }
@@ -12679,11 +12679,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.ProtocolMessage parsedMessage = null;
+        com.netki.bip75.protocol.Messages.ProtocolMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.ProtocolMessage) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.ProtocolMessage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -12820,10 +12820,10 @@ public final class Protos {
        * <code>required .payments.ProtocolMessageType message_type = 3;</code>
        * @return The messageType.
        */
-      public com.netki.bip75.protocol.Protos.ProtocolMessageType getMessageType() {
+      public com.netki.bip75.protocol.Messages.ProtocolMessageType getMessageType() {
         @SuppressWarnings("deprecation")
-        com.netki.bip75.protocol.Protos.ProtocolMessageType result = com.netki.bip75.protocol.Protos.ProtocolMessageType.valueOf(messageType_);
-        return result == null ? com.netki.bip75.protocol.Protos.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
+        com.netki.bip75.protocol.Messages.ProtocolMessageType result = com.netki.bip75.protocol.Messages.ProtocolMessageType.valueOf(messageType_);
+        return result == null ? com.netki.bip75.protocol.Messages.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
       }
       /**
        * <pre>
@@ -12834,7 +12834,7 @@ public final class Protos {
        * @param value The messageType to set.
        * @return This builder for chaining.
        */
-      public Builder setMessageType(com.netki.bip75.protocol.Protos.ProtocolMessageType value) {
+      public Builder setMessageType(com.netki.bip75.protocol.Messages.ProtocolMessageType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -13094,12 +13094,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.ProtocolMessage)
-    private static final com.netki.bip75.protocol.Protos.ProtocolMessage DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.ProtocolMessage DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.ProtocolMessage();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.ProtocolMessage();
     }
 
-    public static com.netki.bip75.protocol.Protos.ProtocolMessage getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.ProtocolMessage getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -13124,7 +13124,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.ProtocolMessage getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.ProtocolMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -13189,7 +13189,7 @@ public final class Protos {
      * <code>required .payments.ProtocolMessageType message_type = 3;</code>
      * @return The messageType.
      */
-    com.netki.bip75.protocol.Protos.ProtocolMessageType getMessageType();
+    com.netki.bip75.protocol.Messages.ProtocolMessageType getMessageType();
 
     /**
      * <pre>
@@ -13402,7 +13402,7 @@ public final class Protos {
             case 24: {
               int rawValue = input.readEnum();
                 @SuppressWarnings("deprecation")
-              com.netki.bip75.protocol.Protos.ProtocolMessageType value = com.netki.bip75.protocol.Protos.ProtocolMessageType.valueOf(rawValue);
+              com.netki.bip75.protocol.Messages.ProtocolMessageType value = com.netki.bip75.protocol.Messages.ProtocolMessageType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(3, rawValue);
               } else {
@@ -13468,15 +13468,15 @@ public final class Protos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_EncryptedProtocolMessage_descriptor;
+      return com.netki.bip75.protocol.Messages.internal_static_payments_EncryptedProtocolMessage_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.netki.bip75.protocol.Protos.internal_static_payments_EncryptedProtocolMessage_fieldAccessorTable
+      return com.netki.bip75.protocol.Messages.internal_static_payments_EncryptedProtocolMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.class, com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.Builder.class);
+              com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.class, com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.Builder.class);
     }
 
     private int bitField0_;
@@ -13551,10 +13551,10 @@ public final class Protos {
      * <code>required .payments.ProtocolMessageType message_type = 3;</code>
      * @return The messageType.
      */
-    public com.netki.bip75.protocol.Protos.ProtocolMessageType getMessageType() {
+    public com.netki.bip75.protocol.Messages.ProtocolMessageType getMessageType() {
       @SuppressWarnings("deprecation")
-      com.netki.bip75.protocol.Protos.ProtocolMessageType result = com.netki.bip75.protocol.Protos.ProtocolMessageType.valueOf(messageType_);
-      return result == null ? com.netki.bip75.protocol.Protos.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
+      com.netki.bip75.protocol.Messages.ProtocolMessageType result = com.netki.bip75.protocol.Messages.ProtocolMessageType.valueOf(messageType_);
+      return result == null ? com.netki.bip75.protocol.Messages.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
     }
 
     public static final int ENCRYPTED_MESSAGE_FIELD_NUMBER = 4;
@@ -13898,10 +13898,10 @@ public final class Protos {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.netki.bip75.protocol.Protos.EncryptedProtocolMessage)) {
+      if (!(obj instanceof com.netki.bip75.protocol.Messages.EncryptedProtocolMessage)) {
         return super.equals(obj);
       }
-      com.netki.bip75.protocol.Protos.EncryptedProtocolMessage other = (com.netki.bip75.protocol.Protos.EncryptedProtocolMessage) obj;
+      com.netki.bip75.protocol.Messages.EncryptedProtocolMessage other = (com.netki.bip75.protocol.Messages.EncryptedProtocolMessage) obj;
 
       if (hasVersion() != other.hasVersion()) return false;
       if (hasVersion()) {
@@ -14011,69 +14011,69 @@ public final class Protos {
       return hash;
     }
 
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(byte[] data)
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseDelimitedFrom(java.io.InputStream input)
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseDelimitedFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parseFrom(
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -14086,7 +14086,7 @@ public final class Protos {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.netki.bip75.protocol.Protos.EncryptedProtocolMessage prototype) {
+    public static Builder newBuilder(com.netki.bip75.protocol.Messages.EncryptedProtocolMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -14107,21 +14107,21 @@ public final class Protos {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:payments.EncryptedProtocolMessage)
-        com.netki.bip75.protocol.Protos.EncryptedProtocolMessageOrBuilder {
+        com.netki.bip75.protocol.Messages.EncryptedProtocolMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_EncryptedProtocolMessage_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_EncryptedProtocolMessage_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_EncryptedProtocolMessage_fieldAccessorTable
+        return com.netki.bip75.protocol.Messages.internal_static_payments_EncryptedProtocolMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.class, com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.Builder.class);
+                com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.class, com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.Builder.class);
       }
 
-      // Construct using com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.newBuilder()
+      // Construct using com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -14165,17 +14165,17 @@ public final class Protos {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.netki.bip75.protocol.Protos.internal_static_payments_EncryptedProtocolMessage_descriptor;
+        return com.netki.bip75.protocol.Messages.internal_static_payments_EncryptedProtocolMessage_descriptor;
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.EncryptedProtocolMessage getDefaultInstanceForType() {
-        return com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.getDefaultInstance();
+      public com.netki.bip75.protocol.Messages.EncryptedProtocolMessage getDefaultInstanceForType() {
+        return com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.EncryptedProtocolMessage build() {
-        com.netki.bip75.protocol.Protos.EncryptedProtocolMessage result = buildPartial();
+      public com.netki.bip75.protocol.Messages.EncryptedProtocolMessage build() {
+        com.netki.bip75.protocol.Messages.EncryptedProtocolMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -14183,8 +14183,8 @@ public final class Protos {
       }
 
       @java.lang.Override
-      public com.netki.bip75.protocol.Protos.EncryptedProtocolMessage buildPartial() {
-        com.netki.bip75.protocol.Protos.EncryptedProtocolMessage result = new com.netki.bip75.protocol.Protos.EncryptedProtocolMessage(this);
+      public com.netki.bip75.protocol.Messages.EncryptedProtocolMessage buildPartial() {
+        com.netki.bip75.protocol.Messages.EncryptedProtocolMessage result = new com.netki.bip75.protocol.Messages.EncryptedProtocolMessage(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -14266,16 +14266,16 @@ public final class Protos {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.netki.bip75.protocol.Protos.EncryptedProtocolMessage) {
-          return mergeFrom((com.netki.bip75.protocol.Protos.EncryptedProtocolMessage)other);
+        if (other instanceof com.netki.bip75.protocol.Messages.EncryptedProtocolMessage) {
+          return mergeFrom((com.netki.bip75.protocol.Messages.EncryptedProtocolMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.netki.bip75.protocol.Protos.EncryptedProtocolMessage other) {
-        if (other == com.netki.bip75.protocol.Protos.EncryptedProtocolMessage.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.netki.bip75.protocol.Messages.EncryptedProtocolMessage other) {
+        if (other == com.netki.bip75.protocol.Messages.EncryptedProtocolMessage.getDefaultInstance()) return this;
         if (other.hasVersion()) {
           setVersion(other.getVersion());
         }
@@ -14347,11 +14347,11 @@ public final class Protos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.netki.bip75.protocol.Protos.EncryptedProtocolMessage parsedMessage = null;
+        com.netki.bip75.protocol.Messages.EncryptedProtocolMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.netki.bip75.protocol.Protos.EncryptedProtocolMessage) e.getUnfinishedMessage();
+          parsedMessage = (com.netki.bip75.protocol.Messages.EncryptedProtocolMessage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -14488,10 +14488,10 @@ public final class Protos {
        * <code>required .payments.ProtocolMessageType message_type = 3;</code>
        * @return The messageType.
        */
-      public com.netki.bip75.protocol.Protos.ProtocolMessageType getMessageType() {
+      public com.netki.bip75.protocol.Messages.ProtocolMessageType getMessageType() {
         @SuppressWarnings("deprecation")
-        com.netki.bip75.protocol.Protos.ProtocolMessageType result = com.netki.bip75.protocol.Protos.ProtocolMessageType.valueOf(messageType_);
-        return result == null ? com.netki.bip75.protocol.Protos.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
+        com.netki.bip75.protocol.Messages.ProtocolMessageType result = com.netki.bip75.protocol.Messages.ProtocolMessageType.valueOf(messageType_);
+        return result == null ? com.netki.bip75.protocol.Messages.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE : result;
       }
       /**
        * <pre>
@@ -14502,7 +14502,7 @@ public final class Protos {
        * @param value The messageType to set.
        * @return This builder for chaining.
        */
-      public Builder setMessageType(com.netki.bip75.protocol.Protos.ProtocolMessageType value) {
+      public Builder setMessageType(com.netki.bip75.protocol.Messages.ProtocolMessageType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -14983,12 +14983,12 @@ public final class Protos {
     }
 
     // @@protoc_insertion_point(class_scope:payments.EncryptedProtocolMessage)
-    private static final com.netki.bip75.protocol.Protos.EncryptedProtocolMessage DEFAULT_INSTANCE;
+    private static final com.netki.bip75.protocol.Messages.EncryptedProtocolMessage DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Protos.EncryptedProtocolMessage();
+      DEFAULT_INSTANCE = new com.netki.bip75.protocol.Messages.EncryptedProtocolMessage();
     }
 
-    public static com.netki.bip75.protocol.Protos.EncryptedProtocolMessage getDefaultInstance() {
+    public static com.netki.bip75.protocol.Messages.EncryptedProtocolMessage getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -15013,7 +15013,7 @@ public final class Protos {
     }
 
     @java.lang.Override
-    public com.netki.bip75.protocol.Protos.EncryptedProtocolMessage getDefaultInstanceForType() {
+    public com.netki.bip75.protocol.Messages.EncryptedProtocolMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -15055,15 +15055,15 @@ public final class Protos {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_payments_InvoiceRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_payments_Owners_descriptor;
+    internal_static_payments_Owner_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_payments_Owners_fieldAccessorTable;
+      internal_static_payments_Owner_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_payments_Signatures_descriptor;
+    internal_static_payments_Signature_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_payments_Signatures_fieldAccessorTable;
+      internal_static_payments_Signature_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_payments_ProtocolMessage_descriptor;
   private static final 
@@ -15088,44 +15088,43 @@ public final class Protos {
       "ntDetails\022\025\n\007network\030\001 \001(\t:\004main\022!\n\007outp" +
       "uts\030\002 \003(\0132\020.payments.Output\022\014\n\004time\030\003 \002(" +
       "\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004memo\030\005 \001(\t\022\023\n\013paym" +
-      "ent_url\030\006 \001(\t\022\025\n\rmerchant_data\030\007 \001(\014\"\323\001\n" +
+      "ent_url\030\006 \001(\t\022\025\n\rmerchant_data\030\007 \001(\014\"\313\001\n" +
       "\016PaymentRequest\022\"\n\027payment_details_versi" +
       "on\030\001 \001(\r:\0011\022\"\n\032serialized_payment_detail" +
-      "s\030\002 \002(\014\022 \n\006owners\030\003 \003(\0132\020.payments.Owner" +
-      "s\022\035\n\017sender_pki_type\030\004 \002(\t:\004none\022\036\n\026send" +
-      "er_pki_data_sender\030\005 \002(\014\022\030\n\020sender_signa" +
-      "ture\030\006 \002(\014\"\'\n\020X509Certificates\022\023\n\013certif" +
-      "icate\030\001 \003(\014\"i\n\007Payment\022\025\n\rmerchant_data\030" +
-      "\001 \001(\014\022\024\n\014transactions\030\002 \003(\014\022#\n\trefund_to" +
-      "\030\003 \003(\0132\020.payments.Output\022\014\n\004memo\030\004 \001(\t\">" +
-      "\n\nPaymentACK\022\"\n\007payment\030\001 \002(\0132\021.payments" +
-      ".Payment\022\014\n\004memo\030\002 \001(\t\"\306\001\n\016InvoiceReques" +
-      "t\022\021\n\006amount\030\001 \001(\004:\0010\022\014\n\004memo\030\002 \001(\t\022\030\n\020no" +
-      "tification_url\030\003 \001(\t\022 \n\006owners\030\004 \003(\0132\020.p" +
-      "ayments.Owners\022\035\n\017sender_pki_type\030\005 \002(\t:" +
-      "\004none\022\036\n\026sender_pki_data_sender\030\006 \002(\014\022\030\n" +
-      "\020sender_signature\030\007 \002(\014\"Y\n\006Owners\022%\n\027pri" +
-      "mary_for_transaction\030\001 \002(\010:\004true\022(\n\nsign" +
-      "atures\030\002 \003(\0132\024.payments.Signatures\"^\n\nSi" +
-      "gnatures\022\023\n\013attestation\030\001 \002(\t\022\026\n\010pki_typ" +
-      "e\030\002 \002(\t:\004none\022\020\n\010pki_data\030\003 \002(\014\022\021\n\tsigna" +
-      "ture\030\004 \002(\014\"\272\001\n\017ProtocolMessage\022\022\n\007versio" +
-      "n\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014me" +
-      "ssage_type\030\003 \002(\0162\035.payments.ProtocolMess" +
-      "ageType\022\032\n\022serialized_message\030\004 \002(\014\022\026\n\016s" +
-      "tatus_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002(\014\"" +
-      "\234\002\n\030EncryptedProtocolMessage\022\022\n\007version\030" +
-      "\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014mess" +
-      "age_type\030\003 \002(\0162\035.payments.ProtocolMessag" +
-      "eType\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023rece" +
-      "iver_public_key\030\005 \002(\014\022\031\n\021sender_public_k" +
-      "ey\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier\030\010 " +
-      "\002(\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignature" +
-      "\030\n \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKNOWN" +
-      "_MESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022\023\n\017" +
-      "PAYMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMEN" +
-      "T_ACK\020\004B\"\n\030com.netki.bip75.protocolB\006Pro" +
-      "tos"
+      "s\030\002 \002(\014\022\037\n\006owners\030\003 \003(\0132\017.payments.Owner" +
+      "\022\035\n\017sender_pki_type\030\004 \002(\t:\004none\022\027\n\017sende" +
+      "r_pki_data\030\005 \002(\014\022\030\n\020sender_signature\030\006 \002" +
+      "(\014\"\'\n\020X509Certificates\022\023\n\013certificate\030\001 " +
+      "\003(\014\"i\n\007Payment\022\025\n\rmerchant_data\030\001 \001(\014\022\024\n" +
+      "\014transactions\030\002 \003(\014\022#\n\trefund_to\030\003 \003(\0132\020" +
+      ".payments.Output\022\014\n\004memo\030\004 \001(\t\">\n\nPaymen" +
+      "tACK\022\"\n\007payment\030\001 \002(\0132\021.payments.Payment" +
+      "\022\014\n\004memo\030\002 \001(\t\"\276\001\n\016InvoiceRequest\022\021\n\006amo" +
+      "unt\030\001 \001(\004:\0010\022\014\n\004memo\030\002 \001(\t\022\030\n\020notificati" +
+      "on_url\030\003 \001(\t\022\037\n\006owners\030\004 \003(\0132\017.payments." +
+      "Owner\022\035\n\017sender_pki_type\030\005 \002(\t:\004none\022\027\n\017" +
+      "sender_pki_data\030\006 \002(\014\022\030\n\020sender_signatur" +
+      "e\030\007 \002(\014\"W\n\005Owner\022%\n\027primary_for_transact" +
+      "ion\030\001 \002(\010:\004true\022\'\n\nsignatures\030\002 \003(\0132\023.pa" +
+      "yments.Signature\"]\n\tSignature\022\023\n\013attesta" +
+      "tion\030\001 \002(\t\022\026\n\010pki_type\030\002 \002(\t:\004none\022\020\n\010pk" +
+      "i_data\030\003 \002(\014\022\021\n\tsignature\030\004 \002(\014\"\272\001\n\017Prot" +
+      "ocolMessage\022\022\n\007version\030\001 \002(\004:\0011\022\026\n\013statu" +
+      "s_code\030\002 \002(\004:\0011\0223\n\014message_type\030\003 \002(\0162\035." +
+      "payments.ProtocolMessageType\022\032\n\022serializ" +
+      "ed_message\030\004 \002(\014\022\026\n\016status_message\030\005 \001(\t" +
+      "\022\022\n\nidentifier\030\006 \002(\014\"\234\002\n\030EncryptedProtoc" +
+      "olMessage\022\022\n\007version\030\001 \002(\004:\0011\022\026\n\013status_" +
+      "code\030\002 \002(\004:\0011\0223\n\014message_type\030\003 \002(\0162\035.pa" +
+      "yments.ProtocolMessageType\022\031\n\021encrypted_" +
+      "message\030\004 \002(\014\022\033\n\023receiver_public_key\030\005 \002" +
+      "(\014\022\031\n\021sender_public_key\030\006 \002(\014\022\r\n\005nonce\030\007" +
+      " \002(\004\022\022\n\nidentifier\030\010 \002(\014\022\026\n\016status_messa" +
+      "ge\030\t \001(\t\022\021\n\tsignature\030\n \001(\014*w\n\023ProtocolM" +
+      "essageType\022\030\n\024UNKNOWN_MESSAGE_TYPE\020\000\022\023\n\017" +
+      "INVOICE_REQUEST\020\001\022\023\n\017PAYMENT_REQUEST\020\002\022\013" +
+      "\n\007PAYMENT\020\003\022\017\n\013PAYMENT_ACK\020\004B$\n\030com.netk" +
+      "i.bip75.protocolB\010Messages"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -15148,7 +15147,7 @@ public final class Protos {
     internal_static_payments_PaymentRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_PaymentRequest_descriptor,
-        new java.lang.String[] { "PaymentDetailsVersion", "SerializedPaymentDetails", "Owners", "SenderPkiType", "SenderPkiDataSender", "SenderSignature", });
+        new java.lang.String[] { "PaymentDetailsVersion", "SerializedPaymentDetails", "Owners", "SenderPkiType", "SenderPkiData", "SenderSignature", });
     internal_static_payments_X509Certificates_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_payments_X509Certificates_fieldAccessorTable = new
@@ -15172,18 +15171,18 @@ public final class Protos {
     internal_static_payments_InvoiceRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_InvoiceRequest_descriptor,
-        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Owners", "SenderPkiType", "SenderPkiDataSender", "SenderSignature", });
-    internal_static_payments_Owners_descriptor =
+        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Owners", "SenderPkiType", "SenderPkiData", "SenderSignature", });
+    internal_static_payments_Owner_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_payments_Owners_fieldAccessorTable = new
+    internal_static_payments_Owner_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_payments_Owners_descriptor,
+        internal_static_payments_Owner_descriptor,
         new java.lang.String[] { "PrimaryForTransaction", "Signatures", });
-    internal_static_payments_Signatures_descriptor =
+    internal_static_payments_Signature_descriptor =
       getDescriptor().getMessageTypes().get(8);
-    internal_static_payments_Signatures_fieldAccessorTable = new
+    internal_static_payments_Signature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_payments_Signatures_descriptor,
+        internal_static_payments_Signature_descriptor,
         new java.lang.String[] { "Attestation", "PkiType", "PkiData", "Signature", });
     internal_static_payments_ProtocolMessage_descriptor =
       getDescriptor().getMessageTypes().get(9);

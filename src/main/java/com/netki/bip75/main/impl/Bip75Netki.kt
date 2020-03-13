@@ -2,10 +2,7 @@ package com.netki.bip75.main.impl
 
 import com.netki.bip75.main.Bip75
 import com.netki.bip75.service.Bip75Service
-import com.netki.model.InvoiceRequestParameters
-import com.netki.model.KeyPairPem
-import com.netki.model.Payment
-import com.netki.model.PaymentDetails
+import com.netki.model.*
 
 /**
  * {@inheritDoc}
@@ -15,8 +12,11 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters, keyPairPem: KeyPairPem) =
-        bip75Service.createInvoiceRequest(invoiceRequestParameters, keyPairPem)
+    override fun createInvoiceRequest(
+        invoiceRequestParameters: InvoiceRequestParameters,
+        ownerParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters
+    ) = bip75Service.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
 
     /**
      * {@inheritDoc}
@@ -34,10 +34,11 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      * {@inheritDoc}
      */
     override fun createPaymentRequest(
-        paymentDetails: PaymentDetails,
-        keyPairPem: KeyPairPem,
-        paymentDetailsVersion: Int
-    ) = bip75Service.createPaymentRequest(paymentDetails, keyPairPem, paymentDetailsVersion)
+        paymentParameters: PaymentParameters,
+        ownerParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters,
+        paymentParametersVersion: Int
+    ) = bip75Service.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentParametersVersion)
 
     /**
      * {@inheritDoc}

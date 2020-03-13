@@ -1,14 +1,25 @@
 package com.netki
 
-import com.netki.bip75.protocol.Protos
+import com.netki.bip75.protocol.Messages
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
-import com.netki.model.KeyPairPem
-import com.netki.model.PkiType
-import com.netki.security.CryptoModule
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
+import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
+import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
 import com.netki.util.TestData
-import com.netki.util.toByteString
+import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
+import com.netki.util.TestData.InvoiceRequest.INVOICE_REQUEST_DATA
+import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_NONE
+import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_X509SHA256
+import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_NONE
+import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
+import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE
+import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
+import com.netki.util.TestData.Senders.SENDER_PKI_NONE
+import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
+import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -17,263 +28,439 @@ import org.junit.jupiter.api.TestInstance
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class TransactIdTest {
 
-    private lateinit var keyPairPemX509: KeyPairPem
-    private lateinit var keyPairPemNone: KeyPairPem
-    private lateinit var invalidCertKeyPairPemX509: KeyPairPem
-
     @BeforeAll
     fun setUp() {
-        val privateKey = CryptoModule.privateKeyPemToObject(TestData.KeyPairs.CLIENT_PRIVATE_KEY_PEM)
-        val certificate = CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_PEM)
-        val randomCertificate = CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM_PEM)
-        keyPairPemX509 = KeyPairPem(
-            CryptoModule.objectToPrivateKeyPem(privateKey),
-            CryptoModule.objectToCertificatePem(certificate),
-            PkiType.X509SHA256
-        )
-        keyPairPemNone = KeyPairPem(
-            CryptoModule.objectToPrivateKeyPem(privateKey),
-            CryptoModule.objectToCertificatePem(certificate),
-            PkiType.NONE
-        )
-        invalidCertKeyPairPemX509 = KeyPairPem(
-            CryptoModule.objectToPrivateKeyPem(privateKey),
-            CryptoModule.objectToCertificatePem(randomCertificate),
-            PkiType.X509SHA256
-        )
+        // Nothing to do here
     }
 
     @Test
-    fun `Create and validate InvoiceRequestBinary with PkiData`() {
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemX509)
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
 
     @Test
-    fun `Create and validate InvoiceRequestBinary without PkiData`() {
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender without PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_NONE,
+            NO_PRIMARY_OWNER_PKI_NONE
+        )
+        val sender = SENDER_PKI_NONE
+
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemNone)
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
 
     @Test
-    fun `Create an invalid InvoiceRequestBinary with PkiData and invalid certificate chain`() {
-        val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, invalidCertKeyPairPemX509)
+    fun `Create and validate InvoiceRequestBinary, Owners with PkiData and Sender without PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_NONE
 
-        assertThrows(InvalidCertificateChainException::class.java) {
-            TransactId.isInvoiceRequestValid(invoiceRequestBinary)
-        }
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
 
     @Test
-    fun `Create and validate invalid signature for InvoiceRequestBinary with PkiData`() {
+    fun `Create and validate InvoiceRequestBinary, Owners without PkiData and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_NONE,
+            NO_PRIMARY_OWNER_PKI_NONE
+        )
+        val sender = SENDER_PKI_X509SHA256
+
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemX509)
-        val invoiceRequestInvalidSignature = Protos.InvoiceRequest.newBuilder()
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, one Owner with PkiData, one Owner without data and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_NONE
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners with PkiData and Sender with PkiData but invalid certificate chain`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+        }
+
+        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+    }
+
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners with PkiData but invalid certificate chain and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+        }
+
+        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(INVALID_ATTESTATION))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and invalid Sender signature`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary)
-            .setSignature(
-                ("OJ5cmg/1HHvmnAIlEYhu7GLGHISeZTYehmMA5uvmakxB/qZDduhw7ZKgxs8hFf/SiY0m/Nw/aICAbxtighLG3Bn+jRTy" +
-                        "x5lGECceuLeCgqhrXGDK9p6q853gKFibe1uw+dQWWCF/SuJ1wvs4p2uHTzUCxnginAcSdLiRqukUPSlZVN+Md" +
-                        "BXLEhMCOvkkrY4yDIcWDDKBJH7BRtI4hJ7fDEypC1e65QT5pYHkYySWrNku65zGfS2w6VccUYyXy2hqulJYKg" +
-                        "QzEOoAj7CyULIDMnab/OYKJYcOcg98VbKBhh91GrCIXtQBsba5TD93lJNjIaznhJlatvB+QkWYbXfhNA==").toByteString()
-            )
+            .setMemo("Memo changed!!")
             .build()
+            .toByteArray()
 
-        assertThrows(InvalidSignatureException::class.java) {
-            TransactId.isInvoiceRequestValid(invoiceRequestInvalidSignature.toByteArray())
+        val exception = assertThrows(InvalidSignatureException::class.java) {
+            assert(TransactId.isInvoiceRequestValid(invoiceRequestCorrupted))
         }
+
+        assert(
+            exception.message == SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
+        )
     }
 
     @Test
-    fun `Create and validate missing signature for InvoiceRequestBinary with PkiData`() {
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and invalid Owner signature`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_NONE
+
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemX509)
-        val invoiceRequestInvalidSignature = Protos.InvoiceRequest.newBuilder()
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary)
-            .setSignature(
-                ("OJ5cmg/1HHvmnAIlEYhu7GLGHISeZTYehmMA5uvmakxB/qZDduhw7ZKgxs8hFf/SiY0m/Nw/aICAbxtighLG3Bn+jRTy" +
-                        "x5lGECceuLeCgqhrXGDK9p6q853gKFibe1uw+dQWWCF/SuJ1wvs4p2uHTzUCxnginAcSdLiRqukUPSlZVN+Md" +
-                        "BXLEhMCOvkkrY4yDIcWDDKBJH7BRtI4hJ7fDEypC1e65QT5pYHkYySWrNku65zGfS2w6VccUYyXy2hqulJYKg" +
-                        "QzEOoAj7CyULIDMnab/OYKJYcOcg98VbKBhh91GrCIXtQBsba5TD93lJNjIaznhJlatvB+QkWYbXfhNA==").toByteString()
-            )
-            .build()
 
-        assertThrows(InvalidSignatureException::class.java) {
-            TransactId.isInvoiceRequestValid(invoiceRequestInvalidSignature.toByteArray())
+        val ownersWithInvalidSignature = mutableListOf<Messages.Owner>()
+        invoiceRequestCorrupted.ownersList.forEachIndexed { index, owner ->
+            val ownerWithoutSignaturesBuilder = Messages.Owner.newBuilder()
+                .mergeFrom(owner)
+            owner.signaturesList.forEachIndexed() { signatureIndex, signature ->
+                ownerWithoutSignaturesBuilder.removeSignatures(signatureIndex)
+                ownerWithoutSignaturesBuilder.addSignatures(
+                    signatureIndex, Messages.Signature.newBuilder()
+                        .mergeFrom(signature)
+                        .setAttestation(INVALID_ATTESTATION)
+                )
+                    .build()
+            }
+            ownersWithInvalidSignature.add(index, ownerWithoutSignaturesBuilder.build())
         }
+
+        invoiceRequestCorrupted.clearOwners()
+        invoiceRequestCorrupted.addAllOwners(ownersWithInvalidSignature)
+
+
+        val exception = assertThrows(InvalidSignatureException::class.java) {
+            assert(TransactId.isInvoiceRequestValid(invoiceRequestCorrupted.build().toByteArray()))
+        }
+
+        assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION))
     }
 
     @Test
-    fun `Create and parse InvoiceRequestBinary to InvoiceRequest with PkiData`() {
+    fun `Create and parse InvoiceRequestBinary to InvoiceRequest`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemX509)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender)
+
         val invoiceRequest = TransactId.parseInvoiceRequest(invoiceRequestBinary)
-        val publicKey = CryptoModule.certificatePemToObject(keyPairPemX509.certificatePem).publicKey
 
-        assert(invoiceRequest.amount == TestData.InvoiceRequest.INVOICE_REQUEST_DATA.amount)
-        assert(invoiceRequest.memo == TestData.InvoiceRequest.INVOICE_REQUEST_DATA.memo)
-        assert(invoiceRequest.notificationUrl == TestData.InvoiceRequest.INVOICE_REQUEST_DATA.notificationUrl)
-        assert(invoiceRequest.pkiData == keyPairPemX509.certificatePem)
-        assert(invoiceRequest.pkiType == keyPairPemX509.type.value)
-        assert(invoiceRequest.senderPublicKey == CryptoModule.objectToPublicKeyPem(publicKey))
-        assert(!invoiceRequest.signature.isNullOrBlank())
-    }
+        assert(INVOICE_REQUEST_DATA.amount == invoiceRequest.amount)
+        assert(INVOICE_REQUEST_DATA.memo == invoiceRequest.memo)
+        assert(INVOICE_REQUEST_DATA.notificationUrl == invoiceRequest.notificationUrl)
 
-    @Test
-    fun `Create and parse InvoiceRequestBinary to InvoiceRequest without PkiData`() {
-        val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, keyPairPemNone)
-        val invoiceRequest = TransactId.parseInvoiceRequest(invoiceRequestBinary)
-        val publicKey = CryptoModule.certificatePemToObject(keyPairPemNone.certificatePem).publicKey
+        assert(invoiceRequest.owners.size == 2)
+        invoiceRequest.owners.forEachIndexed() { index, owner ->
+            assert(owner.isPrimaryForTransaction == owners[index].isPrimaryForTransaction)
+            owner.pkiDataSet.forEachIndexed { pkiDataIndex, pkiData ->
+                val ownerPkiData = PRIMARY_OWNER_PKI_X509SHA256.pkiDataParametersSets[pkiDataIndex]
+                assert(pkiData.type == ownerPkiData.type)
+                assert(pkiData.attestation == ownerPkiData.attestation)
+                assert(pkiData.certificatePem == ownerPkiData.certificatePem)
+                assert(!pkiData.signature.isNullOrBlank())
+            }
+        }
 
-        assert(invoiceRequest.amount == TestData.InvoiceRequest.INVOICE_REQUEST_DATA.amount)
-        assert(invoiceRequest.memo == TestData.InvoiceRequest.INVOICE_REQUEST_DATA.memo)
-        assert(invoiceRequest.notificationUrl == TestData.InvoiceRequest.INVOICE_REQUEST_DATA.notificationUrl)
-        assert(invoiceRequest.pkiData == keyPairPemNone.certificatePem)
-        assert(invoiceRequest.pkiType == keyPairPemNone.type.value)
-        assert(invoiceRequest.senderPublicKey == CryptoModule.objectToPublicKeyPem(publicKey))
-        assert(invoiceRequest.signature.isNullOrBlank())
+        assert(sender.pkiDataParameters.type == invoiceRequest.senderPkiType)
+        assert(sender.pkiDataParameters.certificatePem == invoiceRequest.senderPkiData)
+        assert(!invoiceRequest.senderSignature.isNullOrBlank())
     }
 
     @Test
     fun `Validate invalid InvoiceRequestBinary`() {
-        assertThrows(InvalidObjectException::class.java) {
+        val exception = assertThrows(InvalidObjectException::class.java) {
             TransactId.isInvoiceRequestValid("fakeInvoiceRequest".toByteArray())
         }
+
+        assert(exception.message?.contains("Invalid object for: invoiceRequest") ?: false)
     }
 
+
     @Test
-    fun `Create and validate PaymentRequestBinary with PkiData`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemX509)
+    fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
 
     @Test
-    fun `Create and invalid PaymentRequestBinary with PkiData and invalid certificate chain`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, invalidCertKeyPairPemX509)
+    fun `Create and validate PaymentRequestBinary, Owners and Sender without PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_NONE,
+            NO_PRIMARY_OWNER_PKI_NONE
+        )
+        val sender = SENDER_PKI_NONE
 
-        assertThrows(InvalidCertificateChainException::class.java) {
-            TransactId.isPaymentRequestValid(paymentRequestBinary)
-        }
-    }
-
-    @Test
-    fun `Create and validate PaymentRequestBinary without PkiData`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemNone)
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
 
     @Test
-    fun `Create and validate invalid signature for PaymentRequestBinary with PkiData`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemX509)
-        val paymentRequestInvalidSignature = Protos.PaymentRequest.newBuilder()
-            .mergeFrom(paymentRequestBinary)
-            .setSignature(
-                ("OJ5cmg/1HHvmnAIlEYhu7GLGHISeZTYehmMA5uvmakxB/qZDduhw7ZKgxs8hFf/SiY0m/Nw/aICAbxtighLG3Bn+jRTy" +
-                        "x5lGECceuLeCgqhrXGDK9p6q853gKFibe1uw+dQWWCF/SuJ1wvs4p2uHTzUCxnginAcSdLiRqukUPSlZVN+Md" +
-                        "BXLEhMCOvkkrY4yDIcWDDKBJH7BRtI4hJ7fDEypC1e65QT5pYHkYySWrNku65zGfS2w6VccUYyXy2hqulJYKg" +
-                        "QzEOoAj7CyULIDMnab/OYKJYcOcg98VbKBhh91GrCIXtQBsba5TD93lJNjIaznhJlatvB+QkWYbXfhNA==").toByteString()
-            )
-            .build()
+    fun `Create and validate PaymentRequestBinary, Owners with PkiData and Sender without PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_NONE
 
-        assertThrows(InvalidSignatureException::class.java) {
-            TransactId.isPaymentRequestValid(paymentRequestInvalidSignature.toByteArray())
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentRequestBinary, Owners without PkiData and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_NONE,
+            NO_PRIMARY_OWNER_PKI_NONE
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentRequestBinary, one Owner with PkiData, one Owner without data and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_NONE
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentRequestBinary, Owners with PkiData and Sender with PkiData but invalid certificate chain`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
         }
+
+        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
     }
 
     @Test
-    fun `Create and validate missing signature for PaymentRequestBinary with PkiData`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemX509)
-        val paymentRequestInvalidSignature = Protos.PaymentRequest.newBuilder()
-            .mergeFrom(paymentRequestBinary)
-            .setSignature(
-                ("OJ5cmg/1HHvmnAIlEYhu7GLGHISeZTYehmMA5uvmakxB/qZDduhw7ZKgxs8hFf/SiY0m/Nw/aICAbxtighLG3Bn+jRTy" +
-                        "x5lGECceuLeCgqhrXGDK9p6q853gKFibe1uw+dQWWCF/SuJ1wvs4p2uHTzUCxnginAcSdLiRqukUPSlZVN+Md" +
-                        "BXLEhMCOvkkrY4yDIcWDDKBJH7BRtI4hJ7fDEypC1e65QT5pYHkYySWrNku65zGfS2w6VccUYyXy2hqulJYKg" +
-                        "QzEOoAj7CyULIDMnab/OYKJYcOcg98VbKBhh91GrCIXtQBsba5TD93lJNjIaznhJlatvB+QkWYbXfhNA==").toByteString()
-            )
-            .build()
+    fun `Create and validate PaymentRequestBinary, Owners with PkiData but invalid certificate chain and Sender with PkiData`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
 
-        assertThrows(InvalidSignatureException::class.java) {
-            TransactId.isPaymentRequestValid(paymentRequestInvalidSignature.toByteArray())
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
         }
+
+        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(INVALID_ATTESTATION))
     }
 
     @Test
-    fun `Create and parse PaymentRequestBinary to PaymentRequest with PkiData`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemX509)
-        val paymentRequest = TransactId.parsePaymentRequest(paymentRequestBinary)
+    fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData and invalid Sender signature`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
 
-        assert(paymentRequest.paymentDetailsVersion == 1)
-        assert(paymentRequest.pkiData == keyPairPemX509.certificatePem)
-        assert(paymentRequest.pkiType == keyPairPemX509.type.value)
-        assert(paymentRequest.paymentDetails.network == TestData.PaymentRequest.PAYMENT_DETAILS.network)
-        assert(paymentRequest.paymentDetails.outputs == TestData.PaymentRequest.PAYMENT_DETAILS.outputs)
-        assert(paymentRequest.paymentDetails.time == TestData.PaymentRequest.PAYMENT_DETAILS.time)
-        assert(paymentRequest.paymentDetails.expires == TestData.PaymentRequest.PAYMENT_DETAILS.expires)
-        assert(paymentRequest.paymentDetails.memo == TestData.PaymentRequest.PAYMENT_DETAILS.memo)
-        assert(paymentRequest.paymentDetails.paymentUrl == TestData.PaymentRequest.PAYMENT_DETAILS.paymentUrl)
-        assert(paymentRequest.paymentDetails.merchantData == TestData.PaymentRequest.PAYMENT_DETAILS.merchantData)
-        assert(!paymentRequest.signature.isNullOrBlank())
-    }
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
 
+        val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
+            .mergeFrom(paymentRequestBinary)
+            .setPaymentDetailsVersion(4)
+            .build()
+            .toByteArray()
 
-    @Test
-    fun `Create and parse PaymentRequestBinary to PaymentRequest without PkiData`() {
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemNone)
-        val paymentRequest = TransactId.parsePaymentRequest(paymentRequestBinary)
+        val exception = assertThrows(InvalidSignatureException::class.java) {
+            assert(TransactId.isPaymentRequestValid(paymentRequestCorrupted))
+        }
 
-        assert(paymentRequest.paymentDetailsVersion == 1)
-        assert(paymentRequest.pkiData == keyPairPemNone.certificatePem)
-        assert(paymentRequest.pkiType == keyPairPemNone.type.value)
-        assert(paymentRequest.paymentDetails.network == TestData.PaymentRequest.PAYMENT_DETAILS.network)
-        assert(paymentRequest.paymentDetails.outputs == TestData.PaymentRequest.PAYMENT_DETAILS.outputs)
-        assert(paymentRequest.paymentDetails.time == TestData.PaymentRequest.PAYMENT_DETAILS.time)
-        assert(paymentRequest.paymentDetails.expires == TestData.PaymentRequest.PAYMENT_DETAILS.expires)
-        assert(paymentRequest.paymentDetails.memo == TestData.PaymentRequest.PAYMENT_DETAILS.memo)
-        assert(paymentRequest.paymentDetails.paymentUrl == TestData.PaymentRequest.PAYMENT_DETAILS.paymentUrl)
-        assert(paymentRequest.paymentDetails.merchantData == TestData.PaymentRequest.PAYMENT_DETAILS.merchantData)
-        assert(paymentRequest.signature.isNullOrBlank())
+        assert(
+            exception.message == SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
+        )
     }
 
     @Test
-    fun `Create and parse PaymentRequestBinary to PaymentRequest with version and PkiData`() {
-        val paymentVersion = 10
-        val paymentRequestBinary =
-            TransactId.createPaymentRequest(TestData.PaymentRequest.PAYMENT_DETAILS, keyPairPemX509, paymentVersion)
+    fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData and invalid Owner signature`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_NONE
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
+            .mergeFrom(paymentRequestBinary)
+
+        val ownersWithInvalidSignature = mutableListOf<Messages.Owner>()
+        paymentRequestCorrupted.ownersList.forEachIndexed { index, owner ->
+            val ownerWithoutSignaturesBuilder = Messages.Owner.newBuilder()
+                .mergeFrom(owner)
+            owner.signaturesList.forEachIndexed() { signatureIndex, signature ->
+                ownerWithoutSignaturesBuilder.removeSignatures(signatureIndex)
+                ownerWithoutSignaturesBuilder.addSignatures(
+                    signatureIndex, Messages.Signature.newBuilder()
+                        .mergeFrom(signature)
+                        .setAttestation(INVALID_ATTESTATION)
+                )
+                    .build()
+            }
+            ownersWithInvalidSignature.add(index, ownerWithoutSignaturesBuilder.build())
+        }
+
+        paymentRequestCorrupted.clearOwners()
+        paymentRequestCorrupted.addAllOwners(ownersWithInvalidSignature)
+
+
+        val exception = assertThrows(InvalidSignatureException::class.java) {
+            assert(TransactId.isPaymentRequestValid(paymentRequestCorrupted.build().toByteArray()))
+        }
+
+        assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION))
+    }
+
+    @Test
+    fun `Create and parse PaymentRequestBinary to PaymentRequest`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
         val paymentRequest = TransactId.parsePaymentRequest(paymentRequestBinary)
 
-        assert(paymentRequest.paymentDetailsVersion == paymentVersion)
-        assert(paymentRequest.pkiData == keyPairPemX509.certificatePem)
-        assert(paymentRequest.pkiType == keyPairPemX509.type.value)
-        assert(paymentRequest.paymentDetails.network == TestData.PaymentRequest.PAYMENT_DETAILS.network)
-        assert(paymentRequest.paymentDetails.outputs == TestData.PaymentRequest.PAYMENT_DETAILS.outputs)
-        assert(paymentRequest.paymentDetails.time == TestData.PaymentRequest.PAYMENT_DETAILS.time)
-        assert(paymentRequest.paymentDetails.expires == TestData.PaymentRequest.PAYMENT_DETAILS.expires)
-        assert(paymentRequest.paymentDetails.memo == TestData.PaymentRequest.PAYMENT_DETAILS.memo)
-        assert(paymentRequest.paymentDetails.paymentUrl == TestData.PaymentRequest.PAYMENT_DETAILS.paymentUrl)
-        assert(paymentRequest.paymentDetails.merchantData == TestData.PaymentRequest.PAYMENT_DETAILS.merchantData)
-        assert(!paymentRequest.signature.isNullOrBlank())
+        val paymentDetails = paymentRequest.paymentParameters
+
+        assert(paymentDetails.network == PAYMENT_DETAILS.network)
+        assert(paymentDetails.outputs == PAYMENT_DETAILS.outputs)
+        assert(paymentDetails.time == PAYMENT_DETAILS.time)
+        assert(paymentDetails.expires == PAYMENT_DETAILS.expires)
+        assert(paymentDetails.memo == PAYMENT_DETAILS.memo)
+        assert(paymentDetails.paymentUrl == PAYMENT_DETAILS.paymentUrl)
+        assert(paymentDetails.merchantData == PAYMENT_DETAILS.merchantData)
+
+        assert(paymentRequest.owners.size == 2)
+        paymentRequest.owners.forEachIndexed() { index, owner ->
+            assert(owner.isPrimaryForTransaction == owners[index].isPrimaryForTransaction)
+            owner.pkiDataSet.forEachIndexed { pkiDataIndex, pkiData ->
+                val ownerPkiData = PRIMARY_OWNER_PKI_X509SHA256.pkiDataParametersSets[pkiDataIndex]
+                assert(pkiData.type == ownerPkiData.type)
+                assert(pkiData.attestation == ownerPkiData.attestation)
+                assert(pkiData.certificatePem == ownerPkiData.certificatePem)
+                assert(!pkiData.signature.isNullOrBlank())
+            }
+        }
+
+        assert(sender.pkiDataParameters.type == paymentRequest.senderPkiType)
+        assert(sender.pkiDataParameters.certificatePem == paymentRequest.senderPkiData)
+        assert(!paymentRequest.senderSignature.isNullOrBlank())
     }
 
     @Test
     fun `Validate invalid PaymentRequestBinary`() {
-        assertThrows(InvalidObjectException::class.java) {
+        val exception = assertThrows(InvalidObjectException::class.java) {
             TransactId.isPaymentRequestValid("fakePaymentRequest".toByteArray())
         }
+
+        assert(exception.message?.contains("Invalid object for: paymentRequest") ?: false)
     }
 
     @Test

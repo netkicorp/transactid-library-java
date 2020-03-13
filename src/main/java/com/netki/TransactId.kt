@@ -3,10 +3,7 @@ package com.netki
 import com.netki.bip75.config.Bip75Factory
 import com.netki.bip75.main.Bip75
 import com.netki.exceptions.*
-import com.netki.model.InvoiceRequestParameters
-import com.netki.model.KeyPairPem
-import com.netki.model.Payment
-import com.netki.model.PaymentDetails
+import com.netki.model.*
 
 /**
  * Generate Bip75 protocol messages.
@@ -24,11 +21,18 @@ object TransactId {
      * Create InvoiceRequest message.
      *
      * @param invoiceRequestParameters data to create the InvoiceRequest.
-     * @param keyPairPem keys to do crypto operations for the InvoiceRequest.
+     * @param ownerParameters of the accounts for this transaction.
+     * @param senderParameters of the protocol message.
      * @return binary object of the message created.
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
-    fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters, keyPairPem: KeyPairPem) =
-        bip75.createInvoiceRequest(invoiceRequestParameters, keyPairPem)
+    @Throws(InvalidOwnersException::class)
+    fun createInvoiceRequest(
+        invoiceRequestParameters: InvoiceRequestParameters,
+        ownerParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters
+    ) =
+        bip75.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
 
     /**
      * Validate if a binary InvoiceRequest is valid.
@@ -63,16 +67,20 @@ object TransactId {
     /**
      * Create binary PaymentRequest.
      *
-     * @param paymentDetails data to create the PaymentRequest.
-     * @param keyPairPem keys to do crypto operations for the invoice request.
-     * @param paymentDetailsVersion version of the PaymentDetails message.
+     * @param paymentParameters data to create the PaymentRequest.
+     * @param ownerParameters of the accounts for this transaction.
+     * @param senderParameters of the protocol message.
+     * @param paymentParametersVersion version of the PaymentDetails message.
      * @return binary object of the message created.
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
+    @Throws(InvalidOwnersException::class)
     fun createPaymentRequest(
-        paymentDetails: PaymentDetails,
-        keyPairPem: KeyPairPem,
-        paymentDetailsVersion: Int = 1
-    ) = bip75.createPaymentRequest(paymentDetails, keyPairPem, paymentDetailsVersion)
+        paymentParameters: PaymentParameters,
+        ownerParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters,
+        paymentParametersVersion: Int = 1
+    ) = bip75.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentParametersVersion)
 
     /**
      * Validate if a binary PaymentRequest is valid.
