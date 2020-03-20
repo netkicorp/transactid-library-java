@@ -7,8 +7,8 @@ import java.io.FileNotFoundException
 internal class FilesUtilTest {
 
     @Test
-    fun `Get the files from keystore resources folder`() {
-        val files = FilesUtil.getFilesFromDirectory("keystore")
+    fun `Get the files from certificates resources folder`() {
+        val files = FilesUtil.getFilesFromDirectory("certificates")
 
         assert(files.isNotEmpty())
     }

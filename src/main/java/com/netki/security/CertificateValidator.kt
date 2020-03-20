@@ -2,18 +2,24 @@ package com.netki.security
 
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidCertificateException
-import com.netki.exceptions.InvalidKeystoreException
+import com.netki.model.CertificateChain
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CERTIFICATE_CHAINS_NOT_FOUND
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_NOT_SELF_SIGNED_ERROR
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_SELF_SIGNED_ERROR
 import com.netki.util.FilesUtil
 import java.io.FileInputStream
 import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException
-import java.security.KeyStore
 import java.security.SignatureException
 import java.security.cert.*
 
 /**
  * Class with methods to validate things related with certificates
  */
+
+private const val CERT_EXTENSION = ".cer"
+private const val CERT_FOLDER = "certificates"
+
 object CertificateValidator {
 
     /**
@@ -22,88 +28,96 @@ object CertificateValidator {
      * @param clientCertificate certificate to validate.
      * @return true if the chain is valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
-     * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
      */
     @Throws(
-        InvalidKeystoreException::class,
         InvalidCertificateException::class,
         InvalidCertificateChainException::class
     )
     fun validateCertificateChain(clientCertificate: X509Certificate): Boolean {
-        val keystore = getKeyStore()
-        val certificates = getCertificates(keystore)
-        val rootCertificates = certificates.filter { it.isSelfSigned() }
-        val intermediateCertificates = certificates.filter { !it.isSelfSigned() }
-        return validateCertificateChain(clientCertificate, intermediateCertificates, rootCertificates)
+        val certificates = getCertificates()
+        val certificateChains = convertToCertificateChains(certificates)
+        return validateCertificateChain(clientCertificate, certificateChains)
     }
 
     /**
      * Method to validate if a chain of certificates is valid.
      *
      * @param clientCertificate certificate to validate.
-     * @param intermediateCertificates list of all intermediates certificates to validate in the chain.
-     * @param rootCertificates list of all root certificates to validate in the chain.
+     * @param certificateChains list of all certificate chains to use to validate the client certificate.
      * @return true if the chain is valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
      */
     @Throws(
-        InvalidCertificateException::class,
-        InvalidCertificateChainException::class
+        InvalidCertificateException::class
     )
     fun validateCertificateChain(
-        clientCertificate: X509Certificate,
-        intermediateCertificates: List<X509Certificate>,
-        rootCertificates: List<X509Certificate>
+        clientCertificate: X509Certificate, certificateChains: List<CertificateChain>
     ): Boolean {
-        validateCertificatesInput(clientCertificate, intermediateCertificates, rootCertificates)
+        certificateChains.forEach { certificateChain ->
+            validateCertificatesInput(clientCertificate, certificateChain)
+        }
 
-        return isCertPathValid(clientCertificate, intermediateCertificates, rootCertificates)
+        certificateChains.forEach { certificateChain ->
+            if (isCertPathValid(clientCertificate, certificateChain)) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun validateCertificatesInput(
         clientCertificate: X509Certificate,
-        intermediateCertificates: List<X509Certificate>,
-        rootCertificates: List<X509Certificate>
+        certificateChains: CertificateChain
     ) {
         require(!clientCertificate.isSelfSigned()) {
-            throw InvalidCertificateException("Client certificate: ${clientCertificate.issuerDN} is self signed")
+            throw InvalidCertificateException(
+                CERTIFICATE_VALIDATION_SELF_SIGNED_ERROR.format(
+                    "Client",
+                    clientCertificate.issuerDN
+                )
+            )
         }
 
-        for (intermediate in intermediateCertificates) {
+        certificateChains.intermediateCertificates.forEach { intermediate ->
             require(!intermediate.isSelfSigned()) {
-                throw InvalidCertificateException("Intermediate certificate: ${intermediate.issuerDN} is self signed")
+                throw InvalidCertificateException(
+                    CERTIFICATE_VALIDATION_SELF_SIGNED_ERROR.format(
+                        "Intermediate",
+                        intermediate.issuerDN
+                    )
+                )
             }
         }
 
-        for (root in rootCertificates) {
-            require(root.isSelfSigned()) {
-                throw InvalidCertificateException("Root certificate: ${root.issuerDN} is not self signed")
-            }
+
+        require(certificateChains.rootCertificate.isSelfSigned()) {
+            throw InvalidCertificateException(
+                CERTIFICATE_VALIDATION_NOT_SELF_SIGNED_ERROR.format(
+                    "Root",
+                    certificateChains.rootCertificate.issuerDN
+                )
+            )
         }
     }
 
     private fun isCertPathValid(
         clientCertificate: X509Certificate,
-        intermediateCertificates: List<X509Certificate>,
-        rootCertificates: List<X509Certificate>
+        certificateChains: CertificateChain
     ): Boolean {
         val selector = X509CertSelector()
         selector.certificate = clientCertificate
 
         val trustAnchors = HashSet<TrustAnchor>()
-        for (root in rootCertificates) {
-            trustAnchors.add(TrustAnchor(root, null))
-        }
+        trustAnchors.add(TrustAnchor(certificateChains.rootCertificate, null))
 
         val pkixParameters = PKIXBuilderParameters(trustAnchors, selector)
         pkixParameters.isRevocationEnabled = false
 
-        val certificatesList = intermediateCertificates.toMutableList()
-        certificatesList.add(clientCertificate)
+        certificateChains.intermediateCertificates.add(clientCertificate)
         val intermediateCertStore: CertStore =
             CertStore.getInstance(
                 "Collection",
-                CollectionCertStoreParameters(certificatesList),
+                CollectionCertStoreParameters(certificateChains.intermediateCertificates),
                 "BC"
             )
         pkixParameters.addCertStore(intermediateCertStore)
@@ -120,38 +134,39 @@ object CertificateValidator {
         }
     }
 
-    private fun getKeyStore(): KeyStore {
-        val keyStoreFiles = try {
-            FilesUtil.getFilesFromDirectory("keystore").filter { it.name.endsWith("jks") }
+    private fun getCertificates(): List<List<X509Certificate>> {
+        val certificatesList = mutableListOf<List<X509Certificate>>()
+        val certificateChainFiles = try {
+            FilesUtil.getFilesFromDirectory(CERT_FOLDER).filter { it.name.endsWith(CERT_EXTENSION) }
         } catch (exception: Exception) {
-            throw InvalidKeystoreException(exception.message, exception)
+            throw InvalidCertificateChainException(exception.message, exception)
         }
 
-        check(keyStoreFiles.isNotEmpty()) {
-            throw InvalidKeystoreException("Keystore not found, make sure to put one in /src/main/resources/keystore folder")
+        check(certificateChainFiles.isNotEmpty()) {
+            throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_CERTIFICATE_CHAINS_NOT_FOUND)
         }
 
-        check(keyStoreFiles.size == 1) {
-            throw InvalidKeystoreException("More than one keystore found, make sure you have only one")
+        val cf = CertificateFactory.getInstance("X.509")
+        certificateChainFiles.forEach { certFile ->
+            certificatesList.add(cf.generateCertificates(FileInputStream(certFile)).map { it as X509Certificate })
         }
 
-        val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-        keyStore.load(FileInputStream(keyStoreFiles[0]), null)
-        return keyStore
+        return certificatesList
     }
 
-    private fun getCertificates(keyStore: KeyStore): List<X509Certificate> {
-        val certificates = mutableListOf<X509Certificate>()
-        val aliases = keyStore.aliases()
-        while (aliases.hasMoreElements()) {
-            val alias = aliases.nextElement()
-            val certificate = keyStore.getCertificate(alias)
-            check(certificate is X509Certificate) {
-                throw InvalidKeystoreException("Looks like the keystore contains more than the chain of certificates")
-            }
-            certificates.add(keyStore.getCertificate(alias) as X509Certificate)
+    private fun convertToCertificateChains(certificates: List<List<X509Certificate>>): List<CertificateChain> {
+        val certificateChains = mutableListOf<CertificateChain>()
+
+        certificates.forEach { chain ->
+            certificateChains.add(
+                CertificateChain(
+                    chain.first { it.isSelfSigned() },
+                    chain.filter { !it.isSelfSigned() }.toMutableList()
+                )
+            )
         }
-        return certificates
+
+        return certificateChains
     }
 }
 
