@@ -33,14 +33,12 @@ interface Bip75 {
      * @exception InvalidSignatureException if the signature in the binary is not valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
      * @exception InvalidCertificateChainException if the certificate chain is not valid.
-     * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
      */
     @Throws(
         InvalidObjectException::class,
         InvalidSignatureException::class,
         InvalidCertificateException::class,
-        InvalidCertificateChainException::class,
-        InvalidKeystoreException::class
+        InvalidCertificateChainException::class
     )
     fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean
 
@@ -81,14 +79,12 @@ interface Bip75 {
      * @exception InvalidSignatureException if the signature in the binary is not valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
      * @exception InvalidCertificateChainException if the certificate chain is not valid.
-     * @exception InvalidKeystoreException if there is a problem with the Keystore containing the certificate chain.
      */
     @Throws(
         InvalidObjectException::class,
         InvalidSignatureException::class,
         InvalidCertificateException::class,
-        InvalidCertificateChainException::class,
-        InvalidKeystoreException::class
+        InvalidCertificateChainException::class
     )
     fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean
 
