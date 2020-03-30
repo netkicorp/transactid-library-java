@@ -15,7 +15,7 @@ ext {
     jacocoVersion = '0.8.4'
 
     groupId = 'com.netki'
-    versionRelease = '0.1.0-alpha2'
+    versionRelease = '0.1.0-alpha3'
     artifactId = 'transactid'
 }
 
@@ -226,5 +226,21 @@ model {
 
     tasks.publishMavenJavaPublicationToMavenRepository {
         dependsOn project.tasks.signArchives
+    }
+}
+
+tasks.withType(Test) {
+    testLogging {
+        events "skipped", "passed", "failed"
+        showStandardStreams false
+        showExceptions false
+        afterSuite { desc, result ->
+            if (!desc.parent) {
+                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
+                def startItem = '|  ', endItem = '  |'
+                def repeatLength = startItem.length() + output.length() + endItem.length()
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+            }
+        }
     }
 }
