@@ -9,7 +9,6 @@ import com.netki.model.*
 import com.netki.security.CertificateValidator
 import com.netki.security.CryptoModule
 import com.netki.util.ErrorInformation.PARSE_BINARY_MESSAGE_INVALID_INPUT
-import java.security.cert.X509Certificate
 import java.sql.Timestamp
 
 /**
@@ -480,9 +479,10 @@ fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRequest = M
  *
  * @return OwnerSignaturesWithCertificate.
  */
-fun List<Messages.Owner>.getSignatures(): OwnerSignaturesWithCertificate {
-    val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
+fun List<Messages.Owner>.getSignatures(): List<OwnerSignaturesWithCertificate> {
+    val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
     this.forEach { owner ->
+        val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
         owner.signaturesList.forEach { signature ->
             when (signature.pkiType) {
                 PkiType.NONE.value -> {
@@ -490,14 +490,15 @@ fun List<Messages.Owner>.getSignatures(): OwnerSignaturesWithCertificate {
                 }
                 else -> {
                     ownerSignaturesWithCertificate[signature.attestation] = Pair(
-                        CryptoModule.certificatePemToObject(signature.pkiData.toStringLocal()) as X509Certificate,
+                        CryptoModule.certificatePemToClientCertificate(signature.pkiData.toStringLocal()),
                         signature.signature.toStringLocal()
                     )
                 }
             }
         }
+        listOwnerSignaturesWithCertificate.add(ownerSignaturesWithCertificate)
     }
-    return ownerSignaturesWithCertificate
+    return listOwnerSignaturesWithCertificate
 }
 
 /**
@@ -533,8 +534,7 @@ fun String.validateCertificateChain(pkiType: PkiType): Boolean {
     return when (pkiType) {
         PkiType.NONE -> true
         PkiType.X509SHA256 -> {
-            val x509Certificate = CryptoModule.certificatePemToObject(this) as X509Certificate
-            CertificateValidator.validateCertificateChain(x509Certificate)
+            CertificateValidator.validateCertificateChain(this)
         }
     }
 }

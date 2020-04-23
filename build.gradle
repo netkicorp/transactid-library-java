@@ -71,6 +71,7 @@ jacocoTestReport {
             fileTree(dir: it,
                     exclude: [
                             'com/netki/bip75/protocol/**',
+                            'com/netki/model/**'
                     ])
         })
     }

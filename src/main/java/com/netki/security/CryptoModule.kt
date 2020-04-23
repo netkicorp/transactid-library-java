@@ -1,6 +1,7 @@
 package com.netki.security
 
-import com.netki.exceptions.InvalidSignatureException
+import com.netki.exceptions.InvalidCertificateException
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.cert.X509CertificateHolder
@@ -10,10 +11,13 @@ import org.bouncycastle.openssl.PEMParser
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemWriter
+import java.io.ByteArrayInputStream
 import java.io.StringReader
 import java.io.StringWriter
 import java.security.*
 import java.security.cert.Certificate
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
 import java.util.Base64.getDecoder
 import java.util.Base64.getEncoder
 
@@ -163,6 +167,50 @@ object CryptoModule {
             else -> throw IllegalArgumentException("String not supported")
         }
     }
+
+    /**
+     * Extract client certificate from Certificates in PEM format.
+     *
+     * @param certificatesPem string.
+     * @return Client certificate.
+     */
+    fun certificatePemToClientCertificate(certificatesPem: String): X509Certificate {
+        val certificates = certificatesPemToObject(certificatesPem)
+        return getClientCertificate(certificates)
+    }
+
+    /**
+     * Convert certificates in PEM format to Object.
+     *
+     * @param certificatesPem string.
+     * @return List of certificates.
+     */
+    fun certificatesPemToObject(certificatesPem: String): List<X509Certificate> {
+        val cf = CertificateFactory.getInstance("X.509")
+        return cf.generateCertificates(ByteArrayInputStream(certificatesPem.toByteArray(Charsets.UTF_8))) as List<X509Certificate>
+    }
+
+    /**
+     * Extract client certificate from a list of certificates.
+     *
+     * @param certificates including the client certificate.
+     * @return Client certificate.
+     * @throws InvalidCertificateException if the client certificate is not found
+     */
+    fun getClientCertificate(certificates: List<X509Certificate>) = try {
+        certificates.first { it.isClientCertificate() }
+    } catch (exception: NoSuchElementException) {
+        throw InvalidCertificateException(CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND)
+    }
+
+    /**
+     * Extract intermediate certificates from a list of certificates.
+     *
+     * @param certificates including the intermediate certificates.
+     * @return list of intermediate certificates.
+     */
+    fun getIntermediateCertificates(certificates: List<X509Certificate>) =
+        certificates.filter { it.isIntermediateCertificate() }
 
     /**
      * Transform PrivateKey to String in PEM format.

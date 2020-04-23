@@ -111,14 +111,16 @@ class Bip75ServiceNetki() : Bip75Service {
         val invoiceRequestWithoutOwnerSignatureHash =
             CryptoModule.getHash256(invoiceRequestWithoutOwnersSignatureBuilder.build().toByteArray())
 
-        signatures.forEach { (key, value) ->
-            val isOwnerSignatureValid = CryptoModule.validateSignature(
-                value.second,
-                invoiceRequestWithoutOwnerSignatureHash,
-                value.first
-            )
-            check(isOwnerSignatureValid) {
-                throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
+        signatures.forEach { signature ->
+            signature.forEach { (key, value) ->
+                val isOwnerSignatureValid = CryptoModule.validateSignature(
+                    value.second,
+                    invoiceRequestWithoutOwnerSignatureHash,
+                    value.first
+                )
+                check(isOwnerSignatureValid) {
+                    throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
+                }
             }
         }
 
@@ -221,17 +223,19 @@ class Bip75ServiceNetki() : Bip75Service {
         val invoiceRequestWithoutOwnerSignatureHash =
             CryptoModule.getHash256(paymentRequestWithoutOwnersSignatureBuilder.build().toByteArray())
 
-        signatures.forEach { (key, value) ->
-            val isOwnerSignatureValid = CryptoModule.validateSignature(
-                value.second,
-                invoiceRequestWithoutOwnerSignatureHash,
-                value.first
-            )
-            check(isOwnerSignatureValid) {
-                throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
+        signatures.forEach { signature ->
+            signature.forEach { (key, value) ->
+                val isOwnerSignatureValid = CryptoModule.validateSignature(
+                    value.second,
+                    invoiceRequestWithoutOwnerSignatureHash,
+                    value.first
+                )
+                check(isOwnerSignatureValid) {
+                    throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
+                }
             }
         }
-
+        
         return true
     }
 
