@@ -2,7 +2,9 @@ package com.netki.security
 
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.model.CertificateChain
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
+import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.INTERMEDIATE_CERTIFICATE_RANDOM
@@ -15,29 +17,28 @@ import java.security.cert.X509Certificate
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class CertificateValidatorTest {
 
-    private val clientCertificateChainOne =
-        CryptoModule.certificatePemToObject(CLIENT_CERTIFICATE_CHAIN_ONE) as X509Certificate
-    private val clientCertificateChainTwo =
-        CryptoModule.certificatePemToObject(CLIENT_CERTIFICATE_CHAIN_TWO) as X509Certificate
     private val rootCertificateRandom = CryptoModule.certificatePemToObject(ROOT_CERTIFICATE_RANDOM) as X509Certificate
     private val intermediateCertificateRandom =
         CryptoModule.certificatePemToObject(INTERMEDIATE_CERTIFICATE_RANDOM) as X509Certificate
-    private val clientCertificateRandom =
-        CryptoModule.certificatePemToObject(CLIENT_CERTIFICATE_RANDOM) as X509Certificate
 
     @Test
     fun `Verify correct certificate chain for client certificate one`() {
-        assert(CertificateValidator.validateCertificateChain(clientCertificateChainOne))
+        assert(CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_ONE))
     }
 
     @Test
     fun `Verify correct certificate chain for client certificate two`() {
-        assert(CertificateValidator.validateCertificateChain(clientCertificateChainTwo))
+        assert(CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_TWO))
+    }
+
+    @Test
+    fun `Verify correct certificate chain for client certificate three bundle`() {
+        assert(CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE))
     }
 
     @Test
     fun `Verify incorrect certificate chain for client certificate`() {
-        assert(!CertificateValidator.validateCertificateChain(clientCertificateRandom))
+        assert(!CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM))
     }
 
     @Test
@@ -46,9 +47,9 @@ internal class CertificateValidatorTest {
             val certificateChains = listOf(
                 CertificateChain(intermediateCertificateRandom, mutableListOf(intermediateCertificateRandom))
             )
-            CertificateValidator.validateCertificateChain(clientCertificateRandom, certificateChains)
+            CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM, certificateChains)
         }
-        assert(exception.message?.contains("is not self signed") ?: false)
+        assert(exception.message?.contains("is not a valid") ?: false)
     }
 
     @Test
@@ -57,9 +58,9 @@ internal class CertificateValidatorTest {
             val certificateChains = listOf(
                 CertificateChain(rootCertificateRandom, mutableListOf(rootCertificateRandom))
             )
-            CertificateValidator.validateCertificateChain(clientCertificateRandom, certificateChains)
+            CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM, certificateChains)
         }
-        assert(exception.message?.contains("is self signed") ?: false)
+        assert(exception.message?.contains("is not a valid") ?: false)
     }
 
     @Test
@@ -68,9 +69,9 @@ internal class CertificateValidatorTest {
             val certificateChains = listOf(
                 CertificateChain(rootCertificateRandom, mutableListOf(intermediateCertificateRandom))
             )
-            CertificateValidator.validateCertificateChain(rootCertificateRandom, certificateChains)
+            CertificateValidator.validateCertificateChain(ROOT_CERTIFICATE_RANDOM, certificateChains)
         }
-        assert(exception.message?.contains("is self signed") ?: false)
+        assert(exception.message?.contains(CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND) ?: false)
     }
 
     @Test
