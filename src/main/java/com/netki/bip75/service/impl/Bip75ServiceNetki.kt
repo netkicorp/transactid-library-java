@@ -184,7 +184,7 @@ class Bip75ServiceNetki : Bip75Service {
                 }
             }
         }
-
+        
         return true
     }
 
