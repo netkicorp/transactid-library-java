@@ -15,6 +15,7 @@ import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_NONE
 import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_X509SHA256
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_NONE
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
+import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE
 import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
 import com.netki.util.TestData.Senders.SENDER_PKI_NONE
@@ -37,6 +38,33 @@ internal class TransactIdTest {
     fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData`() {
         val owners = listOf(
             PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owner and Sender with PkiData and bundle certificate`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val invoiceRequestBinary =
+            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+
+        assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and bundle certificate`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE,
             NO_PRIMARY_OWNER_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
@@ -250,11 +278,35 @@ internal class TransactIdTest {
         assert(exception.message?.contains("Invalid object for: invoiceRequest") ?: false)
     }
 
-
     @Test
     fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData`() {
         val owners = listOf(
             PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentRequestBinary, Owner and Sender with PkiData bundle`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE
+        )
+        val sender = SENDER_PKI_X509SHA256
+
+        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+
+        assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData bundle`() {
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE,
             NO_PRIMARY_OWNER_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256

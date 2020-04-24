@@ -4,10 +4,12 @@ import com.netki.model.*
 import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
+import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_TWO
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256
+import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE
 import com.netki.util.TestData.PkiData.PKI_DATA_OWNER_NONE
 import com.netki.util.TestData.PkiData.PKI_DATA_SENDER_NONE
@@ -302,6 +304,115 @@ object TestData {
                 "UWlNlu5Eu6TuAdCmY3KJNrnCERq+AJ+t2fakA5CL53EzpDmXDPmDKS7iEaOOXw2M\n" +
                 "UM5JZTOfmyf5CwE2lNBZryI=\n" +
                 "-----END PRIVATE KEY-----\n"
+
+        const val CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE = "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDkjCCAnqgAwIBAgIEXnQF2jANBgkqhkiG9w0BAQsFADBnMQswCQYDVQQGEwJU\n" +
+                "VzEQMA4GA1UECAwHUm9vdFR3bzEQMA4GA1UEBwwHUm9vdFR3bzEQMA4GA1UECgwH\n" +
+                "Um9vdFR3bzEQMA4GA1UECwwHUm9vdFR3bzEQMA4GA1UEAwwHUm9vdFR3bzAeFw0y\n" +
+                "MDAzMTkyMzUyNThaFw0yMTAzMTkyMzUyNThaMIGPMQswCQYDVQQGEwJUVzEYMBYG\n" +
+                "A1UECAwPSW50ZXJtZWRpYXRlVHdvMRgwFgYDVQQHDA9JbnRlcm1lZGlhdGVUd28x\n" +
+                "GDAWBgNVBAoMD0ludGVybWVkaWF0ZVR3bzEYMBYGA1UECwwPSW50ZXJtZWRpYXRl\n" +
+                "VHdvMRgwFgYDVQQDDA9JbnRlcm1lZGlhdGVUd28wggEiMA0GCSqGSIb3DQEBAQUA\n" +
+                "A4IBDwAwggEKAoIBAQDVJEP4dvW0xHOeMB0MRygxXOm4hEVE+A37BC3bxNgiJ1Fs\n" +
+                "4s64C04WozcGnbN299tAe8WQtz4pF6f1GO7747YaxPOYRPYF9lmdYml6VGked44H\n" +
+                "2/dbREDQzY8ky5oBNzuXe//rrFBRr7TIBycWM8a8f8zqkp+qRNDDMyzGMLRpz1V4\n" +
+                "JhnOOZIeGHz18r9VD+EHJqX3XTBLmaM4LpEmu96BzVtfIRaFaHSn3uaki/xTGbs1\n" +
+                "FzjST9PBfRdjdOT07ggpVi0SDSeGMZksZaPxVB8pdhlg28tXC6Jg8iiJ9oRZbD27\n" +
+                "kJxjSxjMasSKm4y9jGyWZXP8ykk1vUaOceE+I5T5AgMBAAGjHTAbMAwGA1UdEwQF\n" +
+                "MAMBAf8wCwYDVR0PBAQDAgEGMA0GCSqGSIb3DQEBCwUAA4IBAQBjEBeablJOLo+8\n" +
+                "2f+FCvM4Bm7xGR6rZEkWWva6hW5IUF63V3/a5dOyLbhTlOMYC24DnKL79oofFQHC\n" +
+                "Ow2efBBn17wd3YaY7wcXda7fKZSxnzVnJslkPUBap9HwhCE8Betqu1kGZ8/5O9g7\n" +
+                "7z79MqA5hIy42RYwK24Ha4TGqWyrzdsc9M+RBox20Gxsl7GY2wYN43GNgL224AYu\n" +
+                "RfTeb0eTdQmyrusy4my732tAbodeiCQWwxQb/x8p2TbS7prPv7YKN0HjZjsGett6\n" +
+                "Q77cTzYd5oAWSmNC7w9ujS5MwCfb/fYhYV116iiYSps+85TFDT2M2llxjnAZiIe7\n" +
+                "+3W2KK5G\n" +
+                "-----END CERTIFICATE-----\n" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDfTCCAmWgAwIBAgIEXnQF+TANBgkqhkiG9w0BAQsFADCBjzELMAkGA1UEBhMC\n" +
+                "VFcxGDAWBgNVBAgMD0ludGVybWVkaWF0ZVR3bzEYMBYGA1UEBwwPSW50ZXJtZWRp\n" +
+                "YXRlVHdvMRgwFgYDVQQKDA9JbnRlcm1lZGlhdGVUd28xGDAWBgNVBAsMD0ludGVy\n" +
+                "bWVkaWF0ZVR3bzEYMBYGA1UEAwwPSW50ZXJtZWRpYXRlVHdvMB4XDTIwMDMxOTIz\n" +
+                "NTMyOVoXDTIxMDMxOTIzNTMyOVowcTELMAkGA1UEBhMCVFcxEjAQBgNVBAgMCUNs\n" +
+                "aWVudFR3bzESMBAGA1UEBwwJQ2xpZW50VHdvMRIwEAYDVQQKDAlDbGllbnRUd28x\n" +
+                "EjAQBgNVBAsMCUNsaWVudFR3bzESMBAGA1UEAwwJQ2xpZW50VHdvMIIBIjANBgkq\n" +
+                "hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjZS7RaWbKl/daUEPSqOk6JPjnKV84LAf\n" +
+                "Sw+EhvdRxO324FgvjhWfWnXMyehPzaM53qahJmtDQTg6qdi1PmikoM2dZLypzYik\n" +
+                "xJTvK+Siot/uPny5Chtt7w079ejOoEKem7tZVo7fJwp6BfvObXLt6BRJdXX20Mmy\n" +
+                "0zJH6sDGL0EZ/qJgvT3y1jdgnF/vOiqfwouCeCqtzntdEh9ryYrfiDY7bmFm8Imu\n" +
+                "2q7d50PuB2o0dq4oFUt6AML6mSgKmS2ihKCKdifvQHzdySsvIMPMTqW4KViFTxiu\n" +
+                "V+We412BNHvxUUm5WBozEutzmKpLV2R5+ckvbvsLQ9U1L6DA6nf2jQIDAQABMA0G\n" +
+                "CSqGSIb3DQEBCwUAA4IBAQB+Dfgw9N7jXsrnisk+qOH9p82FjMHyc0/R6W6PFdU2\n" +
+                "3BXWhvQTZmkDui046odoa/UB7+ia+7q3xWVYjGR898pFSkqXAcy7GMQ6+ueMFo1W\n" +
+                "Qdxg8daY5hUGJxvw6XP9POM9nABYdbmm1xyi9wg2vULoGtVfK0VSEDCFmEzcxYzO\n" +
+                "Q+Cb6Zr637DKZm1JRPloIORkIewKSc9vBw9W2IEzlgfT3fVAgmBmFlJhfn9OkdDF\n" +
+                "RPDatFu5D271ai0cZgp2nJ0OajqCi37czy5fF2KZ/RMg7sj5PwRcnLKgaieYck+Z\n" +
+                "JcbgrTguZRQi0GI2V24OiEzuGRLxQIgHuFBHUR7B820f\n" +
+                "-----END CERTIFICATE-----\n"
+
+        const val CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE = "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDaTCCAlGgAwIBAgIEXqC34zANBgkqhkiG9w0BAQsFADCBijELMAkGA1UEBhMC\n" +
+                "TVgxFzAVBgNVBAgMDkludGVybWVkaWF0ZTNiMRcwFQYDVQQHDA5JbnRlcm1lZGlh\n" +
+                "dGUzYjEXMBUGA1UECgwOSW50ZXJtZWRpYXRlM2IxFzAVBgNVBAsMDkludGVybWVk\n" +
+                "aWF0ZTNiMRcwFQYDVQQDDA5JbnRlcm1lZGlhdGUzYjAeFw0yMDA0MjIyMTMyMTla\n" +
+                "Fw0yMTA0MjIyMTMyMTlaMGIxCzAJBgNVBAYTAk1YMQ8wDQYDVQQIDAZGaW5hbDMx\n" +
+                "DzANBgNVBAcMBkZpbmFsMzEPMA0GA1UECgwGRmluYWwzMQ8wDQYDVQQLDAZGaW5h\n" +
+                "bDMxDzANBgNVBAMMBkZpbmFsMzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC\n" +
+                "ggEBALKUsw2m91fjMUI/kggbnso72SPR7JHbqxd5glMFt0cnnVf39AwKvb2jJl5o\n" +
+                "W6xcMBVwEjwjk9qv7pvPctvhM0aZerIpmG3rz1nHsBhC1P5z/DyWa4ETLtO3qJaX\n" +
+                "UZaTDeV3F0I+YjETMdAeOQLfGjBnOpowa0ODom7GjdhajB134GtTgdZeOz2B6stR\n" +
+                "w9X2e83v8wI3OyaYunUqJ6jeF/8rE7W6vfGAMHdgEImWLQsL31gU0amzlqcjiv6r\n" +
+                "nkYRqBsmsLnOaNfIAMsuyYDgsoAdRu3ripYhfRRTEVWjMYshD/05VP21lL05MyiC\n" +
+                "F/W4VIW86BYydQOipLRG3VA/sDcCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAS+v+\n" +
+                "rRgrkO4295/rj8Q9xROPWErWxH1INal9Z9wR5kGuBlPnpLdCIMUe921PaqaunprA\n" +
+                "nRqnxTKT8gNWpFJkpHZh8sJpU1si7JLdckPzWqIWkAPy0a0DM7s0uOlhpr3Xx17O\n" +
+                "WpXQVP3RNuz4Bl7FR57/1CE0xTsFJ7/ESB6etyxINyKws8HVCc0A/ZMXZC/WUY0p\n" +
+                "i+oi3ESo8azLcBwrR18oK8laYlI/mYoyFCZaSZa3Zy1zCwc/odrjKFF+oUtTclB2\n" +
+                "PFJMx1+ZokGokXph+HhwTGu3foz7Of1SOAzEtQhgmNOPMTjzFJX6Z4e3AP5z1CE6\n" +
+                "fKJlFK0XMRElxl4VlA==\n" +
+                "-----END CERTIFICATE-----\n" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDsTCCApmgAwIBAgIEXqC3EjANBgkqhkiG9w0BAQsFADCBijELMAkGA1UEBhMC\n" +
+                "bXgxFzAVBgNVBAgMDkludGVybWVkaWF0ZTNhMRcwFQYDVQQHDA5JbnRlcm1lZGlh\n" +
+                "dGUzYTEXMBUGA1UECgwOSW50ZXJtZWRpYXRlM2ExFzAVBgNVBAsMDkludGVybWVk\n" +
+                "aWF0ZTNhMRcwFQYDVQQDDA5JbnRlcm1lZGlhdGUzYTAeFw0yMDA0MjIyMTI4NTBa\n" +
+                "Fw0yMTA0MjIyMTI4NTBaMIGKMQswCQYDVQQGEwJNWDEXMBUGA1UECAwOSW50ZXJt\n" +
+                "ZWRpYXRlM2IxFzAVBgNVBAcMDkludGVybWVkaWF0ZTNiMRcwFQYDVQQKDA5JbnRl\n" +
+                "cm1lZGlhdGUzYjEXMBUGA1UECwwOSW50ZXJtZWRpYXRlM2IxFzAVBgNVBAMMDklu\n" +
+                "dGVybWVkaWF0ZTNiMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtQ79\n" +
+                "EL0bre8/AiWMlC014eIml7nXEDJYaQw+rneUJpWvREY56dLvDapmttnQfFBYw2CP\n" +
+                "9OLi6tB7EcBG5V5ip26o44UGsjDjGFSDR1SOG1vcNHnbAHBjMOiwIBIIO4SMtdCj\n" +
+                "4L8c9I6q2G0kSHTIcbjTIRGRD8KhOpIEYH/49/9ia4Q+ZOPkntkPV2vssxhouVRG\n" +
+                "QBhDdq+zgntetQ5MJ7Lh8wLLAjs9TqdPT06lyyqgM7WJKF3xT09QhehwJR4ICzTN\n" +
+                "rMVC1X+jJDSr7uh6m0e9mJ45WWuL6kAfCNAMa3NKh3MSxDwGrObfbZU60u4j+Src\n" +
+                "5UJ9+Dq7rFONSkrJWQIDAQABox0wGzAMBgNVHRMEBTADAQH/MAsGA1UdDwQEAwIB\n" +
+                "BjANBgkqhkiG9w0BAQsFAAOCAQEAWK8jWuDij/tRLAmWx6t/5NQVBVhzzQRuC9UU\n" +
+                "NCZN/HSymJpudRMeY+aeHHA0M/OkhVL1+MZPHrLVAqxHeDkQQAjxV8pidoDNDOCt\n" +
+                "ImUqVA89eYNanDw2V7AXFikPznILDoSrN+r/EhdhhKG61dor3u75prnokiO494Hn\n" +
+                "+7s03TTBFBmnAMbPwBlVjdm7wwLQejVU8iUmqCUj4IToOnFzrViUoJVosdqKXnVC\n" +
+                "9a2qAcXtyj1rDQGRcVPzsW0HrjNL/9m8d8orAwAi8GkmEolTNbSCpeenxP8dRSUJ\n" +
+                "TIG2KZxFqEDzO0Fc5sV4sUgttEWFHMyzgFRojwxf0UUB7aZsXg==\n" +
+                "-----END CERTIFICATE-----\n" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDgzCCAmugAwIBAgIEXqC21zANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJN\n" +
+                "WDEOMAwGA1UECAwFUm9vdDMxDjAMBgNVBAcMBVJvb3QzMQ4wDAYDVQQKDAVSb290\n" +
+                "MzEOMAwGA1UECwwFUm9vdDMxDjAMBgNVBAMMBVJvb3QzMB4XDTIwMDQyMjIxMjc1\n" +
+                "MVoXDTIxMDQyMjIxMjc1MVowgYoxCzAJBgNVBAYTAm14MRcwFQYDVQQIDA5JbnRl\n" +
+                "cm1lZGlhdGUzYTEXMBUGA1UEBwwOSW50ZXJtZWRpYXRlM2ExFzAVBgNVBAoMDklu\n" +
+                "dGVybWVkaWF0ZTNhMRcwFQYDVQQLDA5JbnRlcm1lZGlhdGUzYTEXMBUGA1UEAwwO\n" +
+                "SW50ZXJtZWRpYXRlM2EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDb\n" +
+                "TXkth8ikvnt9skMmRHTj8PTP8lvECKzMCudakNumsHW2UimMpT8NvwOYr5avrL2U\n" +
+                "h1z+VFHPjaFSEpWI0q5e6lf8Ezesg5+zwOQg1MhucWBchxO6uoGzkVpbFj0qqyNq\n" +
+                "caAr9yrd05umFbs/UvDT+xB8g04xnjo1jlPCDppyY3FEYw9Gkl3BsgmsBTgD2Qyc\n" +
+                "yCUBD88z+wJSBMfnQlioMf75w36s/4Ql1fwDJm3HpW8yxRsaEzA0r7kjKMSfPybI\n" +
+                "C3MtpHbKUrkU4ZRpS+MA0MpF3Ig1OY+8pgPN2Z0o3FBI3UeRrcSyzfr37oE/0yA3\n" +
+                "tIVBWhrvsDN76ECLKRG/AgMBAAGjHTAbMAwGA1UdEwQFMAMBAf8wCwYDVR0PBAQD\n" +
+                "AgEGMA0GCSqGSIb3DQEBCwUAA4IBAQB85UgdUiFjWxE53jWO4YMHqCEK8uu327TK\n" +
+                "fOVWqzTwUWvTHEHpu2HL+cO+eVpbUv82l8BE9glZytbaDw7TYRmkcuCa0BrgK8fT\n" +
+                "FdpCW2qh7zDPxFtbiQ6f4YBEaJgqGcIxAEV40mX8LL9Now81c6abWMEOOCXeZH8I\n" +
+                "umc7Vp9GRzKE9CH5jIn00aqmD5GXX+ncc9Xku2xv1RgHUNuNwTblnO7AJOzDXsFw\n" +
+                "NqLbSdigV03VPdTBWp0xfLAxQkWKQ4rFtZqVcpOIcMQzq2PjyHw3bqgoUIc3E50q\n" +
+                "wmtEx1ViS0uRnTC3dPILqjWs/01WiPoYoTQR/l1jtK8zwx9RRHpC\n" +
+                "-----END CERTIFICATE-----"
     }
 
     object Owners {
@@ -328,6 +439,11 @@ object TestData {
         val NO_PRIMARY_OWNER_PKI_NONE = OwnerParameters(
             false,
             listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE = OwnerParameters(
+            true,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE, PKI_DATA_TWO_OWNER_X509SHA256)
         )
     }
 
@@ -389,6 +505,13 @@ object TestData {
         val PKI_DATA_SENDER_X509SHA256_INVALID_CERTIFICATE = PkiDataParameters(
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_RANDOM,
+            type = PkiType.X509SHA256
+        )
+
+        val PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE = PkiDataParameters(
+            attestation = "name_attestation",
+            privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
+            certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE,
             type = PkiType.X509SHA256
         )
     }
