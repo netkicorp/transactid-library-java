@@ -5,7 +5,6 @@ import com.netki.bip75.service.Bip75Service
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
-import com.netki.security.CryptoModule
 import com.netki.util.*
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
@@ -15,7 +14,7 @@ import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNA
 /**
  * {@inheritDoc}
  */
-class Bip75ServiceNetki() : Bip75Service {
+class Bip75ServiceNetki : Bip75Service {
 
     /**
      * {@inheritDoc}
@@ -31,26 +30,19 @@ class Bip75ServiceNetki() : Bip75Service {
         val messageInvoiceRequestBuilder =
             invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(senderParameters)
 
-        ownersParameters.forEachIndexed { index, owner ->
-            messageInvoiceRequestBuilder.addOwners(index, owner.toMessageOwner())
+        ownersParameters.forEach { owner ->
+            val ownerMessage = owner.toMessageOwnerBuilderWithoutSignatures()
+
+            owner.pkiDataParametersSets.forEach { pkiData ->
+                ownerMessage.addSignatures(pkiData.toMessageSignature(owner.isPrimaryForTransaction))
+            }
+
+            messageInvoiceRequestBuilder.addOwners(ownerMessage)
         }
 
         val messageInvoiceRequest = messageInvoiceRequestBuilder.build()
 
-        val ownersSignatures = ownersParameters.signMessage(messageInvoiceRequest)
-
-        val messageInvoiceRequestWithOwnersBuilder = Messages.InvoiceRequest.newBuilder()
-            .mergeFrom(messageInvoiceRequest)
-
-        ownersParameters.forEachIndexed { index, owner ->
-            val ownerSignatures = ownersSignatures[index]
-            messageInvoiceRequestWithOwnersBuilder.removeOwners(index)
-            messageInvoiceRequestWithOwnersBuilder.addOwners(index, owner.toOwnerMessageWithSignature(ownerSignatures))
-        }
-
-        val messageInvoiceRequestWithOwners = messageInvoiceRequestWithOwnersBuilder.build()
-
-        return messageInvoiceRequestWithOwners.signMessage(senderParameters).toByteArray()
+        return messageInvoiceRequest.signMessage(senderParameters).toByteArray()
     }
 
     /**
@@ -71,7 +63,7 @@ class Bip75ServiceNetki() : Bip75Service {
             messageInvoiceRequest.removeMessageSenderSignature() as Messages.InvoiceRequest
 
         val isCertificateChainValid = messageInvoiceRequest.senderPkiData.toStringLocal()
-            .validateCertificateChain(messageInvoiceRequest.getMessageSenderPkiType())
+            .validateCertificateChain(messageInvoiceRequest.getMessagePkiType())
 
         check(isCertificateChainValid) {
             throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
@@ -84,43 +76,26 @@ class Bip75ServiceNetki() : Bip75Service {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
 
-        messageInvoiceRequestUnsigned.ownersList.forEach { owner ->
-            owner.signaturesList.forEach { signature ->
+        messageInvoiceRequestUnsigned.ownersList.forEach { ownerMessage ->
+            ownerMessage.signaturesList.forEach { signatureMessage ->
                 val isCertificateOwnerChainValid =
-                    signature.pkiData.toStringLocal().validateCertificateChain(signature.getSignaturePkiType())
+                    signatureMessage.pkiData.toStringLocal()
+                        .validateCertificateChain(signatureMessage.getSignaturePkiType())
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
                         CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
-                            signature.attestation
+                            signatureMessage.attestation
                         )
                     )
                 }
-            }
-        }
 
-        val invoiceRequestWithoutOwnersSignatureBuilder = Messages.InvoiceRequest.newBuilder()
-            .mergeFrom(messageInvoiceRequestUnsigned)
+                val isSignatureValid = signatureMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
 
-        val signatures = messageInvoiceRequestUnsigned.ownersList.getSignatures()
-        val ownersWithoutSignature = messageInvoiceRequestUnsigned.ownersList.removeOwnersSignatures()
-
-        invoiceRequestWithoutOwnersSignatureBuilder.clearOwners()
-        invoiceRequestWithoutOwnersSignatureBuilder.addAllOwners(ownersWithoutSignature)
-
-        val invoiceRequestWithoutOwnerSignatureHash =
-            CryptoModule.getHash256(invoiceRequestWithoutOwnersSignatureBuilder.build().toByteArray())
-
-        signatures.forEach { signature ->
-            signature.forEach { (key, value) ->
-                val isOwnerSignatureValid = CryptoModule.validateSignature(
-                    value.second,
-                    invoiceRequestWithoutOwnerSignatureHash,
-                    value.first
-                )
-                check(isOwnerSignatureValid) {
-                    throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
+                check(isSignatureValid) {
+                    throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(signatureMessage.attestation))
                 }
+
             }
         }
 
@@ -143,26 +118,19 @@ class Bip75ServiceNetki() : Bip75Service {
             .toMessagePaymentDetails()
             .toPaymentRequest(senderParameters, paymentParametersVersion)
 
-        ownersParameters.forEachIndexed { index, owner ->
-            messagePaymentRequestBuilder.addOwners(index, owner.toMessageOwner())
+        ownersParameters.forEach { owner ->
+            val ownerMessage = owner.toMessageOwnerBuilderWithoutSignatures()
+
+            owner.pkiDataParametersSets.forEach { pkiData ->
+                ownerMessage.addSignatures(pkiData.toMessageSignature(owner.isPrimaryForTransaction))
+            }
+
+            messagePaymentRequestBuilder.addOwners(ownerMessage)
         }
 
         val messagePaymentRequest = messagePaymentRequestBuilder.build()
 
-        val ownersSignatures = ownersParameters.signMessage(messagePaymentRequest)
-
-        val messagePaymentRequestWithOwnersBuilder = Messages.PaymentRequest.newBuilder()
-            .mergeFrom(messagePaymentRequest)
-
-        ownersParameters.forEachIndexed { index, owner ->
-            val ownerSignatures = ownersSignatures[index]
-            messagePaymentRequestWithOwnersBuilder.removeOwners(index)
-            messagePaymentRequestWithOwnersBuilder.addOwners(index, owner.toOwnerMessageWithSignature(ownerSignatures))
-        }
-
-        val messagePaymentRequestWithOwners = messagePaymentRequestWithOwnersBuilder.build()
-
-        return messagePaymentRequestWithOwners.signMessage(senderParameters).toByteArray()
+        return messagePaymentRequest.signMessage(senderParameters).toByteArray()
     }
 
     /**
@@ -183,7 +151,7 @@ class Bip75ServiceNetki() : Bip75Service {
             messagePaymentRequest.removeMessageSenderSignature() as Messages.PaymentRequest
 
         val isCertificateChainValid = messagePaymentRequest.senderPkiData.toStringLocal()
-            .validateCertificateChain(messagePaymentRequest.getMessageSenderPkiType())
+            .validateCertificateChain(messagePaymentRequest.getMessagePkiType())
 
         check(isCertificateChainValid) {
             throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
@@ -195,47 +163,28 @@ class Bip75ServiceNetki() : Bip75Service {
         check(isSenderSignatureValid) {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
-
-        messagePaymentRequestUnsigned.ownersList.forEach { owner ->
-            owner.signaturesList.forEach { signature ->
+        messagePaymentRequestUnsigned.ownersList.forEach { ownerMessage ->
+            ownerMessage.signaturesList.forEach { signatureMessage ->
                 val isCertificateOwnerChainValid =
-                    signature.pkiData.toStringLocal().validateCertificateChain(signature.getSignaturePkiType())
+                    signatureMessage.pkiData.toStringLocal()
+                        .validateCertificateChain(signatureMessage.getSignaturePkiType())
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
                         CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
-                            signature.attestation
+                            signatureMessage.attestation
                         )
                     )
                 }
-            }
-        }
 
-        val paymentRequestWithoutOwnersSignatureBuilder = Messages.PaymentRequest.newBuilder()
-            .mergeFrom(messagePaymentRequestUnsigned)
+                val isSignatureValid = signatureMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
 
-        val signatures = messagePaymentRequestUnsigned.ownersList.getSignatures()
-        val ownersWithoutSignature = messagePaymentRequestUnsigned.ownersList.removeOwnersSignatures()
-
-        paymentRequestWithoutOwnersSignatureBuilder.clearOwners()
-        paymentRequestWithoutOwnersSignatureBuilder.addAllOwners(ownersWithoutSignature)
-
-        val invoiceRequestWithoutOwnerSignatureHash =
-            CryptoModule.getHash256(paymentRequestWithoutOwnersSignatureBuilder.build().toByteArray())
-
-        signatures.forEach { signature ->
-            signature.forEach { (key, value) ->
-                val isOwnerSignatureValid = CryptoModule.validateSignature(
-                    value.second,
-                    invoiceRequestWithoutOwnerSignatureHash,
-                    value.first
-                )
-                check(isOwnerSignatureValid) {
-                    throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(key))
+                check(isSignatureValid) {
+                    throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(signatureMessage.attestation))
                 }
             }
         }
-        
+
         return true
     }
 

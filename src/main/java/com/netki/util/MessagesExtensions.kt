@@ -289,15 +289,66 @@ fun OwnerParameters.toMessageOwner(): Messages.Owner {
 }
 
 /**
+ * Transform OwnerParameters object to Messages.Owner.Builder object.
+ *
+ * @return Messages.Owner.
+ */
+fun OwnerParameters.toMessageOwnerBuilderWithoutSignatures(): Messages.Owner.Builder =
+    Messages.Owner.newBuilder().setPrimaryForTransaction(this.isPrimaryForTransaction)
+
+/**
  * Transform PkiDataParameters object to Messages.Signature object.
+ * If there is a PkiType X509SHA256 this message should be signed.
  *
  * @return Messages.Signature.
  */
-fun PkiDataParameters.toMessageSignature(signature: ByteString): Messages.Signature = Messages.Signature.newBuilder()
-    .setAttestation(this.attestation)
-    .setPkiType(this.type.value)
-    .setPkiData(this.certificatePem.toByteString())
-    .setSignature(signature)
+fun PkiDataParameters.toMessageSignature(requireSignature: Boolean): Messages.Signature {
+    val messageSignatureUnsigned = Messages.Signature.newBuilder()
+        .setAttestation(this.attestation)
+        .setPkiType(this.type.value)
+        .setPkiData(this.certificatePem.toByteString())
+        .setSignature("".toByteString())
+        .build()
+
+    return when {
+        this.type == PkiType.X509SHA256 && requireSignature -> {
+            val signature = messageSignatureUnsigned.sign(this.privateKeyPem)
+            Messages.Signature.newBuilder()
+                .mergeFrom(messageSignatureUnsigned)
+                .setSignature(signature.toByteString())
+                .build()
+        }
+        else -> messageSignatureUnsigned
+    }
+}
+
+/**
+ * Validate if the signature of a Messages.Signature is valid.
+ *
+ * @return true if yes, false otherwise.
+ */
+fun Messages.Signature.validateMessageSignature(requireSignature: Boolean): Boolean = when {
+    this.getMessagePkiType() == PkiType.X509SHA256 && requireSignature -> {
+        val unsignedMessage = this.removeSignature()
+        val bytesHash = CryptoModule.getHash256(unsignedMessage.toByteArray())
+        CryptoModule.validateSignature(
+            this.signature.toStringLocal(),
+            bytesHash,
+            CryptoModule.certificatePemToClientCertificate(this.pkiData.toStringLocal())
+        )
+    }
+    else -> true
+}
+
+
+/**
+ * Remove the signature from Messages.Signature object.
+ *
+ * @return Messages.Signature.
+ */
+fun Messages.Signature.removeSignature(): Messages.Signature = Messages.Signature.newBuilder()
+    .mergeFrom(this)
+    .setSignature("".toByteString())
     .build()
 
 /**
@@ -332,7 +383,7 @@ fun Messages.Signature.toPkiData(): PkiData = PkiData(
  */
 @Throws(IllegalArgumentException::class)
 fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters): GeneratedMessageV3 {
-    return when (val senderPkiType = this.getMessageSenderPkiType()) {
+    return when (val senderPkiType = this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.signWithSender(senderParameters)
@@ -406,7 +457,7 @@ fun GeneratedMessageV3.sign(privateKeyPem: String): String {
  * @return true if yes, false otherwise.
  */
 fun GeneratedMessageV3.validateMessageSignature(signature: String): Boolean {
-    return when (val senderPkiType = this.getMessageSenderPkiType()) {
+    return when (val senderPkiType = this.getMessagePkiType()) {
         PkiType.NONE -> true
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.validateSignature(signature)
@@ -443,7 +494,7 @@ fun Messages.PaymentRequest.validateSignature(signature: String): Boolean {
  * @return Unsigned message.
  */
 fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessageV3 {
-    return when (val senderPkiType = this.getMessageSenderPkiType()) {
+    return when (val senderPkiType = this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.removeSenderSignature()
@@ -540,29 +591,6 @@ fun String.validateCertificateChain(pkiType: PkiType): Boolean {
 }
 
 /**
- * Transform OwnerParameters to Messages.Owner attaching the correspondent signature to each PkiData.
- *
- * @param ownerSignatures signatures created by this user.
- * @return Messages.PaymentDetails.
- */
-fun OwnerParameters.toOwnerMessageWithSignature(ownerSignatures: MutableMap<String, String>?): Messages.Owner {
-    val messageOwnerBuilder = Messages.Owner.newBuilder()
-        .setPrimaryForTransaction(this.isPrimaryForTransaction)
-    this.pkiDataParametersSets.forEachIndexed { indexPki, pkiData ->
-        val signature = if (pkiData.attestation != null && pkiData.type != PkiType.NONE) {
-            ownerSignatures?.get(pkiData.attestation)?.toByteString() ?: "".toByteString()
-        } else {
-            "".toByteString()
-        }
-        val messageSignature = pkiData.toMessageSignature(signature)
-
-        messageOwnerBuilder.addSignatures(indexPki, messageSignature)
-    }
-
-    return messageOwnerBuilder.build()
-}
-
-/**
  * Validate that a List<Owners> is valid
  * Is valid, when it has one single primaryOwner
  *
@@ -586,9 +614,10 @@ fun List<OwnerParameters>.validate() {
  * @return PkiData.
  */
 @Throws(IllegalArgumentException::class)
-fun GeneratedMessageV3.getMessageSenderPkiType(): PkiType = when (this) {
+fun GeneratedMessageV3.getMessagePkiType(): PkiType = when (this) {
     is Messages.InvoiceRequest -> this.senderPkiType.getType()
     is Messages.PaymentRequest -> this.senderPkiType.getType()
+    is Messages.Signature -> this.pkiType.getType()
     else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to get Sender PkiType")
 }
 
