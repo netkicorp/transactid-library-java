@@ -260,7 +260,10 @@ internal class TransactIdTest {
                 assert(pkiData.type == ownerPkiData.type)
                 assert(pkiData.attestation == ownerPkiData.attestation)
                 assert(pkiData.certificatePem == ownerPkiData.certificatePem)
-                assert(!pkiData.signature.isNullOrBlank())
+                when (owner.isPrimaryForTransaction) {
+                    true -> assert(!pkiData.signature.isNullOrBlank())
+                    false -> assert(pkiData.signature.isNullOrBlank())
+                }
             }
         }
 
@@ -497,7 +500,10 @@ internal class TransactIdTest {
                 assert(pkiData.type == ownerPkiData.type)
                 assert(pkiData.attestation == ownerPkiData.attestation)
                 assert(pkiData.certificatePem == ownerPkiData.certificatePem)
-                assert(!pkiData.signature.isNullOrBlank())
+                when (owner.isPrimaryForTransaction) {
+                    true -> assert(!pkiData.signature.isNullOrBlank())
+                    false -> assert(pkiData.signature.isNullOrBlank())
+                }
             }
         }
 

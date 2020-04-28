@@ -31,8 +31,7 @@ object TransactId {
         invoiceRequestParameters: InvoiceRequestParameters,
         ownerParameters: List<OwnerParameters>,
         senderParameters: SenderParameters
-    ) =
-        bip75.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
+    ) = bip75.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
 
     /**
      * Validate if a binary InvoiceRequest is valid.
