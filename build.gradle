@@ -15,7 +15,7 @@ ext {
     jacocoVersion = '0.8.4'
 
     groupId = 'com.netki'
-    versionRelease = '0.1.0-alpha3'
+    versionRelease = '0.1.0-alpha4'
     artifactId = 'transactid'
 }
 
