@@ -31,8 +31,7 @@ object TransactId {
         invoiceRequestParameters: InvoiceRequestParameters,
         ownerParameters: List<OwnerParameters>,
         senderParameters: SenderParameters
-    ) =
-        bip75.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
+    ): ByteArray = bip75.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
 
     /**
      * Validate if a binary InvoiceRequest is valid.
@@ -50,7 +49,8 @@ object TransactId {
         InvalidCertificateException::class,
         InvalidCertificateChainException::class
     )
-    fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray) = bip75.isInvoiceRequestValid(invoiceRequestBinary)
+    fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean =
+        bip75.isInvoiceRequestValid(invoiceRequestBinary)
 
     /**
      * Parse binary InvoiceRequest.
@@ -60,7 +60,8 @@ object TransactId {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun parseInvoiceRequest(invoiceRequestBinary: ByteArray) = bip75.parseInvoiceRequest(invoiceRequestBinary)
+    fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest =
+        bip75.parseInvoiceRequest(invoiceRequestBinary)
 
     /**
      * Create binary PaymentRequest.
@@ -78,7 +79,8 @@ object TransactId {
         ownerParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         paymentParametersVersion: Int = 1
-    ) = bip75.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentParametersVersion)
+    ): ByteArray =
+        bip75.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentParametersVersion)
 
     /**
      * Validate if a binary PaymentRequest is valid.
@@ -96,7 +98,8 @@ object TransactId {
         InvalidCertificateException::class,
         InvalidCertificateChainException::class
     )
-    fun isPaymentRequestValid(paymentRequestBinary: ByteArray) = bip75.isPaymentRequestValid(paymentRequestBinary)
+    fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean =
+        bip75.isPaymentRequestValid(paymentRequestBinary)
 
     /**
      * Parse binary PaymentRequest.
@@ -106,7 +109,8 @@ object TransactId {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun parsePaymentRequest(paymentRequestBinary: ByteArray) = bip75.parsePaymentRequest(paymentRequestBinary)
+    fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest =
+        bip75.parsePaymentRequest(paymentRequestBinary)
 
     /**
      * Create binary Payment.
@@ -114,7 +118,7 @@ object TransactId {
      * @param payment data to create the Payment.
      * @return binary object of the message created.
      */
-    fun createPayment(payment: Payment) = bip75.createPayment(payment)
+    fun createPayment(payment: Payment): ByteArray = bip75.createPayment(payment)
 
     /**
      * Validate if a binary Payment is valid.
@@ -124,7 +128,7 @@ object TransactId {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun isPaymentValid(paymentBinary: ByteArray) = bip75.isPaymentValid(paymentBinary)
+    fun isPaymentValid(paymentBinary: ByteArray): Boolean = bip75.isPaymentValid(paymentBinary)
 
     /**
      * Parse binary Payment.
@@ -134,7 +138,7 @@ object TransactId {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun parsePayment(paymentBinary: ByteArray) = bip75.parsePayment(paymentBinary)
+    fun parsePayment(paymentBinary: ByteArray): Payment = bip75.parsePayment(paymentBinary)
 
     /**
      * Create binary PaymentAck.
@@ -143,7 +147,7 @@ object TransactId {
      * @param memo note that should be displayed to the customer.
      * @return binary object of the message created.
      */
-    fun createPaymentAck(payment: Payment, memo: String) = bip75.createPaymentAck(payment, memo)
+    fun createPaymentAck(payment: Payment, memo: String): ByteArray = bip75.createPaymentAck(payment, memo)
 
     /**
      * Validate if a binary PaymentAck is valid.
@@ -153,7 +157,7 @@ object TransactId {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun isPaymentAckValid(paymentAckBinary: ByteArray) = bip75.isPaymentAckValid(paymentAckBinary)
+    fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean = bip75.isPaymentAckValid(paymentAckBinary)
 
     /**
      * Parse binary PaymentAck.
@@ -163,5 +167,5 @@ object TransactId {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun parsePaymentAck(paymentAckBinary: ByteArray) = bip75.parsePaymentAck(paymentAckBinary)
+    fun parsePaymentAck(paymentAckBinary: ByteArray): PaymentAck = bip75.parsePaymentAck(paymentAckBinary)
 }
