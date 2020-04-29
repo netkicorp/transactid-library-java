@@ -20,28 +20,38 @@ compile group: 'com.netki', name: 'transactid', version: '0.1.0-alpha0', ext: 'p
 
 ## General Usage
 
-To use the methods to create the BIP messages you can use the static methods in the class TransactId.
+To use the methods to create the BIP messages you can use the static methods in the class TransactId for example:
+
+        val transactIdInstance = TransactId
+        transactIdInstance.isInvoiceRequestValid(invoiceRequestBinary)
+        
+        or
+
+        TransactId.isInvoiceRequestValid(invoiceRequestBinary)
 
 There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
 ## Invoice Request
 
-Please refer to the [BIP75][2] documentation for detailed requirements for a InvoiceRequest.  When it comes 
-to using this library to create one you'll need to provide the following:
-
-* InvoiceRequestParameters
-    * amount: Long
-    * privateKeyPem: String
-    * notificationUrl: String
-
-* KeyPairPem
-    * certificatePem: String
-    * memo: str
-    * type: PkiType
-    
+Please refer to the [BIP75][2] documentation for detailed requirements for a InvoiceRequest.
+  
 Create an object for sending like so:
 
-    val invoiceRequestBinary = TransactId.createInvoiceRequest(invoiceRequestParameters, keyPairPem)
+        /**
+         * Create InvoiceRequest message.
+         *
+         * @param invoiceRequestParameters data to create the InvoiceRequest.
+         * @param ownerParameters of the accounts for this transaction.
+         * @param senderParameters of the protocol message.
+         * @return binary object of the message created.
+         * @throws InvalidOwnersException if the provided list of owners is not valid.
+         */
+        @Throws(InvalidOwnersException::class)
+        fun createInvoiceRequest(
+            invoiceRequestParameters: InvoiceRequestParameters,
+            ownerParameters: List<OwnerParameters>,
+            senderParameters: SenderParameters
+        ): ByteArray
 
 This will provide you with a serialized binary that you can then send to someone else who is able to 
 parse and validate one of these things.
@@ -49,56 +59,64 @@ parse and validate one of these things.
 When you are on the receiving end of one of those binary strings you can do the following to validate 
 the signature and parse one:
 
-    TransactId.isInvoiceRequestValid(invoiceRequestBinary)
+        /**
+         * Validate if a binary InvoiceRequest is valid.
+         *
+         * @param invoiceRequestBinary binary data to validate.
+         * @return true if is valid.
+         * @exception InvalidObjectException if the binary is malformed.
+         * @exception InvalidSignatureException if the signature in the binary is not valid.
+         * @exception InvalidCertificateException if there is a problem with the certificates.
+         * @exception InvalidCertificateChainException if the certificate chain is not valid.
+         */
+        @Throws(
+            InvalidObjectException::class,
+            InvalidSignatureException::class,
+            InvalidCertificateException::class,
+            InvalidCertificateChainException::class
+        )
+        fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean
     
 This will return true if there are no errors in the object and the signature is valid.
 
 To access the data from the InvoiceRequest just do:
 
-    val invoiceRequest = TransactId.parseInvoiceRequest(invoiceRequestBinary)
+        /**
+         * Parse binary InvoiceRequest.
+         *
+         * @param invoiceRequestBinary binary data with the message to parse.
+         * @return InvoiceRequest parsed.
+         * @exception InvalidObjectException if the binary is malformed.
+         */
+        @Throws(InvalidObjectException::class)
+        fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest
 
 And that will return a object with all of the fields of the InvoiceRequest and the values that were 
 filled in.
 
-* InvoiceRequest
-    * senderPublicKey: String
-    * amount: Long
-    * pkiType: String
-    * pkiData: String
-    * memo: String
-    * notificationUrl: String
-    * signature: String
-
 ## Payment Request
 
 Please refer to the [BIP70][1] documentation for detailed requirements for a PaymentRequest.
-When it comes to using this library to create one you'll need to provide the following:
-
-* PaymentDetails
-    * network: String
-    * outputs: List<Output>
-    * time: Timestamp
-    * expires: Timestamp
-    * memo: String
-    * paymentUrl: String
-    * merchantData: String
-    
- Where: 
- 
- * Output
-    * amount: Long
-    * script: String
-
-* KeyPairPem
-    * certificatePem: String
-    * memo: str
-    * type: PkiType
-    
-* paymentDetailsVersion: Int
 
 Create an object for sending like so:
 
-    val paymentRequestBinary = TransactId.createPaymentRequest(paymentDetails, keyPairPem, paymentDetailsVersion)
+        /**
+         * Create binary PaymentRequest.
+         *
+         * @param paymentParameters data to create the PaymentRequest.
+         * @param ownerParameters of the accounts for this transaction.
+         * @param senderParameters of the protocol message.
+         * @param paymentParametersVersion version of the PaymentDetails message.
+         * @return binary object of the message created.
+         * @throws InvalidOwnersException if the provided list of owners is not valid.
+         */
+        @Throws(InvalidOwnersException::class)
+        fun createPaymentRequest(
+            paymentParameters: PaymentParameters,
+            ownerParameters: List<OwnerParameters>,
+            senderParameters: SenderParameters,
+            paymentParametersVersion: Int = 1
+        ): ByteArray
 
 This will provide you with a serialized binary that you can then send to someone else who is able to 
 parse and validate one of these things.
@@ -106,61 +124,54 @@ parse and validate one of these things.
 When you are on the receiving end of one of those binary strings you can do the following to validate 
 the signature and parse one:
 
-    TransactId.isPaymentRequestValid(paymentRequestBinary)
+        /**
+         * Validate if a binary PaymentRequest is valid.
+         *
+         * @param paymentRequestBinary binary data to validate.
+         * @return true if is valid.
+         * @exception InvalidObjectException if the binary is malformed.
+         * @exception InvalidSignatureException if the signature in the binary is not valid.
+         * @exception InvalidCertificateException if there is a problem with the certificates.
+         * @exception InvalidCertificateChainException if the certificate chain is not valid.
+         */
+        @Throws(
+            InvalidObjectException::class,
+            InvalidSignatureException::class,
+            InvalidCertificateException::class,
+            InvalidCertificateChainException::class
+        )
+        fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean
 
 This will return true if there are no errors in the object and the signature is valid.
 
-To access the data from the InvoiceRequest just do:
+To access the data from the PaymentRequest just do:
 
-    val paymentRequest = TransactId.parsePaymentRequest(paymentRequestBinary)
-
+        /**
+         * Parse binary PaymentRequest.
+         *
+         * @param paymentRequestBinary binary data with the message to parse.
+         * @return PaymentRequest parsed.
+         * @exception InvalidObjectException if the binary is malformed.
+         */
+        @Throws(InvalidObjectException::class)
+        fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest
+        
 And that will return an object with all of the fields of the PaymentRequest and the values that were 
 filled in.
 
-* PaymentRequest
-    * paymentDetailsVersion: Int
-    * pkiType: String
-    * pkiData: String
-    * paymentDetails: PaymentDetails
-    * signature: String
- 
- Where:
- 
- * PaymentDetails
-    * network: String
-    * outputs: List<Output>
-    * time: Timestamp
-    * expires: Timestamp
-    * memo: String
-    * paymentUrl: String
-    * merchantData: String
-    
-Where: 
- 
- * Output
-    * amount: Long
-    * script: String
-
 ## Payment
 
-Please refer to the [BIP70][1] documentation for detailed requirements for a Payment. When it comes to using this 
-library to create one you'll need to provide the following:
-
-* Payment
-    * merchantData: String
-    * transactions: List<ByteArray>
-    * outputs: List<Output>
-    * memo: String
-    
-Where: 
- 
- * Output
-    * amount: Long
-    * script: String
+Please refer to the [BIP70][1] documentation for detailed requirements for a Payment. 
 
 Create an object for sending like so:
 
-    val paymentBinary = TransactId.createPayment(payment)
+        /**
+         * Create binary Payment.
+         *
+         * @param payment data to create the Payment.
+         * @return binary object of the message created.
+         */
+        fun createPayment(payment: Payment): ByteArray
 
 This will provide you with a serialized binary that you can then send to someone else who is able to 
 parse and validate one of these things.
@@ -168,88 +179,82 @@ parse and validate one of these things.
 When you are on the receiving end of one of those binary strings you can do the following to parse one.  
 Please note that Payments aren't signed unlike the Invoice/PaymentRequest:
 
-    TransactId.isPaymentValid(paymentBinary)
+        /**
+         * Validate if a binary Payment is valid.
+         *
+         * @param paymentBinary binary data to validate.
+         * @return true if is valid.
+         * @exception InvalidObjectException if the binary is malformed.
+         */
+        @Throws(InvalidObjectException::class)
+        fun isPaymentValid(paymentBinary: ByteArray): Boolean
 
 If this return true then we were able to parse the protobuf object.
 
 To access the data from the Payment just do:
 
-    val payment = TransactId.parsePayment(paymentBinary)
+        /**
+         * Parse binary Payment.
+         *
+         * @param paymentBinary binary data with the message to parse.
+         * @return Payment parsed.
+         * @exception InvalidObjectException if the binary is malformed.
+         */
+        @Throws(InvalidObjectException::class)
+        fun parsePayment(paymentBinary: ByteArray): Payment
 
 And that will return an object with all of the fields of the Payment and the values that were 
 filled in.
 
-* Payment
-    * merchantData: String
-    * transactions: List<ByteArray>
-    * outputs: List<Output>
-    * memo: String
-
-Where: 
- 
- * Output
-    * amount: Long
-    * script: String
-    
 ## PaymentACK
 
 Please refer to the [BIP70][1] documentation for detailed requirements for a PaymentACK. PaymentACKs are a bit different 
 than other things in the library.  Due to the fact that art of the PaymentACK is the Payment object you are 
 acknowledging, it's not possible to create an ACK without first verifying a Payment. 
-When it comes to using this library to create one you'll need to provide the following:
-
-* Payment
-    * merchantData: String
-    * transactions: List<ByteArray>
-    * outputs: List<Output>
-    * memo: String
-
-Where: 
- 
-* Output
-    * amount: Long
-    * script: String
-    
-* memo: String
 
 Create an object for sending like so:
 
-    val paymentAckBinary = TransactId.createPaymentAck(payment, memo)
+        /**
+         * Create binary PaymentAck.
+         *
+         * @param payment data to create the Payment.
+         * @param memo note that should be displayed to the customer.
+         * @return binary object of the message created.
+         */
+        fun createPaymentAck(payment: Payment, memo: String): ByteArray
 
 This will provide you with a serialized binary that you can then send to someone else who is able to 
 parse and validate one of these things.
 
 When you are on the receiving end of one of those binary strings you can do the following to parse one.  
-Please note that Payments aren't signed unlike the Invoice/PaymentRequest:
+Please note that PaymentsAck aren't signed unlike the Invoice/PaymentRequest:
 
-    TransactId.isPaymentAckValid(paymentAckBinary)
+        /**
+         * Validate if a binary PaymentAck is valid.
+         *
+         * @param paymentAckBinary binary data to validate.
+         * @return true if is valid.
+         * @exception InvalidObjectException if the binary is malformed.
+         */
+        @Throws(InvalidObjectException::class)
+        fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean
 
 If this return true then we were able to parse the protobuf object.
 
 To access the data from the PaymentAck just do:
 
-    val paymentAck = TransactId.parsePaymentAck(paymentAckBinary)
+        /**
+         * Parse binary PaymentAck.
+         *
+         * @param paymentAckBinary binary data with the message to parse.
+         * @return PaymentAck parsed.
+         * @exception InvalidObjectException if the binary is malformed.
+         */
+        @Throws(InvalidObjectException::class)
+        fun parsePaymentAck(paymentAckBinary: ByteArray): PaymentAck
     
 And that will return a dictionary with all of the fields of the PaymentACK and the values that were 
 filled in.
-
-* PaymentAck:
-
-    * payment: Payment
-    * memo: String
- 
-Where: 
-
-* Payment
-    * merchantData: String
-    * transactions: List<ByteArray>
-    * outputs: List<Output>
-    * memo: String 
- 
-* Output
-    * amount: Long
-    * script: String
-
 
 [1]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [2]: https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki
