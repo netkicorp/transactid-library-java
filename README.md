@@ -5,7 +5,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.netki/transactid)](https://mvnrepository.com/artifact/com.netki/transactid)
 
-![Netki Logo](https://teamcity.myverify.io/app/rest/builds/buildType(id:TransactIdLibraryJava_VerifyPrMaster\))
+![Netki Logo](https://teamcity.myverify.io/app/rest/builds/buildType\(id:TransactIdLibraryJava_VerifyPrMaster\))
 
 This Netki TransactID Library provides convenient and simple implementation of the [BIP70][1] and [BIP75][2] protocol definitions.
 
