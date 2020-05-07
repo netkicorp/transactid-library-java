@@ -1,11 +1,11 @@
 # TransactID Library Java Edition
 
-![Netki Logo](images/netki.png) 
+![Netki Logo](images/netki.png)
 
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.netki/transactid)](https://mvnrepository.com/artifact/com.netki/transactid)
 
-
+![Netki Logo](https://teamcity.myverify.io/app/rest/builds/buildType(id:TransactIdLibraryJava_VerifyPrMaster\))
 
 This Netki TransactID Library provides convenient and simple implementation of the [BIP70][1] and [BIP75][2] protocol definitions.
 
@@ -24,9 +24,9 @@ International regulatory bodies have determined that the cryptocurrency and bloc
 
 ## TransactID Travel Rule Features
 
-We have taken a security and privacy first approach to the development of this library.  Your customers' data and secrets are very important to us. 
+We have taken a security and privacy first approach to the development of this library.  Your customers' data and secrets are very important to us.
 
-We are also blockchain people at heart.  We value the philosophies and strategies of the decentralized nature of the blockchain and will NOT lock you into a vendor specific protocol. Which is why we relay on standardized formats. 
+We are also blockchain people at heart.  We value the philosophies and strategies of the decentralized nature of the blockchain and will NOT lock you into a vendor specific protocol. Which is why we relay on standardized formats.
 
 * Blockchain and coin agnostic - any coin, any chain, any token
 * Identity safety - the identity of the parties is only shared between the parties and not a centralized outside source
@@ -37,14 +37,14 @@ We are also blockchain people at heart.  We value the philosophies and strategie
 
 ## Basics of BIP75
 
-Implementation that might otherwise be complicated is taken care of by the library itself.  It is, however, important to understand some of the basic algorithms and workflow dynamics that are going on under the hood. 
+Implementation that might otherwise be complicated is taken care of by the library itself.  It is, however, important to understand some of the basic algorithms and workflow dynamics that are going on under the hood.
 
 
 ### Terminology
 
-We have standardized on the terminology referenced in both [BIP70][1] and [BIP75][2].  It is beneficial to understand these terms so that they may be referenced below. 
+We have standardized on the terminology referenced in both [BIP70][1] and [BIP75][2].  It is beneficial to understand these terms so that they may be referenced below.
 
-Normally the communication will happen between two parties.  Two VASPs or parties are represented in the models.  It can be thought of as a buyer/seller arragement but does not necessarily have to be. 
+Normally the communication will happen between two parties.  Two VASPs or parties are represented in the models.  It can be thought of as a buyer/seller arragement but does not necessarily have to be.
 
 * InvoiceRequest - VASP A (payer) will start the transaction
 * PaymentRequest - VASP B (receiver) resposne asking for payment of a defined value
@@ -53,7 +53,7 @@ Normally the communication will happen between two parties.  Two VASPs or partie
 
 ### Workflow
 
-A graph of the workflow is probably the best way to visualize what is going on. 
+A graph of the workflow is probably the best way to visualize what is going on.
 
 ![Transact ID Workflow](images/workflow_transactid.png)
 
@@ -91,7 +91,7 @@ val transactIdInstance = TransactId
 transactIdInstance.isInvoiceRequestValid(invoiceRequestBinary)
 ```
 
-Alternatively: 
+Alternatively:
 
 ```java
 TransactId.isInvoiceRequestValid(invoiceRequestBinary)
@@ -160,7 +160,7 @@ To access the data from the `InvoiceRequest` just do:
  * Parse binary InvoiceRequest.
  *
  * @param invoiceRequestBinary binary data with the message to parse.
- * @return InvoiceRequest parsed.
+ * @return InvoiceRequest parsed.https://teamcity.myverify.io/app/rest/builds/buildType(id:TransactIdLibraryJava_VerifyPrMaster)/statusIcon
  * @exception InvalidObjectException if the binary is malformed.
  */
 @Throws(InvalidObjectException::class)
@@ -236,7 +236,7 @@ To access the data from the PaymentRequest just do:
  */
 @Throws(InvalidObjectException::class)
 fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest
-```
+```https://teamcity.myverify.io/app/rest/builds/buildType(id:TransactIdLibraryJava_VerifyPrMaster)/statusIcon
 
 And that will return an object with all of the fields of the PaymentRequest and the values that were
 filled in.
@@ -260,7 +260,7 @@ fun createPayment(payment: Payment): ByteArray
 This will provide you with a serialized binary that you can then send to someone else who is able to
 parse and validate one of these things.
 
-When you are on the receiving end of one of those binary strings you can do the following to parse one. 
+When you are on the receiving end of one of those binary strings you can do the following to parse one.
 Please note that Payments aren't signed unlike the Invoice/PaymentRequest:
 
 
