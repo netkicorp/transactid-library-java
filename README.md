@@ -160,7 +160,7 @@ To access the data from the `InvoiceRequest` just do:
  * Parse binary InvoiceRequest.
  *
  * @param invoiceRequestBinary binary data with the message to parse.
- * @return InvoiceRequest parsed.https://teamcity.myverify.io/app/rest/builds/buildType(id:TransactIdLibraryJava_VerifyPrMaster)/statusIcon
+ * @return InvoiceRequest parsed.
  * @exception InvalidObjectException if the binary is malformed.
  */
 @Throws(InvalidObjectException::class)
@@ -236,7 +236,7 @@ To access the data from the PaymentRequest just do:
  */
 @Throws(InvalidObjectException::class)
 fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest
-```https://teamcity.myverify.io/app/rest/builds/buildType(id:TransactIdLibraryJava_VerifyPrMaster)/statusIcon
+```
 
 And that will return an object with all of the fields of the PaymentRequest and the values that were
 filled in.
