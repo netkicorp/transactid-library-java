@@ -11,7 +11,7 @@ import com.netki.bip75.service.impl.Bip75ServiceNetki
 internal object Bip75Factory {
 
     /**
-     * Get instance of Bip75 instance.
+     * Get an instance of Bip75.
      *
      * @return Bip75 instance.
      */

@@ -15,4 +15,12 @@ object ErrorInformation {
     const val CERTIFICATE_VALIDATION_NOT_CORRECT_CERTIFICATE_ERROR = "Certificate: %s, is not a valid %s certificate"
     const val CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND = "No client certificate found in the certificates"
     const val PARSE_BINARY_MESSAGE_INVALID_INPUT = "Invalid object for: %s, error: %s"
+    const val KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION = "This is not a valid x509 certificate, error: %s"
+    const val KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION = "This is not a valid private key, error: %s"
+    const val KEY_MANAGEMENT_ERROR_STORING_CERTIFICATE = "There was an error storing the certificate, error: %s"
+    const val KEY_MANAGEMENT_ERROR_STORING_PRIVATE_KEY = "There was an error storing the private key, error: %s"
+    const val KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE = "There was an error fetching the certificate, error: %s"
+    const val KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY = "There was an error fetching the private key, error: %s"
+    const val KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE_NOT_FOUND = "Certificate not found for id: %s"
+    const val KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY_NOT_FOUND = "Private key not found for id: %s"
 }
