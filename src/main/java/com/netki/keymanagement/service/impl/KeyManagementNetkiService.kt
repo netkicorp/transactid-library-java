@@ -157,7 +157,7 @@ class KeyManagementNetkiService(private val driver: KeyManagementDriver) : KeyMa
             try {
                 CryptoModule.privateKeyPemToObject(it)
             } catch (exception: Exception) {
-                throw InvalidCertificateException(KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION.format(exception.message))
+                throw InvalidPrivateKeyException(KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION.format(exception.message))
             }
         } ?: throw ObjectNotFoundException(KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY_NOT_FOUND.format(privateKeyId))
     }

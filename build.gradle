@@ -14,6 +14,7 @@ ext {
     junitVersion = '5.3.1'
     jacocoVersion = '0.8.4'
     vaultDriverVersion = '5.1.0'
+    mockitoVersion = '2.7.22'
 
     groupId = 'com.netki'
     versionRelease = '0.1.0-alpha4'
@@ -44,6 +45,8 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
 }
 
 test {
