@@ -259,3 +259,9 @@ filled in.
 [1]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [2]: https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki
 [3]: https://mvnrepository.com/artifact/com.netki/transactid
+
+---
+## Vault for Key Storage
+This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
+See Hashicorp's Vault Docker documentation here: https://hub.docker.com/_/vault
+
