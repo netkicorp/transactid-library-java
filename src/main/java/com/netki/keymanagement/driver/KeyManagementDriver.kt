@@ -1,6 +1,6 @@
 package com.netki.keymanagement.driver
 
-import com.netki.exceptions.ObjectNotFoundException
+import com.netki.exceptions.KeyManagementStoreException
 
 interface KeyManagementDriver {
 
@@ -9,7 +9,9 @@ interface KeyManagementDriver {
      *
      * @param certificateId unique id for the certificate.
      * @param certificatePem certificate in Pem format to store.
+     * @throws KeyManagementStoreException if there is an error while storing in the driver
      */
+    @Throws(KeyManagementStoreException::class)
     fun storeCertificatePem(certificateId: String, certificatePem: String)
 
     /**
@@ -17,7 +19,9 @@ interface KeyManagementDriver {
      *
      * @param privateKeyId unique id for the private key.
      * @param privateKeyPem private key in Pem format to store.
+     * @throws KeyManagementStoreException if there is an error while storing in the driver
      */
+    @Throws(KeyManagementStoreException::class)
     fun storePrivateKeyPem(privateKeyId: String, privateKeyPem: String)
 
     /**
@@ -26,7 +30,6 @@ interface KeyManagementDriver {
      * @param certificateId id of the certificate.
      * @return certificate in PEM format or null if not found.
      */
-    @Throws(ObjectNotFoundException::class)
     fun fetchCertificatePem(certificateId: String): String?
 
     /**
