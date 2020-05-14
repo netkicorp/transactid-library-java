@@ -209,7 +209,7 @@ filled in.
 ## PaymentACK
 
 Please refer to the [BIP70][1] documentation for detailed requirements for a PaymentACK. PaymentACKs are a bit different 
-than other things in the library.  Due to the fact that art of the PaymentACK is the Payment object you are 
+than other things in the library.  Due to the fact that part of the PaymentACK is the Payment object you are 
 acknowledging, it's not possible to create an ACK without first verifying a Payment. 
 
 Create an object for sending like so:
@@ -256,6 +256,180 @@ To access the data from the PaymentAck just do:
 And that will return a dictionary with all of the fields of the PaymentACK and the values that were 
 filled in.
 
+## Key Management system
+
+## Vault for Key Storage
+This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
+See Hashicorp's Vault Docker documentation here: https://hub.docker.com/_/vault
+
+This library stores keys and certs in specific locations. Please ensure that once Vault is set up, you enable these paths:
+
+        vault secrets enable -path=keys/ kv
+        vault secrets enable -path=certs/ kv
+
+## General Usage
+
+To use the key management integration you can use the static methods in the class TidKms, for example:
+
+        val tidKmsInstance = TidKms
+        tidKmsInstance.storeCertificatePem("certificate")
+        
+        or
+
+        TidKms.storeCertificatePem("certificate")
+        
+
+## Storing certificates and keys
+
+To store certificates the library has the following methods that in general can store certificate and keys in PEM formats or in java objects formats and then return a unique Id that will be used to fetch the values in the future.
+
+The methods available are:
+
+Store a X509Certificate in PEM format.
+
+        /**
+         * Store a X509Certificate in PEM format.
+         *
+         * @param certificatePem certificate in PEM format to store.
+         * @return id to fetch the certificate in the future.
+         * @throws InvalidCertificateException if the provided certificate is not a valid X509Certificate.
+         * @throws KeyManagementStoreException if there is an error while storing the certificate.
+         */
+        @Throws(
+            InvalidCertificateException::class,
+            KeyManagementStoreException::class
+        )
+        fun storeCertificatePem(certificatePem: String): String = keyManagement.storeCertificatePem(certificatePem)
+    
+Store a X509Certificate java object.
+
+        /**
+         * Store a X509Certificate java object.
+         *
+         * @param certificate X509Certificate to store.
+         * @return id to fetch the certificate in the future.
+         * @throws InvalidCertificateException if the provided certificate is not a valid X509Certificate.
+         * @throws KeyManagementStoreException if there is an error while storing the certificate.
+         */
+        @Throws(
+            InvalidCertificateException::class,
+            KeyManagementStoreException::class
+        )
+        fun storeCertificate(certificate: X509Certificate): String = keyManagement.storeCertificate(certificate)
+
+Store a Private key in PEM format.
+
+        /**
+         * Store a private key in PEM format.
+         *
+         * @param privateKeyPem private key in PEM format to store.
+         * @return id to fetch the private key in the future.
+         * @throws InvalidPrivateKeyException if the provided key is not a valid private key.
+         * @throws KeyManagementStoreException if there is an error while storing the private key.
+         */
+        @Throws(
+            InvalidPrivateKeyException::class,
+            KeyManagementStoreException::class
+        )
+        fun storePrivateKeyPem(privateKeyPem: String): String = keyManagement.storePrivateKeyPem(privateKeyPem)
+        
+Store a Private key java object.      
+        
+        /**
+         * Store a PrivateKey java object.
+         *
+         * @param privateKey PrivateKey to store.
+         * @return PrivateKey object.
+         * @throws InvalidPrivateKeyException if the provided key is not a valid PrivateKey.
+         * @throws KeyManagementStoreException if there is an error while storing the PrivateKey.
+         */
+        @Throws(
+            InvalidPrivateKeyException::class,
+            KeyManagementStoreException::class
+        )
+        fun storePrivateKey(privateKey: PrivateKey): String = keyManagement.storePrivateKey(privateKey)
+        
+        
+## Fetching certificates and keys
+
+The library has methods to fetch the certificate and keys using the unique id to identify the required object. It can return the values in PEM format or as a java object.
+
+The methods available are:
+
+Fetch a X509Certificate in PEM format.
+
+        /**
+         * Fetch a X509Certificate in PEM format.
+         *
+         * @param certificateId id of the certificate.
+         * @return X509Certificate in PEM format.
+         * @throws ObjectNotFoundException if there is not a certificate associated to the provided certificateId.
+         * @throws InvalidCertificateException if the fetched object is not a valid X509Certificate.
+         * @throws KeyManagementFetchException if there is an error while fetching the certificate.
+         */
+        @Throws(
+            ObjectNotFoundException::class,
+            InvalidCertificateException::class,
+            KeyManagementFetchException::class
+        )
+        fun fetchCertificatePem(certificateId: String): String = keyManagement.fetchCertificatePem(certificateId)
+        
+Fetch a X509Certificate java object.
+    
+        /**
+         * Fetch a X509Certificate java object.
+         *
+         * @param certificateId id of the certificate.
+         * @return X509Certificate object.
+         * @throws ObjectNotFoundException if there is not a certificate associated to the provided certificateId.
+         * @throws InvalidCertificateException if the fetched object is not a valid X509Certificate.
+         * @throws KeyManagementFetchException if there is an error while fetching the certificate.
+         */
+        @Throws(
+            ObjectNotFoundException::class,
+            InvalidCertificateException::class,
+            KeyManagementFetchException::class
+        )
+        fun fetchCertificate(certificateId: String): X509Certificate = keyManagement.fetchCertificate(certificateId)
+        
+Fetch a Private key in PEM format.
+    
+        /**
+         * Fetch a private key in PEM format.
+         *
+         * @param privateKeyId id of the private key.
+         * @return private key in PEM format.
+         * @throws ObjectNotFoundException if there is not a private key associated to the provided privateKeyId.
+         * @throws InvalidPrivateKeyException if the fetched object is not a valid PrivateKey.
+         * @throws KeyManagementFetchException if there is an error while fetching the private key.
+         */
+        @Throws(
+            ObjectNotFoundException::class,
+            InvalidPrivateKeyException::class,
+            KeyManagementFetchException::class
+        )
+        fun fetchPrivateKeyPem(privateKeyId: String): String = keyManagement.fetchPrivateKeyPem(privateKeyId)
+    
+Fetch a Private key java object.
+
+        /**
+         * Fetch a PrivateKey java object.
+         *
+         * @param privateKeyId id of the PrivateKey.
+         * @return PrivateKey object.
+         * @throws ObjectNotFoundException if there is not a PrivateKey associated to the provided privateKeyId.
+         * @throws InvalidPrivateKeyException if the fetched object is not a valid PrivateKey.
+         * @throws KeyManagementFetchException if there is an error while fetching the private key.
+         */
+        @Throws(
+            ObjectNotFoundException::class,
+            InvalidPrivateKeyException::class,
+            KeyManagementFetchException::class
+        )
+        fun fetchPrivateKey(privateKeyId: String): PrivateKey = keyManagement.fetchPrivateKey(privateKeyId)
+
 [1]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [2]: https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki
 [3]: https://mvnrepository.com/artifact/com.netki/transactid
+
+---
