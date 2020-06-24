@@ -106,7 +106,7 @@ object TestData {
             Output(1000, "Script 1"),
             Output(2000, "Script 2")
         )
-        val PAYMENT_DETAILS = PaymentParameters(
+        val PAYMENT_DETAILS = PaymentRequestParameters(
             network = "main",
             outputs = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
@@ -118,8 +118,8 @@ object TestData {
     }
 
     object Payment {
-        val MEMO = "memo"
-        val PAYMENT = com.netki.model.Payment(
+        const val MEMO = "memo"
+        val PAYMENT_PARAMETERS = PaymentParameters(
             merchantData = "merchant data",
             transactions = arrayListOf(
                 "transaction1".toByteArray(),
@@ -130,6 +130,31 @@ object TestData {
                 Output(200, "Script")
             ),
             memo = MEMO
+        )
+
+        val PAYMENT = Payment(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = arrayListOf(
+                Output(100, "Script"),
+                Output(200, "Script")
+            ),
+            memo = MEMO,
+            owners = listOf(
+                Owner(
+                    isPrimaryForTransaction = true,
+                    pkiDataSet = listOf(
+                        PkiData(
+                            attestation = Attestation.ISSUING_COUNTRY,
+                            certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
+                            type = PkiType.X509SHA256
+                        )
+                    )
+                )
+            )
         )
 
         val PAYMENT_ACK = PaymentAck(
@@ -463,21 +488,21 @@ object TestData {
 
     object PkiData {
         val PKI_DATA_ONE_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = "name_attestation",
+            attestation = Attestation.BENEFICIARY_PERSON_LAST_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_ONE,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
             type = PkiType.X509SHA256
         )
 
         val PKI_DATA_TWO_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = "address_attestation",
+            attestation = Attestation.BIRTH_DATE,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO,
             type = PkiType.X509SHA256
         )
 
         val PKI_DATA_OWNER_NONE = PkiDataParameters(
-            attestation = "",
+            attestation = null,
             privateKeyPem = "",
             certificatePem = "",
             type = PkiType.NONE
@@ -509,7 +534,7 @@ object TestData {
         )
 
         val PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE = PkiDataParameters(
-            attestation = "name_attestation",
+            attestation = Attestation.BENEFICIARY_PERSON_LAST_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE,
             type = PkiType.X509SHA256
@@ -517,6 +542,13 @@ object TestData {
     }
 
     object Attestations {
-        const val INVALID_ATTESTATION = "invalid_attestation"
+        val INVALID_ATTESTATION = Attestation.CUSTOMER_IDENTIFICATION
+
+        val REQUESTED_ATTESTATIONS = listOf(
+            Attestation.BIRTH_DATE,
+            Attestation.ACCOUNT_NUMBER,
+            Attestation.NATURAL_PERSON_FIRST_NAME,
+            Attestation.BENEFICIARY_PERSON_LAST_NAME
+        )
     }
 }

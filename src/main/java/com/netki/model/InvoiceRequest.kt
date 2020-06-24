@@ -25,6 +25,11 @@ data class InvoiceRequest(
     val owners: List<Owner> = emptyList(),
 
     /**
+     * List of attestations requested
+     */
+    val attestationsRequested: List<Attestation> = emptyList(),
+
+    /**
      * Type of sender's pki data.
      */
     val senderPkiType: PkiType? = PkiType.NONE,

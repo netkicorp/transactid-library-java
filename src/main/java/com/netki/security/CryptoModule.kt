@@ -185,6 +185,7 @@ object CryptoModule {
      * @param certificatesPem string.
      * @return List of certificates.
      */
+    @Suppress("UNCHECKED_CAST")
     fun certificatesPemToObject(certificatesPem: String): List<X509Certificate> {
         val cf = CertificateFactory.getInstance("X.509")
         return cf.generateCertificates(ByteArrayInputStream(certificatesPem.toByteArray(Charsets.UTF_8))) as List<X509Certificate>

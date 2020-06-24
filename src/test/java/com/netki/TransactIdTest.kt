@@ -4,12 +4,13 @@ import com.netki.bip75.protocol.Messages
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
+import com.netki.model.Attestation
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
-import com.netki.util.TestData
 import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
+import com.netki.util.TestData.Attestations.REQUESTED_ATTESTATIONS
 import com.netki.util.TestData.InvoiceRequest.INVOICE_REQUEST_DATA
 import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_NONE
 import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_X509SHA256
@@ -17,10 +18,14 @@ import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_NONE
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE
+import com.netki.util.TestData.Payment.MEMO
+import com.netki.util.TestData.Payment.PAYMENT
+import com.netki.util.TestData.Payment.PAYMENT_PARAMETERS
 import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
 import com.netki.util.TestData.Senders.SENDER_PKI_NONE
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+import com.netki.util.toAttestationType
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -43,7 +48,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -56,7 +61,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -70,7 +75,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -84,7 +89,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_NONE
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -98,7 +103,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_NONE
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -112,7 +117,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -126,7 +131,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -140,7 +145,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
@@ -159,13 +164,13 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(TransactId.isInvoiceRequestValid(invoiceRequestBinary))
         }
 
-        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(INVALID_ATTESTATION))
+        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(INVALID_ATTESTATION.name))
     }
 
     @Test
@@ -177,7 +182,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary)
@@ -203,7 +208,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_NONE
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(TestData.InvoiceRequest.INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary)
@@ -212,12 +217,12 @@ internal class TransactIdTest {
         invoiceRequestCorrupted.ownersList.forEachIndexed { index, owner ->
             val ownerWithoutSignaturesBuilder = Messages.Owner.newBuilder()
                 .mergeFrom(owner)
-            owner.signaturesList.forEachIndexed() { signatureIndex, signature ->
-                ownerWithoutSignaturesBuilder.removeSignatures(signatureIndex)
-                ownerWithoutSignaturesBuilder.addSignatures(
-                    signatureIndex, Messages.Signature.newBuilder()
-                        .mergeFrom(signature)
-                        .setAttestation(INVALID_ATTESTATION)
+            owner.attestationsList.forEachIndexed { attestationIndex, attestation ->
+                ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
+                ownerWithoutSignaturesBuilder.addAttestations(
+                    attestationIndex, Messages.Attestation.newBuilder()
+                        .mergeFrom(attestation)
+                        .setAttestation(INVALID_ATTESTATION.toAttestationType())
                 )
                     .build()
             }
@@ -232,7 +237,7 @@ internal class TransactIdTest {
             assert(TransactId.isInvoiceRequestValid(invoiceRequestCorrupted.build().toByteArray()))
         }
 
-        assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION))
+        assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION.name))
     }
 
     @Test
@@ -244,13 +249,14 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
 
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender)
+            TransactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val invoiceRequest = TransactId.parseInvoiceRequest(invoiceRequestBinary)
 
         assert(INVOICE_REQUEST_DATA.amount == invoiceRequest.amount)
         assert(INVOICE_REQUEST_DATA.memo == invoiceRequest.memo)
         assert(INVOICE_REQUEST_DATA.notificationUrl == invoiceRequest.notificationUrl)
+        assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
 
         assert(invoiceRequest.owners.size == 2)
         invoiceRequest.owners.forEachIndexed() { index, owner ->
@@ -289,7 +295,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -301,7 +308,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -314,7 +322,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -327,7 +336,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_NONE
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -340,7 +350,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_NONE
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -353,7 +364,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -366,7 +378,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -379,7 +392,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
@@ -396,13 +410,14 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(TransactId.isPaymentRequestValid(paymentRequestBinary))
         }
 
-        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(INVALID_ATTESTATION))
+        assert(exception.message == CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(INVALID_ATTESTATION.name))
     }
 
     @Test
@@ -413,7 +428,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
             .mergeFrom(paymentRequestBinary)
@@ -438,7 +454,8 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_NONE
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
             .mergeFrom(paymentRequestBinary)
@@ -447,12 +464,12 @@ internal class TransactIdTest {
         paymentRequestCorrupted.ownersList.forEachIndexed { index, owner ->
             val ownerWithoutSignaturesBuilder = Messages.Owner.newBuilder()
                 .mergeFrom(owner)
-            owner.signaturesList.forEachIndexed() { signatureIndex, signature ->
-                ownerWithoutSignaturesBuilder.removeSignatures(signatureIndex)
-                ownerWithoutSignaturesBuilder.addSignatures(
-                    signatureIndex, Messages.Signature.newBuilder()
-                        .mergeFrom(signature)
-                        .setAttestation(INVALID_ATTESTATION)
+            owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
+                ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
+                ownerWithoutSignaturesBuilder.addAttestations(
+                    attestationIndex, Messages.Attestation.newBuilder()
+                        .mergeFrom(attestation)
+                        .setAttestation(INVALID_ATTESTATION.toAttestationType())
                 )
                     .build()
             }
@@ -467,7 +484,7 @@ internal class TransactIdTest {
             assert(TransactId.isPaymentRequestValid(paymentRequestCorrupted.build().toByteArray()))
         }
 
-        assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION))
+        assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION.name))
     }
 
     @Test
@@ -478,11 +495,12 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val paymentRequestBinary = TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender)
+        val paymentRequestBinary =
+            TransactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequest = TransactId.parsePaymentRequest(paymentRequestBinary)
 
-        val paymentDetails = paymentRequest.paymentParameters
+        val paymentDetails = paymentRequest.paymentRequestParameters
 
         assert(paymentDetails.network == PAYMENT_DETAILS.network)
         assert(paymentDetails.outputs == PAYMENT_DETAILS.outputs)
@@ -523,20 +541,29 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentBinary`() {
-        val paymentBinary = TransactId.createPayment(TestData.Payment.PAYMENT)
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val paymentBinary = TransactId.createPayment(PAYMENT_PARAMETERS, owners)
 
         assert(TransactId.isPaymentValid(paymentBinary))
     }
 
     @Test
     fun `Create and parse PaymentBinary to Payment`() {
-        val paymentBinary = TransactId.createPayment(TestData.Payment.PAYMENT)
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val paymentBinary = TransactId.createPayment(PAYMENT_PARAMETERS, owners)
         val payment = TransactId.parsePayment(paymentBinary)
 
-        assert(payment.merchantData == TestData.Payment.PAYMENT.merchantData)
-        assert(payment.transactions.size == TestData.Payment.PAYMENT.transactions.size)
-        assert(payment.outputs == TestData.Payment.PAYMENT.outputs)
-        assert(payment.memo == TestData.Payment.PAYMENT.memo)
+        assert(payment.merchantData == PAYMENT_PARAMETERS.merchantData)
+        assert(payment.transactions.size == PAYMENT_PARAMETERS.transactions.size)
+        assert(payment.outputs == PAYMENT_PARAMETERS.outputs)
+        assert(payment.memo == PAYMENT_PARAMETERS.memo)
+        assert(payment.owners.size == owners.size)
     }
 
     @Test
@@ -548,21 +575,22 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentAckBinary`() {
-        val paymentAckBinary = TransactId.createPaymentAck(TestData.Payment.PAYMENT, TestData.Payment.MEMO)
+        val paymentAckBinary = TransactId.createPaymentAck(PAYMENT, MEMO)
 
         assert(TransactId.isPaymentAckValid(paymentAckBinary))
     }
 
     @Test
     fun `Create and parse PaymentAckBinary to PaymentAck`() {
-        val paymentBinary = TransactId.createPaymentAck(TestData.Payment.PAYMENT, TestData.Payment.MEMO)
+        val paymentBinary = TransactId.createPaymentAck(PAYMENT, MEMO)
         val paymentAck = TransactId.parsePaymentAck(paymentBinary)
 
-        assert(paymentAck.payment.merchantData == TestData.Payment.PAYMENT.merchantData)
-        assert(paymentAck.payment.transactions.size == TestData.Payment.PAYMENT.transactions.size)
-        assert(paymentAck.payment.outputs == TestData.Payment.PAYMENT.outputs)
-        assert(paymentAck.payment.memo == TestData.Payment.PAYMENT.memo)
-        assert(paymentAck.memo == TestData.Payment.MEMO)
+        assert(paymentAck.payment.merchantData == PAYMENT.merchantData)
+        assert(paymentAck.payment.transactions.size == PAYMENT.transactions.size)
+        assert(paymentAck.payment.outputs == PAYMENT.outputs)
+        assert(paymentAck.payment.owners.size == PAYMENT.owners.size)
+        assert(paymentAck.payment.memo == PAYMENT.memo)
+        assert(paymentAck.memo == MEMO)
     }
 
     @Test
