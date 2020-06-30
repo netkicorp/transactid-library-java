@@ -29,6 +29,10 @@ fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setSenderPkiData(senderParameters.pkiDataParameters.certificatePem.toByteString())
         .setSenderSignature("".toByteString())
 
+    this.outputs.forEach { output ->
+        invoiceRequestBuilder.addOutputs(output.toMessageOutput())
+    }
+
     attestationsRequested.forEach {
         invoiceRequestBuilder.addAttestationsRequested(it.toAttestationType())
     }
@@ -47,6 +51,11 @@ fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
         owners.add(messageOwner.toOwner())
     }
 
+    val outputs = mutableListOf<Output>()
+    this.outputsList.forEach { messageOutput ->
+        outputs.add(messageOutput.toOutput())
+    }
+
     val attestationsRequested = mutableListOf<Attestation>()
     this.attestationsRequestedList.forEach { attestationType ->
         attestationsRequested.add(attestationType.toAttestation())
@@ -57,6 +66,7 @@ fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
         memo = this.memo,
         notificationUrl = this.notificationUrl,
         owners = owners,
+        outputs = outputs,
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),

@@ -4,7 +4,6 @@ import com.netki.bip75.protocol.Messages
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
-import com.netki.model.Attestation
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
@@ -19,6 +18,7 @@ import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE
 import com.netki.util.TestData.Payment.MEMO
+import com.netki.util.TestData.Payment.Output.OUTPUTS
 import com.netki.util.TestData.Payment.PAYMENT
 import com.netki.util.TestData.Payment.PAYMENT_PARAMETERS
 import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
@@ -257,6 +257,7 @@ internal class TransactIdTest {
         assert(INVOICE_REQUEST_DATA.memo == invoiceRequest.memo)
         assert(INVOICE_REQUEST_DATA.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
+        assert(OUTPUTS.size == invoiceRequest.outputs.size)
 
         assert(invoiceRequest.owners.size == 2)
         invoiceRequest.owners.forEachIndexed() { index, owner ->

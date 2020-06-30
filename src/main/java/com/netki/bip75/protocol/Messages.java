@@ -486,10 +486,54 @@ public final class Messages {
 
     /**
      * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    java.util.List<com.netki.bip75.protocol.Messages.Output> 
+        getOutputsList();
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    com.netki.bip75.protocol.Messages.Output getOutputs(int index);
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    int getOutputsCount();
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
+        getOutputsOrBuilderList();
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+        int index);
+
+    /**
+     * <pre>
      * List of attestations requested
      * </pre>
      *
-     * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+     * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
      * @return A list containing the attestationsRequested.
      */
     java.util.List<com.netki.bip75.protocol.Messages.AttestationType> getAttestationsRequestedList();
@@ -498,7 +542,7 @@ public final class Messages {
      * List of attestations requested
      * </pre>
      *
-     * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+     * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
      * @return The count of attestationsRequested.
      */
     int getAttestationsRequestedCount();
@@ -507,7 +551,7 @@ public final class Messages {
      * List of attestations requested
      * </pre>
      *
-     * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+     * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
      * @param index The index of the element to return.
      * @return The attestationsRequested at the given index.
      */
@@ -518,7 +562,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 6 [default = "none"];</code>
+     * <code>required string sender_pki_type = 7 [default = "none"];</code>
      * @return Whether the senderPkiType field is set.
      */
     boolean hasSenderPkiType();
@@ -527,7 +571,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 6 [default = "none"];</code>
+     * <code>required string sender_pki_type = 7 [default = "none"];</code>
      * @return The senderPkiType.
      */
     java.lang.String getSenderPkiType();
@@ -536,7 +580,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 6 [default = "none"];</code>
+     * <code>required string sender_pki_type = 7 [default = "none"];</code>
      * @return The bytes for senderPkiType.
      */
     com.google.protobuf.ByteString
@@ -547,7 +591,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 7;</code>
+     * <code>required bytes sender_pki_data = 8;</code>
      * @return Whether the senderPkiData field is set.
      */
     boolean hasSenderPkiData();
@@ -556,7 +600,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 7;</code>
+     * <code>required bytes sender_pki_data = 8;</code>
      * @return The senderPkiData.
      */
     com.google.protobuf.ByteString getSenderPkiData();
@@ -566,7 +610,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 8;</code>
+     * <code>required bytes sender_signature = 9;</code>
      * @return Whether the senderSignature field is set.
      */
     boolean hasSenderSignature();
@@ -575,7 +619,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 8;</code>
+     * <code>required bytes sender_signature = 9;</code>
      * @return The senderSignature.
      */
     com.google.protobuf.ByteString getSenderSignature();
@@ -596,6 +640,7 @@ public final class Messages {
       memo_ = "";
       notificationUrl_ = "";
       owners_ = java.util.Collections.emptyList();
+      outputs_ = java.util.Collections.emptyList();
       attestationsRequested_ = java.util.Collections.emptyList();
       senderPkiType_ = "none";
       senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
@@ -659,22 +704,31 @@ public final class Messages {
                   input.readMessage(com.netki.bip75.protocol.Messages.Owner.PARSER, extensionRegistry));
               break;
             }
-            case 40: {
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              outputs_.add(
+                  input.readMessage(com.netki.bip75.protocol.Messages.Output.PARSER, extensionRegistry));
+              break;
+            }
+            case 48: {
               int rawValue = input.readEnum();
               @SuppressWarnings("deprecation")
               com.netki.bip75.protocol.Messages.AttestationType value = com.netki.bip75.protocol.Messages.AttestationType.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(5, rawValue);
+                unknownFields.mergeVarintField(6, rawValue);
               } else {
-                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                if (!((mutable_bitField0_ & 0x00000020) != 0)) {
                   attestationsRequested_ = new java.util.ArrayList<java.lang.Integer>();
-                  mutable_bitField0_ |= 0x00000010;
+                  mutable_bitField0_ |= 0x00000020;
                 }
                 attestationsRequested_.add(rawValue);
               }
               break;
             }
-            case 42: {
+            case 50: {
               int length = input.readRawVarint32();
               int oldLimit = input.pushLimit(length);
               while(input.getBytesUntilLimit() > 0) {
@@ -682,11 +736,11 @@ public final class Messages {
                 @SuppressWarnings("deprecation")
                 com.netki.bip75.protocol.Messages.AttestationType value = com.netki.bip75.protocol.Messages.AttestationType.valueOf(rawValue);
                 if (value == null) {
-                  unknownFields.mergeVarintField(5, rawValue);
+                  unknownFields.mergeVarintField(6, rawValue);
                 } else {
-                  if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                  if (!((mutable_bitField0_ & 0x00000020) != 0)) {
                     attestationsRequested_ = new java.util.ArrayList<java.lang.Integer>();
-                    mutable_bitField0_ |= 0x00000010;
+                    mutable_bitField0_ |= 0x00000020;
                   }
                   attestationsRequested_.add(rawValue);
                 }
@@ -694,18 +748,18 @@ public final class Messages {
               input.popLimit(oldLimit);
               break;
             }
-            case 50: {
+            case 58: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
               senderPkiType_ = bs;
               break;
             }
-            case 58: {
+            case 66: {
               bitField0_ |= 0x00000010;
               senderPkiData_ = input.readBytes();
               break;
             }
-            case 66: {
+            case 74: {
               bitField0_ |= 0x00000020;
               senderSignature_ = input.readBytes();
               break;
@@ -729,6 +783,9 @@ public final class Messages {
           owners_ = java.util.Collections.unmodifiableList(owners_);
         }
         if (((mutable_bitField0_ & 0x00000010) != 0)) {
+          outputs_ = java.util.Collections.unmodifiableList(outputs_);
+        }
+        if (((mutable_bitField0_ & 0x00000020) != 0)) {
           attestationsRequested_ = java.util.Collections.unmodifiableList(attestationsRequested_);
         }
         this.unknownFields = unknownFields.build();
@@ -943,7 +1000,62 @@ public final class Messages {
       return owners_.get(index);
     }
 
-    public static final int ATTESTATIONSREQUESTED_FIELD_NUMBER = 5;
+    public static final int OUTPUTS_FIELD_NUMBER = 5;
+    private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_;
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
+      return outputs_;
+    }
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
+        getOutputsOrBuilderList() {
+      return outputs_;
+    }
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    public int getOutputsCount() {
+      return outputs_.size();
+    }
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
+      return outputs_.get(index);
+    }
+    /**
+     * <pre>
+     * Where payment should be sent
+     * </pre>
+     *
+     * <code>repeated .payments.Output outputs = 5;</code>
+     */
+    public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+        int index) {
+      return outputs_.get(index);
+    }
+
+    public static final int ATTESTATIONSREQUESTED_FIELD_NUMBER = 6;
     private java.util.List<java.lang.Integer> attestationsRequested_;
     private static final com.google.protobuf.Internal.ListAdapter.Converter<
         java.lang.Integer, com.netki.bip75.protocol.Messages.AttestationType> attestationsRequested_converter_ =
@@ -960,7 +1072,7 @@ public final class Messages {
      * List of attestations requested
      * </pre>
      *
-     * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+     * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
      * @return A list containing the attestationsRequested.
      */
     public java.util.List<com.netki.bip75.protocol.Messages.AttestationType> getAttestationsRequestedList() {
@@ -972,7 +1084,7 @@ public final class Messages {
      * List of attestations requested
      * </pre>
      *
-     * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+     * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
      */
     public int getAttestationsRequestedCount() {
       return attestationsRequested_.size();
@@ -982,7 +1094,7 @@ public final class Messages {
      * List of attestations requested
      * </pre>
      *
-     * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+     * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
      * @param index The index of the element to return.
      * @return The attestationsRequested at the given index.
      */
@@ -990,14 +1102,14 @@ public final class Messages {
       return attestationsRequested_converter_.convert(attestationsRequested_.get(index));
     }
 
-    public static final int SENDER_PKI_TYPE_FIELD_NUMBER = 6;
+    public static final int SENDER_PKI_TYPE_FIELD_NUMBER = 7;
     private volatile java.lang.Object senderPkiType_;
     /**
      * <pre>
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 6 [default = "none"];</code>
+     * <code>required string sender_pki_type = 7 [default = "none"];</code>
      * @return Whether the senderPkiType field is set.
      */
     public boolean hasSenderPkiType() {
@@ -1008,7 +1120,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 6 [default = "none"];</code>
+     * <code>required string sender_pki_type = 7 [default = "none"];</code>
      * @return The senderPkiType.
      */
     public java.lang.String getSenderPkiType() {
@@ -1030,7 +1142,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 6 [default = "none"];</code>
+     * <code>required string sender_pki_type = 7 [default = "none"];</code>
      * @return The bytes for senderPkiType.
      */
     public com.google.protobuf.ByteString
@@ -1047,14 +1159,14 @@ public final class Messages {
       }
     }
 
-    public static final int SENDER_PKI_DATA_FIELD_NUMBER = 7;
+    public static final int SENDER_PKI_DATA_FIELD_NUMBER = 8;
     private com.google.protobuf.ByteString senderPkiData_;
     /**
      * <pre>
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 7;</code>
+     * <code>required bytes sender_pki_data = 8;</code>
      * @return Whether the senderPkiData field is set.
      */
     public boolean hasSenderPkiData() {
@@ -1065,21 +1177,21 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 7;</code>
+     * <code>required bytes sender_pki_data = 8;</code>
      * @return The senderPkiData.
      */
     public com.google.protobuf.ByteString getSenderPkiData() {
       return senderPkiData_;
     }
 
-    public static final int SENDER_SIGNATURE_FIELD_NUMBER = 8;
+    public static final int SENDER_SIGNATURE_FIELD_NUMBER = 9;
     private com.google.protobuf.ByteString senderSignature_;
     /**
      * <pre>
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 8;</code>
+     * <code>required bytes sender_signature = 9;</code>
      * @return Whether the senderSignature field is set.
      */
     public boolean hasSenderSignature() {
@@ -1090,7 +1202,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 8;</code>
+     * <code>required bytes sender_signature = 9;</code>
      * @return The senderSignature.
      */
     public com.google.protobuf.ByteString getSenderSignature() {
@@ -1122,6 +1234,12 @@ public final class Messages {
           return false;
         }
       }
+      for (int i = 0; i < getOutputsCount(); i++) {
+        if (!getOutputs(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1141,17 +1259,20 @@ public final class Messages {
       for (int i = 0; i < owners_.size(); i++) {
         output.writeMessage(4, owners_.get(i));
       }
+      for (int i = 0; i < outputs_.size(); i++) {
+        output.writeMessage(5, outputs_.get(i));
+      }
       for (int i = 0; i < attestationsRequested_.size(); i++) {
-        output.writeEnum(5, attestationsRequested_.get(i));
+        output.writeEnum(6, attestationsRequested_.get(i));
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, senderPkiType_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, senderPkiType_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        output.writeBytes(7, senderPkiData_);
+        output.writeBytes(8, senderPkiData_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        output.writeBytes(8, senderSignature_);
+        output.writeBytes(9, senderSignature_);
       }
       unknownFields.writeTo(output);
     }
@@ -1176,6 +1297,10 @@ public final class Messages {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, owners_.get(i));
       }
+      for (int i = 0; i < outputs_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, outputs_.get(i));
+      }
       {
         int dataSize = 0;
         for (int i = 0; i < attestationsRequested_.size(); i++) {
@@ -1186,15 +1311,15 @@ public final class Messages {
         size += 1 * attestationsRequested_.size();
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, senderPkiType_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, senderPkiType_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, senderPkiData_);
+          .computeBytesSize(8, senderPkiData_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, senderSignature_);
+          .computeBytesSize(9, senderSignature_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1228,6 +1353,8 @@ public final class Messages {
       }
       if (!getOwnersList()
           .equals(other.getOwnersList())) return false;
+      if (!getOutputsList()
+          .equals(other.getOutputsList())) return false;
       if (!attestationsRequested_.equals(other.attestationsRequested_)) return false;
       if (hasSenderPkiType() != other.hasSenderPkiType()) return false;
       if (hasSenderPkiType()) {
@@ -1271,6 +1398,10 @@ public final class Messages {
       if (getOwnersCount() > 0) {
         hash = (37 * hash) + OWNERS_FIELD_NUMBER;
         hash = (53 * hash) + getOwnersList().hashCode();
+      }
+      if (getOutputsCount() > 0) {
+        hash = (37 * hash) + OUTPUTS_FIELD_NUMBER;
+        hash = (53 * hash) + getOutputsList().hashCode();
       }
       if (getAttestationsRequestedCount() > 0) {
         hash = (37 * hash) + ATTESTATIONSREQUESTED_FIELD_NUMBER;
@@ -1417,6 +1548,7 @@ public final class Messages {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
           getOwnersFieldBuilder();
+          getOutputsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -1434,14 +1566,20 @@ public final class Messages {
         } else {
           ownersBuilder_.clear();
         }
+        if (outputsBuilder_ == null) {
+          outputs_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        } else {
+          outputsBuilder_.clear();
+        }
         attestationsRequested_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
-        senderPkiType_ = "none";
         bitField0_ = (bitField0_ & ~0x00000020);
-        senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
+        senderPkiType_ = "none";
         bitField0_ = (bitField0_ & ~0x00000040);
-        senderSignature_ = com.google.protobuf.ByteString.EMPTY;
+        senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000080);
+        senderSignature_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -1491,20 +1629,29 @@ public final class Messages {
         } else {
           result.owners_ = ownersBuilder_.build();
         }
-        if (((bitField0_ & 0x00000010) != 0)) {
+        if (outputsBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) != 0)) {
+            outputs_ = java.util.Collections.unmodifiableList(outputs_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.outputs_ = outputs_;
+        } else {
+          result.outputs_ = outputsBuilder_.build();
+        }
+        if (((bitField0_ & 0x00000020) != 0)) {
           attestationsRequested_ = java.util.Collections.unmodifiableList(attestationsRequested_);
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
         }
         result.attestationsRequested_ = attestationsRequested_;
-        if (((from_bitField0_ & 0x00000020) != 0)) {
+        if (((from_bitField0_ & 0x00000040) != 0)) {
           to_bitField0_ |= 0x00000008;
         }
         result.senderPkiType_ = senderPkiType_;
-        if (((from_bitField0_ & 0x00000040) != 0)) {
+        if (((from_bitField0_ & 0x00000080) != 0)) {
           to_bitField0_ |= 0x00000010;
         }
         result.senderPkiData_ = senderPkiData_;
-        if (((from_bitField0_ & 0x00000080) != 0)) {
+        if (((from_bitField0_ & 0x00000100) != 0)) {
           to_bitField0_ |= 0x00000020;
         }
         result.senderSignature_ = senderSignature_;
@@ -1596,10 +1743,36 @@ public final class Messages {
             }
           }
         }
+        if (outputsBuilder_ == null) {
+          if (!other.outputs_.isEmpty()) {
+            if (outputs_.isEmpty()) {
+              outputs_ = other.outputs_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureOutputsIsMutable();
+              outputs_.addAll(other.outputs_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.outputs_.isEmpty()) {
+            if (outputsBuilder_.isEmpty()) {
+              outputsBuilder_.dispose();
+              outputsBuilder_ = null;
+              outputs_ = other.outputs_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              outputsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getOutputsFieldBuilder() : null;
+            } else {
+              outputsBuilder_.addAllMessages(other.outputs_);
+            }
+          }
+        }
         if (!other.attestationsRequested_.isEmpty()) {
           if (attestationsRequested_.isEmpty()) {
             attestationsRequested_ = other.attestationsRequested_;
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           } else {
             ensureAttestationsRequestedIsMutable();
             attestationsRequested_.addAll(other.attestationsRequested_);
@@ -1607,7 +1780,7 @@ public final class Messages {
           onChanged();
         }
         if (other.hasSenderPkiType()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           senderPkiType_ = other.senderPkiType_;
           onChanged();
         }
@@ -1635,6 +1808,11 @@ public final class Messages {
         }
         for (int i = 0; i < getOwnersCount(); i++) {
           if (!getOwners(i).isInitialized()) {
+            return false;
+          }
+        }
+        for (int i = 0; i < getOutputsCount(); i++) {
+          if (!getOutputs(i).isInitialized()) {
             return false;
           }
         }
@@ -2242,12 +2420,324 @@ public final class Messages {
         return ownersBuilder_;
       }
 
+      private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_ =
+        java.util.Collections.emptyList();
+      private void ensureOutputsIsMutable() {
+        if (!((bitField0_ & 0x00000010) != 0)) {
+          outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(outputs_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> outputsBuilder_;
+
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
+        if (outputsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(outputs_);
+        } else {
+          return outputsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public int getOutputsCount() {
+        if (outputsBuilder_ == null) {
+          return outputs_.size();
+        } else {
+          return outputsBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
+        if (outputsBuilder_ == null) {
+          return outputs_.get(index);
+        } else {
+          return outputsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder setOutputs(
+          int index, com.netki.bip75.protocol.Messages.Output value) {
+        if (outputsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOutputsIsMutable();
+          outputs_.set(index, value);
+          onChanged();
+        } else {
+          outputsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder setOutputs(
+          int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
+        if (outputsBuilder_ == null) {
+          ensureOutputsIsMutable();
+          outputs_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          outputsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder addOutputs(com.netki.bip75.protocol.Messages.Output value) {
+        if (outputsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOutputsIsMutable();
+          outputs_.add(value);
+          onChanged();
+        } else {
+          outputsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder addOutputs(
+          int index, com.netki.bip75.protocol.Messages.Output value) {
+        if (outputsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOutputsIsMutable();
+          outputs_.add(index, value);
+          onChanged();
+        } else {
+          outputsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder addOutputs(
+          com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
+        if (outputsBuilder_ == null) {
+          ensureOutputsIsMutable();
+          outputs_.add(builderForValue.build());
+          onChanged();
+        } else {
+          outputsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder addOutputs(
+          int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
+        if (outputsBuilder_ == null) {
+          ensureOutputsIsMutable();
+          outputs_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          outputsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder addAllOutputs(
+          java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Output> values) {
+        if (outputsBuilder_ == null) {
+          ensureOutputsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, outputs_);
+          onChanged();
+        } else {
+          outputsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder clearOutputs() {
+        if (outputsBuilder_ == null) {
+          outputs_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          outputsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public Builder removeOutputs(int index) {
+        if (outputsBuilder_ == null) {
+          ensureOutputsIsMutable();
+          outputs_.remove(index);
+          onChanged();
+        } else {
+          outputsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public com.netki.bip75.protocol.Messages.Output.Builder getOutputsBuilder(
+          int index) {
+        return getOutputsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+          int index) {
+        if (outputsBuilder_ == null) {
+          return outputs_.get(index);  } else {
+          return outputsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
+           getOutputsOrBuilderList() {
+        if (outputsBuilder_ != null) {
+          return outputsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(outputs_);
+        }
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder() {
+        return getOutputsFieldBuilder().addBuilder(
+            com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder(
+          int index) {
+        return getOutputsFieldBuilder().addBuilder(
+            index, com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Where payment should be sent
+       * </pre>
+       *
+       * <code>repeated .payments.Output outputs = 5;</code>
+       */
+      public java.util.List<com.netki.bip75.protocol.Messages.Output.Builder> 
+           getOutputsBuilderList() {
+        return getOutputsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> 
+          getOutputsFieldBuilder() {
+        if (outputsBuilder_ == null) {
+          outputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder>(
+                  outputs_,
+                  ((bitField0_ & 0x00000010) != 0),
+                  getParentForChildren(),
+                  isClean());
+          outputs_ = null;
+        }
+        return outputsBuilder_;
+      }
+
       private java.util.List<java.lang.Integer> attestationsRequested_ =
         java.util.Collections.emptyList();
       private void ensureAttestationsRequestedIsMutable() {
-        if (!((bitField0_ & 0x00000010) != 0)) {
+        if (!((bitField0_ & 0x00000020) != 0)) {
           attestationsRequested_ = new java.util.ArrayList<java.lang.Integer>(attestationsRequested_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
         }
       }
       /**
@@ -2255,7 +2745,7 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @return A list containing the attestationsRequested.
        */
       public java.util.List<com.netki.bip75.protocol.Messages.AttestationType> getAttestationsRequestedList() {
@@ -2267,7 +2757,7 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @return The count of attestationsRequested.
        */
       public int getAttestationsRequestedCount() {
@@ -2278,7 +2768,7 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @param index The index of the element to return.
        * @return The attestationsRequested at the given index.
        */
@@ -2290,7 +2780,7 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @param index The index to set the value at.
        * @param value The attestationsRequested to set.
        * @return This builder for chaining.
@@ -2310,7 +2800,7 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @param value The attestationsRequested to add.
        * @return This builder for chaining.
        */
@@ -2328,7 +2818,7 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @param values The attestationsRequested to add.
        * @return This builder for chaining.
        */
@@ -2346,12 +2836,12 @@ public final class Messages {
        * List of attestations requested
        * </pre>
        *
-       * <code>repeated .payments.AttestationType attestationsRequested = 5;</code>
+       * <code>repeated .payments.AttestationType attestationsRequested = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearAttestationsRequested() {
         attestationsRequested_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
@@ -2362,18 +2852,18 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 6 [default = "none"];</code>
+       * <code>required string sender_pki_type = 7 [default = "none"];</code>
        * @return Whether the senderPkiType field is set.
        */
       public boolean hasSenderPkiType() {
-        return ((bitField0_ & 0x00000020) != 0);
+        return ((bitField0_ & 0x00000040) != 0);
       }
       /**
        * <pre>
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 6 [default = "none"];</code>
+       * <code>required string sender_pki_type = 7 [default = "none"];</code>
        * @return The senderPkiType.
        */
       public java.lang.String getSenderPkiType() {
@@ -2395,7 +2885,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 6 [default = "none"];</code>
+       * <code>required string sender_pki_type = 7 [default = "none"];</code>
        * @return The bytes for senderPkiType.
        */
       public com.google.protobuf.ByteString
@@ -2416,7 +2906,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 6 [default = "none"];</code>
+       * <code>required string sender_pki_type = 7 [default = "none"];</code>
        * @param value The senderPkiType to set.
        * @return This builder for chaining.
        */
@@ -2425,7 +2915,7 @@ public final class Messages {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         senderPkiType_ = value;
         onChanged();
         return this;
@@ -2435,11 +2925,11 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 6 [default = "none"];</code>
+       * <code>required string sender_pki_type = 7 [default = "none"];</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderPkiType() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         senderPkiType_ = getDefaultInstance().getSenderPkiType();
         onChanged();
         return this;
@@ -2449,7 +2939,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 6 [default = "none"];</code>
+       * <code>required string sender_pki_type = 7 [default = "none"];</code>
        * @param value The bytes for senderPkiType to set.
        * @return This builder for chaining.
        */
@@ -2458,7 +2948,7 @@ public final class Messages {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         senderPkiType_ = value;
         onChanged();
         return this;
@@ -2470,18 +2960,18 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 7;</code>
+       * <code>required bytes sender_pki_data = 8;</code>
        * @return Whether the senderPkiData field is set.
        */
       public boolean hasSenderPkiData() {
-        return ((bitField0_ & 0x00000040) != 0);
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
        * <pre>
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 7;</code>
+       * <code>required bytes sender_pki_data = 8;</code>
        * @return The senderPkiData.
        */
       public com.google.protobuf.ByteString getSenderPkiData() {
@@ -2492,7 +2982,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 7;</code>
+       * <code>required bytes sender_pki_data = 8;</code>
        * @param value The senderPkiData to set.
        * @return This builder for chaining.
        */
@@ -2500,7 +2990,7 @@ public final class Messages {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
         senderPkiData_ = value;
         onChanged();
         return this;
@@ -2510,11 +3000,11 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 7;</code>
+       * <code>required bytes sender_pki_data = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderPkiData() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         senderPkiData_ = getDefaultInstance().getSenderPkiData();
         onChanged();
         return this;
@@ -2526,18 +3016,18 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 8;</code>
+       * <code>required bytes sender_signature = 9;</code>
        * @return Whether the senderSignature field is set.
        */
       public boolean hasSenderSignature() {
-        return ((bitField0_ & 0x00000080) != 0);
+        return ((bitField0_ & 0x00000100) != 0);
       }
       /**
        * <pre>
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 8;</code>
+       * <code>required bytes sender_signature = 9;</code>
        * @return The senderSignature.
        */
       public com.google.protobuf.ByteString getSenderSignature() {
@@ -2548,7 +3038,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 8;</code>
+       * <code>required bytes sender_signature = 9;</code>
        * @param value The senderSignature to set.
        * @return This builder for chaining.
        */
@@ -2556,7 +3046,7 @@ public final class Messages {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         senderSignature_ = value;
         onChanged();
         return this;
@@ -2566,11 +3056,11 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 8;</code>
+       * <code>required bytes sender_signature = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderSignature() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         senderSignature_ = getDefaultInstance().getSenderSignature();
         onChanged();
         return this;
@@ -15553,62 +16043,63 @@ public final class Messages {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rpayment.proto\022\010payments\"\370\001\n\016InvoiceReq" +
+      "\n\rpayment.proto\022\010payments\"\233\002\n\016InvoiceReq" +
       "uest\022\021\n\006amount\030\001 \001(\004:\0010\022\014\n\004memo\030\002 \001(\t\022\030\n" +
       "\020notification_url\030\003 \001(\t\022\037\n\006owners\030\004 \003(\0132" +
-      "\017.payments.Owner\0228\n\025attestationsRequeste" +
-      "d\030\005 \003(\0162\031.payments.AttestationType\022\035\n\017se" +
-      "nder_pki_type\030\006 \002(\t:\004none\022\027\n\017sender_pki_" +
-      "data\030\007 \002(\014\022\030\n\020sender_signature\030\010 \002(\014\"\205\002\n" +
-      "\016PaymentRequest\022\"\n\027payment_details_versi" +
-      "on\030\001 \001(\r:\0011\022\"\n\032serialized_payment_detail" +
-      "s\030\002 \002(\014\022\037\n\006owners\030\003 \003(\0132\017.payments.Owner" +
-      "\0228\n\025attestationsRequested\030\004 \003(\0162\031.paymen" +
-      "ts.AttestationType\022\035\n\017sender_pki_type\030\005 " +
-      "\002(\t:\004none\022\027\n\017sender_pki_data\030\006 \002(\014\022\030\n\020se" +
-      "nder_signature\030\007 \002(\014\"\212\001\n\007Payment\022\025\n\rmerc" +
-      "hant_data\030\001 \001(\014\022\024\n\014transactions\030\002 \003(\014\022#\n" +
-      "\trefund_to\030\003 \003(\0132\020.payments.Output\022\014\n\004me" +
-      "mo\030\004 \001(\t\022\037\n\006owners\030\005 \003(\0132\017.payments.Owne" +
-      "r\">\n\nPaymentACK\022\"\n\007payment\030\001 \002(\0132\021.payme" +
-      "nts.Payment\022\014\n\004memo\030\002 \001(\t\"[\n\005Owner\022%\n\027pr" +
-      "imary_for_transaction\030\001 \002(\010:\004true\022+\n\014att" +
-      "estations\030\002 \003(\0132\025.payments.Attestation\"z" +
-      "\n\013Attestation\022.\n\013attestation\030\001 \001(\0162\031.pay" +
-      "ments.AttestationType\022\026\n\010pki_type\030\002 \002(\t:" +
-      "\004none\022\020\n\010pki_data\030\003 \001(\014\022\021\n\tsignature\030\004 \001" +
-      "(\014\"\243\001\n\016PaymentDetails\022\025\n\007network\030\001 \001(\t:\004" +
-      "main\022!\n\007outputs\030\002 \003(\0132\020.payments.Output\022" +
-      "\014\n\004time\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004memo\030\005" +
-      " \001(\t\022\023\n\013payment_url\030\006 \001(\t\022\025\n\rmerchant_da" +
-      "ta\030\007 \001(\014\"+\n\006Output\022\021\n\006amount\030\001 \001(\004:\0010\022\016\n" +
-      "\006script\030\002 \002(\014\"\272\001\n\017ProtocolMessage\022\022\n\007ver" +
-      "sion\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n" +
-      "\014message_type\030\003 \002(\0162\035.payments.ProtocolM" +
-      "essageType\022\032\n\022serialized_message\030\004 \002(\014\022\026" +
-      "\n\016status_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002" +
-      "(\014\"\234\002\n\030EncryptedProtocolMessage\022\022\n\007versi" +
-      "on\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014m" +
-      "essage_type\030\003 \002(\0162\035.payments.ProtocolMes" +
-      "sageType\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023r" +
-      "eceiver_public_key\030\005 \002(\014\022\031\n\021sender_publi" +
-      "c_key\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier" +
-      "\030\010 \002(\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignat" +
-      "ure\030\n \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKN" +
-      "OWN_MESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022" +
-      "\023\n\017PAYMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAY" +
-      "MENT_ACK\020\004*\236\003\n\017AttestationType\022\r\n\tADDRES" +
-      "S_1\020\000\022\r\n\tADDRESS_2\020\001\022!\n\035BENEFICIARY_PERS" +
-      "ON_FIRST_NAME\020\002\022 \n\034BENEFICIARY_PERSON_LA" +
-      "ST_NAME\020\003\022\016\n\nBIRTH_DATE\020\004\022\017\n\013BIRTH_PLACE" +
-      "\020\005\022\030\n\024COUNTRY_OF_RESIDENCE\020\006\022\033\n\027CUSTOMER" +
-      "_IDENTIFICATION\020\007\022\023\n\017ISSUING_COUNTRY\020\010\022\025" +
-      "\n\021LEGAL_PERSON_NAME\020\t\022\027\n\023NATIONAL_IDENTI" +
-      "FIER\020\n\022\036\n\032NATIONAL_IDENTIFIER_NUMBER\020\013\022\035" +
-      "\n\031NATURAL_PERSON_FIRST_NAME\020\014\022\034\n\030NATURAL" +
-      "_PERSON_LAST_NAME\020\r\022\022\n\016ACCOUNT_NUMBER\020\016\022" +
-      "\032\n\026REGISTRATION_AUTHORITY\020\017B$\n\030com.netki" +
-      ".bip75.protocolB\010Messages"
+      "\017.payments.Owner\022!\n\007outputs\030\005 \003(\0132\020.paym" +
+      "ents.Output\0228\n\025attestationsRequested\030\006 \003" +
+      "(\0162\031.payments.AttestationType\022\035\n\017sender_" +
+      "pki_type\030\007 \002(\t:\004none\022\027\n\017sender_pki_data\030" +
+      "\010 \002(\014\022\030\n\020sender_signature\030\t \002(\014\"\205\002\n\016Paym" +
+      "entRequest\022\"\n\027payment_details_version\030\001 " +
+      "\001(\r:\0011\022\"\n\032serialized_payment_details\030\002 \002" +
+      "(\014\022\037\n\006owners\030\003 \003(\0132\017.payments.Owner\0228\n\025a" +
+      "ttestationsRequested\030\004 \003(\0162\031.payments.At" +
+      "testationType\022\035\n\017sender_pki_type\030\005 \002(\t:\004" +
+      "none\022\027\n\017sender_pki_data\030\006 \002(\014\022\030\n\020sender_" +
+      "signature\030\007 \002(\014\"\212\001\n\007Payment\022\025\n\rmerchant_" +
+      "data\030\001 \001(\014\022\024\n\014transactions\030\002 \003(\014\022#\n\trefu" +
+      "nd_to\030\003 \003(\0132\020.payments.Output\022\014\n\004memo\030\004 " +
+      "\001(\t\022\037\n\006owners\030\005 \003(\0132\017.payments.Owner\">\n\n" +
+      "PaymentACK\022\"\n\007payment\030\001 \002(\0132\021.payments.P" +
+      "ayment\022\014\n\004memo\030\002 \001(\t\"[\n\005Owner\022%\n\027primary" +
+      "_for_transaction\030\001 \002(\010:\004true\022+\n\014attestat" +
+      "ions\030\002 \003(\0132\025.payments.Attestation\"z\n\013Att" +
+      "estation\022.\n\013attestation\030\001 \001(\0162\031.payments" +
+      ".AttestationType\022\026\n\010pki_type\030\002 \002(\t:\004none" +
+      "\022\020\n\010pki_data\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"\243\001" +
+      "\n\016PaymentDetails\022\025\n\007network\030\001 \001(\t:\004main\022" +
+      "!\n\007outputs\030\002 \003(\0132\020.payments.Output\022\014\n\004ti" +
+      "me\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004memo\030\005 \001(\t\022" +
+      "\023\n\013payment_url\030\006 \001(\t\022\025\n\rmerchant_data\030\007 " +
+      "\001(\014\"+\n\006Output\022\021\n\006amount\030\001 \001(\004:\0010\022\016\n\006scri" +
+      "pt\030\002 \002(\014\"\272\001\n\017ProtocolMessage\022\022\n\007version\030" +
+      "\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014mess" +
+      "age_type\030\003 \002(\0162\035.payments.ProtocolMessag" +
+      "eType\022\032\n\022serialized_message\030\004 \002(\014\022\026\n\016sta" +
+      "tus_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002(\014\"\234\002" +
+      "\n\030EncryptedProtocolMessage\022\022\n\007version\030\001 " +
+      "\002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014messag" +
+      "e_type\030\003 \002(\0162\035.payments.ProtocolMessageT" +
+      "ype\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023receiv" +
+      "er_public_key\030\005 \002(\014\022\031\n\021sender_public_key" +
+      "\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier\030\010 \002(" +
+      "\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignature\030\n" +
+      " \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKNOWN_M" +
+      "ESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022\023\n\017PA" +
+      "YMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMENT_" +
+      "ACK\020\004*\236\003\n\017AttestationType\022\r\n\tADDRESS_1\020\000" +
+      "\022\r\n\tADDRESS_2\020\001\022!\n\035BENEFICIARY_PERSON_FI" +
+      "RST_NAME\020\002\022 \n\034BENEFICIARY_PERSON_LAST_NA" +
+      "ME\020\003\022\016\n\nBIRTH_DATE\020\004\022\017\n\013BIRTH_PLACE\020\005\022\030\n" +
+      "\024COUNTRY_OF_RESIDENCE\020\006\022\033\n\027CUSTOMER_IDEN" +
+      "TIFICATION\020\007\022\023\n\017ISSUING_COUNTRY\020\010\022\025\n\021LEG" +
+      "AL_PERSON_NAME\020\t\022\027\n\023NATIONAL_IDENTIFIER\020" +
+      "\n\022\036\n\032NATIONAL_IDENTIFIER_NUMBER\020\013\022\035\n\031NAT" +
+      "URAL_PERSON_FIRST_NAME\020\014\022\034\n\030NATURAL_PERS" +
+      "ON_LAST_NAME\020\r\022\022\n\016ACCOUNT_NUMBER\020\016\022\032\n\026RE" +
+      "GISTRATION_AUTHORITY\020\017B$\n\030com.netki.bip7" +
+      "5.protocolB\010Messages"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -15619,7 +16110,7 @@ public final class Messages {
     internal_static_payments_InvoiceRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_InvoiceRequest_descriptor,
-        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Owners", "AttestationsRequested", "SenderPkiType", "SenderPkiData", "SenderSignature", });
+        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Owners", "Outputs", "AttestationsRequested", "SenderPkiType", "SenderPkiData", "SenderSignature", });
     internal_static_payments_PaymentRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_payments_PaymentRequest_fieldAccessorTable = new

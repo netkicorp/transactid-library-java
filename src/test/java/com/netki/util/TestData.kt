@@ -8,6 +8,7 @@ import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_TWO
+import com.netki.util.TestData.Payment.Output.OUTPUTS
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE
@@ -97,15 +98,12 @@ object TestData {
         val INVOICE_REQUEST_DATA = InvoiceRequestParameters(
             amount = 1000,
             memo = "memo",
-            notificationUrl = "notificationUrl"
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS
         )
     }
 
     object PaymentRequest {
-        val OUTPUTS = listOf(
-            Output(1000, "Script 1"),
-            Output(2000, "Script 2")
-        )
         val PAYMENT_DETAILS = PaymentRequestParameters(
             network = "main",
             outputs = OUTPUTS,
@@ -125,10 +123,7 @@ object TestData {
                 "transaction1".toByteArray(),
                 "transaction2".toByteArray()
             ),
-            outputs = arrayListOf(
-                Output(100, "Script"),
-                Output(200, "Script")
-            ),
+            outputs = OUTPUTS,
             memo = MEMO
         )
 
@@ -138,10 +133,7 @@ object TestData {
                 "transaction1".toByteArray(),
                 "transaction2".toByteArray()
             ),
-            outputs = arrayListOf(
-                Output(100, "Script"),
-                Output(200, "Script")
-            ),
+            outputs = OUTPUTS,
             memo = MEMO,
             owners = listOf(
                 Owner(
@@ -156,6 +148,13 @@ object TestData {
                 )
             )
         )
+
+        object Output {
+            val OUTPUTS = listOf(
+                Output(1000, "Script 1"),
+                Output(2000, "Script 2")
+            )
+        }
 
         val PAYMENT_ACK = PaymentAck(
             payment = PAYMENT,
