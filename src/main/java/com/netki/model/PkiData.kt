@@ -8,7 +8,7 @@ data class PkiData(
     /**
      * Type of certificate.
      */
-    val attestation: String? = null,
+    val attestation: Attestation? = null,
 
     /**
      * Certificate in PEM format associated with PrivateKey.

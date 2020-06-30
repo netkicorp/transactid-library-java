@@ -1,45 +1,27 @@
 package com.netki.model
 
-import java.sql.Timestamp
-
 /**
- * Representation of PaymentDetails message.
+ * Data to create InvoiceRequest message.
  */
 data class PaymentParameters(
-
     /**
-     * Either "main" for payments on the production Bitcoin network, or "test" for payments on test network.
+     * Copied from PaymentDetails.merchant_data.
+     * Merchants may use invoice numbers or any other data they require to match Payments to PaymentRequests.
      */
-    val network: String? = "main",
+    val merchantData: String? = null,
 
     /**
-     * One or more outputs where Bitcoins are to be sent.
+     * One or more valid, signed Bitcoin transactions that fully pay the PaymentRequest.
+     */
+    val transactions: List<ByteArray> = emptyList(),
+
+    /**
+     * One or more outputs where the merchant may return funds, if necessary.
      */
     val outputs: List<Output> = emptyList(),
 
     /**
-     * Unix timestamp (seconds since 1-Jan-1970 UTC) when the PaymentRequest was created.
+     * UTF-8 encoded, plain-text note from the customer to the merchant.
      */
-    val time: Timestamp,
-
-    /**
-     * Unix timestamp (UTC) after which the PaymentRequest should be considered invalid.
-     */
-    val expires: Timestamp? = null,
-
-    /**
-     * 	UTF-8 encoded, plain-text (no formatting) note that should be displayed to the customer,
-     * 	explaining what this PaymentRequest is for.
-     */
-    val memo: String? = null,
-
-    /**
-     * Secure (usually https) location where a Payment message (see below) may be sent to obtain a PaymentACK.
-     */
-    val paymentUrl: String? = null,
-
-    /**
-     * Arbitrary data that may be used by the merchant to identify the PaymentRequest.
-     */
-    val merchantData: String? = null
+    val memo: String? = null
 )

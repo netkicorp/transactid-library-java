@@ -5,95 +5,112 @@ package payments;
 option java_package = "com.netki.bip75.protocol";
 option java_outer_classname = "Messages";
 
-message Output {
-    optional uint64 amount = 1 [default = 0]; // amount is integer-number-of-satoshis
-    required bytes script = 2; // usually one of the standard Script forms
-}
-
-message PaymentDetails {
-    optional string network = 1 [default = "main"]; // "main" or "test"
-    repeated Output outputs = 2;                // Where payment should be sent
-    required uint64 time = 3;                   // Timestamp; when payment request created
-    optional uint64 expires = 4;                // Timestamp; when this request should be considered invalid
-    optional string memo = 5;                   // Human-readable description of request for the customer
-    optional string payment_url = 6;            // URL to send Payment and get PaymentACK
-    optional bytes  merchant_data = 7;          // Arbitrary data to include in the Payment message
+message InvoiceRequest {
+  optional uint64 amount = 1 [default = 0];                   // amount is integer-number-of-satoshis
+  optional string memo = 2;                                   // Human-readable description of invoice request for the receiver
+  optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
+  repeated Owner owners = 4;                                  // Account owners
+  repeated AttestationType attestationsRequested = 5;         // List of attestations requested
+  required string sender_pki_type = 6 [default = "none"];     // none / x509+sha256
+  required bytes  sender_pki_data = 7;                        // Sender's pki data, depends on pki_type
+  required bytes  sender_signature = 8;                       // Sender's Signature of the whole message
 }
 
 message PaymentRequest {
-    optional uint32 payment_details_version = 1 [default = 1];
-    required bytes serialized_payment_details = 2;              // PaymentDetails
-    repeated Owner owners = 3;                                  // Account owners
-    required string sender_pki_type = 4 [default = "none"];     // none / x509+sha256
-    required bytes  sender_pki_data = 5;                        // Sender's pki data, depends on pki_type
-    required bytes  sender_signature = 6;                       // Sender's Signature of the whole message
-}
-
-message X509Certificates {
-    repeated bytes certificate = 1;    // DER-encoded X.509 certificate chain
+  optional uint32 payment_details_version = 1 [default = 1];
+  required bytes serialized_payment_details = 2;              // PaymentDetails
+  repeated Owner owners = 3;                                  // Account owners containing the requested attestations
+  repeated AttestationType attestationsRequested = 4;         // List of attestations requested
+  required string sender_pki_type = 5 [default = "none"];     // none / x509+sha256
+  required bytes  sender_pki_data = 6;                        // Sender's pki data, depends on pki_type
+  required bytes  sender_signature = 7;                       // Sender's Signature of the whole message
 }
 
 message Payment {
-    optional bytes merchant_data = 1;       // From PaymentDetails.merchant_data
-    repeated bytes transactions = 2;        // Signed transactions that satisfy PaymentDetails.outputs
-    repeated Output refund_to = 3;          // Where to send refunds, if a refund is necessary
-    optional string memo = 4;               // Human-readable message for the merchant
+  optional bytes merchant_data = 1;       // From PaymentDetails.merchant_data
+  repeated bytes transactions = 2;        // Signed transactions that satisfy PaymentDetails.outputs
+  repeated Output refund_to = 3;          // Where to send refunds, if a refund is necessary
+  optional string memo = 4;               // Human-readable message for the merchant
+  repeated Owner owners = 5;              // Account owners containing the requested attestations
 }
 
 message PaymentACK {
-    required Payment payment = 1;           // Payment message that triggered this ACK
-    optional string memo = 2;               // Human-readable message for customer
-}
-
-// BIP-IR Extensions
-message InvoiceRequest {
-    optional uint64 amount = 1 [default = 0];                   // amount is integer-number-of-satoshis
-    optional string memo = 2;                                   // Human-readable description of invoice request for the receiver
-    optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
-    repeated Owner owners = 4;                                  // Account owners
-    required string sender_pki_type = 5 [default = "none"];     // none / x509+sha256
-    required bytes  sender_pki_data = 6;                        // Sender's pki data, depends on pki_type
-    required bytes  sender_signature = 7;                       // Sender's Signature of the whole message
+  required Payment payment = 1;           // Payment message that triggered this ACK
+  optional string memo = 2;               // Human-readable message for customer
 }
 
 message Owner {
-    required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
-    repeated Signature signatures = 2;                             // All the owner signatures for the message
+  required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
+  repeated Attestation attestations = 2;                          // All the owner attestations for the message
 }
 
-message Signature {
-    required string attestation = 1;                    // Type of certificate
-    required string pki_type = 2 [default = "none"];    // none / x509+sha256 / x509+sha1
-    required bytes  pki_data = 3;                       // Depends on pki_type
-    required bytes  signature = 4;                      // PKI-dependent signature
+message Attestation {
+  optional AttestationType attestation = 1;           // Type of attestation
+  required string pki_type = 2 [default = "none"];    // none / x509+sha256 / x509+sha1
+  optional bytes  pki_data = 3;                       // Depends on pki_type
+  optional bytes  signature = 4;                      // PKI-dependent signature
+}
+
+message PaymentDetails {
+  optional string network = 1 [default = "main"];   // "main" or "test"
+  repeated Output outputs = 2;                      // Where payment should be sent
+  required uint64 time = 3;                         // Timestamp; when payment request created
+  optional uint64 expires = 4;                      // Timestamp; when this request should be considered invalid
+  optional string memo = 5;                         // Human-readable description of request for the customer
+  optional string payment_url = 6;                  // URL to send Payment and get PaymentACK
+  optional bytes  merchant_data = 7;                // Arbitrary data to include in the Payment message
+}
+
+message Output {
+  optional uint64 amount = 1 [default = 0]; // amount is integer-number-of-satoshis
+  required bytes script = 2;                // usually one of the standard Script forms
 }
 
 enum ProtocolMessageType {
-    UNKNOWN_MESSAGE_TYPE = 0;
-    INVOICE_REQUEST = 1;
-    PAYMENT_REQUEST = 2;
-    PAYMENT = 3;
-    PAYMENT_ACK =  4;
+  UNKNOWN_MESSAGE_TYPE = 0;
+  INVOICE_REQUEST = 1;
+  PAYMENT_REQUEST = 2;
+  PAYMENT = 3;
+  PAYMENT_ACK = 4;
+}
+
+enum AttestationType {
+  ADDRESS_1 = 0;
+  ADDRESS_2 = 1;
+  BENEFICIARY_PERSON_FIRST_NAME = 2;
+  BENEFICIARY_PERSON_LAST_NAME = 3;
+  BIRTH_DATE = 4;
+  BIRTH_PLACE = 5;
+  COUNTRY_OF_RESIDENCE = 6;
+  CUSTOMER_IDENTIFICATION = 7;
+  ISSUING_COUNTRY = 8;
+  LEGAL_PERSON_NAME = 9;
+  NATIONAL_IDENTIFIER = 10;
+  NATIONAL_IDENTIFIER_NUMBER = 11;
+  NATURAL_PERSON_FIRST_NAME = 12;
+  NATURAL_PERSON_LAST_NAME = 13;
+  ACCOUNT_NUMBER = 14;
+  REGISTRATION_AUTHORITY = 15;
 }
 
 message ProtocolMessage {
-    required uint64 version = 1 [default = 1];      // Protocol version number
-    required uint64 status_code = 2 [default = 1];  // Payment Protocol Status Code (Default: 1 "OK")
-    required ProtocolMessageType message_type = 3;  // Message Type of serialized_message
-    required bytes serialized_message = 4;          // Serialized Payment Protocol Message
-    optional string status_message = 5;             // Human-readable Payment Protocol status message
-    required bytes identifier = 6;                  // Unique key to identify this entire exchange on the server. Default value SHOULD be SHA256(Serialized Initial InvoiceRequest + Current Epoch Time in Seconds as a String)
+  required uint64 version = 1 [default = 1];      // Protocol version number
+  required uint64 status_code = 2 [default = 1];  // Payment Protocol Status Code (Default: 1 "OK")
+  required ProtocolMessageType message_type = 3;  // Message Type of serialized_message
+  required bytes serialized_message = 4;          // Serialized Payment Protocol Message
+  optional string status_message = 5;             // Human-readable Payment Protocol status message
+  required bytes identifier = 6;                  // Unique key to identify this entire exchange on the server. Default value SHOULD be SHA256(Serialized Initial InvoiceRequest + Current Epoch Time in Seconds as a String)
 }
 
 message EncryptedProtocolMessage {
-    required uint64 version = 1 [default = 1];      // Protocol version number
-    required uint64 status_code = 2 [default = 1];  // Payment Protocol Status Code (Default: 1 "OK")
-    required ProtocolMessageType message_type = 3;  // Message Type of Decrypted encrypted_message
-    required bytes encrypted_message = 4;           // AES-256-GCM Encrypted (as defined in BIP75) Payment Protocol Message
-    required bytes receiver_public_key = 5;         // Receiver's DER-encoded EC Public Key
-    required bytes sender_public_key = 6;           // Sender's DER-encoded EC Public Key
-    required uint64 nonce = 7;                      // Microseconds since epoch
-    required bytes identifier = 8;                  // Unique key to identify this entire exchange on the server. Default value SHOULD be SHA256(Serialized Initial InvoiceRequest + Current Epoch Time in Seconds as a String)
-    optional string status_message = 9;             // Human-readable Payment Protocol status message
-    optional bytes signature = 10;                  // Signature over the full EncryptedProtocolMessage with EC Key Belonging to Sender / Receiver, respectively
+  required uint64 version = 1 [default = 1];      // Protocol version number
+  required uint64 status_code = 2 [default = 1];  // Payment Protocol Status Code (Default: 1 "OK")
+  required ProtocolMessageType message_type = 3;  // Message Type of Decrypted encrypted_message
+  required bytes encrypted_message = 4;           // AES-256-GCM Encrypted (as defined in BIP75) Payment Protocol Message
+  required bytes receiver_public_key = 5;         // Receiver's DER-encoded EC Public Key
+  required bytes sender_public_key = 6;           // Sender's DER-encoded EC Public Key
+  required uint64 nonce = 7;                      // Microseconds since epoch
+  required bytes identifier = 8;                  // Unique key to identify this entire exchange on the server. Default value SHOULD be SHA256(Serialized Initial InvoiceRequest + Current Epoch Time in Seconds as a String)
+  optional string status_message = 9;             // Human-readable Payment Protocol status message
+  optional bytes signature = 10;                  // Signature over the full EncryptedProtocolMessage with EC Key Belonging to Sender / Receiver, respectively
 }

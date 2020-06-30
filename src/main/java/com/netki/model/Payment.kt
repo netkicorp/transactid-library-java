@@ -24,5 +24,10 @@ data class Payment(
     /**
      * UTF-8 encoded, plain-text note from the customer to the merchant.
      */
-    val memo: String? = null
+    val memo: String? = null,
+
+    /**
+     * Account owners.
+     */
+    val owners: List<Owner> = emptyList()
 )

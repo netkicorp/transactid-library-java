@@ -13,12 +13,17 @@ data class PaymentRequest(
     /**
      * Bulk of the information that contains PaymentDetails message.
      */
-    val paymentParameters: PaymentParameters,
+    val paymentRequestParameters: PaymentRequestParameters,
 
     /**
      * Account owners.
      */
     val owners: List<Owner> = emptyList(),
+
+    /**
+     * List of attestations requested
+     */
+    val attestationsRequested: List<Attestation> = emptyList(),
 
     /**
      * Type of sender's pki data.

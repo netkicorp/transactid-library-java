@@ -12,16 +12,18 @@ interface Bip75 {
      * Create InvoiceRequest message.
      *
      * @param invoiceRequestParameters data to create the InvoiceRequest.
-     * @param ownerParameters of the accounts for this transaction.
+     * @param ownersParameters of the accounts for this transaction.
      * @param senderParameters of the protocol message.
+     * @param attestationsRequested list of attestations requested.
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
     fun createInvoiceRequest(
         invoiceRequestParameters: InvoiceRequestParameters,
-        ownerParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters
+        ownersParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters,
+        attestationsRequested: List<Attestation>
     ): ByteArray
 
     /**
@@ -55,18 +57,20 @@ interface Bip75 {
     /**
      * Create binary PaymentRequest.
      *
-     * @param paymentParameters data to create the PaymentRequest.
-     * @param ownerParameters of the accounts for this transaction.
+     * @param paymentRequestParameters data to create the PaymentRequest.
+     * @param ownersParameters of the accounts for this transaction.
      * @param senderParameters of the protocol message.
+     * @param attestationsRequested list of attestations requested.
      * @param paymentParametersVersion version of the PaymentDetails message.
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
     fun createPaymentRequest(
-        paymentParameters: PaymentParameters,
-        ownerParameters: List<OwnerParameters>,
+        paymentRequestParameters: PaymentRequestParameters,
+        ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
+        attestationsRequested: List<Attestation>,
         paymentParametersVersion: Int = 1
     ): ByteArray
 
@@ -101,10 +105,12 @@ interface Bip75 {
     /**
      * Create binary Payment.
      *
-     * @param payment data to create the Payment.
+     * @param paymentParameters data to create the Payment.
+     * @param ownersParameters of the accounts for this transaction.
      * @return binary object of the message created.
+     * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
-    fun createPayment(payment: Payment): ByteArray
+    fun createPayment(paymentParameters: PaymentParameters, ownersParameters: List<OwnerParameters>): ByteArray
 
     /**
      * Validate if a binary Payment is valid.
@@ -112,6 +118,9 @@ interface Bip75 {
      * @param paymentBinary binary data to validate.
      * @return true if is valid.
      * @exception InvalidObjectException if the binary is malformed.
+     * @exception InvalidSignatureException if the signature in the binary is not valid.
+     * @exception InvalidCertificateException if there is a problem with the certificates.
+     * @exception InvalidCertificateChainException if the certificate chain is not valid.
      */
     @Throws(InvalidObjectException::class)
     fun isPaymentValid(paymentBinary: ByteArray): Boolean

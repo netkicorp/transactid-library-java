@@ -14,9 +14,15 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      */
     override fun createInvoiceRequest(
         invoiceRequestParameters: InvoiceRequestParameters,
-        ownerParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters
-    ) = bip75Service.createInvoiceRequest(invoiceRequestParameters, ownerParameters, senderParameters)
+        ownersParameters: List<OwnerParameters>,
+        senderParameters: SenderParameters,
+        attestationsRequested: List<Attestation>
+    ) = bip75Service.createInvoiceRequest(
+        invoiceRequestParameters,
+        ownersParameters,
+        senderParameters,
+        attestationsRequested
+    )
 
     /**
      * {@inheritDoc}
@@ -34,11 +40,18 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      * {@inheritDoc}
      */
     override fun createPaymentRequest(
-        paymentParameters: PaymentParameters,
-        ownerParameters: List<OwnerParameters>,
+        paymentRequestParameters: PaymentRequestParameters,
+        ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
+        attestationsRequested: List<Attestation>,
         paymentParametersVersion: Int
-    ) = bip75Service.createPaymentRequest(paymentParameters, ownerParameters, senderParameters, paymentParametersVersion)
+    ) = bip75Service.createPaymentRequest(
+        paymentRequestParameters,
+        ownersParameters,
+        senderParameters,
+        attestationsRequested,
+        paymentParametersVersion
+    )
 
     /**
      * {@inheritDoc}
@@ -55,7 +68,10 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(payment: Payment) = bip75Service.createPayment(payment)
+    override fun createPayment(
+        paymentParameters: PaymentParameters,
+        ownersParameters: List<OwnerParameters>
+    ) = bip75Service.createPayment(paymentParameters, ownersParameters)
 
     /**
      * {@inheritDoc}
