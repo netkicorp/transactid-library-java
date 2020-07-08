@@ -25,6 +25,11 @@ data class InvoiceRequest(
     val owners: List<Owner> = emptyList(),
 
     /**
+     * One or more outputs where Bitcoins are to be sent.
+     */
+    val outputs: List<Output> = emptyList(),
+
+    /**
      * List of attestations requested
      */
     val attestationsRequested: List<Attestation> = emptyList(),

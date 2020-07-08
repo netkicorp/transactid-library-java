@@ -10,10 +10,11 @@ message InvoiceRequest {
   optional string memo = 2;                                   // Human-readable description of invoice request for the receiver
   optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
   repeated Owner owners = 4;                                  // Account owners
-  repeated AttestationType attestationsRequested = 5;         // List of attestations requested
-  required string sender_pki_type = 6 [default = "none"];     // none / x509+sha256
-  required bytes  sender_pki_data = 7;                        // Sender's pki data, depends on pki_type
-  required bytes  sender_signature = 8;                       // Sender's Signature of the whole message
+  repeated Output outputs = 5;                                // Where payment should be sent
+  repeated AttestationType attestationsRequested = 6;         // List of attestations requested
+  required string sender_pki_type = 7 [default = "none"];     // none / x509+sha256
+  required bytes  sender_pki_data = 8;                        // Sender's pki data, depends on pki_type
+  required bytes  sender_signature = 9;                       // Sender's Signature of the whole message
 }
 
 message PaymentRequest {
