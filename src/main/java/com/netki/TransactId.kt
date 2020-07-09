@@ -15,7 +15,7 @@ object TransactId {
     /**
      * Instance to generate Bip75 protocol messages.
      */
-    private var bip75: Bip75 = Bip75Factory.getInstance()
+    private val bip75: Bip75 = Bip75Factory.getInstance()
 
     /**
      * Create InvoiceRequest message.
