@@ -31,6 +31,23 @@ To use the methods to create the BIP messages you can use the static methods in 
 
 There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
+## Initializing the library
+
+Note: The initialization of the library is only needed if you want to also be able to fetch the detailed information about the addresses that are shared across the different messages.
+
+To be able to use any method that also fetches the detailed information, you need to initialize this library with the following method:
+
+        /**
+         * Method to initialize the library with the ability to fetch detailed information of the addresses.
+         * You need to initialize it only if address detailed info is required.
+         *
+         * @param authorizationKey to fetch the required data.
+         */
+        fun init(authorizationKey: String) {
+            this.authorizationKey = authorizationKey
+        }
+To obtain the required key please ask to it to your Netki contact.
+ 
 ## Invoice Request
 
 Please refer to the [BIP75][2] documentation for detailed requirements for a InvoiceRequest.
@@ -92,6 +109,29 @@ To access the data from the InvoiceRequest just do:
          */
         @Throws(InvalidObjectException::class)
         fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest
+
+And that will return a object with all of the fields of the InvoiceRequest and the values that were 
+filled in.
+
+To access the data from the InvoiceRequest including the detailed information of the addresses included in the message (you require to initialize the library), just do:
+
+        /**
+         * Parse binary InvoiceRequest and also get the detailed information of the addresses.
+         *
+         * @param invoiceRequestBinary binary data with the message to parse.
+         * @return InvoiceRequest parsed with the detailed information for each address.
+         * @exception InvalidObjectException if the binary is malformed.
+         * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+         * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+         */
+        @Throws(
+            InvalidObjectException::class,
+            AddressProviderErrorException::class,
+            AddressProviderUnauthorizedException::class
+        )
+        fun parseInvoiceRequestWithAddressesInfo(
+            invoiceRequestBinary: ByteArray
+        ): InvoiceRequest 
 
 And that will return a object with all of the fields of the InvoiceRequest and the values that were 
 filled in.
@@ -161,6 +201,27 @@ To access the data from the PaymentRequest just do:
         fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest 
         
 And that will return an object with all of the fields of the PaymentRequest and the values that were 
+filled in.
+
+To access the data from the PaymentRequest including the detailed information of the addresses included in the message (you require to initialize the library), just do:
+
+        /**
+         * Parse binary PaymentRequest and also get the detailed information of the addresses.
+         *
+         * @param paymentRequestBinary binary data with the message to parse.
+         * @return PaymentRequest parsed with the detailed information for each address.
+         * @exception InvalidObjectException if the binary is malformed.
+         * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+         * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+         */
+        @Throws(
+            InvalidObjectException::class,
+            AddressProviderErrorException::class,
+            AddressProviderUnauthorizedException::class
+        )
+        fun parsePaymentRequestWithAddressesInfo(paymentRequestBinary: ByteArray): PaymentRequest
+
+And that will return a object with all of the fields of the PaymentRequest and the values that were 
 filled in.
 
 ## Payment
@@ -267,7 +328,7 @@ To access the data from the PaymentAck just do:
 And that will return a dictionary with all of the fields of the PaymentACK and the values that were 
 filled in.
 
-## Key Management system
+# Key Management system
 
 ## Vault for Key Storage
 This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
@@ -438,6 +499,137 @@ Fetch a Private key java object.
             KeyManagementFetchException::class
         )
         fun fetchPrivateKey(privateKeyId: String): PrivateKey = keyManagement.fetchPrivateKey(privateKeyId)
+
+
+
+# Address information provider
+
+This library contains a module to consult the detailed information of a given address.
+
+## General Usage
+
+The first step to utilize this module is to initialize it, to obtain the required key please ask to it to your Netki contact.
+
+        /**
+         * Method to initialize the address info provider.
+         * Make sure to call this method before any other one in this class.
+         */
+        fun init(authorizationKey: String) {
+            this.authorizationKey = authorizationKey
+        }
+        
+After the module is initialized, you can fetch the detailed information of an address with the following method:        
+
+        /**
+         * Fetch the information of a given address.
+         *
+         * @param currency of the address.
+         * @param address to fetch the information.
+         * @throws AddressProviderErrorException if there is an error fetching the information from the provider.
+         * @throws AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+         * @return information of the address.
+         */
+        @Throws(AddressProviderErrorException::class, AddressProviderUnauthorizedException::class)
+        fun getAddressInformation(currency: AddressCurrency, address: String): AddressInformation
+
+The supported currencies are:
+
+        /**
+         * Type of currency for an address.
+         */
+        enum class AddressCurrency(val id: Int) {
+            BITCOIN(0),
+            ETHEREUM(1),
+            LITECOIN(2),
+            BITCOIN_CASH(3);
+        }
+
+The information returned for the addresses is:
+
+        /**
+         * Detailed information about an address.
+         */
+        data class AddressInformation(
+        
+            /**
+             * Address.
+             * If blank or empty, not information was found for this address.
+             */
+            val identifier: String? = "",
+        
+            /**
+             * Describes all alerts fired for this address.
+             */
+            val alerts: List<Alert>? = emptyList(),
+        
+            /**
+             * Total amount in cryptocurrency available with address.
+             */
+            val balance: Double? = 0.0,
+        
+            /**
+             * The currency code for the blockchain this address was searched on, [-1] if could not get the currency of the address.
+             */
+            val currency: Int? = -1,
+        
+            /**
+             * The currency name for the blockchain this address was searched on.
+             */
+            val currencyVerbose: String? = "",
+        
+            /**
+             * Date on which address has made its first transaction.
+             */
+            val earliestTransactionTime: String? = "",
+        
+            /**
+             * Date on which address has made its last transaction.
+             */
+            val latestTransactionTime: String? = "",
+        
+            /**
+             * An integer indicating if this address is Low Risk [1], Medium Risk [2] or High Risk [3] address or if no risks were detected [0], [-1] if could not fetch the risk level.
+             */
+            val riskLevel: Int? = -1,
+        
+            /**
+             * Indicates if this address is Low Risk, Medium Risk , High Risk or if no risks were detected.
+             */
+            val riskLevelVerbose: String? = "",
+        
+            /**
+             * Total amount received by the address in cryptocurrency.
+             */
+            val totalIncomingValue: String? = "",
+        
+            /**
+             * Total amount received by the address in USD.
+             */
+            val totalIncomingValueUsd: String? = "",
+        
+            /**
+             * Total amount sent by the address in cryptocurrency.
+             */
+            val totalOutgoingValue: String? = "",
+        
+            /**
+             * Total amount sent by the address in USD.
+             */
+            val totalOutgoingValueUsd: String? = "",
+        
+            /**
+             * UTC Timestamp for when this resource was created by you.
+             */
+            val createdAt: String? = "",
+        
+            /**
+             * UTC Timestamp for most recent lookup of this resource.
+             */
+            val updatedAt: String? = ""
+        )
+
+
+
 
 [1]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [2]: https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki

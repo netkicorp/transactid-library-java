@@ -1,5 +1,8 @@
 package com.netki.address.info.service
 
+import com.netki.exceptions.AddressProviderErrorException
+import com.netki.exceptions.AddressProviderUnauthorizedException
+import com.netki.model.AddressCurrency
 import com.netki.model.AddressInformation
 
 interface AddressInformationService {
@@ -9,7 +12,10 @@ interface AddressInformationService {
      *
      * @param currency of the address.
      * @param address to fetch the information.
-     * @return information of the wallet address.
+     * @throws AddressProviderErrorException if there is an error fetching the information from the provider.
+     * @throws AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+     * @return information of the address.
      */
-    fun getAddressInformation(currency: Int, address: String): AddressInformation
+    @Throws(AddressProviderErrorException::class, AddressProviderUnauthorizedException::class)
+    fun getAddressInformation(currency: AddressCurrency, address: String): AddressInformation
 }

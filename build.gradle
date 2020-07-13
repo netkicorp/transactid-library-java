@@ -15,9 +15,10 @@ ext {
     jacocoVersion = '0.8.4'
     vaultDriverVersion = '5.1.0'
     mockitoVersion = '2.7.22'
+    ktorVersion = "1.3.2"
 
     groupId = 'com.netki'
-    versionRelease = '0.1.0-alpha6'
+    versionRelease = '0.1.0-alpha7'
     artifactId = 'transactid'
 }
 
@@ -43,10 +44,19 @@ dependencies {
 
     implementation "com.bettercloud:vault-java-driver:$vaultDriverVersion"
 
+    implementation "io.ktor:ktor-client-okhttp:$ktorVersion"
+    implementation "io.ktor:ktor-client-json:$ktorVersion"
+    implementation "io.ktor:ktor-client-gson:$ktorVersion"
+
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
+    testImplementation "io.ktor:ktor-client-mock:$ktorVersion"
+    testImplementation "io.ktor:ktor-client-mock-jvm:$ktorVersion"
+    testImplementation "io.ktor:ktor-client-mock-js:$ktorVersion"
+    testImplementation "io.ktor:ktor-client-mock-native:$ktorVersion"
 }
 
 test {

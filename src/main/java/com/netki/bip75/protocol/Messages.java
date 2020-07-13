@@ -359,6 +359,120 @@ public final class Messages {
     // @@protoc_insertion_point(enum_scope:payments.AttestationType)
   }
 
+  /**
+   * Protobuf enum {@code payments.CurrencyType}
+   */
+  public enum CurrencyType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>BITCOIN = 0;</code>
+     */
+    BITCOIN(0),
+    /**
+     * <code>ETHEREUM = 1;</code>
+     */
+    ETHEREUM(1),
+    /**
+     * <code>LITECOIN = 2;</code>
+     */
+    LITECOIN(2),
+    /**
+     * <code>BITCOIN_CASH = 3;</code>
+     */
+    BITCOIN_CASH(3),
+    ;
+
+    /**
+     * <code>BITCOIN = 0;</code>
+     */
+    public static final int BITCOIN_VALUE = 0;
+    /**
+     * <code>ETHEREUM = 1;</code>
+     */
+    public static final int ETHEREUM_VALUE = 1;
+    /**
+     * <code>LITECOIN = 2;</code>
+     */
+    public static final int LITECOIN_VALUE = 2;
+    /**
+     * <code>BITCOIN_CASH = 3;</code>
+     */
+    public static final int BITCOIN_CASH_VALUE = 3;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static CurrencyType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static CurrencyType forNumber(int value) {
+      switch (value) {
+        case 0: return BITCOIN;
+        case 1: return ETHEREUM;
+        case 2: return LITECOIN;
+        case 3: return BITCOIN_CASH;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<CurrencyType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        CurrencyType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<CurrencyType>() {
+            public CurrencyType findValueByNumber(int number) {
+              return CurrencyType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.netki.bip75.protocol.Messages.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final CurrencyType[] VALUES = values();
+
+    public static CurrencyType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private CurrencyType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:payments.CurrencyType)
+  }
+
   public interface InvoiceRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:payments.InvoiceRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -12099,6 +12213,25 @@ public final class Messages {
      * @return The script.
      */
     com.google.protobuf.ByteString getScript();
+
+    /**
+     * <pre>
+     * The currency of the provided Script
+     * </pre>
+     *
+     * <code>required .payments.CurrencyType currency = 3;</code>
+     * @return Whether the currency field is set.
+     */
+    boolean hasCurrency();
+    /**
+     * <pre>
+     * The currency of the provided Script
+     * </pre>
+     *
+     * <code>required .payments.CurrencyType currency = 3;</code>
+     * @return The currency.
+     */
+    com.netki.bip75.protocol.Messages.CurrencyType getCurrency();
   }
   /**
    * Protobuf type {@code payments.Output}
@@ -12114,6 +12247,7 @@ public final class Messages {
     }
     private Output() {
       script_ = com.google.protobuf.ByteString.EMPTY;
+      currency_ = 0;
     }
 
     @java.lang.Override
@@ -12155,6 +12289,18 @@ public final class Messages {
             case 18: {
               bitField0_ |= 0x00000002;
               script_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.netki.bip75.protocol.Messages.CurrencyType value = com.netki.bip75.protocol.Messages.CurrencyType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(3, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                currency_ = rawValue;
+              }
               break;
             }
             default: {
@@ -12240,6 +12386,33 @@ public final class Messages {
       return script_;
     }
 
+    public static final int CURRENCY_FIELD_NUMBER = 3;
+    private int currency_;
+    /**
+     * <pre>
+     * The currency of the provided Script
+     * </pre>
+     *
+     * <code>required .payments.CurrencyType currency = 3;</code>
+     * @return Whether the currency field is set.
+     */
+    public boolean hasCurrency() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * The currency of the provided Script
+     * </pre>
+     *
+     * <code>required .payments.CurrencyType currency = 3;</code>
+     * @return The currency.
+     */
+    public com.netki.bip75.protocol.Messages.CurrencyType getCurrency() {
+      @SuppressWarnings("deprecation")
+      com.netki.bip75.protocol.Messages.CurrencyType result = com.netki.bip75.protocol.Messages.CurrencyType.valueOf(currency_);
+      return result == null ? com.netki.bip75.protocol.Messages.CurrencyType.BITCOIN : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -12248,6 +12421,10 @@ public final class Messages {
       if (isInitialized == 0) return false;
 
       if (!hasScript()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCurrency()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -12263,6 +12440,9 @@ public final class Messages {
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         output.writeBytes(2, script_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeEnum(3, currency_);
       }
       unknownFields.writeTo(output);
     }
@@ -12280,6 +12460,10 @@ public final class Messages {
       if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, script_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, currency_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12306,6 +12490,10 @@ public final class Messages {
         if (!getScript()
             .equals(other.getScript())) return false;
       }
+      if (hasCurrency() != other.hasCurrency()) return false;
+      if (hasCurrency()) {
+        if (currency_ != other.currency_) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -12325,6 +12513,10 @@ public final class Messages {
       if (hasScript()) {
         hash = (37 * hash) + SCRIPT_FIELD_NUMBER;
         hash = (53 * hash) + getScript().hashCode();
+      }
+      if (hasCurrency()) {
+        hash = (37 * hash) + CURRENCY_FIELD_NUMBER;
+        hash = (53 * hash) + currency_;
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -12463,6 +12655,8 @@ public final class Messages {
         bitField0_ = (bitField0_ & ~0x00000001);
         script_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
+        currency_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -12499,6 +12693,10 @@ public final class Messages {
           to_bitField0_ |= 0x00000002;
         }
         result.script_ = script_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.currency_ = currency_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -12554,6 +12752,9 @@ public final class Messages {
         if (other.hasScript()) {
           setScript(other.getScript());
         }
+        if (other.hasCurrency()) {
+          setCurrency(other.getCurrency());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -12562,6 +12763,9 @@ public final class Messages {
       @java.lang.Override
       public final boolean isInitialized() {
         if (!hasScript()) {
+          return false;
+        }
+        if (!hasCurrency()) {
           return false;
         }
         return true;
@@ -12692,6 +12896,64 @@ public final class Messages {
       public Builder clearScript() {
         bitField0_ = (bitField0_ & ~0x00000002);
         script_ = getDefaultInstance().getScript();
+        onChanged();
+        return this;
+      }
+
+      private int currency_ = 0;
+      /**
+       * <pre>
+       * The currency of the provided Script
+       * </pre>
+       *
+       * <code>required .payments.CurrencyType currency = 3;</code>
+       * @return Whether the currency field is set.
+       */
+      public boolean hasCurrency() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * The currency of the provided Script
+       * </pre>
+       *
+       * <code>required .payments.CurrencyType currency = 3;</code>
+       * @return The currency.
+       */
+      public com.netki.bip75.protocol.Messages.CurrencyType getCurrency() {
+        @SuppressWarnings("deprecation")
+        com.netki.bip75.protocol.Messages.CurrencyType result = com.netki.bip75.protocol.Messages.CurrencyType.valueOf(currency_);
+        return result == null ? com.netki.bip75.protocol.Messages.CurrencyType.BITCOIN : result;
+      }
+      /**
+       * <pre>
+       * The currency of the provided Script
+       * </pre>
+       *
+       * <code>required .payments.CurrencyType currency = 3;</code>
+       * @param value The currency to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCurrency(com.netki.bip75.protocol.Messages.CurrencyType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        currency_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The currency of the provided Script
+       * </pre>
+       *
+       * <code>required .payments.CurrencyType currency = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCurrency() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        currency_ = 0;
         onChanged();
         return this;
       }
@@ -16072,34 +16334,37 @@ public final class Messages {
       "!\n\007outputs\030\002 \003(\0132\020.payments.Output\022\014\n\004ti" +
       "me\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004memo\030\005 \001(\t\022" +
       "\023\n\013payment_url\030\006 \001(\t\022\025\n\rmerchant_data\030\007 " +
-      "\001(\014\"+\n\006Output\022\021\n\006amount\030\001 \001(\004:\0010\022\016\n\006scri" +
-      "pt\030\002 \002(\014\"\272\001\n\017ProtocolMessage\022\022\n\007version\030" +
+      "\001(\014\"U\n\006Output\022\021\n\006amount\030\001 \001(\004:\0010\022\016\n\006scri" +
+      "pt\030\002 \002(\014\022(\n\010currency\030\003 \002(\0162\026.payments.Cu" +
+      "rrencyType\"\272\001\n\017ProtocolMessage\022\022\n\007versio" +
+      "n\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014me" +
+      "ssage_type\030\003 \002(\0162\035.payments.ProtocolMess" +
+      "ageType\022\032\n\022serialized_message\030\004 \002(\014\022\026\n\016s" +
+      "tatus_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002(\014\"" +
+      "\234\002\n\030EncryptedProtocolMessage\022\022\n\007version\030" +
       "\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014mess" +
       "age_type\030\003 \002(\0162\035.payments.ProtocolMessag" +
-      "eType\022\032\n\022serialized_message\030\004 \002(\014\022\026\n\016sta" +
-      "tus_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002(\014\"\234\002" +
-      "\n\030EncryptedProtocolMessage\022\022\n\007version\030\001 " +
-      "\002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014messag" +
-      "e_type\030\003 \002(\0162\035.payments.ProtocolMessageT" +
-      "ype\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023receiv" +
-      "er_public_key\030\005 \002(\014\022\031\n\021sender_public_key" +
-      "\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier\030\010 \002(" +
-      "\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignature\030\n" +
-      " \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKNOWN_M" +
-      "ESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022\023\n\017PA" +
-      "YMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMENT_" +
-      "ACK\020\004*\236\003\n\017AttestationType\022\r\n\tADDRESS_1\020\000" +
-      "\022\r\n\tADDRESS_2\020\001\022!\n\035BENEFICIARY_PERSON_FI" +
-      "RST_NAME\020\002\022 \n\034BENEFICIARY_PERSON_LAST_NA" +
-      "ME\020\003\022\016\n\nBIRTH_DATE\020\004\022\017\n\013BIRTH_PLACE\020\005\022\030\n" +
-      "\024COUNTRY_OF_RESIDENCE\020\006\022\033\n\027CUSTOMER_IDEN" +
-      "TIFICATION\020\007\022\023\n\017ISSUING_COUNTRY\020\010\022\025\n\021LEG" +
-      "AL_PERSON_NAME\020\t\022\027\n\023NATIONAL_IDENTIFIER\020" +
-      "\n\022\036\n\032NATIONAL_IDENTIFIER_NUMBER\020\013\022\035\n\031NAT" +
-      "URAL_PERSON_FIRST_NAME\020\014\022\034\n\030NATURAL_PERS" +
-      "ON_LAST_NAME\020\r\022\022\n\016ACCOUNT_NUMBER\020\016\022\032\n\026RE" +
-      "GISTRATION_AUTHORITY\020\017B$\n\030com.netki.bip7" +
-      "5.protocolB\010Messages"
+      "eType\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023rece" +
+      "iver_public_key\030\005 \002(\014\022\031\n\021sender_public_k" +
+      "ey\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier\030\010 " +
+      "\002(\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignature" +
+      "\030\n \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKNOWN" +
+      "_MESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022\023\n\017" +
+      "PAYMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMEN" +
+      "T_ACK\020\004*\236\003\n\017AttestationType\022\r\n\tADDRESS_1" +
+      "\020\000\022\r\n\tADDRESS_2\020\001\022!\n\035BENEFICIARY_PERSON_" +
+      "FIRST_NAME\020\002\022 \n\034BENEFICIARY_PERSON_LAST_" +
+      "NAME\020\003\022\016\n\nBIRTH_DATE\020\004\022\017\n\013BIRTH_PLACE\020\005\022" +
+      "\030\n\024COUNTRY_OF_RESIDENCE\020\006\022\033\n\027CUSTOMER_ID" +
+      "ENTIFICATION\020\007\022\023\n\017ISSUING_COUNTRY\020\010\022\025\n\021L" +
+      "EGAL_PERSON_NAME\020\t\022\027\n\023NATIONAL_IDENTIFIE" +
+      "R\020\n\022\036\n\032NATIONAL_IDENTIFIER_NUMBER\020\013\022\035\n\031N" +
+      "ATURAL_PERSON_FIRST_NAME\020\014\022\034\n\030NATURAL_PE" +
+      "RSON_LAST_NAME\020\r\022\022\n\016ACCOUNT_NUMBER\020\016\022\032\n\026" +
+      "REGISTRATION_AUTHORITY\020\017*I\n\014CurrencyType" +
+      "\022\013\n\007BITCOIN\020\000\022\014\n\010ETHEREUM\020\001\022\014\n\010LITECOIN\020" +
+      "\002\022\020\n\014BITCOIN_CASH\020\003B$\n\030com.netki.bip75.p" +
+      "rotocolB\010Messages"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -16152,7 +16417,7 @@ public final class Messages {
     internal_static_payments_Output_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_Output_descriptor,
-        new java.lang.String[] { "Amount", "Script", });
+        new java.lang.String[] { "Amount", "Script", "Currency", });
     internal_static_payments_ProtocolMessage_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_payments_ProtocolMessage_fieldAccessorTable = new

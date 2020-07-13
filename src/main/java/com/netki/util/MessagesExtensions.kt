@@ -326,7 +326,7 @@ fun Payment.toMessagePaymentAck(): Messages.PaymentACK = Messages.PaymentACK.new
  *
  * @return Output.
  */
-fun Messages.Output.toOutput(): Output = Output(this.amount, this.script.toStringLocal())
+fun Messages.Output.toOutput(): Output = Output(this.amount, this.script.toStringLocal(), this.currency.toAddressCurrency())
 
 /**
  * Transform Output object to Messages.Output object.
@@ -336,6 +336,7 @@ fun Messages.Output.toOutput(): Output = Output(this.amount, this.script.toStrin
 fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuilder()
     .setAmount(this.amount)
     .setScript(this.script.toByteString())
+    .setCurrency(this.currency.toCurrencyType())
     .build()
 
 /**
@@ -588,7 +589,7 @@ fun Messages.PaymentRequest.validateSignature(signature: String): Boolean {
 }
 
 /**
- * Remove sender signature of a GeneratedMessageV3
+ * Remove sender signature of a GeneratedMessageV3.
  *
  * @return Unsigned message.
  */
@@ -690,10 +691,10 @@ fun String.validateCertificateChain(pkiType: PkiType): Boolean {
 }
 
 /**
- * Validate that a List<Owners> is valid
- * Is valid, when it has one single primaryOwner
+ * Validate that a List<Owners> is valid.
+ * Is valid, when it has one single primaryOwner.
  *
- * @throws InvalidOwnersException if is not a valid list
+ * @throws InvalidOwnersException if is not a valid list.
  */
 fun List<OwnerParameters>.validate() {
     val numberOfPrimaryOwners = this.filter { it.isPrimaryForTransaction }.size
@@ -721,9 +722,9 @@ fun GeneratedMessageV3.getMessagePkiType(): PkiType = when (this) {
 }
 
 /**
- * Transform an string to its correspondent PkiType
+ * Transform an string to its correspondent PkiType.
  *
- * @return PkiType
+ * @return PkiType.
  */
 fun String.getType(): PkiType = requireNotNull(PkiType.values().find {
     it.value == this
@@ -744,7 +745,7 @@ fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotNull(PkiTy
 }
 
 /**
- * Transform Attestation to Messages.AttestationType
+ * Transform Attestation to Messages.AttestationType.
  */
 fun Attestation.toAttestationType(): Messages.AttestationType {
     return when (this) {
@@ -768,7 +769,7 @@ fun Attestation.toAttestationType(): Messages.AttestationType {
 }
 
 /**
- * Transform Messages.AttestationType to Attestation
+ * Transform Messages.AttestationType to Attestation.
  */
 fun Messages.AttestationType.toAttestation(): Attestation {
     return when (this) {
@@ -788,5 +789,29 @@ fun Messages.AttestationType.toAttestation(): Attestation {
         Messages.AttestationType.NATURAL_PERSON_LAST_NAME -> Attestation.NATURAL_PERSON_LAST_NAME
         Messages.AttestationType.ACCOUNT_NUMBER -> Attestation.ACCOUNT_NUMBER
         Messages.AttestationType.REGISTRATION_AUTHORITY -> Attestation.REGISTRATION_AUTHORITY
+    }
+}
+
+/**
+ * Transform AddressCurrency to Messages.CurrencyType.
+ */
+fun AddressCurrency.toCurrencyType(): Messages.CurrencyType {
+    return when (this) {
+        AddressCurrency.BITCOIN -> Messages.CurrencyType.BITCOIN
+        AddressCurrency.ETHEREUM -> Messages.CurrencyType.ETHEREUM
+        AddressCurrency.LITECOIN -> Messages.CurrencyType.LITECOIN
+        AddressCurrency.BITCOIN_CASH -> Messages.CurrencyType.BITCOIN_CASH
+    }
+}
+
+/**
+ * Transform Messages.CurrencyType to AddressCurrency.
+ */
+fun Messages.CurrencyType.toAddressCurrency(): AddressCurrency {
+    return when (this) {
+        Messages.CurrencyType.BITCOIN -> AddressCurrency.BITCOIN
+        Messages.CurrencyType.ETHEREUM -> AddressCurrency.ETHEREUM
+        Messages.CurrencyType.LITECOIN -> AddressCurrency.LITECOIN
+        Messages.CurrencyType.BITCOIN_CASH -> AddressCurrency.BITCOIN_CASH
     }
 }

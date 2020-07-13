@@ -14,5 +14,15 @@ data class Output(
      * A "TxOut" script where payment should be sent.
      * This will normally be one of the standard Bitcoin transaction scripts (e.g. pubkey OP_CHECKSIG).
      */
-    val script: String
+    val script: String,
+
+    /**
+     * Currency of the address.
+     */
+    val currency: AddressCurrency,
+
+    /**
+     * Detailed information of this address.
+     */
+    var addressInformation: AddressInformation? = null
 )

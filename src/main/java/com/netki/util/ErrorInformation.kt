@@ -23,4 +23,7 @@ object ErrorInformation {
     const val KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY = "There was an error fetching the private key, error: %s"
     const val KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE_NOT_FOUND = "Certificate not found for id: %s"
     const val KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY_NOT_FOUND = "Private key not found for id: %s"
+    const val ADDRESS_INFORMATION_INTERNAL_ERROR_PROVIDER = "Provider internal error for address: %s, with error: %s"
+    const val ADDRESS_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER =
+        "Provider authorization error for address: %s. Make sure to initialize the library with the correct AuthorizationKey."
 }

@@ -1,79 +1,83 @@
 package com.netki.model
 
+/**
+ * Detailed information about an address.
+ */
 data class AddressInformation(
 
     /**
      * Address.
+     * If blank or empty, not information was found for this address.
      */
-    val identifier: String,
+    val identifier: String? = "",
 
     /**
      * Describes all alerts fired for this address.
      */
-    val alerts: List<Alert>,
+    val alerts: List<Alert>? = emptyList(),
 
     /**
      * Total amount in cryptocurrency available with address.
      */
-    val balance: Double,
+    val balance: Double? = 0.0,
 
     /**
-     * The currency code for the blockchain this address was searched on.
+     * The currency code for the blockchain this address was searched on, [-1] if could not get the currency of the address.
      */
-    val currency: Int,
+    val currency: Int? = -1,
 
     /**
      * The currency name for the blockchain this address was searched on.
      */
-    val currency_verbose: String,
+    val currencyVerbose: String? = "",
 
     /**
      * Date on which address has made its first transaction.
      */
-    val earliest_transaction_time: String,
+    val earliestTransactionTime: String? = "",
 
     /**
      * Date on which address has made its last transaction.
      */
-    val latest_transaction_time: String,
+    val latestTransactionTime: String? = "",
 
     /**
-     * An integer indicating if this address is Low Risk [1], Medium Risk [2] or High Risk [3] address or if no risks were detected [0].
+     * An integer indicating if this address is Low Risk [1], Medium Risk [2] or High Risk [3] address or if no risks were detected [0], [-1] if could not fetch the risk level.
      */
-    val risk_level: Int,
+    val riskLevel: Int? = -1,
 
     /**
      * Indicates if this address is Low Risk, Medium Risk , High Risk or if no risks were detected.
      */
-    val risk_level_verbose: String,
+    val riskLevelVerbose: String? = "",
 
     /**
      * Total amount received by the address in cryptocurrency.
      */
-    val total_incoming_value: String,
+    val totalIncomingValue: String? = "",
 
     /**
-     * 	Total amount received by the address in USD.
+     * Total amount received by the address in USD.
      */
-    val total_incoming_value_usd: String,
+    val totalIncomingValueUsd: String? = "",
 
     /**
      * Total amount sent by the address in cryptocurrency.
      */
-    val total_outgoing_value: String,
+    val totalOutgoingValue: String? = "",
 
     /**
      * Total amount sent by the address in USD.
      */
-    val total_outgoing_value_usd: String,
+    val totalOutgoingValueUsd: String? = "",
 
     /**
      * UTC Timestamp for when this resource was created by you.
      */
-    val created_at: String,
+    val createdAt: String? = "",
 
     /**
      * UTC Timestamp for most recent lookup of this resource.
      */
-    val updated_at: String
+    val updatedAt: String? = ""
 )

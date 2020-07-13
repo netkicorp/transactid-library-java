@@ -1,5 +1,6 @@
 package com.netki.bip75.service.impl
 
+import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
 import com.netki.bip75.service.Bip75Service
 import com.netki.exceptions.InvalidCertificateChainException
@@ -14,7 +15,7 @@ import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNA
 /**
  * {@inheritDoc}
  */
-class Bip75ServiceNetki : Bip75Service {
+class Bip75ServiceNetki(private val addressInformationService: AddressInformationService) : Bip75Service {
 
     /**
      * {@inheritDoc}
@@ -49,7 +50,23 @@ class Bip75ServiceNetki : Bip75Service {
     /**
      * {@inheritDoc}
      */
-    override fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest {
+    override fun parseInvoiceRequest(invoiceRequestBinary: ByteArray) = parseInvoiceRequestBinary(invoiceRequestBinary)
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun parseInvoiceRequestWithAddressesInfo(
+        invoiceRequestBinary: ByteArray
+    ): InvoiceRequest {
+        val invoiceRequest = parseInvoiceRequestBinary(invoiceRequestBinary)
+        invoiceRequest.outputs.forEach { output ->
+            val addressInfo = addressInformationService.getAddressInformation(output.currency, output.script)
+            output.addressInformation = addressInfo
+        }
+        return invoiceRequest
+    }
+
+    private fun parseInvoiceRequestBinary(invoiceRequestBinary: ByteArray): InvoiceRequest {
         val messageInvoiceRequest = invoiceRequestBinary.toMessageInvoiceRequest()
         return messageInvoiceRequest.toInvoiceRequest()
     }
@@ -142,7 +159,21 @@ class Bip75ServiceNetki : Bip75Service {
     /**
      * {@inheritDoc}
      */
-    override fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest {
+    override fun parsePaymentRequest(paymentRequestBinary: ByteArray) = parsePaymentRequestBinary(paymentRequestBinary)
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun parsePaymentRequestWithAddressesInfo(paymentRequestBinary: ByteArray): PaymentRequest {
+        val paymentRequest = parsePaymentRequestBinary(paymentRequestBinary)
+        paymentRequest.paymentRequestParameters.outputs.forEach { output ->
+            val addressInfo = addressInformationService.getAddressInformation(output.currency, output.script)
+            output.addressInformation = addressInfo
+        }
+        return paymentRequest
+    }
+
+    private fun parsePaymentRequestBinary(paymentRequestBinary: ByteArray): PaymentRequest {
         val messagePaymentRequest = paymentRequestBinary.toMessagePaymentRequest()
         return messagePaymentRequest.toPaymentRequest()
     }
@@ -201,7 +232,10 @@ class Bip75ServiceNetki : Bip75Service {
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(paymentParameters: PaymentParameters, ownersParameters: List<OwnerParameters>): ByteArray {
+    override fun createPayment(
+        paymentParameters: PaymentParameters,
+        ownersParameters: List<OwnerParameters>
+    ): ByteArray {
         ownersParameters.validate()
 
         val paymentBuilder = paymentParameters.toMessagePaymentBuilder()

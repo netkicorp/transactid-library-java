@@ -2,6 +2,7 @@ package com.netki.address.info.service.impl
 
 import com.netki.address.info.repo.AddressInformationRepo
 import com.netki.address.info.service.AddressInformationService
+import com.netki.model.AddressCurrency
 
 class AddressInformationNetkiService(
     private val addressInformationRepo: AddressInformationRepo
@@ -10,6 +11,6 @@ class AddressInformationNetkiService(
     /**
      * {@inheritDoc}
      */
-    override fun getAddressInformation(currency: Int, address: String) =
+    override fun getAddressInformation(currency: AddressCurrency, address: String) =
         addressInformationRepo.getAddressInformation(currency, address)
 }
