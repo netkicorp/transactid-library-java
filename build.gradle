@@ -18,6 +18,7 @@ ext {
 
     groupId = 'com.netki'
     versionRelease = '0.1.0-alpha6'
+    versionRelease = '0.1.0-alpha4'
     artifactId = 'transactid'
 }
 
