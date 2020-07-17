@@ -145,6 +145,7 @@ interface Bip75 {
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
+    @Throws(InvalidOwnersException::class)
     fun createPayment(paymentParameters: PaymentParameters, ownersParameters: List<OwnerParameters>): ByteArray
 
     /**
@@ -157,7 +158,12 @@ interface Bip75 {
      * @exception InvalidCertificateException if there is a problem with the certificates.
      * @exception InvalidCertificateChainException if the certificate chain is not valid.
      */
-    @Throws(InvalidObjectException::class)
+    @Throws(
+        InvalidObjectException::class,
+        InvalidSignatureException::class,
+        InvalidCertificateException::class,
+        InvalidCertificateChainException::class
+    )
     fun isPaymentValid(paymentBinary: ByteArray): Boolean
 
     /**
