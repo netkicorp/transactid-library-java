@@ -510,6 +510,7 @@ internal class TransactIdTest {
         assert(paymentDetails.memo == PAYMENT_DETAILS.memo)
         assert(paymentDetails.paymentUrl == PAYMENT_DETAILS.paymentUrl)
         assert(paymentDetails.merchantData == PAYMENT_DETAILS.merchantData)
+        assert(paymentDetails.outputs.size == PAYMENT_DETAILS.outputs.size)
 
         assert(paymentRequest.owners.size == 2)
         paymentRequest.owners.forEachIndexed() { index, owner ->

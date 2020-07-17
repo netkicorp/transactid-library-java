@@ -1,7 +1,6 @@
 package com.netki
 
 import com.netki.bip75.config.Bip75Factory
-import com.netki.bip75.main.Bip75
 import com.netki.exceptions.*
 import com.netki.model.*
 
@@ -13,9 +12,26 @@ import com.netki.model.*
 object TransactId {
 
     /**
+     * Key to connect fetch detailed information of addresses.
+     */
+    private var authorizationKey: String? = null
+
+    /**
      * Instance to generate Bip75 protocol messages.
      */
-    private var bip75: Bip75 = Bip75Factory.getInstance()
+    private val bip75 by lazy {
+        Bip75Factory.getInstance(authorizationKey)
+    }
+
+    /**
+     * Method to initialize the library with the ability to fetch detailed information of the addresses.
+     * You need to initialize it only if address detailed info is required.
+     *
+     * @param authorizationKey to fetch the required data.
+     */
+    fun init(authorizationKey: String) {
+        this.authorizationKey = authorizationKey
+    }
 
     /**
      * Create InvoiceRequest message.
@@ -65,6 +81,24 @@ object TransactId {
     @Throws(InvalidObjectException::class)
     fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest =
         bip75.parseInvoiceRequest(invoiceRequestBinary)
+
+    /**
+     * Parse binary InvoiceRequest and also get the detailed information of the addresses.
+     *
+     * @param invoiceRequestBinary binary data with the message to parse.
+     * @return InvoiceRequest parsed with the detailed information for each address.
+     * @exception InvalidObjectException if the binary is malformed.
+     * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+     * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+     */
+    @Throws(
+        InvalidObjectException::class,
+        AddressProviderErrorException::class,
+        AddressProviderUnauthorizedException::class
+    )
+    fun parseInvoiceRequestWithAddressesInfo(
+        invoiceRequestBinary: ByteArray
+    ): InvoiceRequest = bip75.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
     /**
      * Create binary PaymentRequest.
@@ -122,6 +156,23 @@ object TransactId {
     @Throws(InvalidObjectException::class)
     fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest =
         bip75.parsePaymentRequest(paymentRequestBinary)
+
+    /**
+     * Parse binary PaymentRequest and also get the detailed information of the addresses.
+     *
+     * @param paymentRequestBinary binary data with the message to parse.
+     * @return PaymentRequest parsed with the detailed information for each address.
+     * @exception InvalidObjectException if the binary is malformed.
+     * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+     * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+     */
+    @Throws(
+        InvalidObjectException::class,
+        AddressProviderErrorException::class,
+        AddressProviderUnauthorizedException::class
+    )
+    fun parsePaymentRequestWithAddressesInfo(paymentRequestBinary: ByteArray): PaymentRequest =
+        bip75.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
     /**
      * Create binary Payment.

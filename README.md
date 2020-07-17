@@ -86,26 +86,46 @@ compile group: 'com.netki', name: 'transactid', version: '0.1.0-alpha0', ext: 'p
 
 To use the methods to create the BIP messages you can use the static methods in the class TransactId for example:
 
-```java
+```kotlin
 val transactIdInstance = TransactId
 transactIdInstance.isInvoiceRequestValid(invoiceRequestBinary)
 ```
 
 Alternatively:
 
-```java
+```kotlin
 TransactId.isInvoiceRequestValid(invoiceRequestBinary)
 ```
 
 There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
+## Initializing the library
+
+Note: The initialization of the library is only needed if you want to also be able to fetch the detailed information about the addresses that are shared across the different messages.
+
+To be able to use any method that also fetches the detailed information, you need to initialize this library with the following method:
+
+```kotlin
+/**
+ * Method to initialize the library with the ability to fetch detailed information of the addresses.
+ * You need to initialize it only if address detailed info is required.
+ *
+ * @param authorizationKey to fetch the required data.
+ */
+fun init(authorizationKey: String) {
+    this.authorizationKey = authorizationKey
+}
+```
+
+To obtain the required key please ask to it to your Netki contact.
+ 
 ## Invoice Request
 
 Please refer to the [BIP75][2] documentation for detailed requirements for a `InvoiceRequest`.
 
 Create an object for sending like so:
 
-```java
+```kotlin
 /**
  * Create InvoiceRequest message.
  *
@@ -125,14 +145,13 @@ fun createInvoiceRequest(
 ): ByteArray
 ```
 
-
 This will provide you with a serialized binary that you can then send to someone else who is able to
 parse and validate one of these things.
 
 When you are on the receiving end of one of those binary strings you can do the following to validate
 the signature and parse one:
 
-```java
+```kotlin
 /**
  * Validate if a binary InvoiceRequest is valid.
  *
@@ -157,7 +176,7 @@ This will return true if there are no errors in the object and the signature is 
 
 To access the data from the `InvoiceRequest` just do:
 
-```java
+```kotlin
 /**
  * Parse binary InvoiceRequest.
  *
@@ -169,8 +188,31 @@ To access the data from the `InvoiceRequest` just do:
 fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest
 ```
 
-And that will return a object with all of the fields of the `InvoiceRequest` and the values that were
-filled in.
+And that will return a object with all of the fields of the `InvoiceRequest` and the values that were filled in.
+
+To access the data from the InvoiceRequest including the detailed information of the addresses included in the message (you require to initialize the library), just do:
+
+```kotlin
+/**
+ * Parse binary InvoiceRequest and also get the detailed information of the addresses.
+ *
+ * @param invoiceRequestBinary binary data with the message to parse.
+ * @return InvoiceRequest parsed with the detailed information for each address.
+ * @exception InvalidObjectException if the binary is malformed.
+ * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+ * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+ */
+@Throws(
+    InvalidObjectException::class,
+    AddressProviderErrorException::class,
+    AddressProviderUnauthorizedException::class
+)
+fun parseInvoiceRequestWithAddressesInfo(
+    invoiceRequestBinary: ByteArray
+): InvoiceRequest 
+```
+
+And that will return a object with all of the fields of the InvoiceRequest and the values that were filled in.
 
 ## Payment Request
 
@@ -178,7 +220,7 @@ Please refer to the [BIP70][1] documentation for detailed requirements for a `Pa
 
 Create an object for sending like so:
 
-```java
+```kotlin
 /**
  * Create binary PaymentRequest.
  *
@@ -207,7 +249,7 @@ parse and validate one of these things.
 When you are on the receiving end of one of those binary strings you can do the following to validate
 the signature and parse one:
 
-```java
+```kotlin
 /**
  * Validate if a binary PaymentRequest is valid.
  *
@@ -231,7 +273,7 @@ This will return true if there are no errors in the object and the signature is 
 
 To access the data from the PaymentRequest just do:
 
-```java
+```kotlin
 /**
  * Parse binary PaymentRequest.
  *
@@ -246,13 +288,35 @@ fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest
 And that will return an object with all of the fields of the PaymentRequest and the values that were
 filled in.
 
+To access the data from the PaymentRequest including the detailed information of the addresses included in the message (you require to initialize the library), just do:
+
+```kotlin
+/**
+ * Parse binary PaymentRequest and also get the detailed information of the addresses.
+ *
+ * @param paymentRequestBinary binary data with the message to parse.
+ * @return PaymentRequest parsed with the detailed information for each address.
+ * @exception InvalidObjectException if the binary is malformed.
+ * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+ * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+ */
+@Throws(
+    InvalidObjectException::class,
+    AddressProviderErrorException::class,
+    AddressProviderUnauthorizedException::class
+)
+fun parsePaymentRequestWithAddressesInfo(paymentRequestBinary: ByteArray): PaymentRequest
+```
+
+And that will return a object with all of the fields of the PaymentRequest and the values that were filled in.
+
 ## Payment
 
 Please refer to the [BIP70][1] documentation for detailed requirements for a Payment.
 
 Create an object for sending like so:
 
-```java
+```kotlin
 /**
  * Create binary Payment.
  *
@@ -274,7 +338,7 @@ When you are on the receiving end of one of those binary strings you can do the 
 Please note that Payments aren't signed unlike the Invoice/PaymentRequest:
 
 
-```java
+```kotlin
 /**
  * Validate if a binary Payment is valid.
  *
@@ -293,7 +357,7 @@ If this return true then we were able to parse the protobuf object.
 
 To access the data from the Payment just do:
 
-```java
+```kotlin
 /**
  * Parse binary Payment.
  *
@@ -316,7 +380,7 @@ acknowledging, it's not possible to create an ACK without first verifying a Paym
 
 Create an object for sending like so:
 
-```java
+```kotlin
 /**
  * Create binary PaymentAck.
  *
@@ -334,7 +398,7 @@ When you are on the receiving end of one of those binary strings you can do the 
 Please note that PaymentsAck aren't signed unlike the Invoice/PaymentRequest:
 
 
-```java
+```kotlin
 /**
  * Validate if a binary PaymentAck is valid.
  *
@@ -350,7 +414,7 @@ If this return true then we were able to parse the protobuf object.
 
 To access the data from the PaymentAck just do:
 
-```java
+```kotlin
 /**
  * Parse binary PaymentAck.
  *
@@ -381,14 +445,14 @@ vault secrets enable -path=certs/ kv
 
 To use the key management integration you can use the static methods in the class TidKms, for example:
 
-```java
+```kotlin
 val tidKmsInstance = TidKms
 tidKmsInstance.storeCertificatePem("certificate")
 ```
 
 Alternatively:
 
-```java
+```kotlin
 TidKms.storeCertificatePem("certificate")
 ```
 
@@ -400,7 +464,7 @@ The methods available are:
 
 Store a X509Certificate in PEM format.
 
-```java
+```kotlin
 /**
  * Store a X509Certificate in PEM format.
  *
@@ -418,7 +482,7 @@ fun storeCertificatePem(certificatePem: String): String = keyManagement.storeCer
 
 Store a X509Certificate java object.
 
-```java
+```kotlin
 /**
  * Store a X509Certificate java object.
  *
@@ -436,7 +500,7 @@ fun storeCertificate(certificate: X509Certificate): String = keyManagement.store
 
 Store a Private key in PEM format.
 
-```java
+```kotlin
 /**
  * Store a private key in PEM format.
  *
@@ -454,7 +518,7 @@ fun storePrivateKeyPem(privateKeyPem: String): String = keyManagement.storePriva
 
 Store a Private key java object.      
 
-```java
+```kotlin
 /**
  * Store a PrivateKey java object.
  *
@@ -479,7 +543,7 @@ The methods available are:
 
 Fetch a X509Certificate in PEM format.
 
-```java
+```kotlin
 /**
  * Fetch a X509Certificate in PEM format.
  *
@@ -499,7 +563,7 @@ fun fetchCertificatePem(certificateId: String): String = keyManagement.fetchCert
 
 Fetch a X509Certificate java object.
 
-```java
+```kotlin
 /**
  * Fetch a X509Certificate java object.
  *
@@ -519,7 +583,7 @@ fun fetchCertificate(certificateId: String): X509Certificate = keyManagement.fet
 
 Fetch a Private key in PEM format.
 
-```java
+```kotlin
 /**
  * Fetch a private key in PEM format.
  *
@@ -539,7 +603,7 @@ fun fetchPrivateKeyPem(privateKeyId: String): String = keyManagement.fetchPrivat
 
 Fetch a Private key java object.
 
-```java
+```kotlin
 /**
  * Fetch a PrivateKey java object.
  *
@@ -557,6 +621,139 @@ Fetch a Private key java object.
 fun fetchPrivateKey(privateKeyId: String): PrivateKey = keyManagement.fetchPrivateKey(privateKeyId)
 ```
 
+# Address information provider
+
+This library contains a module to consult the detailed information of a given address.
+
+## General Usage
+
+The first step to utilize this module is to initialize it, to obtain the required key please ask to it to your Netki contact.
+
+```kotlin
+/**
+ * Method to initialize the address info provider.
+ * Make sure to call this method before any other one in this class.
+ */
+fun init(authorizationKey: String) {
+    this.authorizationKey = authorizationKey
+}
+```
+
+After the module is initialized, you can fetch the detailed information of an address with the following method:        
+
+```kotlin
+/**
+ * Fetch the information of a given address.
+ *
+ * @param currency of the address.
+ * @param address to fetch the information.
+ * @throws AddressProviderErrorException if there is an error fetching the information from the provider.
+ * @throws AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+ * @return information of the address.
+ */
+@Throws(AddressProviderErrorException::class, AddressProviderUnauthorizedException::class)
+fun getAddressInformation(currency: AddressCurrency, address: String): AddressInformation
+```
+
+The supported currencies are:
+
+```kotlin
+/**
+ * Type of currency for an address.
+ */
+enum class AddressCurrency(val id: Int) {
+    BITCOIN(0),
+    ETHEREUM(1),
+    LITECOIN(2),
+    BITCOIN_CASH(3);
+}
+```
+
+The information returned for the addresses is:
+
+```kotlin
+/**
+ * Detailed information about an address.
+ */
+data class AddressInformation(
+
+    /**
+     * Address.
+     * If blank or empty, not information was found for this address.
+     */
+    val identifier: String? = "",
+
+    /**
+     * Describes all alerts fired for this address.
+     */
+    val alerts: List<Alert>? = emptyList(),
+
+    /**
+     * Total amount in cryptocurrency available with address.
+     */
+    val balance: Double? = 0.0,
+
+    /**
+     * The currency code for the blockchain this address was searched on, [-1] if could not get the currency of the address.
+     */
+    val currency: Int? = -1,
+
+    /**
+     * The currency name for the blockchain this address was searched on.
+     */
+    val currencyVerbose: String? = "",
+
+    /**
+     * Date on which address has made its first transaction.
+     */
+    val earliestTransactionTime: String? = "",
+
+    /**
+     * Date on which address has made its last transaction.
+     */
+    val latestTransactionTime: String? = "",
+
+    /**
+     * An integer indicating if this address is Low Risk [1], Medium Risk [2] or High Risk [3] address or if no risks were detected [0], [-1] if could not fetch the risk level.
+     */
+    val riskLevel: Int? = -1,
+
+    /**
+     * Indicates if this address is Low Risk, Medium Risk , High Risk or if no risks were detected.
+     */
+    val riskLevelVerbose: String? = "",
+
+    /**
+     * Total amount received by the address in cryptocurrency.
+     */
+    val totalIncomingValue: String? = "",
+
+    /**
+     * Total amount received by the address in USD.
+     */
+    val totalIncomingValueUsd: String? = "",
+
+    /**
+     * Total amount sent by the address in cryptocurrency.
+     */
+    val totalOutgoingValue: String? = "",
+
+    /**
+     * Total amount sent by the address in USD.
+     */
+    val totalOutgoingValueUsd: String? = "",
+
+    /**
+     * UTC Timestamp for when this resource was created by you.
+     */
+    val createdAt: String? = "",
+
+    /**
+     * UTC Timestamp for most recent lookup of this resource.
+     */
+    val updatedAt: String? = ""
+)
+```
 
 [1]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [2]: https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki

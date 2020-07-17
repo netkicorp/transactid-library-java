@@ -55,6 +55,24 @@ interface Bip75Service {
     fun parseInvoiceRequest(invoiceRequestBinary: ByteArray): InvoiceRequest
 
     /**
+     * Parse binary InvoiceRequest and also get the detailed information of the addresses.
+     *
+     * @param invoiceRequestBinary binary data with the message to parse.
+     * @return InvoiceRequest parsed with the detailed information for each address.
+     * @exception InvalidObjectException if the binary is malformed.
+     * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+     * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+     */
+    @Throws(
+        InvalidObjectException::class,
+        AddressProviderErrorException::class,
+        AddressProviderUnauthorizedException::class
+    )
+    fun parseInvoiceRequestWithAddressesInfo(
+        invoiceRequestBinary: ByteArray
+    ): InvoiceRequest
+
+    /**
      * Create binary PaymentRequest.
      *
      * @param paymentRequestParameters data to create the PaymentRequest.
@@ -101,6 +119,22 @@ interface Bip75Service {
      */
     @Throws(InvalidObjectException::class)
     fun parsePaymentRequest(paymentRequestBinary: ByteArray): PaymentRequest
+
+    /**
+     * Parse binary PaymentRequest and also get the detailed information of the addresses.
+     *
+     * @param paymentRequestBinary binary data with the message to parse.
+     * @return PaymentRequest parsed with the detailed information for each address.
+     * @exception InvalidObjectException if the binary is malformed.
+     * @exception AddressProviderErrorException if there is an error fetching the information from the provider.
+     * @exception AddressProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+     */
+    @Throws(
+        InvalidObjectException::class,
+        AddressProviderErrorException::class,
+        AddressProviderUnauthorizedException::class
+    )
+    fun parsePaymentRequestWithAddressesInfo(paymentRequestBinary: ByteArray): PaymentRequest
 
     /**
      * Create binary Payment.

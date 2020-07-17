@@ -39,6 +39,13 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
+    override fun parseInvoiceRequestWithAddressesInfo(
+        invoiceRequestBinary: ByteArray
+    ) = bip75Service.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
+
+    /**
+     * {@inheritDoc}
+     */
     override fun createPaymentRequest(
         paymentRequestParameters: PaymentRequestParameters,
         ownersParameters: List<OwnerParameters>,
@@ -58,6 +65,12 @@ class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      */
     override fun parsePaymentRequest(paymentRequestBinary: ByteArray) =
         bip75Service.parsePaymentRequest(paymentRequestBinary)
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun parsePaymentRequestWithAddressesInfo(paymentRequestBinary: ByteArray) =
+        bip75Service.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
     /**
      * {@inheritDoc}

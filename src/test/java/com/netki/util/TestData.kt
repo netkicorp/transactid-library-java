@@ -1,5 +1,9 @@
 package com.netki.util
 
+import com.google.gson.JsonObject
+import com.netki.address.info.repo.data.MerkleAddressAlert
+import com.netki.address.info.repo.data.MerkleAddressInformation
+import com.netki.address.info.repo.data.MerkleAddressRiskType
 import com.netki.model.*
 import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
@@ -151,8 +155,8 @@ object TestData {
 
         object Output {
             val OUTPUTS = listOf(
-                Output(1000, "Script 1"),
-                Output(2000, "Script 2")
+                Output(1000, "Script 1", AddressCurrency.BITCOIN),
+                Output(2000, "Script 2", AddressCurrency.BITCOIN)
             )
         }
 
@@ -548,6 +552,106 @@ object TestData {
             Attestation.ACCOUNT_NUMBER,
             Attestation.NATURAL_PERSON_FIRST_NAME,
             Attestation.BENEFICIARY_PERSON_LAST_NAME
+        )
+    }
+
+    object Address {
+        val MERKLE_RISK_TYPES = listOf(
+            MerkleAddressRiskType(
+                riskType = 1,
+                riskTypeVerbose = "risk level 1"
+            ),
+            MerkleAddressRiskType(
+                riskType = 2,
+                riskTypeVerbose = "risk level 2"
+            )
+        )
+
+        val MERKLE_ALERTS = listOf(
+            MerkleAddressAlert(
+                ruleName = "Alert 1",
+                riskLevel = 1,
+                riskLevelVerbose = "risk level 1",
+                merkleAddressRiskTypes = MERKLE_RISK_TYPES,
+                context = JsonObject(),
+                createdAt = "2012-09-10 12:12:12"
+            ),
+            MerkleAddressAlert(
+                ruleName = "Alert 2",
+                riskLevel = 2,
+                riskLevelVerbose = "risk level 2",
+                merkleAddressRiskTypes = MERKLE_RISK_TYPES,
+                context = JsonObject(),
+                createdAt = "2019-05-12 12:12:12"
+            )
+        )
+
+        val MERKLE_ADDRESS_INFORMATION = MerkleAddressInformation(
+            identifier = "1234-5678-9103",
+            merkleAddressAlerts = MERKLE_ALERTS,
+            caseStatus = "case status",
+            caseStatusVerbose = "detail of case status",
+            balance = 6.56,
+            currency = 3,
+            currencyVerbose = "Bitcoin",
+            earliestTransactionTime = "2012-09-10 12:12:12",
+            latestTransactionTime = "2019-05-12 12:12:12",
+            riskLevel = 1,
+            riskLevelVerbose = "risk level 1",
+            totalIncomingValue = "10.0",
+            totalIncomingValueUsd = "15,0",
+            totalOutgoingValue = "8.0",
+            totalOutgoingValueUsd = "15.2",
+            createdAt = "2010-01-01 12:12:12",
+            updatedAt = "2010-01-01 12:12:12"
+        )
+
+        val RISK_TYPES = listOf(
+            RiskType(
+                riskType = 1,
+                riskTypeVerbose = "risk level 1"
+            ),
+            RiskType(
+                riskType = 2,
+                riskTypeVerbose = "risk level 2"
+            )
+        )
+
+        val ALERTS = listOf(
+            Alert(
+                ruleName = "Alert 1",
+                riskLevel = 1,
+                riskLevelVerbose = "risk level 1",
+                riskTypes = RISK_TYPES,
+                context = JsonObject(),
+                createdAt = "2012-09-10 12:12:12"
+            ),
+            Alert(
+                ruleName = "Alert 2",
+                riskLevel = 2,
+                riskLevelVerbose = "risk level 2",
+                riskTypes = RISK_TYPES,
+                context = JsonObject(),
+                createdAt = "2019-05-12 12:12:12"
+            )
+        )
+
+        val ADDRESS_INFORMATION = AddressInformation(
+            identifier = "1234-5678-9103",
+            alerts = ALERTS,
+            balance = 6.56,
+            currency = 3,
+            currencyVerbose = "Bitcoin",
+            earliestTransactionTime = "2012-09-10 12:12:12",
+            latestTransactionTime = "2019-05-12 12:12:12",
+            riskLevel = 1,
+            riskLevelVerbose = "risk level 1",
+            totalIncomingValue = "10.0",
+            totalIncomingValueUsd = "15,0",
+            totalOutgoingValue = "8.0",
+            totalOutgoingValueUsd = "15.2",
+            createdAt = "2010-01-01 12:12:12",
+            updatedAt = "2010-01-01 12:12:12"
         )
     }
 }

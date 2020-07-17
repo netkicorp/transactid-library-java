@@ -14,7 +14,7 @@ object TidKms {
     /**
      * Instance to access the key management system.
      */
-    private var keyManagement: KeyManagement = KeyManagementFactory.getInstance()
+    private val keyManagement: KeyManagement = KeyManagementFactory.getInstance()
 
     /**
      * Store a X509Certificate in PEM format.
