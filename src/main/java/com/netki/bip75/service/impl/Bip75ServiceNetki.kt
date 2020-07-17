@@ -320,4 +320,3 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
         return true
     }
 }
-
