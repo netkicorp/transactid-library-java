@@ -40,7 +40,7 @@ object CertificateValidator {
     /**
      * Method to validate if a chain of certificates is valid.
      *
-     * @param clientCertificate certificate to validate.
+     * @param clientCertificatesPem chain of certificates to validate.
      * @param certificateChains list of all certificate chains to use to validate the client certificate.
      * @return true if the chain is valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.

@@ -2,22 +2,28 @@ package com.netki.security
 
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND
+import org.bouncycastle.asn1.ASN1ObjectIdentifier
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
+import org.bouncycastle.asn1.x500.X500Name
+import org.bouncycastle.asn1.x509.*
 import org.bouncycastle.cert.X509CertificateHolder
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMParser
+import org.bouncycastle.openssl.PEMWriter
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
+import org.bouncycastle.operator.ContentSigner
+import org.bouncycastle.pkcs.PKCS10CertificationRequest
+import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemWriter
-import java.io.ByteArrayInputStream
-import java.io.StringReader
-import java.io.StringWriter
+import java.io.*
 import java.security.*
 import java.security.cert.Certificate
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
+import java.util.*
 import java.util.Base64.getDecoder
 import java.util.Base64.getEncoder
 
@@ -35,6 +41,17 @@ object CryptoModule {
      * Algorithm to create hash.
      */
     private const val DIGEST_ALGORITHM = "SHA-256"
+
+    /**
+     * Generate a keypair.
+     *
+     * @return key pair generated.
+     */
+    fun generateKeyPair(): KeyPair {
+        val kpg = KeyPairGenerator.getInstance("RSA")
+        kpg.initialize(2048)
+        return kpg.generateKeyPair()
+    }
 
     /**
      * Sign string with private key provided.
@@ -254,5 +271,99 @@ object CryptoModule {
         pemWriter.flush()
         pemWriter.close()
         return stringWriter.toString()
+    }
+
+    /**
+     * Generate a signed CSR for the provided principal.
+     *
+     * @param principal with the string for the CN in the CSR.
+     * @param keyPair to sign the CSR.
+     * @return the CSR generated.
+     */
+    fun generateCSR(principal: String, keyPair: KeyPair): PKCS10CertificationRequest {
+        val signer = JCESigner(keyPair.private, SIGNATURE_ALGORITHM)
+
+        val csrBuilder = JcaPKCS10CertificationRequestBuilder(
+            X500Name(principal), keyPair.public
+        )
+        val extensionsGenerator = ExtensionsGenerator()
+        extensionsGenerator.addExtension(
+            Extension.basicConstraints, true, BasicConstraints(
+                false
+            )
+        )
+        csrBuilder.addAttribute(
+            PKCSObjectIdentifiers.pkcs_9_at_extensionRequest,
+            extensionsGenerator.generate()
+        )
+
+        return csrBuilder.build(signer)
+    }
+
+    /**
+     * Method to create signature configuration for CSR.
+     */
+    private class JCESigner(privateKey: PrivateKey, signatureAlgorithm: String) : ContentSigner {
+        private val algorithm: String = signatureAlgorithm.toLowerCase()
+        private var signature: Signature? = null
+        private var outputStream: ByteArrayOutputStream? = null
+
+        init {
+            try {
+                this.outputStream = ByteArrayOutputStream()
+                this.signature = Signature.getInstance(signatureAlgorithm)
+                this.signature!!.initSign(privateKey)
+            } catch (gse: GeneralSecurityException) {
+                throw IllegalArgumentException(gse.message)
+            }
+        }
+
+        override fun getAlgorithmIdentifier(): AlgorithmIdentifier {
+            return ALGORITHMS[algorithm] ?: throw IllegalArgumentException("Does not support algorithm: $algorithm")
+        }
+
+        override fun getOutputStream(): OutputStream? {
+            return outputStream
+        }
+
+        override fun getSignature(): ByteArray? {
+            return try {
+                signature!!.update(outputStream!!.toByteArray())
+                signature!!.sign()
+            } catch (gse: GeneralSecurityException) {
+                gse.printStackTrace()
+                null
+            }
+        }
+
+        companion object {
+
+            private val ALGORITHMS = HashMap<String, AlgorithmIdentifier>()
+
+            init {
+                ALGORITHMS["SHA256withRSA".toLowerCase()] = AlgorithmIdentifier(
+                    ASN1ObjectIdentifier("1.2.840.113549.1.1.11")
+                )
+                ALGORITHMS["SHA1withRSA".toLowerCase()] = AlgorithmIdentifier(
+                    ASN1ObjectIdentifier("1.2.840.113549.1.1.5")
+                )
+            }
+        }
+    }
+
+    /**
+     * Transform a CSR object to a PEM string format.
+     *
+     * @param csr to transform.
+     * @return string in PEM format.
+     */
+    fun csrObjectToPem(csr: PKCS10CertificationRequest): String {
+        val pemObject = PemObject("CERTIFICATE REQUEST", csr.encoded)
+        val str = StringWriter()
+        val pemWriter = PEMWriter(str)
+        pemWriter.writeObject(pemObject)
+        pemWriter.close()
+        str.close()
+        return str.toString()
     }
 }

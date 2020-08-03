@@ -26,4 +26,7 @@ object ErrorInformation {
     const val ADDRESS_INFORMATION_INTERNAL_ERROR_PROVIDER = "Provider internal error for address: %s, with error: %s"
     const val ADDRESS_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER =
         "Provider authorization error for address: %s. Make sure to initialize the library with the correct AuthorizationKey."
+    const val CERTIFICATE_INFORMATION_INTERNAL_ERROR_PROVIDER = "Provider internal error for: %s, with error: %s"
+    const val CERTIFICATE_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER =
+        "Provider authorization error. Make sure to initialize the library with the correct AuthorizationKey."
 }
