@@ -4,6 +4,9 @@ import com.google.gson.JsonObject
 import com.netki.address.info.repo.data.MerkleAddressAlert
 import com.netki.address.info.repo.data.MerkleAddressInformation
 import com.netki.address.info.repo.data.MerkleAddressRiskType
+import com.netki.keymanagement.repo.data.AttestationResponse
+import com.netki.keymanagement.repo.data.CertificateAttestationResponse
+import com.netki.keymanagement.repo.data.CsrAttestation
 import com.netki.model.*
 import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
@@ -652,6 +655,86 @@ object TestData {
             totalOutgoingValueUsd = "15.2",
             createdAt = "2010-01-01 12:12:12",
             updatedAt = "2010-01-01 12:12:12"
+        )
+    }
+
+    object CertificateGeneration {
+        val ATTESTATIONS_REQUESTED = listOf(
+            Attestation.ADDRESS_1,
+            Attestation.ADDRESS_2,
+            Attestation.BENEFICIARY_PERSON_FIRST_NAME,
+            Attestation.BENEFICIARY_PERSON_LAST_NAME,
+            Attestation.BIRTH_DATE,
+            Attestation.BIRTH_PLACE,
+            Attestation.COUNTRY_OF_RESIDENCE,
+            Attestation.CUSTOMER_IDENTIFICATION,
+            Attestation.ISSUING_COUNTRY,
+            Attestation.LEGAL_PERSON_NAME,
+            Attestation.NATIONAL_IDENTIFIER,
+            Attestation.NATIONAL_IDENTIFIER_NUMBER,
+            Attestation.NATURAL_PERSON_FIRST_NAME,
+            Attestation.NATURAL_PERSON_LAST_NAME,
+            Attestation.ACCOUNT_NUMBER,
+            Attestation.REGISTRATION_AUTHORITY
+        )
+
+        val ATTESTATIONS_SUBMITTED = AttestationResponse("message", "123457890")
+
+        val CSRS_ATTESTATIONS = listOf(
+            CsrAttestation("csr_1", Attestation.ADDRESS_1, "public_key_1"),
+            CsrAttestation("csr_2", Attestation.ADDRESS_2, "public_key_2"),
+            CsrAttestation("csr_3", Attestation.NATURAL_PERSON_FIRST_NAME, "public_key_3")
+        )
+
+        const val TRANSACTION_ID = "1234567890xyz"
+
+        val CERTIFICATE_ATTESTATION_RESPONSE = CertificateAttestationResponse(
+            count = 3,
+            certificates = listOf(
+                com.netki.keymanagement.repo.data.Certificate(
+                    attestation = Attestation.NATURAL_PERSON_FIRST_NAME,
+                    certificate = CLIENT_CERTIFICATE_CHAIN_ONE,
+                    id = 1234,
+                    isActive = true
+                ),
+                com.netki.keymanagement.repo.data.Certificate(
+                    attestation = Attestation.ADDRESS_1,
+                    certificate = CLIENT_CERTIFICATE_CHAIN_TWO,
+                    id = 12345,
+                    isActive = true
+                ),
+                com.netki.keymanagement.repo.data.Certificate(
+                    attestation = Attestation.ADDRESS_2,
+                    certificate = CLIENT_CERTIFICATE_CHAIN_TWO,
+                    id = 12345,
+                    isActive = true
+                )
+            )
+        )
+
+        val ATTESTATIONS_INFORMATION = listOf(
+            AttestationInformation(Attestation.ADDRESS_1, "This is the ADDRESS_1"),
+            AttestationInformation(Attestation.ADDRESS_2, "This is the ADDRESS_2"),
+            AttestationInformation(
+                Attestation.BENEFICIARY_PERSON_FIRST_NAME,
+                "This is the BENEFICIARY_PERSON_FIRST_NAME"
+            ),
+            AttestationInformation(
+                Attestation.BENEFICIARY_PERSON_LAST_NAME,
+                "This is the BENEFICIARY_PERSON_LAST_NAME"
+            ),
+            AttestationInformation(Attestation.BIRTH_DATE, "This is the BIRTH_DATE"),
+            AttestationInformation(Attestation.BIRTH_PLACE, "This is the BIRTH_PLACE"),
+            AttestationInformation(Attestation.COUNTRY_OF_RESIDENCE, "This is the COUNTRY_OF_RESIDENCE"),
+            AttestationInformation(Attestation.CUSTOMER_IDENTIFICATION, "This is the CUSTOMER_IDENTIFICATION"),
+            AttestationInformation(Attestation.ISSUING_COUNTRY, "This is the ISSUING_COUNTRY"),
+            AttestationInformation(Attestation.LEGAL_PERSON_NAME, "This is the LEGAL_PERSON_NAME"),
+            AttestationInformation(Attestation.NATIONAL_IDENTIFIER, "This is the NATIONAL_IDENTIFIER"),
+            AttestationInformation(Attestation.NATIONAL_IDENTIFIER_NUMBER, "This is the NATIONAL_IDENTIFIER_NUMBER"),
+            AttestationInformation(Attestation.NATURAL_PERSON_FIRST_NAME, "This is the NATURAL_PERSON_FIRST_NAME"),
+            AttestationInformation(Attestation.NATURAL_PERSON_LAST_NAME, "This is the NATURAL_PERSON_LAST_NAME"),
+            AttestationInformation(Attestation.ACCOUNT_NUMBER, "This is the ACCOUNT_NUMBER"),
+            AttestationInformation(Attestation.REGISTRATION_AUTHORITY, "This is the REGISTRATION_AUTHORITY")
         )
     }
 }

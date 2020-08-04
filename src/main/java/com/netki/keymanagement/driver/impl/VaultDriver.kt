@@ -15,12 +15,14 @@ const val PRIVATE_KEY_SCHEMA = "keys/user/priv/"
 const val CERTIFICATE_KEY = "certificate_key"
 const val PRIVATE_KEY_KEY = "private_key_key"
 
-class VaultDriver : KeyManagementDriver {
+class VaultDriver(
+    authorizationToken: String,
+    address: String
+) : KeyManagementDriver {
 
-    // TODO: replace with the correct configuration for your vault instance
     private val config: VaultConfig = VaultConfig()
-        .address("http://127.0.0.1:8200")
-        .token("YOUR_TOKEN_TO_CONNECT_TO_VAULT")
+        .address(address)
+        .token(authorizationToken)
         .build()
 
     private val vault = Vault(config)

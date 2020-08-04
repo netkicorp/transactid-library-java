@@ -2,11 +2,22 @@ package com.netki.keymanagement.main.impl
 
 import com.netki.exceptions.*
 import com.netki.keymanagement.driver.impl.VaultDriver
+import com.netki.keymanagement.repo.data.CertificateAttestationResponse
+import com.netki.keymanagement.repo.impl.NetkiCertificateProvider
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
 import com.netki.security.CryptoModule
 import com.netki.util.TestData
+import com.netki.util.TestData.CertificateGeneration.ATTESTATIONS_INFORMATION
+import com.netki.util.TestData.CertificateGeneration.ATTESTATIONS_REQUESTED
+import com.netki.util.TestData.CertificateGeneration.CERTIFICATE_ATTESTATION_RESPONSE
+import com.netki.util.TestData.CertificateGeneration.CSRS_ATTESTATIONS
+import com.netki.util.TestData.CertificateGeneration.TRANSACTION_ID
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.doNothing
 import java.security.cert.X509Certificate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -14,17 +25,47 @@ internal class KeyManagementNetkiTest {
 
     private lateinit var keyManagement: KeyManagementNetki
     private lateinit var mockDriver: VaultDriver
+    private lateinit var mockCertificateProvider: NetkiCertificateProvider
 
     @BeforeAll
     fun setUp() {
         mockDriver = Mockito.mock(VaultDriver::class.java)
-        val keyManagementService = KeyManagementNetkiService(mockDriver)
+        mockCertificateProvider = Mockito.mock(NetkiCertificateProvider::class.java)
+        val keyManagementService = KeyManagementNetkiService(mockCertificateProvider, mockDriver)
         keyManagement = KeyManagementNetki(keyManagementService)
     }
 
     @BeforeEach
     fun resetMock() {
         Mockito.reset(mockDriver)
+        Mockito.reset(mockCertificateProvider)
+    }
+
+    @Test
+    fun `Generate certificate for attestations successfully`() {
+        `when`(mockCertificateProvider.requestTransactionId(ATTESTATIONS_REQUESTED)).thenReturn(TRANSACTION_ID)
+        doNothing().`when`(mockCertificateProvider).submitCsrsAttestations(TRANSACTION_ID, CSRS_ATTESTATIONS)
+        `when`(mockCertificateProvider.getCertificates(TRANSACTION_ID)).thenReturn(CERTIFICATE_ATTESTATION_RESPONSE)
+
+        val attestationCertificate = keyManagement.generateCertificates(ATTESTATIONS_INFORMATION)
+
+        assertEquals(attestationCertificate.size, CERTIFICATE_ATTESTATION_RESPONSE.count)
+    }
+
+    @Test
+    fun `Generate certificate for attestations returning empty list of certificates`() {
+        `when`(mockCertificateProvider.requestTransactionId(ATTESTATIONS_REQUESTED)).thenReturn(TRANSACTION_ID)
+        doNothing().`when`(mockCertificateProvider).submitCsrsAttestations(TRANSACTION_ID, CSRS_ATTESTATIONS)
+        `when`(mockCertificateProvider.getCertificates(TRANSACTION_ID)).thenReturn(
+            CertificateAttestationResponse(
+                0,
+                emptyList()
+            )
+        )
+
+        val attestationCertificate = keyManagement.generateCertificates(ATTESTATIONS_INFORMATION)
+
+        assertTrue(attestationCertificate.isEmpty())
     }
 
     @Test
