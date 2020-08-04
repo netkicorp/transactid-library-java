@@ -7,12 +7,15 @@ import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
 import com.netki.util.TestData.Address.MERKLE_ADDRESS_INFORMATION
+import com.netki.util.fullUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
-import io.ktor.http.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -195,7 +198,4 @@ internal class AddressInformationNetkiTest {
 
         assert(exception.message != null && exception.message!!.contains("Provider internal error for address:"))
     }
-
-    private val Url.hostWithPortIfRequired: String get() = if (port == protocol.defaultPort) host else hostWithPort
-    private val Url.fullUrl: String get() = "${protocol.name}://$hostWithPortIfRequired$fullPath"
 }

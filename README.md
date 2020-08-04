@@ -436,16 +436,7 @@ And that will return an object with all of the fields of the PaymentACK and the 
 
 # Key Management system
 
-## Vault for Key Storage
-This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
-See Hashicorp's Vault Docker documentation here: https://hub.docker.com/_/vault
-
-This library stores keys and certs in specific locations. Please ensure that once Vault is set up, you enable these paths:
-
-```sh
-vault secrets enable -path=keys/ kv
-vault secrets enable -path=certs/ kv
-```
+This library contains a module to create and administrate KeyPairs and certificates.
 
 ## General Usage
 
@@ -461,6 +452,65 @@ Alternatively:
 ```kotlin
 TidKms.storeCertificatePem("certificate")
 ```
+
+The first step to use this module is initialize it, to do that call the method:
+
+
+```kotlin
+    /**
+     * Method to initialize the key management system.
+     * All the parameters are optional depending the functions that want to be used.
+     * Make sure to call this method before any other one in this class.
+     *
+     * @param authorizationCertificateProviderKey to connect to the certificate provider.
+     * @param authorizationSecureStorageKey to connect to the secure storage.
+     * @param addressSecureStorage to connect to the secure storage.
+     */
+    @JvmOverloads
+    fun init(
+        authorizationCertificateProviderKey: String = "",
+        authorizationSecureStorageKey: String = "",
+        addressSecureStorage: String = ""
+    ) {
+        this.authorizationCertificateProviderKey = authorizationCertificateProviderKey
+        this.authorizationSecureStorageKey = authorizationSecureStorageKey
+        this.addressSecureStorage = addressSecureStorage
+    }
+```
+
+To get access to the authorizationCertificateProviderKey please get in touch with your Netki contact.
+
+If you want to use the Certificate generation functions make sure to pass a valid authorizationCertificateProviderKey. 
+If you want to use the Storage make sure to pass a valid authorizationSecureStorageKey and addressSecureStorage.
+ 
+## Certificate generation
+
+You can generate certificates and private keys corresponding to different attestations with this library, to do that you can use the following method:
+
+```kotlin
+    /**
+     * Generate a certificate for each one of the attestations provided.
+     *
+     * @param attestationsInformation list of attestations with their corresponding data.
+     * @return list of certificate per attestation.
+     * @throws CertificateProviderException if there is an error creating the certificates.
+     * @throws CertificateProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+     */
+    @Throws(CertificateProviderException::class, CertificateProviderUnauthorizedException::class)
+    fun generateCertificates(attestationsInformation: List<AttestationInformation>): List<AttestationCertificate>
+```
+
+## Vault for Key Storage
+This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
+See Hashicorp's Vault Docker documentation here: https://hub.docker.com/_/vault
+
+This library stores keys and certs in specific locations. Please ensure that once Vault is set up, you enable these paths:
+
+```sh
+vault secrets enable -path=keys/ kv
+vault secrets enable -path=certs/ kv
+```
+
 
 ## Storing certificates and keys
 

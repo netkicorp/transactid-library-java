@@ -4,8 +4,14 @@ import com.netki.keymanagement.driver.KeyManagementDriver
 import com.netki.keymanagement.driver.impl.VaultDriver
 import com.netki.keymanagement.main.KeyManagement
 import com.netki.keymanagement.main.impl.KeyManagementNetki
+import com.netki.keymanagement.repo.CertificateProvider
+import com.netki.keymanagement.repo.impl.NetkiCertificateProvider
 import com.netki.keymanagement.service.KeyManagementService
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.features.json.GsonSerializer
+import io.ktor.client.features.json.JsonFeature
 
 /**
  * Factory to generate KeyManagement instance.
@@ -17,11 +23,27 @@ object KeyManagementFactory {
      *
      * @return KeyManagement instance.
      */
-    fun getInstance(): KeyManagement {
+    fun getInstance(
+        authorizationCertificateProviderKey: String,
+        authorizationSecureStorageKey: String,
+        addressSecureStorage: String
+    ): KeyManagement {
 
-        val keyManagementDriver: KeyManagementDriver = VaultDriver()
+        val client: HttpClient by lazy {
+            HttpClient(OkHttp) {
+                install(JsonFeature) {
+                    serializer = GsonSerializer()
+                }
+            }
+        }
 
-        val keyManagementService: KeyManagementService = KeyManagementNetkiService(keyManagementDriver)
+        val certificateProvider: CertificateProvider =
+            NetkiCertificateProvider(client, authorizationCertificateProviderKey)
+
+        val keyManagementDriver: KeyManagementDriver = VaultDriver(authorizationSecureStorageKey, addressSecureStorage)
+
+        val keyManagementService: KeyManagementService =
+            KeyManagementNetkiService(certificateProvider, keyManagementDriver)
 
         return KeyManagementNetki(keyManagementService)
     }

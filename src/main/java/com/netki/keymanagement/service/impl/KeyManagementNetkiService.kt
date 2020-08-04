@@ -2,7 +2,12 @@ package com.netki.keymanagement.service.impl
 
 import com.netki.exceptions.*
 import com.netki.keymanagement.driver.KeyManagementDriver
+import com.netki.keymanagement.repo.CertificateProvider
+import com.netki.keymanagement.repo.data.CsrAttestation
 import com.netki.keymanagement.service.KeyManagementService
+import com.netki.keymanagement.util.toPrincipal
+import com.netki.model.AttestationCertificate
+import com.netki.model.AttestationInformation
 import com.netki.security.CryptoModule
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE
@@ -16,7 +21,44 @@ import java.security.PrivateKey
 import java.security.cert.X509Certificate
 import java.util.*
 
-class KeyManagementNetkiService(private val driver: KeyManagementDriver) : KeyManagementService {
+class KeyManagementNetkiService(
+    private val certificateProvider: CertificateProvider,
+    private val driver: KeyManagementDriver
+) : KeyManagementService {
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun generateCertificates(attestationsInformation: List<AttestationInformation>): List<AttestationCertificate> {
+        val transactionId = certificateProvider.requestTransactionId(attestationsInformation.map { it.attestation })
+
+        val keyPair = CryptoModule.generateKeyPair()
+
+        val csrsAttestations = attestationsInformation.map {
+            CsrAttestation(
+                CryptoModule.csrObjectToPem(
+                    CryptoModule.generateCSR(it.attestation.toPrincipal(it.data), keyPair)
+                ),
+                it.attestation,
+                CryptoModule.objectToPublicKeyPem(keyPair.public)
+            )
+        }
+
+        certificateProvider.submitCsrsAttestations(transactionId, csrsAttestations)
+        val certificates = certificateProvider.getCertificates(transactionId)
+
+        return if (certificates.count == 0) {
+            emptyList()
+        } else {
+            certificates.certificates.map {
+                AttestationCertificate(
+                    it.attestation!!,
+                    it.certificate!!,
+                    CryptoModule.objectToPrivateKeyPem(keyPair.private)
+                )
+            }
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -161,6 +203,7 @@ class KeyManagementNetkiService(private val driver: KeyManagementDriver) : KeyMa
             }
         } ?: throw ObjectNotFoundException(KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY_NOT_FOUND.format(privateKeyId))
     }
+
 
     private fun generateUniqueId() = UUID.randomUUID().toString()
 }
