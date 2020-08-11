@@ -82,6 +82,15 @@ If you are using maven you can download the latest JAR or grab via [Maven][3]:
 compile group: 'com.netki', name: 'transactid', version: '0.1.0-alpha0', ext: 'pom'
 ```
 
+## Adding jcenter
+
+In case you are not using it, make sure to add jcenter as one of the repositories for dependencies, for example for gradle
+```groovy
+repositories {
+	mavenCentral()
+	jcenter()
+}
+```
 ## General Usage
 
 To use the methods to create the BIP messages you can use the static methods in the class TransactId for example:

@@ -23,6 +23,8 @@ data class Output(
 
     /**
      * Detailed information of this address.
+     * This field is only to return data fetched from the address information provider.
+     * This does not need to be filled when the object is being created.
      */
     var addressInformation: AddressInformation? = null
 )
