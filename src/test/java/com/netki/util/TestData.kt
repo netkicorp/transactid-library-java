@@ -124,6 +124,7 @@ object TestData {
 
     object Payment {
         const val MEMO = "memo"
+        const val MEMO_PAYMENT_ACK = "memo_payment_ack"
         val PAYMENT_PARAMETERS = PaymentParameters(
             merchantData = "merchant data",
             transactions = arrayListOf(
@@ -165,7 +166,7 @@ object TestData {
 
         val PAYMENT_ACK = PaymentAck(
             payment = PAYMENT,
-            memo = MEMO
+            memo = MEMO_PAYMENT_ACK
         )
     }
 

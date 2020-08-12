@@ -20,25 +20,26 @@ internal class CertificateValidatorTest {
     private val rootCertificateRandom = CryptoModule.certificatePemToObject(ROOT_CERTIFICATE_RANDOM) as X509Certificate
     private val intermediateCertificateRandom =
         CryptoModule.certificatePemToObject(INTERMEDIATE_CERTIFICATE_RANDOM) as X509Certificate
+    private val certificateValidator = CertificateValidator("src/main/resources/certificates")
 
     @Test
     fun `Verify correct certificate chain for client certificate one`() {
-        assert(CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_ONE))
+        assert(certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_ONE))
     }
 
     @Test
     fun `Verify correct certificate chain for client certificate two`() {
-        assert(CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_TWO))
+        assert(certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_TWO))
     }
 
     @Test
     fun `Verify correct certificate chain for client certificate three bundle`() {
-        assert(CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE))
+        assert(certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE))
     }
 
     @Test
     fun `Verify incorrect certificate chain for client certificate`() {
-        assert(!CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM))
+        assert(!certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM))
     }
 
     @Test
@@ -47,7 +48,7 @@ internal class CertificateValidatorTest {
             val certificateChains = listOf(
                 CertificateChain(intermediateCertificateRandom, mutableListOf(intermediateCertificateRandom))
             )
-            CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM, certificateChains)
+            certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM, certificateChains)
         }
         assert(exception.message?.contains("is not a valid") ?: false)
     }
@@ -58,7 +59,7 @@ internal class CertificateValidatorTest {
             val certificateChains = listOf(
                 CertificateChain(rootCertificateRandom, mutableListOf(rootCertificateRandom))
             )
-            CertificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM, certificateChains)
+            certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM, certificateChains)
         }
         assert(exception.message?.contains("is not a valid") ?: false)
     }
@@ -69,7 +70,7 @@ internal class CertificateValidatorTest {
             val certificateChains = listOf(
                 CertificateChain(rootCertificateRandom, mutableListOf(intermediateCertificateRandom))
             )
-            CertificateValidator.validateCertificateChain(ROOT_CERTIFICATE_RANDOM, certificateChains)
+            certificateValidator.validateCertificateChain(ROOT_CERTIFICATE_RANDOM, certificateChains)
         }
         assert(exception.message?.contains(CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND) ?: false)
     }

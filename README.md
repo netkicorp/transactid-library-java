@@ -71,7 +71,7 @@ If you are using maven you can download the latest JAR or grab via [Maven][3]:
 <dependency>
     <groupId>com.netki</groupId>
     <artifactId>transactid</artifactId>
-    <version>0.1.0-alpha0</version>
+    <version>0.1.0-alphaX</version>
     <type>pom</type>
 </dependency>
 ```
@@ -79,7 +79,7 @@ If you are using maven you can download the latest JAR or grab via [Maven][3]:
 ### Gradle Users
 
 ```sh
-compile group: 'com.netki', name: 'transactid', version: '0.1.0-alpha0', ext: 'pom'
+compile group: 'com.netki', name: 'transactid', version: '0.1.0-alphaX', ext: 'pom'
 ```
 
 ## Adding jcenter
@@ -93,41 +93,29 @@ repositories {
 ```
 ## General Usage
 
-To use the methods to create the BIP messages you can use the static methods in the class TransactId for example:
-
-```kotlin
-val transactIdInstance = TransactId
-transactIdInstance.isInvoiceRequestValid(invoiceRequestBinary)
-```
-
-Alternatively:
-
-```kotlin
-TransactId.isInvoiceRequestValid(invoiceRequestBinary)
-```
-
-There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
-
-## Initializing the library
-
-Note: The initialization of the library is only needed if you want to also be able to fetch the detailed information about the addresses that are shared across the different messages.
-
-To be able to use any method that also fetches the detailed information, you need to initialize this library with the following method:
+To use the methods to create the BIP messages you need to fetch an instance with the method:
 
 ```kotlin
 /**
- * Method to initialize the library with the ability to fetch detailed information of the addresses.
- * You need to initialize it only if address detailed info is required.
+ * Method to get an instance of this class.
+ * The ability to fetch detailed information of the addresses is optional.
  *
- * @param authorizationKey to fetch the required data.
+ * @param trustStoreLocation Path with the directory that contains the trust certificates chains.
+ * This should be accessible and have with read permissions for the app that is running the library.
+ * @param authorizationKey Key to connect fetch detailed information of addresses.
+ * @return instance of TransactId.
  */
-fun init(authorizationKey: String) {
-    this.authorizationKey = authorizationKey
+@JvmStatic
+@JvmOverloads
+fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): TransactId {
+    val bip75 = Bip75Factory.getInstance(trustStoreLocation, authorizationKey)
+    return TransactId(bip75)
 }
 ```
-
 To obtain the required key please ask to it to your Netki contact.
- 
+
+There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
+
 ## Invoice Request
 
 Please refer to the [BIP75][2] documentation for detailed requirements for a `InvoiceRequest`.
@@ -449,45 +437,34 @@ This library contains a module to create and administrate KeyPairs and certifica
 
 ## General Usage
 
-To use the key management integration you can use the static methods in the class TidKms, for example:
+To use the methods for the key management integration you need to fetch an instance with the method:
 
 ```kotlin
-val tidKmsInstance = TidKms
-tidKmsInstance.storeCertificatePem("certificate")
+/**
+ * Method to get an instance of this class.
+ * All the parameters are optional depending the functions that want to be used.
+ *
+ * @param authorizationCertificateProviderKey to connect to the certificate provider.
+ * @param authorizationSecureStorageKey to connect to the secure storage.
+ * @param addressSecureStorage to connect to the secure storage.
+ * @return instance of TidKms.
+ */
+@JvmStatic
+@JvmOverloads
+fun getInstance(
+    authorizationCertificateProviderKey: String = "",
+    authorizationSecureStorageKey: String = "",
+    addressSecureStorage: String = ""
+): TidKms {
+    val keyManagement = KeyManagementFactory.getInstance(
+        authorizationCertificateProviderKey,
+        authorizationSecureStorageKey,
+        addressSecureStorage
+    )
+    return TidKms(keyManagement)
+}
 ```
-
-Alternatively:
-
-```kotlin
-TidKms.storeCertificatePem("certificate")
-```
-
-The first step to use this module is initialize it, to do that call the method:
-
-
-```kotlin
-    /**
-     * Method to initialize the key management system.
-     * All the parameters are optional depending the functions that want to be used.
-     * Make sure to call this method before any other one in this class.
-     *
-     * @param authorizationCertificateProviderKey to connect to the certificate provider.
-     * @param authorizationSecureStorageKey to connect to the secure storage.
-     * @param addressSecureStorage to connect to the secure storage.
-     */
-    @JvmOverloads
-    fun init(
-        authorizationCertificateProviderKey: String = "",
-        authorizationSecureStorageKey: String = "",
-        addressSecureStorage: String = ""
-    ) {
-        this.authorizationCertificateProviderKey = authorizationCertificateProviderKey
-        this.authorizationSecureStorageKey = authorizationSecureStorageKey
-        this.addressSecureStorage = addressSecureStorage
-    }
-```
-
-To get access to the authorizationCertificateProviderKey please get in touch with your Netki contact.
+To obtain the required key please ask to it to your Netki contact.
 
 If you want to use the Certificate generation functions make sure to pass a valid authorizationCertificateProviderKey. 
 If you want to use the Storage make sure to pass a valid authorizationSecureStorageKey and addressSecureStorage.
@@ -497,16 +474,16 @@ If you want to use the Storage make sure to pass a valid authorizationSecureStor
 You can generate certificates and private keys corresponding to different attestations with this library, to do that you can use the following method:
 
 ```kotlin
-    /**
-     * Generate a certificate for each one of the attestations provided.
-     *
-     * @param attestationsInformation list of attestations with their corresponding data.
-     * @return list of certificate per attestation.
-     * @throws CertificateProviderException if there is an error creating the certificates.
-     * @throws CertificateProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
-     */
-    @Throws(CertificateProviderException::class, CertificateProviderUnauthorizedException::class)
-    fun generateCertificates(attestationsInformation: List<AttestationInformation>): List<AttestationCertificate>
+/**
+ * Generate a certificate for each one of the attestations provided.
+ *
+ * @param attestationsInformation list of attestations with their corresponding data.
+ * @return list of certificate per attestation.
+ * @throws CertificateProviderException if there is an error creating the certificates.
+ * @throws CertificateProviderUnauthorizedException if there is an error with the authorization to connect to the provider.
+ */
+@Throws(CertificateProviderException::class, CertificateProviderUnauthorizedException::class)
+fun generateCertificates(attestationsInformation: List<AttestationInformation>): List<AttestationCertificate>
 ```
 
 ## Vault for Key Storage
@@ -692,19 +669,26 @@ This library contains a module to consult the detailed information of a given ad
 
 ## General Usage
 
-The first step to utilize this module is to initialize it, to obtain the required key please ask to it to your Netki contact.
+To use the methods for the address information you need to fetch an instance with the method:
 
 ```kotlin
 /**
- * Method to initialize the address info provider.
- * Make sure to call this method before any other one in this class.
+ * Method to get an instance of this class.
+ *
+ * @param authorizationKey Key to connect to an external address provider.
+ * @return instance of TidAddressInfo.
  */
-fun init(authorizationKey: String) {
-    this.authorizationKey = authorizationKey
+@JvmStatic
+@JvmOverloads
+fun getInstance(authorizationKey: String): TidAddressInfo {
+    val addressInformation = AddressInformationFactory.getInstance(authorizationKey)
+    return TidAddressInfo(addressInformation)
 }
 ```
 
-After the module is initialized, you can fetch the detailed information of an address with the following method:        
+To obtain the required key please ask to it to your Netki contact.
+
+After you have the instance, you can fetch the detailed information of an address with the following method:        
 
 ```kotlin
 /**
