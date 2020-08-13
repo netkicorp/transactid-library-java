@@ -7,7 +7,7 @@ internal class Bip75FactoryTest {
 
     @Test
     fun `Validate proper instance creation of Bip75`() {
-        val bip75Instance = Bip75Factory.getInstance()
+        val bip75Instance = Bip75Factory.getInstance("random")
 
         assert(bip75Instance is Bip75Netki)
     }

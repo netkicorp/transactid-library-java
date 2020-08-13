@@ -1,6 +1,7 @@
 package com.netki
 
 import com.netki.bip75.config.Bip75Factory
+import com.netki.bip75.main.Bip75
 import com.netki.exceptions.*
 import com.netki.model.*
 
@@ -9,28 +10,24 @@ import com.netki.model.*
  *
  * @see https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki
  */
-object TransactId {
+class TransactId(private var bip75: Bip75) {
 
-    /**
-     * Key to connect fetch detailed information of addresses.
-     */
-    private var authorizationKey: String? = null
-
-    /**
-     * Instance to generate Bip75 protocol messages.
-     */
-    private val bip75 by lazy {
-        Bip75Factory.getInstance(authorizationKey)
-    }
-
-    /**
-     * Method to initialize the library with the ability to fetch detailed information of the addresses.
-     * You need to initialize it only if address detailed info is required.
-     *
-     * @param authorizationKey to fetch the required data.
-     */
-    fun init(authorizationKey: String) {
-        this.authorizationKey = authorizationKey
+    companion object {
+        /**
+         * Method to get an instance of this class.
+         * The ability to fetch detailed information of the addresses is optional.
+         *
+         * @param trustStoreLocation Path with the directory that contains the trust certificates chains.
+         * This should be accessible and have with read permissions for the app that is running the library.
+         * @param authorizationKey Key to connect fetch detailed information of addresses.
+         * @return instance of TransactId.
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): TransactId {
+            val bip75 = Bip75Factory.getInstance(trustStoreLocation, authorizationKey)
+            return TransactId(bip75)
+        }
     }
 
     /**

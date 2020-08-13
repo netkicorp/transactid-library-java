@@ -8,7 +8,7 @@ import com.netki.model.AddressInformation
 /**
  * Fetch the detailed information about an address.
  */
-interface AddressInformation {
+interface AddressInformationProvider {
 
     /**
      * Fetch the information of a given address.

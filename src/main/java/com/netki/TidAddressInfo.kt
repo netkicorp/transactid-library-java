@@ -1,6 +1,7 @@
 package com.netki
 
 import com.netki.address.info.config.AddressInformationFactory
+import com.netki.address.info.main.AddressInformationProvider
 import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
@@ -9,28 +10,21 @@ import com.netki.model.AddressInformation
 /**
  * Fetch the detailed information about an address.
  */
-object TidAddressInfo {
+class TidAddressInfo(private val addressInformationProvider: AddressInformationProvider) {
 
-    /**
-     * Key to connect to an external address provider.
-     */
-    private var authorizationKey: String = ""
-
-    /**
-     * Instance to access the address information.
-     */
-    private val addressInformation by lazy {
-        AddressInformationFactory.getInstance(authorizationKey)
-    }
-
-    /**
-     * Method to initialize the address info provider.
-     * Make sure to call this method before any other one in this class.
-     *
-     * @param authorizationKey to fetch the required data.
-     */
-    fun init(authorizationKey: String) {
-        this.authorizationKey = authorizationKey
+    companion object {
+        /**
+         * Method to get an instance of this class.
+         *
+         * @param authorizationKey Key to connect to an external address provider.
+         * @return instance of TidAddressInfo.
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun getInstance(authorizationKey: String): TidAddressInfo {
+            val addressInformation = AddressInformationFactory.getInstance(authorizationKey)
+            return TidAddressInfo(addressInformation)
+        }
     }
 
     /**
@@ -44,5 +38,5 @@ object TidAddressInfo {
      */
     @Throws(AddressProviderErrorException::class, AddressProviderUnauthorizedException::class)
     fun getAddressInformation(currency: AddressCurrency, address: String): AddressInformation =
-        addressInformation.getAddressInformation(currency, address)
+        addressInformationProvider.getAddressInformation(currency, address)
 }

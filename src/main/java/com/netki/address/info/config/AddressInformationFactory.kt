@@ -1,7 +1,7 @@
 package com.netki.address.info.config
 
-import com.netki.address.info.main.AddressInformation
-import com.netki.address.info.main.impl.AddressInformationNetki
+import com.netki.address.info.main.AddressInformationProvider
+import com.netki.address.info.main.impl.AddressInformationProviderNetki
 import com.netki.address.info.repo.impl.MerkleRepo
 import com.netki.address.info.service.impl.AddressInformationNetkiService
 import io.ktor.client.HttpClient
@@ -19,7 +19,7 @@ object AddressInformationFactory {
      *
      * @return AddressInformation instance.
      */
-    fun getInstance(authorizationKey: String): AddressInformation {
+    fun getInstance(authorizationKey: String): AddressInformationProvider {
         val client: HttpClient by lazy {
             HttpClient(OkHttp) {
                 install(JsonFeature) {
@@ -32,6 +32,6 @@ object AddressInformationFactory {
 
         val addressInformationService = AddressInformationNetkiService(addressInformationRepo)
 
-        return AddressInformationNetki(addressInformationService)
+        return AddressInformationProviderNetki(addressInformationService)
     }
 }

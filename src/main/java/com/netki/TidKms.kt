@@ -2,6 +2,7 @@ package com.netki
 
 import com.netki.exceptions.*
 import com.netki.keymanagement.config.KeyManagementFactory
+import com.netki.keymanagement.main.KeyManagement
 import com.netki.model.AttestationCertificate
 import com.netki.model.AttestationInformation
 import java.security.PrivateKey
@@ -10,52 +11,32 @@ import java.security.cert.X509Certificate
 /**
  * Access the key management system.
  */
-object TidKms {
+class TidKms(private val keyManagement: KeyManagement) {
 
-    /**
-     * Key to connect to a certificate provider.
-     */
-    private var authorizationCertificateProviderKey: String = ""
-
-    /**
-     * Key to connect to a secure storage.
-     */
-    private var authorizationSecureStorageKey: String = ""
-
-    /**
-     * Address to connect to a secure storage.
-     */
-    private var addressSecureStorage: String = ""
-
-    /**
-     * Instance to access the key management system.
-     */
-    private val keyManagement by lazy {
-        KeyManagementFactory.getInstance(
-            authorizationCertificateProviderKey,
-            authorizationSecureStorageKey,
-            addressSecureStorage
-        )
-    }
-
-    /**
-     * Method to initialize the key management system.
-     * All the parameters are optional depending the functions that want to be used.
-     * Make sure to call this method before any other one in this class.
-     *
-     * @param authorizationCertificateProviderKey to connect to the certificate provider.
-     * @param authorizationSecureStorageKey to connect to the secure storage.
-     * @param addressSecureStorage to connect to the secure storage.
-     */
-    @JvmOverloads
-    fun init(
-        authorizationCertificateProviderKey: String = "",
-        authorizationSecureStorageKey: String = "",
-        addressSecureStorage: String = ""
-    ) {
-        this.authorizationCertificateProviderKey = authorizationCertificateProviderKey
-        this.authorizationSecureStorageKey = authorizationSecureStorageKey
-        this.addressSecureStorage = addressSecureStorage
+    companion object {
+        /**
+         * Method to get an instance of this class.
+         * All the parameters are optional depending the functions that want to be used.
+         *
+         * @param authorizationCertificateProviderKey to connect to the certificate provider.
+         * @param authorizationSecureStorageKey to connect to the secure storage.
+         * @param addressSecureStorage to connect to the secure storage.
+         * @return instance of TidKms.
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun getInstance(
+            authorizationCertificateProviderKey: String = "",
+            authorizationSecureStorageKey: String = "",
+            addressSecureStorage: String = ""
+        ): TidKms {
+            val keyManagement = KeyManagementFactory.getInstance(
+                authorizationCertificateProviderKey,
+                authorizationSecureStorageKey,
+                addressSecureStorage
+            )
+            return TidKms(keyManagement)
+        }
     }
 
     /**
