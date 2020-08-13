@@ -112,7 +112,7 @@ fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): Tra
     return TransactId(bip75)
 }
 ```
-To obtain the required key please ask to it to your Netki contact.
+The authorizationKey should be a valid Merkle key.
 
 There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
@@ -464,7 +464,7 @@ fun getInstance(
     return TidKms(keyManagement)
 }
 ```
-To obtain the required key please ask to it to your Netki contact.
+To obtain the authorizationCertificateProviderKey please ask for it to your Netki contact.
 
 If you want to use the Certificate generation functions make sure to pass a valid authorizationCertificateProviderKey. 
 If you want to use the Storage make sure to pass a valid authorizationSecureStorageKey and addressSecureStorage.
@@ -686,7 +686,7 @@ fun getInstance(authorizationKey: String): TidAddressInfo {
 }
 ```
 
-To obtain the required key please ask to it to your Netki contact.
+The authorizationKey should be a valid Merkle key.
 
 After you have the instance, you can fetch the detailed information of an address with the following method:        
 
