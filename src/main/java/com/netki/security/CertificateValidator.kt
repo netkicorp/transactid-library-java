@@ -16,9 +16,10 @@ import java.security.cert.*
  * Class with methods to validate things related with certificates.
  */
 private const val CERT_EXTENSION = ".cer"
-private const val CERT_FOLDER = "certificates"
 
-object CertificateValidator {
+class CertificateValidator(
+    val trustStoreLocation: String
+) {
 
     /**
      * Method to validate if a chain of certificates is valid.
@@ -148,7 +149,7 @@ object CertificateValidator {
     private fun getCertificates(): List<List<X509Certificate>> {
         val certificatesList = mutableListOf<List<X509Certificate>>()
         val certificateChainFiles = try {
-            FilesUtil.getFilesFromDirectory(CERT_FOLDER).filter { it.name.endsWith(CERT_EXTENSION) }
+            FilesUtil.getFilesFromDirectory(trustStoreLocation).filter { it.name.endsWith(CERT_EXTENSION) }
         } catch (exception: Exception) {
             throw InvalidCertificateChainException(exception.message, exception)
         }

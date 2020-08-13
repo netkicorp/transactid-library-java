@@ -316,7 +316,7 @@ fun ByteArray.toMessagePaymentAck(): Messages.PaymentACK = try {
  *
  * @return Messages.PaymentACK.
  */
-fun Payment.toMessagePaymentAck(): Messages.PaymentACK = Messages.PaymentACK.newBuilder()
+fun Payment.toMessagePaymentAck(memo: String): Messages.PaymentACK = Messages.PaymentACK.newBuilder()
     .setPayment(this.toMessagePayment())
     .setMemo(memo)
     .build()
@@ -674,20 +674,6 @@ fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages.Owner> {
         ownersWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
     }
     return ownersWithoutSignature
-}
-
-/**
- * Validate if a certificate belongs to a valid Certificate chain.
- *
- * @return true if yes, false otherwise.
- */
-fun String.validateCertificateChain(pkiType: PkiType): Boolean {
-    return when (pkiType) {
-        PkiType.NONE -> true
-        PkiType.X509SHA256 -> {
-            CertificateValidator.validateCertificateChain(this)
-        }
-    }
 }
 
 /**

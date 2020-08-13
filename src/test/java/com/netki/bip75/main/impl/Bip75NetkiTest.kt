@@ -7,6 +7,7 @@ import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
 import com.netki.model.AddressInformation
+import com.netki.security.CertificateValidator
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_INTERNAL_ERROR_PROVIDER
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER
 import com.netki.util.TestData.Address.ADDRESS_INFORMATION
@@ -31,11 +32,14 @@ internal class Bip75NetkiTest {
 
     private lateinit var bip75Netki: Bip75Netki
     private lateinit var mockAddressInformationService: AddressInformationService
+    private val certificateValidator = CertificateValidator("src/main/resources/certificates")
+    private lateinit var transactId: TransactId
 
     @BeforeAll
     fun setUp() {
         mockAddressInformationService = Mockito.mock(AddressInformationService::class.java)
-        bip75Netki = Bip75Netki(Bip75ServiceNetki(mockAddressInformationService))
+        bip75Netki = Bip75Netki(Bip75ServiceNetki(certificateValidator, mockAddressInformationService))
+        transactId = TransactId(bip75Netki)
     }
 
     @Test
@@ -53,7 +57,7 @@ internal class Bip75NetkiTest {
         )
         val sender = SENDER_PKI_X509SHA256
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(
+            transactId.createInvoiceRequest(
                 INVOICE_REQUEST_DATA, owners, sender,
                 REQUESTED_ATTESTATIONS
             )
@@ -87,7 +91,7 @@ internal class Bip75NetkiTest {
         )
         val sender = SENDER_PKI_X509SHA256
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(
+            transactId.createInvoiceRequest(
                 INVOICE_REQUEST_DATA, owners, sender,
                 REQUESTED_ATTESTATIONS
             )
@@ -127,7 +131,7 @@ internal class Bip75NetkiTest {
         )
         val sender = SENDER_PKI_X509SHA256
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(
+            transactId.createInvoiceRequest(
                 INVOICE_REQUEST_DATA, owners, sender,
                 REQUESTED_ATTESTATIONS
             )
@@ -162,7 +166,7 @@ internal class Bip75NetkiTest {
         )
         val sender = SENDER_PKI_X509SHA256
         val invoiceRequestBinary =
-            TransactId.createInvoiceRequest(
+            transactId.createInvoiceRequest(
                 INVOICE_REQUEST_DATA, owners, sender,
                 REQUESTED_ATTESTATIONS
             )

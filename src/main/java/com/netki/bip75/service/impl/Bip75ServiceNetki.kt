@@ -6,6 +6,7 @@ import com.netki.bip75.service.Bip75Service
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
+import com.netki.security.CertificateValidator
 import com.netki.util.*
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
@@ -15,7 +16,10 @@ import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNA
 /**
  * {@inheritDoc}
  */
-class Bip75ServiceNetki(private val addressInformationService: AddressInformationService) : Bip75Service {
+class Bip75ServiceNetki(
+    private val certificateValidator: CertificateValidator,
+    private val addressInformationService: AddressInformationService
+) : Bip75Service {
 
     /**
      * {@inheritDoc}
@@ -80,8 +84,10 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
         val messageInvoiceRequestUnsigned =
             messageInvoiceRequest.removeMessageSenderSignature() as Messages.InvoiceRequest
 
-        val isCertificateChainValid = messageInvoiceRequest.senderPkiData.toStringLocal()
-            .validateCertificateChain(messageInvoiceRequest.getMessagePkiType())
+        val isCertificateChainValid = validateCertificateChain(
+            messageInvoiceRequest.getMessagePkiType(),
+            messageInvoiceRequest.senderPkiData.toStringLocal()
+        )
 
         check(isCertificateChainValid) {
             throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
@@ -96,9 +102,10 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
 
         messageInvoiceRequestUnsigned.ownersList.forEach { ownerMessage ->
             ownerMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid =
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
-                        .validateCertificateChain(attestationMessage.getAttestationPkiType())
+                )
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
@@ -187,8 +194,10 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
         val messagePaymentRequestUnsigned =
             messagePaymentRequest.removeMessageSenderSignature() as Messages.PaymentRequest
 
-        val isCertificateChainValid = messagePaymentRequest.senderPkiData.toStringLocal()
-            .validateCertificateChain(messagePaymentRequest.getMessagePkiType())
+        val isCertificateChainValid = validateCertificateChain(
+            messagePaymentRequest.getMessagePkiType(),
+            messagePaymentRequest.senderPkiData.toStringLocal()
+        )
 
         check(isCertificateChainValid) {
             throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
@@ -202,9 +211,10 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
         }
         messagePaymentRequestUnsigned.ownersList.forEach { ownerMessage ->
             ownerMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid =
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
-                        .validateCertificateChain(attestationMessage.getAttestationPkiType())
+                )
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
@@ -270,9 +280,10 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
 
         payment.ownersList.forEach { ownerMessage ->
             ownerMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid =
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
-                        .validateCertificateChain(attestationMessage.getAttestationPkiType())
+                )
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
@@ -301,7 +312,7 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
      * {@inheritDoc}
      */
     override fun createPaymentAck(payment: Payment, memo: String): ByteArray {
-        return payment.toMessagePaymentAck().toByteArray()
+        return payment.toMessagePaymentAck(memo).toByteArray()
     }
 
     /**
@@ -318,5 +329,19 @@ class Bip75ServiceNetki(private val addressInformationService: AddressInformatio
     override fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean {
         paymentAckBinary.toMessagePaymentAck()
         return true
+    }
+
+    /**
+     * Validate if a certificate belongs to a valid Certificate chain.
+     *
+     * @return true if yes, false otherwise.
+     */
+    private fun validateCertificateChain(pkiType: PkiType, certificate: String): Boolean {
+        return when (pkiType) {
+            PkiType.NONE -> true
+            PkiType.X509SHA256 -> {
+                certificateValidator.validateCertificateChain(certificate)
+            }
+        }
     }
 }

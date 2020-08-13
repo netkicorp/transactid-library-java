@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestInstance
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class AddressInformationNetkiTest {
 
-    private lateinit var addressInformation: AddressInformationNetki
+    private lateinit var addressInformation: AddressInformationProviderNetki
     private lateinit var addressInformationService: AddressInformationNetkiService
     private lateinit var merkleRepo: MerkleRepo
     private lateinit var client: HttpClient
@@ -63,7 +63,7 @@ internal class AddressInformationNetkiTest {
 
         merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
-        addressInformation = AddressInformationNetki(addressInformationService)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
 
         val addressInformation = addressInformation.getAddressInformation(addressCurrency, address)
 
@@ -123,7 +123,7 @@ internal class AddressInformationNetkiTest {
 
         merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
-        addressInformation = AddressInformationNetki(addressInformationService)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
 
         val addressInformationDetailed = addressInformation.getAddressInformation(addressCurrency, address)
 
@@ -156,7 +156,7 @@ internal class AddressInformationNetkiTest {
 
         merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
-        addressInformation = AddressInformationNetki(addressInformationService)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
 
         val exception = Assertions.assertThrows(AddressProviderUnauthorizedException::class.java) {
             addressInformation.getAddressInformation(addressCurrency, address)
@@ -190,7 +190,7 @@ internal class AddressInformationNetkiTest {
 
         merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
-        addressInformation = AddressInformationNetki(addressInformationService)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
 
         val exception = Assertions.assertThrows(AddressProviderErrorException::class.java) {
             addressInformation.getAddressInformation(addressCurrency, address)

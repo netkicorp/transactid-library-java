@@ -1,12 +1,12 @@
 package com.netki.address.info.main.impl
 
-import com.netki.address.info.main.AddressInformation
+import com.netki.address.info.main.AddressInformationProvider
 import com.netki.address.info.service.AddressInformationService
 import com.netki.model.AddressCurrency
 
-class AddressInformationNetki(
+class AddressInformationProviderNetki(
     private val addressInformationService: AddressInformationService
-) : AddressInformation {
+) : AddressInformationProvider {
 
     /**
      * {@inheritDoc}

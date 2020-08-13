@@ -6,17 +6,17 @@ import java.io.FileNotFoundException
 object FilesUtil {
 
     /**
-     * Get the list of files in a directory inside the resource folder.
+     * Get the list of files in a directory.
      *
-     * @param directoryName of the directory inside the resources folder.
+     * @param directoryPath path of directory.
      * @return list of files.
      * @throws FileNotFoundException in case the directory does not exist.
      */
-    fun getFilesFromDirectory(directoryName: String): List<File> {
-        val loader = Thread.currentThread().contextClassLoader
-        val url = loader.getResource(directoryName)
-        return url?.let {
-            File(it.path).listFiles()?.toList() ?: emptyList()
-        } ?: throw FileNotFoundException("Directory $directoryName not found in resources folder")
+    fun getFilesFromDirectory(directoryPath: String): List<File> {
+        val folder = File(directoryPath)
+        return when (folder.exists()) {
+            true -> folder.listFiles()?.toList() ?: emptyList()
+            else -> throw FileNotFoundException("Directory $directoryPath not found")
+        }
     }
 }
