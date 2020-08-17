@@ -1,5 +1,6 @@
 package com.netki.address.info.config
 
+import com.google.gson.Gson
 import com.netki.address.info.main.AddressInformationProvider
 import com.netki.address.info.main.impl.AddressInformationProviderNetki
 import com.netki.address.info.repo.impl.MerkleRepo
@@ -28,7 +29,9 @@ object AddressInformationFactory {
             }
         }
 
-        val addressInformationRepo = MerkleRepo(client, authorizationKey)
+        val gson = Gson()
+
+        val addressInformationRepo = MerkleRepo(client, authorizationKey, gson)
 
         val addressInformationService = AddressInformationNetkiService(addressInformationRepo)
 

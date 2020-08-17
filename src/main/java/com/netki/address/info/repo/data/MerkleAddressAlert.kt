@@ -1,5 +1,6 @@
 package com.netki.address.info.repo.data
 
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import com.netki.model.Alert
@@ -25,11 +26,11 @@ data class MerkleAddressAlert(
     val createdAt: String?
 )
 
-fun MerkleAddressAlert.toAlert() = Alert(
+fun MerkleAddressAlert.toAlert(gson: Gson) = Alert(
     this.ruleName,
     this.riskLevel,
     this.riskLevelVerbose,
     this.merkleAddressRiskTypes?.map { it.toRiskType() },
-    this.context,
+    if (this.context != null) gson.toJson(this.context).toString() else "",
     this.createdAt
 )

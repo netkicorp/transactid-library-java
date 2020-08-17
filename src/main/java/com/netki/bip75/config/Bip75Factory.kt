@@ -1,5 +1,6 @@
 package com.netki.bip75.config
 
+import com.google.gson.Gson
 import com.netki.address.info.repo.impl.MerkleRepo
 import com.netki.address.info.service.impl.AddressInformationNetkiService
 import com.netki.bip75.main.Bip75
@@ -37,9 +38,11 @@ internal object Bip75Factory {
             }
         }
 
+        val gson = Gson()
+
         val certificateValidator = CertificateValidator(trustStoreLocation)
 
-        val addressInformationRepo = MerkleRepo(client, authorizationKey ?: "")
+        val addressInformationRepo = MerkleRepo(client, authorizationKey ?: "", gson)
 
         val addressInformationService = AddressInformationNetkiService(addressInformationRepo)
 

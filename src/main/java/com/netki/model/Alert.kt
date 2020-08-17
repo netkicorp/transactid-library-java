@@ -29,8 +29,9 @@ data class Alert(
 
     /**
      * Classifier specific context which describes why this classifier fired an alert.
+     * This is a Json format string.
      */
-    val context: JsonObject? = JsonObject(),
+    val context: String? = "",
 
     /**
      * UTC Timestamp for when the alert was fired.

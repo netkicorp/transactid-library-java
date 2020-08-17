@@ -1,5 +1,6 @@
 package com.netki.address.info.repo.impl
 
+import com.google.gson.Gson
 import com.netki.address.info.repo.AddressInformationRepo
 import com.netki.address.info.repo.data.MerkleAddressInformation
 import com.netki.address.info.repo.data.toAddressInformation
@@ -32,7 +33,8 @@ const val ADDRESS_INFO_PATH = "api/v2.1/addresses/"
 
 class MerkleRepo(
     private val client: HttpClient,
-    private val authorizationKey: String
+    private val authorizationKey: String,
+    private val gson: Gson
 ) : AddressInformationRepo {
 
     /**
@@ -48,7 +50,7 @@ class MerkleRepo(
                         append(CURRENCY_PARAM, currency.id)
                     })
                 }
-            }.toAddressInformation()
+            }.toAddressInformation(gson)
         } catch (exception: Exception) {
             when (exception) {
                 is ServerResponseException -> {
