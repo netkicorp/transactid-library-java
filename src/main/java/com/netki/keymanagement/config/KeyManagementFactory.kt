@@ -10,6 +10,7 @@ import com.netki.keymanagement.service.KeyManagementService
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
 
@@ -33,6 +34,11 @@ object KeyManagementFactory {
             HttpClient(OkHttp) {
                 install(JsonFeature) {
                     serializer = GsonSerializer()
+                }
+                install(HttpTimeout) {
+                    requestTimeoutMillis = 60000
+                    connectTimeoutMillis = 60000
+                    socketTimeoutMillis = 60000
                 }
             }
         }

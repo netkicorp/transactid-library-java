@@ -61,7 +61,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key")
+        merkleRepo = MerkleRepo(client, "mock_key", Gson())
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -90,7 +90,7 @@ internal class AddressInformationNetkiTest {
                         assertEquals(alert.riskLevel, merkleAlert.riskLevel)
                         assertEquals(alert.riskLevelVerbose, merkleAlert.riskLevelVerbose)
                         assertEquals(alert.riskTypes?.size, merkleAlert.merkleAddressRiskTypes?.size)
-                        assertEquals(alert.context, merkleAlert.context)
+                        assertEquals(alert.context, "{}")
                         assertEquals(alert.createdAt, merkleAlert.createdAt)
                     }
                 }
@@ -121,7 +121,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key")
+        merkleRepo = MerkleRepo(client, "mock_key", Gson())
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -154,7 +154,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key")
+        merkleRepo = MerkleRepo(client, "mock_key", Gson())
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -188,7 +188,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key")
+        merkleRepo = MerkleRepo(client, "mock_key", Gson())
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 

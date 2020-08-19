@@ -1,5 +1,6 @@
 package com.netki.address.info.repo.data
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.netki.model.AddressInformation
 
@@ -57,9 +58,9 @@ data class MerkleAddressInformation(
     val createdAt: String?
 )
 
-fun MerkleAddressInformation.toAddressInformation() = AddressInformation(
+fun MerkleAddressInformation.toAddressInformation(gson: Gson) = AddressInformation(
     this.identifier,
-    this.merkleAddressAlerts?.map { it.toAlert() },
+    this.merkleAddressAlerts?.map { it.toAlert(gson) },
     this.balance,
     this.currency,
     this.currencyVerbose,
