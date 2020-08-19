@@ -627,7 +627,7 @@ object TestData {
                 riskLevel = 1,
                 riskLevelVerbose = "risk level 1",
                 riskTypes = RISK_TYPES,
-                context = JsonObject(),
+                context = "{\"context\":\"this is the context\"}",
                 createdAt = "2012-09-10 12:12:12"
             ),
             Alert(
@@ -635,7 +635,7 @@ object TestData {
                 riskLevel = 2,
                 riskLevelVerbose = "risk level 2",
                 riskTypes = RISK_TYPES,
-                context = JsonObject(),
+                context = "{\"context\":\"this is the context\"}",
                 createdAt = "2019-05-12 12:12:12"
             )
         )
