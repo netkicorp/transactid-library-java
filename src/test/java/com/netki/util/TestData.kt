@@ -148,7 +148,7 @@ object TestData {
                     isPrimaryForTransaction = true,
                     pkiDataSet = listOf(
                         PkiData(
-                            attestation = Attestation.ISSUING_COUNTRY,
+                            attestation = Attestation.ADDRESS_COUNTRY,
                             certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
                             type = PkiType.X509SHA256
                         )
@@ -495,14 +495,14 @@ object TestData {
 
     object PkiData {
         val PKI_DATA_ONE_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = Attestation.BENEFICIARY_PERSON_LAST_NAME,
+            attestation = Attestation.LEGAL_PERSON_SECONDARY_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_ONE,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
             type = PkiType.X509SHA256
         )
 
         val PKI_DATA_TWO_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = Attestation.BIRTH_DATE,
+            attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO,
             type = PkiType.X509SHA256
@@ -541,7 +541,7 @@ object TestData {
         )
 
         val PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE = PkiDataParameters(
-            attestation = Attestation.BENEFICIARY_PERSON_LAST_NAME,
+            attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE,
             type = PkiType.X509SHA256
@@ -549,13 +549,13 @@ object TestData {
     }
 
     object Attestations {
-        val INVALID_ATTESTATION = Attestation.CUSTOMER_IDENTIFICATION
+        val INVALID_ATTESTATION = Attestation.ADDRESS_DISTRICT_NAME
 
         val REQUESTED_ATTESTATIONS = listOf(
-            Attestation.BIRTH_DATE,
-            Attestation.ACCOUNT_NUMBER,
-            Attestation.NATURAL_PERSON_FIRST_NAME,
-            Attestation.BENEFICIARY_PERSON_LAST_NAME
+            Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            Attestation.LEGAL_PERSON_SECONDARY_NAME,
+            Attestation.ADDRESS_DEPARTMENT,
+            Attestation.ADDRESS_POSTBOX
         )
     }
 
@@ -661,30 +661,17 @@ object TestData {
 
     object CertificateGeneration {
         val ATTESTATIONS_REQUESTED = listOf(
-            Attestation.ADDRESS_1,
-            Attestation.ADDRESS_2,
-            Attestation.BENEFICIARY_PERSON_FIRST_NAME,
-            Attestation.BENEFICIARY_PERSON_LAST_NAME,
-            Attestation.BIRTH_DATE,
-            Attestation.BIRTH_PLACE,
-            Attestation.COUNTRY_OF_RESIDENCE,
-            Attestation.CUSTOMER_IDENTIFICATION,
-            Attestation.ISSUING_COUNTRY,
-            Attestation.LEGAL_PERSON_NAME,
-            Attestation.NATIONAL_IDENTIFIER,
-            Attestation.NATIONAL_IDENTIFIER_NUMBER,
-            Attestation.NATURAL_PERSON_FIRST_NAME,
-            Attestation.NATURAL_PERSON_LAST_NAME,
-            Attestation.ACCOUNT_NUMBER,
-            Attestation.REGISTRATION_AUTHORITY
+            Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            Attestation.ADDRESS_STREET_NAME,
+            Attestation.ADDRESS_ADDRESS_LINE
         )
 
         val ATTESTATIONS_SUBMITTED = AttestationResponse("message", "123457890")
 
         val CSRS_ATTESTATIONS = listOf(
-            CsrAttestation("csr_1", Attestation.ADDRESS_1, "public_key_1"),
-            CsrAttestation("csr_2", Attestation.ADDRESS_2, "public_key_2"),
-            CsrAttestation("csr_3", Attestation.NATURAL_PERSON_FIRST_NAME, "public_key_3")
+            CsrAttestation("csr_1", Attestation.LEGAL_PERSON_PRIMARY_NAME, "public_key_1"),
+            CsrAttestation("csr_2", Attestation.ADDRESS_STREET_NAME, "public_key_2"),
+            CsrAttestation("csr_3", Attestation.ADDRESS_ADDRESS_LINE, "public_key_3")
         )
 
         const val TRANSACTION_ID = "1234567890xyz"
@@ -693,19 +680,19 @@ object TestData {
             count = 3,
             certificates = listOf(
                 com.netki.keymanagement.repo.data.Certificate(
-                    attestation = Attestation.NATURAL_PERSON_FIRST_NAME,
+                    attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
                     certificate = CLIENT_CERTIFICATE_CHAIN_ONE,
                     id = 1234,
                     isActive = true
                 ),
                 com.netki.keymanagement.repo.data.Certificate(
-                    attestation = Attestation.ADDRESS_1,
+                    attestation = Attestation.ADDRESS_STREET_NAME,
                     certificate = CLIENT_CERTIFICATE_CHAIN_TWO,
                     id = 12345,
                     isActive = true
                 ),
                 com.netki.keymanagement.repo.data.Certificate(
-                    attestation = Attestation.ADDRESS_2,
+                    attestation = Attestation.ADDRESS_ADDRESS_LINE,
                     certificate = CLIENT_CERTIFICATE_CHAIN_TWO,
                     id = 12345,
                     isActive = true
@@ -714,28 +701,21 @@ object TestData {
         )
 
         val ATTESTATIONS_INFORMATION = listOf(
-            AttestationInformation(Attestation.ADDRESS_1, "This is the ADDRESS_1"),
-            AttestationInformation(Attestation.ADDRESS_2, "This is the ADDRESS_2"),
             AttestationInformation(
-                Attestation.BENEFICIARY_PERSON_FIRST_NAME,
-                "This is the BENEFICIARY_PERSON_FIRST_NAME"
+                Attestation.LEGAL_PERSON_PRIMARY_NAME,
+                IvmsConstraints.LEGL,
+                "This is the LEGAL_PERSON_PRIMARY_NAME"
             ),
             AttestationInformation(
-                Attestation.BENEFICIARY_PERSON_LAST_NAME,
-                "This is the BENEFICIARY_PERSON_LAST_NAME"
+                Attestation.ADDRESS_STREET_NAME,
+                IvmsConstraints.HOME,
+                "This is the ADDRESS_STREET_NAME"
             ),
-            AttestationInformation(Attestation.BIRTH_DATE, "This is the BIRTH_DATE"),
-            AttestationInformation(Attestation.BIRTH_PLACE, "This is the BIRTH_PLACE"),
-            AttestationInformation(Attestation.COUNTRY_OF_RESIDENCE, "This is the COUNTRY_OF_RESIDENCE"),
-            AttestationInformation(Attestation.CUSTOMER_IDENTIFICATION, "This is the CUSTOMER_IDENTIFICATION"),
-            AttestationInformation(Attestation.ISSUING_COUNTRY, "This is the ISSUING_COUNTRY"),
-            AttestationInformation(Attestation.LEGAL_PERSON_NAME, "This is the LEGAL_PERSON_NAME"),
-            AttestationInformation(Attestation.NATIONAL_IDENTIFIER, "This is the NATIONAL_IDENTIFIER"),
-            AttestationInformation(Attestation.NATIONAL_IDENTIFIER_NUMBER, "This is the NATIONAL_IDENTIFIER_NUMBER"),
-            AttestationInformation(Attestation.NATURAL_PERSON_FIRST_NAME, "This is the NATURAL_PERSON_FIRST_NAME"),
-            AttestationInformation(Attestation.NATURAL_PERSON_LAST_NAME, "This is the NATURAL_PERSON_LAST_NAME"),
-            AttestationInformation(Attestation.ACCOUNT_NUMBER, "This is the ACCOUNT_NUMBER"),
-            AttestationInformation(Attestation.REGISTRATION_AUTHORITY, "This is the REGISTRATION_AUTHORITY")
+            AttestationInformation(
+                Attestation.ADDRESS_ADDRESS_LINE,
+                IvmsConstraints.BIZZ,
+                "This is the ADDRESS_ADDRESS_LINE"
+            )
         )
     }
 }

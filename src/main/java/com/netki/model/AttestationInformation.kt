@@ -11,6 +11,11 @@ data class AttestationInformation(
     val attestation: Attestation,
 
     /**
+     * The type of IVMS constraints
+     */
+    val ivmsConstraints: IvmsConstraints?,
+
+    /**
      * Data associated to the attestation.
      */
     val data: String

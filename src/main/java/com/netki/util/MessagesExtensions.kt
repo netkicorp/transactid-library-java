@@ -6,7 +6,6 @@ import com.netki.bip75.protocol.Messages
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidOwnersException
 import com.netki.model.*
-import com.netki.security.CertificateValidator
 import com.netki.security.CryptoModule
 import com.netki.util.ErrorInformation.PARSE_BINARY_MESSAGE_INVALID_INPUT
 import java.sql.Timestamp
@@ -326,7 +325,8 @@ fun Payment.toMessagePaymentAck(memo: String): Messages.PaymentACK = Messages.Pa
  *
  * @return Output.
  */
-fun Messages.Output.toOutput(): Output = Output(this.amount, this.script.toStringLocal(), this.currency.toAddressCurrency())
+fun Messages.Output.toOutput(): Output =
+    Output(this.amount, this.script.toStringLocal(), this.currency.toAddressCurrency())
 
 /**
  * Transform Output object to Messages.Output object.
@@ -735,21 +735,35 @@ fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotNull(PkiTy
  */
 fun Attestation.toAttestationType(): Messages.AttestationType {
     return when (this) {
-        Attestation.ADDRESS_1 -> Messages.AttestationType.ADDRESS_1
-        Attestation.ADDRESS_2 -> Messages.AttestationType.ADDRESS_2
+        Attestation.LEGAL_PERSON_PRIMARY_NAME -> Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME
+        Attestation.LEGAL_PERSON_SECONDARY_NAME -> Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME
+        Attestation.ADDRESS_DEPARTMENT -> Messages.AttestationType.ADDRESS_DEPARTMENT
+        Attestation.ADDRESS_SUB_DEPARTMENT -> Messages.AttestationType.ADDRESS_SUB_DEPARTMENT
+        Attestation.ADDRESS_STREET_NAME -> Messages.AttestationType.ADDRESS_STREET_NAME
+        Attestation.ADDRESS_BUILDING_NUMBER -> Messages.AttestationType.ADDRESS_BUILDING_NUMBER
+        Attestation.ADDRESS_BUILDING_NAME -> Messages.AttestationType.ADDRESS_BUILDING_NAME
+        Attestation.ADDRESS_FLOOR -> Messages.AttestationType.ADDRESS_FLOOR
+        Attestation.ADDRESS_POSTBOX -> Messages.AttestationType.ADDRESS_POSTBOX
+        Attestation.ADDRESS_ROOM -> Messages.AttestationType.ADDRESS_ROOM
+        Attestation.ADDRESS_POSTCODE -> Messages.AttestationType.ADDRESS_POSTCODE
+        Attestation.ADDRESS_TOWN_NAME -> Messages.AttestationType.ADDRESS_TOWN_NAME
+        Attestation.ADDRESS_TOWN_LOCATION_NAME -> Messages.AttestationType.ADDRESS_TOWN_LOCATION_NAME
+        Attestation.ADDRESS_DISTRICT_NAME -> Messages.AttestationType.ADDRESS_DISTRICT_NAME
+        Attestation.ADDRESS_COUNTRY_SUB_DIVISION -> Messages.AttestationType.ADDRESS_COUNTRY_SUB_DIVISION
+        Attestation.ADDRESS_ADDRESS_LINE -> Messages.AttestationType.ADDRESS_ADDRESS_LINE
+        Attestation.ADDRESS_COUNTRY -> Messages.AttestationType.ADDRESS_COUNTRY
+        Attestation.NATURAL_PERSON_FIRST_NAME -> Messages.AttestationType.NATURAL_PERSON_FIRST_NAME
+        Attestation.NATURAL_PERSON_LAST_NAME -> Messages.AttestationType.NATURAL_PERSON_LAST_NAME
         Attestation.BENEFICIARY_PERSON_FIRST_NAME -> Messages.AttestationType.BENEFICIARY_PERSON_FIRST_NAME
         Attestation.BENEFICIARY_PERSON_LAST_NAME -> Messages.AttestationType.BENEFICIARY_PERSON_LAST_NAME
         Attestation.BIRTH_DATE -> Messages.AttestationType.BIRTH_DATE
         Attestation.BIRTH_PLACE -> Messages.AttestationType.BIRTH_PLACE
         Attestation.COUNTRY_OF_RESIDENCE -> Messages.AttestationType.COUNTRY_OF_RESIDENCE
-        Attestation.CUSTOMER_IDENTIFICATION -> Messages.AttestationType.CUSTOMER_IDENTIFICATION
         Attestation.ISSUING_COUNTRY -> Messages.AttestationType.ISSUING_COUNTRY
-        Attestation.LEGAL_PERSON_NAME -> Messages.AttestationType.LEGAL_PERSON_NAME
-        Attestation.NATIONAL_IDENTIFIER -> Messages.AttestationType.NATIONAL_IDENTIFIER
         Attestation.NATIONAL_IDENTIFIER_NUMBER -> Messages.AttestationType.NATIONAL_IDENTIFIER_NUMBER
-        Attestation.NATURAL_PERSON_FIRST_NAME -> Messages.AttestationType.NATURAL_PERSON_FIRST_NAME
-        Attestation.NATURAL_PERSON_LAST_NAME -> Messages.AttestationType.NATURAL_PERSON_LAST_NAME
+        Attestation.NATIONAL_IDENTIFIER -> Messages.AttestationType.NATIONAL_IDENTIFIER
         Attestation.ACCOUNT_NUMBER -> Messages.AttestationType.ACCOUNT_NUMBER
+        Attestation.CUSTOMER_IDENTIFICATION -> Messages.AttestationType.CUSTOMER_IDENTIFICATION
         Attestation.REGISTRATION_AUTHORITY -> Messages.AttestationType.REGISTRATION_AUTHORITY
     }
 }
@@ -759,21 +773,35 @@ fun Attestation.toAttestationType(): Messages.AttestationType {
  */
 fun Messages.AttestationType.toAttestation(): Attestation {
     return when (this) {
-        Messages.AttestationType.ADDRESS_1 -> Attestation.ADDRESS_1
-        Messages.AttestationType.ADDRESS_2 -> Attestation.ADDRESS_2
+        Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME -> Attestation.LEGAL_PERSON_PRIMARY_NAME
+        Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME -> Attestation.LEGAL_PERSON_SECONDARY_NAME
+        Messages.AttestationType.ADDRESS_DEPARTMENT -> Attestation.ADDRESS_DEPARTMENT
+        Messages.AttestationType.ADDRESS_SUB_DEPARTMENT -> Attestation.ADDRESS_SUB_DEPARTMENT
+        Messages.AttestationType.ADDRESS_STREET_NAME -> Attestation.ADDRESS_STREET_NAME
+        Messages.AttestationType.ADDRESS_BUILDING_NUMBER -> Attestation.ADDRESS_BUILDING_NUMBER
+        Messages.AttestationType.ADDRESS_BUILDING_NAME -> Attestation.ADDRESS_BUILDING_NAME
+        Messages.AttestationType.ADDRESS_FLOOR -> Attestation.ADDRESS_FLOOR
+        Messages.AttestationType.ADDRESS_POSTBOX -> Attestation.ADDRESS_POSTBOX
+        Messages.AttestationType.ADDRESS_ROOM -> Attestation.ADDRESS_ROOM
+        Messages.AttestationType.ADDRESS_POSTCODE -> Attestation.ADDRESS_POSTCODE
+        Messages.AttestationType.ADDRESS_TOWN_NAME -> Attestation.ADDRESS_TOWN_NAME
+        Messages.AttestationType.ADDRESS_TOWN_LOCATION_NAME -> Attestation.ADDRESS_TOWN_LOCATION_NAME
+        Messages.AttestationType.ADDRESS_DISTRICT_NAME -> Attestation.ADDRESS_DISTRICT_NAME
+        Messages.AttestationType.ADDRESS_COUNTRY_SUB_DIVISION -> Attestation.ADDRESS_COUNTRY_SUB_DIVISION
+        Messages.AttestationType.ADDRESS_ADDRESS_LINE -> Attestation.ADDRESS_ADDRESS_LINE
+        Messages.AttestationType.ADDRESS_COUNTRY -> Attestation.ADDRESS_COUNTRY
+        Messages.AttestationType.NATURAL_PERSON_FIRST_NAME -> Attestation.NATURAL_PERSON_FIRST_NAME
+        Messages.AttestationType.NATURAL_PERSON_LAST_NAME -> Attestation.NATURAL_PERSON_LAST_NAME
         Messages.AttestationType.BENEFICIARY_PERSON_FIRST_NAME -> Attestation.BENEFICIARY_PERSON_FIRST_NAME
         Messages.AttestationType.BENEFICIARY_PERSON_LAST_NAME -> Attestation.BENEFICIARY_PERSON_LAST_NAME
         Messages.AttestationType.BIRTH_DATE -> Attestation.BIRTH_DATE
         Messages.AttestationType.BIRTH_PLACE -> Attestation.BIRTH_PLACE
         Messages.AttestationType.COUNTRY_OF_RESIDENCE -> Attestation.COUNTRY_OF_RESIDENCE
-        Messages.AttestationType.CUSTOMER_IDENTIFICATION -> Attestation.CUSTOMER_IDENTIFICATION
         Messages.AttestationType.ISSUING_COUNTRY -> Attestation.ISSUING_COUNTRY
-        Messages.AttestationType.LEGAL_PERSON_NAME -> Attestation.LEGAL_PERSON_NAME
-        Messages.AttestationType.NATIONAL_IDENTIFIER -> Attestation.NATIONAL_IDENTIFIER
         Messages.AttestationType.NATIONAL_IDENTIFIER_NUMBER -> Attestation.NATIONAL_IDENTIFIER_NUMBER
-        Messages.AttestationType.NATURAL_PERSON_FIRST_NAME -> Attestation.NATURAL_PERSON_FIRST_NAME
-        Messages.AttestationType.NATURAL_PERSON_LAST_NAME -> Attestation.NATURAL_PERSON_LAST_NAME
+        Messages.AttestationType.NATIONAL_IDENTIFIER -> Attestation.NATIONAL_IDENTIFIER
         Messages.AttestationType.ACCOUNT_NUMBER -> Attestation.ACCOUNT_NUMBER
+        Messages.AttestationType.CUSTOMER_IDENTIFICATION -> Attestation.CUSTOMER_IDENTIFICATION
         Messages.AttestationType.REGISTRATION_AUTHORITY -> Attestation.REGISTRATION_AUTHORITY
     }
 }
