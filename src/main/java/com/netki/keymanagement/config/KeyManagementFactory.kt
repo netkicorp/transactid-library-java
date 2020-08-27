@@ -27,7 +27,8 @@ object KeyManagementFactory {
     fun getInstance(
         authorizationCertificateProviderKey: String,
         authorizationSecureStorageKey: String,
-        addressSecureStorage: String
+        addressSecureStorage: String,
+        authorizationCertificateProviderUrl: String
     ): KeyManagement {
 
         val client: HttpClient by lazy {
@@ -44,7 +45,7 @@ object KeyManagementFactory {
         }
 
         val certificateProvider: CertificateProvider =
-            NetkiCertificateProvider(client, authorizationCertificateProviderKey)
+            NetkiCertificateProvider(client, authorizationCertificateProviderKey, authorizationCertificateProviderUrl)
 
         val keyManagementDriver: KeyManagementDriver = VaultDriver(authorizationSecureStorageKey, addressSecureStorage)
 
