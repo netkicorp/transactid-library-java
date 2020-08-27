@@ -26,8 +26,13 @@ const val CERTIFICATE_PATH = "api/transactions/%s/certificates/"
 
 class NetkiCertificateProvider(
     private val client: HttpClient,
-    private val authorizationKey: String
+    private val authorizationKey: String,
+    private val authorizationUrl: String? = ""
 ) : CertificateProvider {
+
+    private val netkiUrl by lazy {
+        if (authorizationUrl.isNullOrBlank()) NETKI_BASE_URL else authorizationUrl
+    }
 
     /**
      * {@inheritDoc}
@@ -38,7 +43,7 @@ class NetkiCertificateProvider(
 
         val attestationSubmitted = client.postHandlingExceptions<AttestationResponse>(
             authorizationKey,
-            "$NETKI_BASE_URL$ATTESTATION_REQUEST_PATH",
+            "$netkiUrl$ATTESTATION_REQUEST_PATH",
             attestationsRequested
         )
         return attestationSubmitted.transaction
@@ -50,7 +55,7 @@ class NetkiCertificateProvider(
     override fun submitCsrsAttestations(transactionId: String, csrsAttestations: List<CsrAttestation>) {
         client.postHandlingExceptions<String>(
             authorizationKey,
-            String.format("$NETKI_BASE_URL$MAKE_CERTIFICATE_PATH", transactionId),
+            String.format("$netkiUrl$MAKE_CERTIFICATE_PATH", transactionId),
             CsrAttestationRequest(csrsAttestations)
         )
     }
@@ -60,7 +65,7 @@ class NetkiCertificateProvider(
      */
     override fun getCertificates(transactionId: String) = client.getHandlingExceptions<CertificateAttestationResponse>(
         authorizationKey,
-        String.format("$NETKI_BASE_URL$CERTIFICATE_PATH", transactionId)
+        String.format("$netkiUrl$CERTIFICATE_PATH", transactionId)
     )
 }
 

@@ -28,12 +28,14 @@ class TidKms(private val keyManagement: KeyManagement) {
         fun getInstance(
             authorizationCertificateProviderKey: String = "",
             authorizationSecureStorageKey: String = "",
-            addressSecureStorage: String = ""
+            addressSecureStorage: String = "",
+            authorizationCertificateProviderUrl: String = ""
         ): TidKms {
             val keyManagement = KeyManagementFactory.getInstance(
                 authorizationCertificateProviderKey,
                 authorizationSecureStorageKey,
-                addressSecureStorage
+                addressSecureStorage,
+                authorizationCertificateProviderUrl
             )
             return TidKms(keyManagement)
         }
