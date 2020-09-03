@@ -114,6 +114,12 @@ fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): Tra
 ```
 The authorizationKey should be a valid Merkle key.
 
+The TrustStore is used for the storage of certificates from the trusted Certificate Authority (CA), which is used in the verification of the certificate provided in the protocol messages.
+
+The **trustStoreLocation** is the path where the TrustStore is located in the machine running the application.
+
+If you are generating your certificates using Netki you can find the CA certificate here https://github.com/netkicorp/transactid-library-java/blob/master/src/main/resources/certificates/certificate_chain_netki_ca.cer
+
 There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
 ## Invoice Request
