@@ -1,0 +1,13 @@
+version: '3'
+services:
+  vault:
+    tty: yes
+    container_name: vault
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - "$APP_INSTALL/keys:/keys"
+      - "$APP_INSTALL/certs:/certs"
+    build: ./vault
+    ports:
+      - "8200:8200/tcp"

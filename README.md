@@ -493,8 +493,11 @@ fun generateCertificates(attestationsInformation: List<AttestationInformation>):
 ```
 
 ## Vault for Key Storage
-This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
-See Hashicorp's Vault Docker documentation here: https://hub.docker.com/_/vault
+This library includes an optional integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
+
+As a convenience, we have included a basic Vault setup for your consideration in the docker folder.
+
+See Hashicorp's Vault Docker documentation for more info: https://hub.docker.com/_/vault
 
 This library stores keys and certs in specific locations. Please ensure that once Vault is set up, you enable these paths:
 
