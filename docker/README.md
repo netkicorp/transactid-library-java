@@ -14,8 +14,8 @@ Vault offers other storage backends that provide increased functionality: https:
 
 Please set the following environment variable in your shell before running the steps outlined below:
 
-- LOCAL_STORAGE - The location on host to store secrets (certs & keys) for data persistence.
-_example: `export LOCAL_STORAGE=~/projects/transactid-library-java/keys`_
+- APP_INSTALL - The location you have installed our app.
+_example: `export APP_INSTALL=~/projects/transactid-library-java`_
 
 ### Build and launch Vault container
 `docker-compose up -d --build`

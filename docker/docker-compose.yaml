@@ -6,8 +6,8 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
-      - "$LOCAL_STORAGE/keys:/keys"
-      - "$LOCAL_STORAGE/certs:/certs"
+      - "$APP_INSTALL/keys:/keys"
+      - "$APP_INSTALL/certs:/certs"
     build: ./vault
     ports:
       - "8200:8200/tcp"
