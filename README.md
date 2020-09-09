@@ -114,6 +114,12 @@ fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): Tra
 ```
 The authorizationKey should be a valid Merkle key.
 
+The TrustStore is used for the storage of certificates from the trusted Certificate Authority (CA), which is used in the verification of the certificate provided in the protocol messages.
+
+The **trustStoreLocation** is the path where the TrustStore is located in the machine running the application.
+
+If you are generating your certificates using Netki you can find the CA certificate here https://github.com/netkicorp/transactid-library-java/blob/master/src/main/resources/certificates/certificate_chain_netki_ca.cer
+
 There are three main method types that you'll use: create\*, is\*Valid, and parse\*.
 
 ## Invoice Request
@@ -487,8 +493,11 @@ fun generateCertificates(attestationsInformation: List<AttestationInformation>):
 ```
 
 ## Vault for Key Storage
-This library includes integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
-See Hashicorp's Vault Docker documentation here: https://hub.docker.com/_/vault
+This library includes an optional integration with Hashicorp Vault for key storage using the key/value secrets engine and can be launched as a Docker container.
+
+As a convenience, we have included a basic Vault setup for your consideration in the docker folder.
+
+See Hashicorp's Vault Docker documentation for more info: https://hub.docker.com/_/vault
 
 This library stores keys and certs in specific locations. Please ensure that once Vault is set up, you enable these paths:
 
