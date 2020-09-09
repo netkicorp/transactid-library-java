@@ -3,7 +3,7 @@ package com.netki.util
 import java.io.File
 import java.io.FileNotFoundException
 
-object FilesUtil {
+internal object FilesUtil {
 
     /**
      * Get the list of files in a directory.

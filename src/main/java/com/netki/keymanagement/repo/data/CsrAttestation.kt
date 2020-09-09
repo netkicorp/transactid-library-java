@@ -3,7 +3,7 @@ package com.netki.keymanagement.repo.data
 import com.google.gson.annotations.SerializedName
 import com.netki.model.Attestation
 
-data class CsrAttestation(
+internal data class CsrAttestation(
     @SerializedName("csr")
     val csr: String,
 

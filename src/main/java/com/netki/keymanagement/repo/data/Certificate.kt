@@ -3,7 +3,7 @@ package com.netki.keymanagement.repo.data
 import com.google.gson.annotations.SerializedName
 import com.netki.model.Attestation
 
-data class Certificate(
+internal data class Certificate(
     @SerializedName("attestation")
     var attestation: Attestation? = null,
     @SerializedName("certificate")

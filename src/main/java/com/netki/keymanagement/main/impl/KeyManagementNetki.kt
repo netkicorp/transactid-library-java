@@ -6,7 +6,7 @@ import com.netki.model.AttestationInformation
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
 
-class KeyManagementNetki(private val keyManagementService: KeyManagementService) : KeyManagement {
+internal class KeyManagementNetki(private val keyManagementService: KeyManagementService) : KeyManagement {
 
     /**
      * {@inheritDoc}

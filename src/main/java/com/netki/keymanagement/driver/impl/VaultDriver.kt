@@ -10,12 +10,12 @@ import java.util.*
 /**
  * Implementation of KeyManagementDriver using Vault.
  */
-const val CERTS_SCHEMA = "certs/user/attestations/"
-const val PRIVATE_KEY_SCHEMA = "keys/user/priv/"
-const val CERTIFICATE_KEY = "certificate_key"
-const val PRIVATE_KEY_KEY = "private_key_key"
+private const val CERTS_SCHEMA = "certs/user/attestations/"
+private const val PRIVATE_KEY_SCHEMA = "keys/user/priv/"
+private const val CERTIFICATE_KEY = "certificate_key"
+private const val PRIVATE_KEY_KEY = "private_key_key"
 
-class VaultDriver(
+internal class VaultDriver(
     authorizationToken: String,
     address: String
 ) : KeyManagementDriver {

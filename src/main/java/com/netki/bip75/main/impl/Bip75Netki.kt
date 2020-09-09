@@ -7,7 +7,7 @@ import com.netki.model.*
 /**
  * {@inheritDoc}
  */
-class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
+internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
 
     /**
      * {@inheritDoc}

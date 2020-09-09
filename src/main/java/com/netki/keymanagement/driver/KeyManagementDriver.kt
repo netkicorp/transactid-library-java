@@ -2,7 +2,7 @@ package com.netki.keymanagement.driver
 
 import com.netki.exceptions.KeyManagementStoreException
 
-interface KeyManagementDriver {
+internal interface KeyManagementDriver {
 
     /**
      * Store a X509Certificate.

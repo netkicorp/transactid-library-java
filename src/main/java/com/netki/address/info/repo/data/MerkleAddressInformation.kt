@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.netki.model.AddressInformation
 
-data class MerkleAddressInformation(
+internal data class MerkleAddressInformation(
 
     @SerializedName("alerts")
     val merkleAddressAlerts: List<MerkleAddressAlert>?,
@@ -58,7 +58,7 @@ data class MerkleAddressInformation(
     val createdAt: String?
 )
 
-fun MerkleAddressInformation.toAddressInformation(gson: Gson) = AddressInformation(
+internal fun MerkleAddressInformation.toAddressInformation(gson: Gson) = AddressInformation(
     this.identifier,
     this.merkleAddressAlerts?.map { it.toAlert(gson) },
     this.balance,

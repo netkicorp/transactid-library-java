@@ -19,12 +19,12 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.coroutines.runBlocking
 
-const val NETKI_BASE_URL = "https://kyc.myverify.info/"
-const val ATTESTATION_REQUEST_PATH = "api/attestation-request/"
-const val MAKE_CERTIFICATE_PATH = "api/transactions/%s/make-certificates/"
-const val CERTIFICATE_PATH = "api/transactions/%s/certificates/"
+private const val NETKI_BASE_URL = "https://kyc.myverify.info/"
+private const val ATTESTATION_REQUEST_PATH = "api/attestation-request/"
+private const val MAKE_CERTIFICATE_PATH = "api/transactions/%s/make-certificates/"
+private const val CERTIFICATE_PATH = "api/transactions/%s/certificates/"
 
-class NetkiCertificateProvider(
+internal class NetkiCertificateProvider(
     private val client: HttpClient,
     private val authorizationKey: String,
     private val authorizationUrl: String? = ""
@@ -69,7 +69,7 @@ class NetkiCertificateProvider(
     )
 }
 
-inline fun <reified T> HttpClient.postHandlingExceptions(
+internal inline fun <reified T> HttpClient.postHandlingExceptions(
     authorizationKey: String,
     url: String,
     bodyRequest: Any

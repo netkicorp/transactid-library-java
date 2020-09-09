@@ -7,7 +7,7 @@ import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_NOT_CORRECT_ERROR
 
 private const val DATA_LIMIT_LENGTH = 64
 private const val PRINCIPAL_STRING = "CN=%s, C=%s, L=%s, O=%s, OU=%s, ST=%s"
-fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstraints? = null): String {
+internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstraints? = null): String {
 
     var data64Characters = ""
     var extraData = ""
@@ -305,7 +305,7 @@ fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstraints? = nu
     }
 }
 
-fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) = when (this) {
+internal fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) = when (this) {
     Attestation.LEGAL_PERSON_PRIMARY_NAME,
     Attestation.LEGAL_PERSON_SECONDARY_NAME,
     Attestation.NATURAL_PERSON_FIRST_NAME,

@@ -16,7 +16,7 @@ import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNA
 /**
  * {@inheritDoc}
  */
-class Bip75ServiceNetki(
+internal class Bip75ServiceNetki(
     private val certificateValidator: CertificateValidator,
     private val addressInformationService: AddressInformationService
 ) : Bip75Service {

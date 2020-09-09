@@ -6,7 +6,7 @@ import com.netki.model.*
 /**
  * Generate Bip75 protocol messages.
  */
-interface Bip75Service {
+internal interface Bip75Service {
 
     /**
      * Create binary InvoiceRequest.
