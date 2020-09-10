@@ -21,7 +21,7 @@ import java.security.PrivateKey
 import java.security.cert.X509Certificate
 import java.util.*
 
-class KeyManagementNetkiService(
+internal class KeyManagementNetkiService(
     private val certificateProvider: CertificateProvider,
     private val driver: KeyManagementDriver
 ) : KeyManagementService {

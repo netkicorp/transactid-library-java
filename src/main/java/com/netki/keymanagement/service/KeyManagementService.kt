@@ -6,7 +6,7 @@ import com.netki.model.AttestationInformation
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
 
-interface KeyManagementService {
+internal interface KeyManagementService {
 
     /**
      * Generate a certificate for each one of the attestations provided.

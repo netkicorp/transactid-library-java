@@ -22,9 +22,13 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
+private const val NETKI_BASE_URL = "https://kyc.myverify.info/"
+private const val ATTESTATION_REQUEST_PATH = "api/attestation-request/"
+private const val MAKE_CERTIFICATE_PATH = "api/transactions/%s/make-certificates/"
+private const val CERTIFICATE_PATH = "api/transactions/%s/certificates/"
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class NetkiCertificateProviderTest {
-
     private lateinit var netkiCertificateProvider: NetkiCertificateProvider
     private lateinit var client: HttpClient
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import com.netki.model.Alert
 
-data class MerkleAddressAlert(
+internal data class MerkleAddressAlert(
 
     @SerializedName("rule_name")
     val ruleName: String?,
@@ -26,7 +26,7 @@ data class MerkleAddressAlert(
     val createdAt: String?
 )
 
-fun MerkleAddressAlert.toAlert(gson: Gson) = Alert(
+internal fun MerkleAddressAlert.toAlert(gson: Gson) = Alert(
     this.ruleName,
     this.riskLevel,
     this.riskLevelVerbose,

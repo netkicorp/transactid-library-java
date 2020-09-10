@@ -4,7 +4,7 @@ import com.netki.address.info.main.AddressInformationProvider
 import com.netki.address.info.service.AddressInformationService
 import com.netki.model.AddressCurrency
 
-class AddressInformationProviderNetki(
+internal class AddressInformationProviderNetki(
     private val addressInformationService: AddressInformationService
 ) : AddressInformationProvider {
 

@@ -13,7 +13,7 @@ import io.ktor.client.features.json.JsonFeature
 /**
  * Factory to generate AddressInformation instance.
  */
-object AddressInformationFactory {
+internal object AddressInformationFactory {
 
     /**
      * Get an instance of AddressInformation.
