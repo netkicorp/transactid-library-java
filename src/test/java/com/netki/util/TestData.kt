@@ -41,7 +41,7 @@ import java.time.Duration
 import java.time.Instant
 import java.util.*
 
-object TestData {
+internal object TestData {
 
     object Keys {
         const val HASH_ALGORITHM = "SHA256withRSA"

@@ -25,13 +25,13 @@ import kotlinx.coroutines.runBlocking
 /**
  * Implementation to fetch the address information from Merkle provider.
  */
-const val X_API_KEY_HEADER = "X-API-KEY"
-const val IDENTIFIER_PARAM = "identifier"
-const val CURRENCY_PARAM = "currency"
-const val MERKLE_BASE_URL = "https://api.merklescience.com/"
-const val ADDRESS_INFO_PATH = "api/v2.1/addresses/"
+private const val X_API_KEY_HEADER = "X-API-KEY"
+private const val IDENTIFIER_PARAM = "identifier"
+private const val CURRENCY_PARAM = "currency"
+private const val MERKLE_BASE_URL = "https://api.merklescience.com/"
+private const val ADDRESS_INFO_PATH = "api/v2.1/addresses/"
 
-class MerkleRepo(
+internal class MerkleRepo(
     private val client: HttpClient,
     private val authorizationKey: String,
     private val gson: Gson

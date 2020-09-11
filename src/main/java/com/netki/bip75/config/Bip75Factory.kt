@@ -22,7 +22,7 @@ internal object Bip75Factory {
 
     /**
      * Get an instance of Bip75.
-     * @param trustStore is a path in the server where the app is running that contains the valid certificate chains.
+     * @param trustStoreLocation is a path in the server where the app is running that contains the valid certificate chains.
      * @param authorizationKey pass this parameter if address information will be required.
      * @return Bip75 instance.
      */

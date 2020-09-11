@@ -16,7 +16,7 @@ import java.sql.Timestamp
  * @param senderParameters the sender of the message.
  * @return Messages.InvoiceRequest.Builder.
  */
-fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
+internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
     senderParameters: SenderParameters,
     attestationsRequested: List<Attestation>
 ): Messages.InvoiceRequest.Builder {
@@ -44,7 +44,7 @@ fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
  *
  * @return InvoiceRequest.
  */
-fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
+internal fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
     val owners = mutableListOf<Owner>()
     this.ownersList.forEach { messageOwner ->
         owners.add(messageOwner.toOwner())
@@ -79,7 +79,7 @@ fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
  * @return Messages.InvoiceRequest
  * @throws InvalidObjectException if there is an error parsing the object.
  */
-fun ByteArray.toMessageInvoiceRequest(): Messages.InvoiceRequest = try {
+internal fun ByteArray.toMessageInvoiceRequest(): Messages.InvoiceRequest = try {
     Messages.InvoiceRequest.parseFrom(this)
 } catch (exception: Exception) {
     exception.printStackTrace()
@@ -91,7 +91,7 @@ fun ByteArray.toMessageInvoiceRequest(): Messages.InvoiceRequest = try {
  *
  * @return PaymentRequest.
  */
-fun Messages.PaymentRequest.toPaymentRequest(): PaymentRequest {
+internal fun Messages.PaymentRequest.toPaymentRequest(): PaymentRequest {
     val paymentDetails = this.serializedPaymentDetails.toMessagePaymentDetails()
 
     val owners = mutableListOf<Owner>()
@@ -134,7 +134,7 @@ fun Messages.PaymentRequest.toPaymentRequest(): PaymentRequest {
  * @param paymentParametersVersion
  * @return Messages.PaymentRequest.Builder.
  */
-fun Messages.PaymentDetails.toPaymentRequest(
+internal fun Messages.PaymentDetails.toPaymentRequest(
     senderParameters: SenderParameters,
     paymentParametersVersion: Int,
     attestationsRequested: List<Attestation>
@@ -158,7 +158,7 @@ fun Messages.PaymentDetails.toPaymentRequest(
  *
  * @return Messages.PaymentDetails.
  */
-fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.PaymentDetails {
+internal fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.PaymentDetails {
     val messagePaymentDetailsBuilder = Messages.PaymentDetails.newBuilder()
         .setNetwork(this.network)
         .setTime(this.time.time)
@@ -180,7 +180,7 @@ fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.PaymentDetails 
  * @return Messages.PaymentRequest
  * @throws InvalidObjectException if there is an error parsing the object.
  */
-fun ByteArray.toMessagePaymentRequest(): Messages.PaymentRequest = try {
+internal fun ByteArray.toMessagePaymentRequest(): Messages.PaymentRequest = try {
     Messages.PaymentRequest.parseFrom(this)
 } catch (exception: Exception) {
     exception.printStackTrace()
@@ -193,7 +193,7 @@ fun ByteArray.toMessagePaymentRequest(): Messages.PaymentRequest = try {
  * @return Messages.PaymentDetails
  * @throws InvalidObjectException if there is an error parsing the object.
  */
-fun ByteString.toMessagePaymentDetails(): Messages.PaymentDetails = try {
+internal fun ByteString.toMessagePaymentDetails(): Messages.PaymentDetails = try {
     Messages.PaymentDetails.parseFrom(this)
 } catch (exception: Exception) {
     exception.printStackTrace()
@@ -205,7 +205,7 @@ fun ByteString.toMessagePaymentDetails(): Messages.PaymentDetails = try {
  *
  * @return Messages.Payment.Builder.
  */
-fun PaymentParameters.toMessagePaymentBuilder(): Messages.Payment.Builder {
+internal fun PaymentParameters.toMessagePaymentBuilder(): Messages.Payment.Builder {
     val messagePaymentBuilder = Messages.Payment.newBuilder()
         .setMerchantData(this.merchantData?.toByteString())
         .setMemo(this.memo)
@@ -226,7 +226,7 @@ fun PaymentParameters.toMessagePaymentBuilder(): Messages.Payment.Builder {
  *
  * @return Messages.Payment.
  */
-fun Payment.toMessagePayment(): Messages.Payment {
+internal fun Payment.toMessagePayment(): Messages.Payment {
     val messagePaymentBuilder = Messages.Payment.newBuilder()
         .setMerchantData(this.merchantData?.toByteString())
         .setMemo(this.memo)
@@ -251,7 +251,7 @@ fun Payment.toMessagePayment(): Messages.Payment {
  *
  * @return Payment.
  */
-fun Messages.Payment.toPayment(): Payment {
+internal fun Messages.Payment.toPayment(): Payment {
     val transactionList = mutableListOf<ByteArray>()
     for (messageTransaction in this.transactionsList) {
         transactionList.add(messageTransaction.toByteArray())
@@ -282,7 +282,7 @@ fun Messages.Payment.toPayment(): Payment {
  * @return Messages.Payment
  * @throws InvalidObjectException if there is an error parsing the object.
  */
-fun ByteArray.toMessagePayment(): Messages.Payment = try {
+internal fun ByteArray.toMessagePayment(): Messages.Payment = try {
     Messages.Payment.parseFrom(this)
 } catch (exception: Exception) {
     exception.printStackTrace()
@@ -294,7 +294,7 @@ fun ByteArray.toMessagePayment(): Messages.Payment = try {
  *
  * @return PaymentAck.
  */
-fun Messages.PaymentACK.toPaymentAck(): PaymentAck = PaymentAck(this.payment.toPayment(), this.memo)
+internal fun Messages.PaymentACK.toPaymentAck(): PaymentAck = PaymentAck(this.payment.toPayment(), this.memo)
 
 
 /**
@@ -303,7 +303,7 @@ fun Messages.PaymentACK.toPaymentAck(): PaymentAck = PaymentAck(this.payment.toP
  * @return Messages.PaymentACK
  * @throws InvalidObjectException if there is an error parsing the object.
  */
-fun ByteArray.toMessagePaymentAck(): Messages.PaymentACK = try {
+internal fun ByteArray.toMessagePaymentAck(): Messages.PaymentACK = try {
     Messages.PaymentACK.parseFrom(this)
 } catch (exception: Exception) {
     exception.printStackTrace()
@@ -315,7 +315,7 @@ fun ByteArray.toMessagePaymentAck(): Messages.PaymentACK = try {
  *
  * @return Messages.PaymentACK.
  */
-fun Payment.toMessagePaymentAck(memo: String): Messages.PaymentACK = Messages.PaymentACK.newBuilder()
+internal fun Payment.toMessagePaymentAck(memo: String): Messages.PaymentACK = Messages.PaymentACK.newBuilder()
     .setPayment(this.toMessagePayment())
     .setMemo(memo)
     .build()
@@ -325,7 +325,7 @@ fun Payment.toMessagePaymentAck(memo: String): Messages.PaymentACK = Messages.Pa
  *
  * @return Output.
  */
-fun Messages.Output.toOutput(): Output =
+internal fun Messages.Output.toOutput(): Output =
     Output(this.amount, this.script.toStringLocal(), this.currency.toAddressCurrency())
 
 /**
@@ -333,7 +333,7 @@ fun Messages.Output.toOutput(): Output =
  *
  * @return Messages.Output.
  */
-fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuilder()
+internal fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuilder()
     .setAmount(this.amount)
     .setScript(this.script.toByteString())
     .setCurrency(this.currency.toCurrencyType())
@@ -344,7 +344,7 @@ fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuilder()
  *
  * @return Messages.Owner.
  */
-fun OwnerParameters.toMessageOwner(): Messages.Owner {
+internal fun OwnerParameters.toMessageOwner(): Messages.Owner {
     val messageOwnerBuilder = Messages.Owner.newBuilder()
         .setPrimaryForTransaction(this.isPrimaryForTransaction)
 
@@ -367,7 +367,7 @@ fun OwnerParameters.toMessageOwner(): Messages.Owner {
  *
  * @return Messages.Owner.
  */
-fun OwnerParameters.toMessageOwnerBuilderWithoutAttestations(): Messages.Owner.Builder =
+internal fun OwnerParameters.toMessageOwnerBuilderWithoutAttestations(): Messages.Owner.Builder =
     Messages.Owner.newBuilder().setPrimaryForTransaction(this.isPrimaryForTransaction)
 
 /**
@@ -376,7 +376,7 @@ fun OwnerParameters.toMessageOwnerBuilderWithoutAttestations(): Messages.Owner.B
  *
  * @return Messages.Attestation.
  */
-fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): Messages.Attestation {
+internal fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): Messages.Attestation {
     val messageAttestationUnsignedBuilder = Messages.Attestation.newBuilder()
         .setPkiType(this.type.value)
         .setPkiData(this.certificatePem.toByteString())
@@ -405,7 +405,7 @@ fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): Messages.
  *
  * @return true if yes, false otherwise.
  */
-fun Messages.Attestation.validateMessageSignature(requireSignature: Boolean): Boolean = when {
+internal fun Messages.Attestation.validateMessageSignature(requireSignature: Boolean): Boolean = when {
     this.getMessagePkiType() == PkiType.X509SHA256 && requireSignature -> {
         val unsignedMessage = this.removeSignature()
         val bytesHash = CryptoModule.getHash256(unsignedMessage.toByteArray())
@@ -424,7 +424,7 @@ fun Messages.Attestation.validateMessageSignature(requireSignature: Boolean): Bo
  *
  * @return Messages.Attestation.
  */
-fun Messages.Attestation.removeSignature(): Messages.Attestation = Messages.Attestation.newBuilder()
+internal fun Messages.Attestation.removeSignature(): Messages.Attestation = Messages.Attestation.newBuilder()
     .mergeFrom(this)
     .setSignature("".toByteString())
     .build()
@@ -434,7 +434,7 @@ fun Messages.Attestation.removeSignature(): Messages.Attestation = Messages.Atte
  *
  * @return Owner.
  */
-fun Messages.Owner.toOwner(): Owner {
+internal fun Messages.Owner.toOwner(): Owner {
     val pkiDataSets = mutableListOf<PkiData>()
     this.attestationsList.forEach { messageAttestation ->
         pkiDataSets.add(messageAttestation.toPkiData())
@@ -447,7 +447,7 @@ fun Messages.Owner.toOwner(): Owner {
  *
  * @return Messages.Owner.
  */
-fun Owner.toMessageOwner(): Messages.Owner {
+internal fun Owner.toMessageOwner(): Messages.Owner {
     val messageOwner = Messages.Owner.newBuilder()
 
     messageOwner.primaryForTransaction = this.isPrimaryForTransaction
@@ -469,7 +469,7 @@ fun Owner.toMessageOwner(): Messages.Owner {
  *
  * @return PkiData.
  */
-fun Messages.Attestation.toPkiData(): PkiData = PkiData(
+internal fun Messages.Attestation.toPkiData(): PkiData = PkiData(
     attestation = this.attestation.toAttestation(),
     certificatePem = this.pkiData.toStringLocal(),
     type = this.pkiType.getType(),
@@ -482,7 +482,7 @@ fun Messages.Attestation.toPkiData(): PkiData = PkiData(
  * @return GeneratedMessageV3 signed.
  */
 @Throws(IllegalArgumentException::class)
-fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters): GeneratedMessageV3 {
+internal fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters): GeneratedMessageV3 {
     return when (val senderPkiType = this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
@@ -499,7 +499,7 @@ fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters): Generate
  *
  * @return Messages.InvoiceRequest signed.
  */
-fun Messages.InvoiceRequest.signWithSender(senderParameters: SenderParameters): Messages.InvoiceRequest {
+internal fun Messages.InvoiceRequest.signWithSender(senderParameters: SenderParameters): Messages.InvoiceRequest {
     val signature = this.sign(senderParameters.pkiDataParameters.privateKeyPem)
 
     return Messages.InvoiceRequest.newBuilder()
@@ -513,7 +513,7 @@ fun Messages.InvoiceRequest.signWithSender(senderParameters: SenderParameters): 
  *
  * @return Messages.PaymentRequest signed.
  */
-fun Messages.PaymentRequest.signWithSender(senderParameters: SenderParameters): Messages.PaymentRequest {
+internal fun Messages.PaymentRequest.signWithSender(senderParameters: SenderParameters): Messages.PaymentRequest {
     val signature = this.sign(senderParameters.pkiDataParameters.privateKeyPem)
 
     return Messages.PaymentRequest.newBuilder()
@@ -527,7 +527,7 @@ fun Messages.PaymentRequest.signWithSender(senderParameters: SenderParameters): 
  *
  * @return Map with signatures per user and attestations.
  */
-fun List<OwnerParameters>.signMessage(message: GeneratedMessageV3): OwnerSignatures {
+internal fun List<OwnerParameters>.signMessage(message: GeneratedMessageV3): OwnerSignatures {
     val ownersSignatures = OwnerSignatures()
     this.forEachIndexed { index, ownerParameters ->
         val signatures = mutableMapOf<Attestation, String>()
@@ -546,7 +546,7 @@ fun List<OwnerParameters>.signMessage(message: GeneratedMessageV3): OwnerSignatu
  *
  * @return Signature.
  */
-fun GeneratedMessageV3.sign(privateKeyPem: String): String {
+internal fun GeneratedMessageV3.sign(privateKeyPem: String): String {
     val hash = CryptoModule.getHash256(this.toByteArray())
     return CryptoModule.signString(hash, privateKeyPem)
 }
@@ -556,7 +556,7 @@ fun GeneratedMessageV3.sign(privateKeyPem: String): String {
  *
  * @return true if yes, false otherwise.
  */
-fun GeneratedMessageV3.validateMessageSignature(signature: String): Boolean {
+internal fun GeneratedMessageV3.validateMessageSignature(signature: String): Boolean {
     return when (val senderPkiType = this.getMessagePkiType()) {
         PkiType.NONE -> true
         PkiType.X509SHA256 -> when (this) {
@@ -573,7 +573,7 @@ fun GeneratedMessageV3.validateMessageSignature(signature: String): Boolean {
  *
  * @return  true if yes, false otherwise.
  */
-fun Messages.InvoiceRequest.validateSignature(signature: String): Boolean {
+internal fun Messages.InvoiceRequest.validateSignature(signature: String): Boolean {
     val bytesHash = CryptoModule.getHash256(this.toByteArray())
     return CryptoModule.validateSignature(signature, bytesHash, this.senderPkiData.toStringLocal())
 }
@@ -583,7 +583,7 @@ fun Messages.InvoiceRequest.validateSignature(signature: String): Boolean {
  *
  * @return  true if yes, false otherwise.
  */
-fun Messages.PaymentRequest.validateSignature(signature: String): Boolean {
+internal fun Messages.PaymentRequest.validateSignature(signature: String): Boolean {
     val bytesHash = CryptoModule.getHash256(this.toByteArray())
     return CryptoModule.validateSignature(signature, bytesHash, this.senderPkiData.toStringLocal())
 }
@@ -593,7 +593,7 @@ fun Messages.PaymentRequest.validateSignature(signature: String): Boolean {
  *
  * @return Unsigned message.
  */
-fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessageV3 {
+internal fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessageV3 {
     return when (val senderPkiType = this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
@@ -610,7 +610,7 @@ fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessageV3 {
  *
  * @return Unsigned message.
  */
-fun Messages.InvoiceRequest.removeSenderSignature(): Messages.InvoiceRequest = Messages.InvoiceRequest.newBuilder()
+internal fun Messages.InvoiceRequest.removeSenderSignature(): Messages.InvoiceRequest = Messages.InvoiceRequest.newBuilder()
     .mergeFrom(this)
     .setSenderSignature("".toByteString())
     .build()
@@ -620,7 +620,7 @@ fun Messages.InvoiceRequest.removeSenderSignature(): Messages.InvoiceRequest = M
  *
  * @return Unsigned message.
  */
-fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRequest = Messages.PaymentRequest.newBuilder()
+internal fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRequest = Messages.PaymentRequest.newBuilder()
     .mergeFrom(this)
     .setSenderSignature("".toByteString())
     .build()
@@ -630,7 +630,7 @@ fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRequest = M
  *
  * @return OwnerSignaturesWithCertificate.
  */
-fun List<Messages.Owner>.getSignatures(): List<OwnerSignaturesWithCertificate> {
+internal fun List<Messages.Owner>.getSignatures(): List<OwnerSignaturesWithCertificate> {
     val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
     this.forEach { owner ->
         val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
@@ -657,7 +657,7 @@ fun List<Messages.Owner>.getSignatures(): List<OwnerSignaturesWithCertificate> {
  *
  * @return MutableList<Messages.Owner> without signatures.
  */
-fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages.Owner> {
+internal fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages.Owner> {
     val ownersWithoutSignature = mutableListOf<Messages.Owner>()
     this.forEachIndexed { index, owner ->
         val ownerWithoutSignaturesBuilder = Messages.Owner.newBuilder()
@@ -682,7 +682,7 @@ fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages.Owner> {
  *
  * @throws InvalidOwnersException if is not a valid list.
  */
-fun List<OwnerParameters>.validate() {
+internal fun List<OwnerParameters>.validate() {
     val numberOfPrimaryOwners = this.filter { it.isPrimaryForTransaction }.size
 
     check(numberOfPrimaryOwners != 0) {
@@ -700,7 +700,7 @@ fun List<OwnerParameters>.validate() {
  * @return PkiData.
  */
 @Throws(IllegalArgumentException::class)
-fun GeneratedMessageV3.getMessagePkiType(): PkiType = when (this) {
+internal fun GeneratedMessageV3.getMessagePkiType(): PkiType = when (this) {
     is Messages.InvoiceRequest -> this.senderPkiType.getType()
     is Messages.PaymentRequest -> this.senderPkiType.getType()
     is Messages.Attestation -> this.pkiType.getType()
@@ -712,7 +712,7 @@ fun GeneratedMessageV3.getMessagePkiType(): PkiType = when (this) {
  *
  * @return PkiType.
  */
-fun String.getType(): PkiType = requireNotNull(PkiType.values().find {
+internal fun String.getType(): PkiType = requireNotNull(PkiType.values().find {
     it.value == this
 }) {
     "No PkiType found for: ${this.javaClass}"
@@ -724,7 +724,7 @@ fun String.getType(): PkiType = requireNotNull(PkiType.values().find {
  * @return PkiData.
  */
 @Throws(IllegalArgumentException::class)
-fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotNull(PkiType.values().find {
+internal fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotNull(PkiType.values().find {
     it.value == this.pkiType
 }) {
     "No PkiType found for: ${this.javaClass}"
@@ -733,7 +733,7 @@ fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotNull(PkiTy
 /**
  * Transform Attestation to Messages.AttestationType.
  */
-fun Attestation.toAttestationType(): Messages.AttestationType {
+internal fun Attestation.toAttestationType(): Messages.AttestationType {
     return when (this) {
         Attestation.LEGAL_PERSON_PRIMARY_NAME -> Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME
         Attestation.LEGAL_PERSON_SECONDARY_NAME -> Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME
@@ -771,7 +771,7 @@ fun Attestation.toAttestationType(): Messages.AttestationType {
 /**
  * Transform Messages.AttestationType to Attestation.
  */
-fun Messages.AttestationType.toAttestation(): Attestation {
+internal fun Messages.AttestationType.toAttestation(): Attestation {
     return when (this) {
         Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME -> Attestation.LEGAL_PERSON_PRIMARY_NAME
         Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME -> Attestation.LEGAL_PERSON_SECONDARY_NAME
@@ -809,7 +809,7 @@ fun Messages.AttestationType.toAttestation(): Attestation {
 /**
  * Transform AddressCurrency to Messages.CurrencyType.
  */
-fun AddressCurrency.toCurrencyType(): Messages.CurrencyType {
+internal fun AddressCurrency.toCurrencyType(): Messages.CurrencyType {
     return when (this) {
         AddressCurrency.BITCOIN -> Messages.CurrencyType.BITCOIN
         AddressCurrency.ETHEREUM -> Messages.CurrencyType.ETHEREUM
@@ -821,7 +821,7 @@ fun AddressCurrency.toCurrencyType(): Messages.CurrencyType {
 /**
  * Transform Messages.CurrencyType to AddressCurrency.
  */
-fun Messages.CurrencyType.toAddressCurrency(): AddressCurrency {
+internal fun Messages.CurrencyType.toAddressCurrency(): AddressCurrency {
     return when (this) {
         Messages.CurrencyType.BITCOIN -> AddressCurrency.BITCOIN
         Messages.CurrencyType.ETHEREUM -> AddressCurrency.ETHEREUM

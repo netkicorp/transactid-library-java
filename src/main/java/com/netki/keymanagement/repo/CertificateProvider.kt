@@ -6,7 +6,7 @@ import com.netki.keymanagement.repo.data.CertificateAttestationResponse
 import com.netki.keymanagement.repo.data.CsrAttestation
 import com.netki.model.Attestation
 
-interface CertificateProvider {
+internal interface CertificateProvider {
 
     /**
      * Request a transactionId to start the process to create certificates for each one of a list of attestations.

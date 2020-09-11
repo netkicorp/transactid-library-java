@@ -17,8 +17,8 @@ import java.security.cert.*
  */
 private const val CERT_EXTENSION = ".cer"
 
-class CertificateValidator(
-    val trustStoreLocation: String
+internal class CertificateValidator(
+    private val trustStoreLocation: String
 ) {
 
     /**
@@ -185,7 +185,7 @@ class CertificateValidator(
 /**
  * Validate if a X509Certificate is self signed or not.
  */
-fun X509Certificate.isSelfSigned() = try {
+internal fun X509Certificate.isSelfSigned() = try {
     val key = this.publicKey
     this.verify(key)
     true
@@ -198,17 +198,17 @@ fun X509Certificate.isSelfSigned() = try {
 /**
  * Determine if a X509Certificate is root certificate.
  */
-fun X509Certificate.isRootCertificate() =
+internal fun X509Certificate.isRootCertificate() =
     this.isSelfSigned() && this.keyUsage != null && this.keyUsage[5] && this.basicConstraints != -1
 
 /**
  * Determine if a X509Certificate is intermediate certificate.
  */
-fun X509Certificate.isIntermediateCertificate() =
+internal fun X509Certificate.isIntermediateCertificate() =
     !this.isSelfSigned() && this.keyUsage != null && this.keyUsage[5] && this.basicConstraints != -1
 
 /**
  * Determine if a X509Certificate is client certificate.
  */
-fun X509Certificate.isClientCertificate() =
+internal fun X509Certificate.isClientCertificate() =
     !this.isSelfSigned() && (this.keyUsage == null || !this.keyUsage[5]) && this.basicConstraints == -1

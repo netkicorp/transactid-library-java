@@ -30,7 +30,7 @@ import java.util.Base64.getEncoder
 /**
  * Module to execute crypto operations.
  */
-object CryptoModule {
+internal object CryptoModule {
 
     /**
      * Algorithm to create digital signature.

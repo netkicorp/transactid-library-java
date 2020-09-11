@@ -17,7 +17,7 @@ import io.ktor.client.features.json.JsonFeature
 /**
  * Factory to generate KeyManagement instance.
  */
-object KeyManagementFactory {
+internal object KeyManagementFactory {
 
     /**
      * Get an instance of KeyManagement.
