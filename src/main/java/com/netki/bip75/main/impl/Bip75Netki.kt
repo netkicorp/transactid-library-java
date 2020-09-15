@@ -16,12 +16,14 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
         invoiceRequestParameters: InvoiceRequestParameters,
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>
+        attestationsRequested: List<Attestation>,
+        recipientParameters: RecipientParameters?
     ) = bip75Service.createInvoiceRequest(
         invoiceRequestParameters,
         ownersParameters,
         senderParameters,
-        attestationsRequested
+        attestationsRequested,
+        recipientParameters
     )
 
     /**
