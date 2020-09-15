@@ -16,10 +16,10 @@ import com.netki.util.TestData.InvoiceRequest.INVOICE_REQUEST_DATA
 import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_X509SHA256
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
 import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
+import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -65,6 +65,8 @@ internal class Bip75NetkiTest {
         val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
         assertEquals(invoiceRequest.outputs.size, INVOICE_REQUEST_DATA.outputs.size)
+        assertTrue(invoiceRequest.recipientChainAddress.isNullOrBlank())
+        assertTrue(invoiceRequest.recipientVaspName.isNullOrBlank())
         invoiceRequest.outputs.forEach { output ->
             run {
                 assert(!output.addressInformation?.identifier.isNullOrBlank())
@@ -176,6 +178,44 @@ internal class Bip75NetkiTest {
         }
 
         assert(exception.message != null && exception.message!!.contains("Provider internal error for address:"))
+    }
+
+    @Test
+    fun `Create and parse InvoiceRequest binary with recipient information and fetch AddressInformation`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val owners = listOf(
+            PRIMARY_OWNER_PKI_X509SHA256,
+            NO_PRIMARY_OWNER_PKI_X509SHA256
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestBinary = transactId.createInvoiceRequest(
+            INVOICE_REQUEST_DATA,
+            owners,
+            sender,
+            REQUESTED_ATTESTATIONS,
+            RECIPIENTS_PARAMETERS
+        )
+
+        val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
+
+        assertEquals(invoiceRequest.outputs.size, INVOICE_REQUEST_DATA.outputs.size)
+        assertEquals(invoiceRequest.recipientChainAddress, RECIPIENTS_PARAMETERS.chainAddress)
+        assertEquals(invoiceRequest.recipientVaspName, RECIPIENTS_PARAMETERS.vaspName)
+        invoiceRequest.outputs.forEach { output ->
+            run {
+                assert(!output.addressInformation?.identifier.isNullOrBlank())
+                assertNotNull(output.addressInformation?.alerts)
+                assert(!output.addressInformation?.currencyVerbose.isNullOrBlank())
+                assert(!output.addressInformation?.earliestTransactionTime.isNullOrBlank())
+                assert(!output.addressInformation?.latestTransactionTime.isNullOrBlank())
+            }
+        }
     }
 
     @Test

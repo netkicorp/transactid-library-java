@@ -15,6 +15,7 @@ interface Bip75 {
      * @param ownersParameters of the accounts for this transaction.
      * @param senderParameters of the protocol message.
      * @param attestationsRequested list of attestations requested.
+     * @param recipientParameters information of the recipient of the message.
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
@@ -23,7 +24,8 @@ interface Bip75 {
         invoiceRequestParameters: InvoiceRequestParameters,
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>
+        attestationsRequested: List<Attestation>,
+        recipientParameters: RecipientParameters? = null
     ): ByteArray
 
     /**

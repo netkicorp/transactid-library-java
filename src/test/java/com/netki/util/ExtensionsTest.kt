@@ -5,8 +5,7 @@ import com.netki.util.ErrorInformation.OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS
 import com.netki.util.ErrorInformation.OWNERS_VALIDATION_NO_PRIMARY_OWNER
 import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_X509SHA256
 import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 internal class ExtensionsTest {
@@ -45,5 +44,15 @@ internal class ExtensionsTest {
         }
 
         assertTrue(exception.message == OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS)
+    }
+
+    @Test
+    fun `Validate that strings are valid alphanumeric strings`() {
+        assertTrue("Abc1234".isAlphaNumeric())
+        assertTrue("Valid_string".isAlphaNumeric())
+        assertTrue("Another-Valid string 1234.5".isAlphaNumeric())
+        assertFalse("Not Valid #".isAlphaNumeric())
+        assertFalse("#$% less valid".isAlphaNumeric())
+        assertFalse("%1234".isAlphaNumeric())
     }
 }
