@@ -9,6 +9,7 @@ import com.netki.keymanagement.util.toPrincipal
 import com.netki.model.AttestationCertificate
 import com.netki.model.AttestationInformation
 import com.netki.security.CryptoModule
+import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE_NOT_FOUND
@@ -17,6 +18,7 @@ import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_STORING_CERTIFICATE
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_STORING_PRIVATE_KEY
 import com.netki.util.ErrorInformation.KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION
+import com.netki.util.isAlphaNumeric
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
 import java.util.*
@@ -30,6 +32,7 @@ internal class KeyManagementNetkiService(
      * {@inheritDoc}
      */
     override fun generateCertificates(attestationsInformation: List<AttestationInformation>): List<AttestationCertificate> {
+        validateAttestationData(attestationsInformation)
         val transactionId = certificateProvider.requestTransactionId(attestationsInformation.map { it.attestation })
 
         val keyPair = CryptoModule.generateKeyPair()
@@ -55,6 +58,20 @@ internal class KeyManagementNetkiService(
                     it.attestation!!,
                     it.certificate!!,
                     CryptoModule.objectToPrivateKeyPem(keyPair.private)
+                )
+            }
+        }
+    }
+
+    private fun validateAttestationData(attestationsInformation: List<AttestationInformation>) {
+        attestationsInformation.forEach { attestationsInformation ->
+            if (!attestationsInformation.data.isAlphaNumeric()) {
+                throw CertificateProviderException(
+                    String.format(
+                        CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER,
+                        attestationsInformation.data,
+                        attestationsInformation.attestation
+                    )
                 )
             }
         }

@@ -5,7 +5,11 @@ import com.netki.keymanagement.driver.impl.VaultDriver
 import com.netki.keymanagement.repo.data.CertificateAttestationResponse
 import com.netki.keymanagement.repo.impl.NetkiCertificateProvider
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
+import com.netki.model.Attestation
+import com.netki.model.AttestationInformation
+import com.netki.model.IvmsConstraints
 import com.netki.security.CryptoModule
+import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER
 import com.netki.util.TestData
 import com.netki.util.TestData.CertificateGeneration.ATTESTATIONS_INFORMATION
 import com.netki.util.TestData.CertificateGeneration.ATTESTATIONS_REQUESTED
@@ -50,6 +54,30 @@ internal class KeyManagementNetkiTest {
         val attestationCertificate = keyManagement.generateCertificates(ATTESTATIONS_INFORMATION)
 
         assertEquals(attestationCertificate.size, CERTIFICATE_ATTESTATION_RESPONSE.count)
+    }
+
+    @Test
+    fun `Generate certificate for attestations with invalid data`() {
+        val attestationInformation = AttestationInformation(
+            Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            IvmsConstraints.LEGL,
+            "This is invalid data #$#$#$"
+        )
+        val attestationInformationInvalid = listOf(attestationInformation)
+
+        val exception = Assertions.assertThrows(CertificateProviderException::class.java) {
+            keyManagement.generateCertificates(attestationInformationInvalid)
+        }
+
+        assert(
+            exception.message != null && exception.message!!.contains(
+                String.format(
+                    CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER,
+                    attestationInformation.data,
+                    attestationInformation.attestation
+                )
+            )
+        )
     }
 
     @Test
