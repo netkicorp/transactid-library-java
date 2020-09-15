@@ -28,13 +28,14 @@ internal class Bip75ServiceNetki(
         invoiceRequestParameters: InvoiceRequestParameters,
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>
+        attestationsRequested: List<Attestation>,
+        recipientParameters: RecipientParameters?
     ): ByteArray {
 
         ownersParameters.validate()
 
         val messageInvoiceRequestBuilder =
-            invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(senderParameters, attestationsRequested)
+            invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(senderParameters, attestationsRequested, recipientParameters)
 
         ownersParameters.forEach { owner ->
             val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()

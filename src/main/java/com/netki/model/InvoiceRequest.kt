@@ -47,5 +47,15 @@ data class InvoiceRequest(
     /**
      * Sender's Signature of the whole message.
      */
-    val senderSignature: String? = null
+    val senderSignature: String? = null,
+
+    /**
+     * Recipient's vasp name
+     */
+    val recipientVaspName: String? = null,
+
+    /**
+     * Recipient's vasp name
+     */
+    val recipientChainAddress: String? = null
 )

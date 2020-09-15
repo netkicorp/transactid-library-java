@@ -18,7 +18,8 @@ import java.sql.Timestamp
  */
 internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
     senderParameters: SenderParameters,
-    attestationsRequested: List<Attestation>
+    attestationsRequested: List<Attestation>,
+    recipientParameters: RecipientParameters?
 ): Messages.InvoiceRequest.Builder {
     val invoiceRequestBuilder = Messages.InvoiceRequest.newBuilder()
         .setAmount(this.amount)
@@ -34,6 +35,11 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
 
     attestationsRequested.forEach {
         invoiceRequestBuilder.addAttestationsRequested(it.toAttestationType())
+    }
+
+    recipientParameters?.let {
+        invoiceRequestBuilder.recipientChainAddress = recipientParameters.chainAddress
+        invoiceRequestBuilder.recipientVaspName = recipientParameters.vaspName
     }
 
     return invoiceRequestBuilder
@@ -69,7 +75,9 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),
-        senderSignature = this.senderSignature.toStringLocal()
+        senderSignature = this.senderSignature.toStringLocal(),
+        recipientVaspName = this.recipientVaspName,
+        recipientChainAddress = this.recipientChainAddress
     )
 }
 
@@ -610,20 +618,22 @@ internal fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessage
  *
  * @return Unsigned message.
  */
-internal fun Messages.InvoiceRequest.removeSenderSignature(): Messages.InvoiceRequest = Messages.InvoiceRequest.newBuilder()
-    .mergeFrom(this)
-    .setSenderSignature("".toByteString())
-    .build()
+internal fun Messages.InvoiceRequest.removeSenderSignature(): Messages.InvoiceRequest =
+    Messages.InvoiceRequest.newBuilder()
+        .mergeFrom(this)
+        .setSenderSignature("".toByteString())
+        .build()
 
 /**
  * Remove sender signature of a Messages.PaymentRequest.
  *
  * @return Unsigned message.
  */
-internal fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRequest = Messages.PaymentRequest.newBuilder()
-    .mergeFrom(this)
-    .setSenderSignature("".toByteString())
-    .build()
+internal fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRequest =
+    Messages.PaymentRequest.newBuilder()
+        .mergeFrom(this)
+        .setSenderSignature("".toByteString())
+        .build()
 
 /**
  * Get all the signatures In a list of Owners including the certificate.

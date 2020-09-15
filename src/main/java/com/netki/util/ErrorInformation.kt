@@ -31,4 +31,6 @@ object ErrorInformation {
         "Provider authorization error. Make sure to initialize the library with the correct AuthorizationKey."
     const val CERTIFICATE_INFORMATION_NOT_CORRECT_ERROR_PROVIDER =
         "The IvmConstraint: %s, for the attestation: %s, is not valid."
+    const val CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER =
+        "The data: %s, for the attestation: %s, is not valid, the valid characters for the data are a-zA-Z0-9_. -"
 }

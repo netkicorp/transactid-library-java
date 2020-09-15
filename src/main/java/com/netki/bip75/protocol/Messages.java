@@ -863,6 +863,64 @@ public final class Messages {
      * @return The senderSignature.
      */
     com.google.protobuf.ByteString getSenderSignature();
+
+    /**
+     * <pre>
+     * Recipient's vasp name
+     * </pre>
+     *
+     * <code>optional string recipient_vasp_name = 10;</code>
+     * @return Whether the recipientVaspName field is set.
+     */
+    boolean hasRecipientVaspName();
+    /**
+     * <pre>
+     * Recipient's vasp name
+     * </pre>
+     *
+     * <code>optional string recipient_vasp_name = 10;</code>
+     * @return The recipientVaspName.
+     */
+    java.lang.String getRecipientVaspName();
+    /**
+     * <pre>
+     * Recipient's vasp name
+     * </pre>
+     *
+     * <code>optional string recipient_vasp_name = 10;</code>
+     * @return The bytes for recipientVaspName.
+     */
+    com.google.protobuf.ByteString
+        getRecipientVaspNameBytes();
+
+    /**
+     * <pre>
+     * Recipient's chain address
+     * </pre>
+     *
+     * <code>optional string recipient_chain_address = 11;</code>
+     * @return Whether the recipientChainAddress field is set.
+     */
+    boolean hasRecipientChainAddress();
+    /**
+     * <pre>
+     * Recipient's chain address
+     * </pre>
+     *
+     * <code>optional string recipient_chain_address = 11;</code>
+     * @return The recipientChainAddress.
+     */
+    java.lang.String getRecipientChainAddress();
+    /**
+     * <pre>
+     * Recipient's chain address
+     * </pre>
+     *
+     * <code>optional string recipient_chain_address = 11;</code>
+     * @return The bytes for recipientChainAddress.
+     */
+    com.google.protobuf.ByteString
+        getRecipientChainAddressBytes();
   }
   /**
    * Protobuf type {@code payments.InvoiceRequest}
@@ -885,6 +943,8 @@ public final class Messages {
       senderPkiType_ = "none";
       senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
       senderSignature_ = com.google.protobuf.ByteString.EMPTY;
+      recipientVaspName_ = "";
+      recipientChainAddress_ = "";
     }
 
     @java.lang.Override
@@ -1002,6 +1062,18 @@ public final class Messages {
             case 74: {
               bitField0_ |= 0x00000020;
               senderSignature_ = input.readBytes();
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              recipientVaspName_ = bs;
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              recipientChainAddress_ = bs;
               break;
             }
             default: {
@@ -1449,6 +1521,120 @@ public final class Messages {
       return senderSignature_;
     }
 
+    public static final int RECIPIENT_VASP_NAME_FIELD_NUMBER = 10;
+    private volatile java.lang.Object recipientVaspName_;
+    /**
+     * <pre>
+     * Recipient's vasp name
+     * </pre>
+     *
+     * <code>optional string recipient_vasp_name = 10;</code>
+     * @return Whether the recipientVaspName field is set.
+     */
+    public boolean hasRecipientVaspName() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Recipient's vasp name
+     * </pre>
+     *
+     * <code>optional string recipient_vasp_name = 10;</code>
+     * @return The recipientVaspName.
+     */
+    public java.lang.String getRecipientVaspName() {
+      java.lang.Object ref = recipientVaspName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          recipientVaspName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Recipient's vasp name
+     * </pre>
+     *
+     * <code>optional string recipient_vasp_name = 10;</code>
+     * @return The bytes for recipientVaspName.
+     */
+    public com.google.protobuf.ByteString
+        getRecipientVaspNameBytes() {
+      java.lang.Object ref = recipientVaspName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        recipientVaspName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RECIPIENT_CHAIN_ADDRESS_FIELD_NUMBER = 11;
+    private volatile java.lang.Object recipientChainAddress_;
+    /**
+     * <pre>
+     * Recipient's chain address
+     * </pre>
+     *
+     * <code>optional string recipient_chain_address = 11;</code>
+     * @return Whether the recipientChainAddress field is set.
+     */
+    public boolean hasRecipientChainAddress() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Recipient's chain address
+     * </pre>
+     *
+     * <code>optional string recipient_chain_address = 11;</code>
+     * @return The recipientChainAddress.
+     */
+    public java.lang.String getRecipientChainAddress() {
+      java.lang.Object ref = recipientChainAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          recipientChainAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Recipient's chain address
+     * </pre>
+     *
+     * <code>optional string recipient_chain_address = 11;</code>
+     * @return The bytes for recipientChainAddress.
+     */
+    public com.google.protobuf.ByteString
+        getRecipientChainAddressBytes() {
+      java.lang.Object ref = recipientChainAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        recipientChainAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1514,6 +1700,12 @@ public final class Messages {
       if (((bitField0_ & 0x00000020) != 0)) {
         output.writeBytes(9, senderSignature_);
       }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, recipientVaspName_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, recipientChainAddress_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1560,6 +1752,12 @@ public final class Messages {
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(9, senderSignature_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, recipientVaspName_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, recipientChainAddress_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1611,6 +1809,16 @@ public final class Messages {
         if (!getSenderSignature()
             .equals(other.getSenderSignature())) return false;
       }
+      if (hasRecipientVaspName() != other.hasRecipientVaspName()) return false;
+      if (hasRecipientVaspName()) {
+        if (!getRecipientVaspName()
+            .equals(other.getRecipientVaspName())) return false;
+      }
+      if (hasRecipientChainAddress() != other.hasRecipientChainAddress()) return false;
+      if (hasRecipientChainAddress()) {
+        if (!getRecipientChainAddress()
+            .equals(other.getRecipientChainAddress())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1658,6 +1866,14 @@ public final class Messages {
       if (hasSenderSignature()) {
         hash = (37 * hash) + SENDER_SIGNATURE_FIELD_NUMBER;
         hash = (53 * hash) + getSenderSignature().hashCode();
+      }
+      if (hasRecipientVaspName()) {
+        hash = (37 * hash) + RECIPIENT_VASP_NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getRecipientVaspName().hashCode();
+      }
+      if (hasRecipientChainAddress()) {
+        hash = (37 * hash) + RECIPIENT_CHAIN_ADDRESS_FIELD_NUMBER;
+        hash = (53 * hash) + getRecipientChainAddress().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1820,6 +2036,10 @@ public final class Messages {
         bitField0_ = (bitField0_ & ~0x00000080);
         senderSignature_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000100);
+        recipientVaspName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        recipientChainAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -1895,6 +2115,14 @@ public final class Messages {
           to_bitField0_ |= 0x00000020;
         }
         result.senderSignature_ = senderSignature_;
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.recipientVaspName_ = recipientVaspName_;
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.recipientChainAddress_ = recipientChainAddress_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2029,6 +2257,16 @@ public final class Messages {
         }
         if (other.hasSenderSignature()) {
           setSenderSignature(other.getSenderSignature());
+        }
+        if (other.hasRecipientVaspName()) {
+          bitField0_ |= 0x00000200;
+          recipientVaspName_ = other.recipientVaspName_;
+          onChanged();
+        }
+        if (other.hasRecipientChainAddress()) {
+          bitField0_ |= 0x00000400;
+          recipientChainAddress_ = other.recipientChainAddress_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3302,6 +3540,222 @@ public final class Messages {
       public Builder clearSenderSignature() {
         bitField0_ = (bitField0_ & ~0x00000100);
         senderSignature_ = getDefaultInstance().getSenderSignature();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object recipientVaspName_ = "";
+      /**
+       * <pre>
+       * Recipient's vasp name
+       * </pre>
+       *
+       * <code>optional string recipient_vasp_name = 10;</code>
+       * @return Whether the recipientVaspName field is set.
+       */
+      public boolean hasRecipientVaspName() {
+        return ((bitField0_ & 0x00000200) != 0);
+      }
+      /**
+       * <pre>
+       * Recipient's vasp name
+       * </pre>
+       *
+       * <code>optional string recipient_vasp_name = 10;</code>
+       * @return The recipientVaspName.
+       */
+      public java.lang.String getRecipientVaspName() {
+        java.lang.Object ref = recipientVaspName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            recipientVaspName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Recipient's vasp name
+       * </pre>
+       *
+       * <code>optional string recipient_vasp_name = 10;</code>
+       * @return The bytes for recipientVaspName.
+       */
+      public com.google.protobuf.ByteString
+          getRecipientVaspNameBytes() {
+        java.lang.Object ref = recipientVaspName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          recipientVaspName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Recipient's vasp name
+       * </pre>
+       *
+       * <code>optional string recipient_vasp_name = 10;</code>
+       * @param value The recipientVaspName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRecipientVaspName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        recipientVaspName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Recipient's vasp name
+       * </pre>
+       *
+       * <code>optional string recipient_vasp_name = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRecipientVaspName() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        recipientVaspName_ = getDefaultInstance().getRecipientVaspName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Recipient's vasp name
+       * </pre>
+       *
+       * <code>optional string recipient_vasp_name = 10;</code>
+       * @param value The bytes for recipientVaspName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRecipientVaspNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        recipientVaspName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object recipientChainAddress_ = "";
+      /**
+       * <pre>
+       * Recipient's chain address
+       * </pre>
+       *
+       * <code>optional string recipient_chain_address = 11;</code>
+       * @return Whether the recipientChainAddress field is set.
+       */
+      public boolean hasRecipientChainAddress() {
+        return ((bitField0_ & 0x00000400) != 0);
+      }
+      /**
+       * <pre>
+       * Recipient's chain address
+       * </pre>
+       *
+       * <code>optional string recipient_chain_address = 11;</code>
+       * @return The recipientChainAddress.
+       */
+      public java.lang.String getRecipientChainAddress() {
+        java.lang.Object ref = recipientChainAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            recipientChainAddress_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Recipient's chain address
+       * </pre>
+       *
+       * <code>optional string recipient_chain_address = 11;</code>
+       * @return The bytes for recipientChainAddress.
+       */
+      public com.google.protobuf.ByteString
+          getRecipientChainAddressBytes() {
+        java.lang.Object ref = recipientChainAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          recipientChainAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Recipient's chain address
+       * </pre>
+       *
+       * <code>optional string recipient_chain_address = 11;</code>
+       * @param value The recipientChainAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRecipientChainAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        recipientChainAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Recipient's chain address
+       * </pre>
+       *
+       * <code>optional string recipient_chain_address = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRecipientChainAddress() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        recipientChainAddress_ = getDefaultInstance().getRecipientChainAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Recipient's chain address
+       * </pre>
+       *
+       * <code>optional string recipient_chain_address = 11;</code>
+       * @param value The bytes for recipientChainAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRecipientChainAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        recipientChainAddress_ = value;
         onChanged();
         return this;
       }
@@ -16431,76 +16885,77 @@ public final class Messages {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rpayment.proto\022\010payments\"\233\002\n\016InvoiceReq" +
+      "\n\rpayment.proto\022\010payments\"\331\002\n\016InvoiceReq" +
       "uest\022\021\n\006amount\030\001 \001(\004:\0010\022\014\n\004memo\030\002 \001(\t\022\030\n" +
       "\020notification_url\030\003 \001(\t\022\037\n\006owners\030\004 \003(\0132" +
       "\017.payments.Owner\022!\n\007outputs\030\005 \003(\0132\020.paym" +
       "ents.Output\0228\n\025attestationsRequested\030\006 \003" +
       "(\0162\031.payments.AttestationType\022\035\n\017sender_" +
       "pki_type\030\007 \002(\t:\004none\022\027\n\017sender_pki_data\030" +
-      "\010 \002(\014\022\030\n\020sender_signature\030\t \002(\014\"\205\002\n\016Paym" +
-      "entRequest\022\"\n\027payment_details_version\030\001 " +
-      "\001(\r:\0011\022\"\n\032serialized_payment_details\030\002 \002" +
-      "(\014\022\037\n\006owners\030\003 \003(\0132\017.payments.Owner\0228\n\025a" +
-      "ttestationsRequested\030\004 \003(\0162\031.payments.At" +
-      "testationType\022\035\n\017sender_pki_type\030\005 \002(\t:\004" +
-      "none\022\027\n\017sender_pki_data\030\006 \002(\014\022\030\n\020sender_" +
-      "signature\030\007 \002(\014\"\212\001\n\007Payment\022\025\n\rmerchant_" +
-      "data\030\001 \001(\014\022\024\n\014transactions\030\002 \003(\014\022#\n\trefu" +
-      "nd_to\030\003 \003(\0132\020.payments.Output\022\014\n\004memo\030\004 " +
-      "\001(\t\022\037\n\006owners\030\005 \003(\0132\017.payments.Owner\">\n\n" +
-      "PaymentACK\022\"\n\007payment\030\001 \002(\0132\021.payments.P" +
-      "ayment\022\014\n\004memo\030\002 \001(\t\"[\n\005Owner\022%\n\027primary" +
-      "_for_transaction\030\001 \002(\010:\004true\022+\n\014attestat" +
-      "ions\030\002 \003(\0132\025.payments.Attestation\"z\n\013Att" +
-      "estation\022.\n\013attestation\030\001 \001(\0162\031.payments" +
-      ".AttestationType\022\026\n\010pki_type\030\002 \002(\t:\004none" +
-      "\022\020\n\010pki_data\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"\243\001" +
-      "\n\016PaymentDetails\022\025\n\007network\030\001 \001(\t:\004main\022" +
-      "!\n\007outputs\030\002 \003(\0132\020.payments.Output\022\014\n\004ti" +
-      "me\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004memo\030\005 \001(\t\022" +
-      "\023\n\013payment_url\030\006 \001(\t\022\025\n\rmerchant_data\030\007 " +
-      "\001(\014\"U\n\006Output\022\021\n\006amount\030\001 \001(\004:\0010\022\016\n\006scri" +
-      "pt\030\002 \002(\014\022(\n\010currency\030\003 \002(\0162\026.payments.Cu" +
-      "rrencyType\"\272\001\n\017ProtocolMessage\022\022\n\007versio" +
-      "n\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014me" +
-      "ssage_type\030\003 \002(\0162\035.payments.ProtocolMess" +
-      "ageType\022\032\n\022serialized_message\030\004 \002(\014\022\026\n\016s" +
-      "tatus_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002(\014\"" +
-      "\234\002\n\030EncryptedProtocolMessage\022\022\n\007version\030" +
-      "\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014mess" +
-      "age_type\030\003 \002(\0162\035.payments.ProtocolMessag" +
-      "eType\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023rece" +
-      "iver_public_key\030\005 \002(\014\022\031\n\021sender_public_k" +
-      "ey\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier\030\010 " +
-      "\002(\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignature" +
-      "\030\n \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKNOWN" +
-      "_MESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022\023\n\017" +
-      "PAYMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMEN" +
-      "T_ACK\020\004*\241\006\n\017AttestationType\022\035\n\031LEGAL_PER" +
-      "SON_PRIMARY_NAME\020\000\022\037\n\033LEGAL_PERSON_SECON" +
-      "DARY_NAME\020\001\022\026\n\022ADDRESS_DEPARTMENT\020\002\022\032\n\026A" +
-      "DDRESS_SUB_DEPARTMENT\020\003\022\027\n\023ADDRESS_STREE" +
-      "T_NAME\020\004\022\033\n\027ADDRESS_BUILDING_NUMBER\020\005\022\031\n" +
-      "\025ADDRESS_BUILDING_NAME\020\006\022\021\n\rADDRESS_FLOO" +
-      "R\020\007\022\023\n\017ADDRESS_POSTBOX\020\010\022\020\n\014ADDRESS_ROOM" +
-      "\020\t\022\024\n\020ADDRESS_POSTCODE\020\n\022\025\n\021ADDRESS_TOWN" +
-      "_NAME\020\013\022\036\n\032ADDRESS_TOWN_LOCATION_NAME\020\014\022" +
-      "\031\n\025ADDRESS_DISTRICT_NAME\020\r\022 \n\034ADDRESS_CO" +
-      "UNTRY_SUB_DIVISION\020\016\022\030\n\024ADDRESS_ADDRESS_" +
-      "LINE\020\017\022\023\n\017ADDRESS_COUNTRY\020\020\022\035\n\031NATURAL_P" +
-      "ERSON_FIRST_NAME\020\021\022\034\n\030NATURAL_PERSON_LAS" +
-      "T_NAME\020\022\022!\n\035BENEFICIARY_PERSON_FIRST_NAM" +
-      "E\020\023\022 \n\034BENEFICIARY_PERSON_LAST_NAME\020\024\022\016\n" +
-      "\nBIRTH_DATE\020\025\022\017\n\013BIRTH_PLACE\020\026\022\030\n\024COUNTR" +
-      "Y_OF_RESIDENCE\020\027\022\023\n\017ISSUING_COUNTRY\020\030\022\036\n" +
-      "\032NATIONAL_IDENTIFIER_NUMBER\020\031\022\027\n\023NATIONA" +
-      "L_IDENTIFIER\020\032\022\022\n\016ACCOUNT_NUMBER\020\033\022\033\n\027CU" +
-      "STOMER_IDENTIFICATION\020\034\022\032\n\026REGISTRATION_" +
-      "AUTHORITY\020\035*I\n\014CurrencyType\022\013\n\007BITCOIN\020\000" +
-      "\022\014\n\010ETHEREUM\020\001\022\014\n\010LITECOIN\020\002\022\020\n\014BITCOIN_" +
-      "CASH\020\003B$\n\030com.netki.bip75.protocolB\010Mess" +
-      "ages"
+      "\010 \002(\014\022\030\n\020sender_signature\030\t \002(\014\022\033\n\023recip" +
+      "ient_vasp_name\030\n \001(\t\022\037\n\027recipient_chain_" +
+      "address\030\013 \001(\t\"\205\002\n\016PaymentRequest\022\"\n\027paym" +
+      "ent_details_version\030\001 \001(\r:\0011\022\"\n\032serializ" +
+      "ed_payment_details\030\002 \002(\014\022\037\n\006owners\030\003 \003(\013" +
+      "2\017.payments.Owner\0228\n\025attestationsRequest" +
+      "ed\030\004 \003(\0162\031.payments.AttestationType\022\035\n\017s" +
+      "ender_pki_type\030\005 \002(\t:\004none\022\027\n\017sender_pki" +
+      "_data\030\006 \002(\014\022\030\n\020sender_signature\030\007 \002(\014\"\212\001" +
+      "\n\007Payment\022\025\n\rmerchant_data\030\001 \001(\014\022\024\n\014tran" +
+      "sactions\030\002 \003(\014\022#\n\trefund_to\030\003 \003(\0132\020.paym" +
+      "ents.Output\022\014\n\004memo\030\004 \001(\t\022\037\n\006owners\030\005 \003(" +
+      "\0132\017.payments.Owner\">\n\nPaymentACK\022\"\n\007paym" +
+      "ent\030\001 \002(\0132\021.payments.Payment\022\014\n\004memo\030\002 \001" +
+      "(\t\"[\n\005Owner\022%\n\027primary_for_transaction\030\001" +
+      " \002(\010:\004true\022+\n\014attestations\030\002 \003(\0132\025.payme" +
+      "nts.Attestation\"z\n\013Attestation\022.\n\013attest" +
+      "ation\030\001 \001(\0162\031.payments.AttestationType\022\026" +
+      "\n\010pki_type\030\002 \002(\t:\004none\022\020\n\010pki_data\030\003 \001(\014" +
+      "\022\021\n\tsignature\030\004 \001(\014\"\243\001\n\016PaymentDetails\022\025" +
+      "\n\007network\030\001 \001(\t:\004main\022!\n\007outputs\030\002 \003(\0132\020" +
+      ".payments.Output\022\014\n\004time\030\003 \002(\004\022\017\n\007expire" +
+      "s\030\004 \001(\004\022\014\n\004memo\030\005 \001(\t\022\023\n\013payment_url\030\006 \001" +
+      "(\t\022\025\n\rmerchant_data\030\007 \001(\014\"U\n\006Output\022\021\n\006a" +
+      "mount\030\001 \001(\004:\0010\022\016\n\006script\030\002 \002(\014\022(\n\010curren" +
+      "cy\030\003 \002(\0162\026.payments.CurrencyType\"\272\001\n\017Pro" +
+      "tocolMessage\022\022\n\007version\030\001 \002(\004:\0011\022\026\n\013stat" +
+      "us_code\030\002 \002(\004:\0011\0223\n\014message_type\030\003 \002(\0162\035" +
+      ".payments.ProtocolMessageType\022\032\n\022seriali" +
+      "zed_message\030\004 \002(\014\022\026\n\016status_message\030\005 \001(" +
+      "\t\022\022\n\nidentifier\030\006 \002(\014\"\234\002\n\030EncryptedProto" +
+      "colMessage\022\022\n\007version\030\001 \002(\004:\0011\022\026\n\013status" +
+      "_code\030\002 \002(\004:\0011\0223\n\014message_type\030\003 \002(\0162\035.p" +
+      "ayments.ProtocolMessageType\022\031\n\021encrypted" +
+      "_message\030\004 \002(\014\022\033\n\023receiver_public_key\030\005 " +
+      "\002(\014\022\031\n\021sender_public_key\030\006 \002(\014\022\r\n\005nonce\030" +
+      "\007 \002(\004\022\022\n\nidentifier\030\010 \002(\014\022\026\n\016status_mess" +
+      "age\030\t \001(\t\022\021\n\tsignature\030\n \001(\014*w\n\023Protocol" +
+      "MessageType\022\030\n\024UNKNOWN_MESSAGE_TYPE\020\000\022\023\n" +
+      "\017INVOICE_REQUEST\020\001\022\023\n\017PAYMENT_REQUEST\020\002\022" +
+      "\013\n\007PAYMENT\020\003\022\017\n\013PAYMENT_ACK\020\004*\241\006\n\017Attest" +
+      "ationType\022\035\n\031LEGAL_PERSON_PRIMARY_NAME\020\000" +
+      "\022\037\n\033LEGAL_PERSON_SECONDARY_NAME\020\001\022\026\n\022ADD" +
+      "RESS_DEPARTMENT\020\002\022\032\n\026ADDRESS_SUB_DEPARTM" +
+      "ENT\020\003\022\027\n\023ADDRESS_STREET_NAME\020\004\022\033\n\027ADDRES" +
+      "S_BUILDING_NUMBER\020\005\022\031\n\025ADDRESS_BUILDING_" +
+      "NAME\020\006\022\021\n\rADDRESS_FLOOR\020\007\022\023\n\017ADDRESS_POS" +
+      "TBOX\020\010\022\020\n\014ADDRESS_ROOM\020\t\022\024\n\020ADDRESS_POST" +
+      "CODE\020\n\022\025\n\021ADDRESS_TOWN_NAME\020\013\022\036\n\032ADDRESS" +
+      "_TOWN_LOCATION_NAME\020\014\022\031\n\025ADDRESS_DISTRIC" +
+      "T_NAME\020\r\022 \n\034ADDRESS_COUNTRY_SUB_DIVISION" +
+      "\020\016\022\030\n\024ADDRESS_ADDRESS_LINE\020\017\022\023\n\017ADDRESS_" +
+      "COUNTRY\020\020\022\035\n\031NATURAL_PERSON_FIRST_NAME\020\021" +
+      "\022\034\n\030NATURAL_PERSON_LAST_NAME\020\022\022!\n\035BENEFI" +
+      "CIARY_PERSON_FIRST_NAME\020\023\022 \n\034BENEFICIARY" +
+      "_PERSON_LAST_NAME\020\024\022\016\n\nBIRTH_DATE\020\025\022\017\n\013B" +
+      "IRTH_PLACE\020\026\022\030\n\024COUNTRY_OF_RESIDENCE\020\027\022\023" +
+      "\n\017ISSUING_COUNTRY\020\030\022\036\n\032NATIONAL_IDENTIFI" +
+      "ER_NUMBER\020\031\022\027\n\023NATIONAL_IDENTIFIER\020\032\022\022\n\016" +
+      "ACCOUNT_NUMBER\020\033\022\033\n\027CUSTOMER_IDENTIFICAT" +
+      "ION\020\034\022\032\n\026REGISTRATION_AUTHORITY\020\035*I\n\014Cur" +
+      "rencyType\022\013\n\007BITCOIN\020\000\022\014\n\010ETHEREUM\020\001\022\014\n\010" +
+      "LITECOIN\020\002\022\020\n\014BITCOIN_CASH\020\003B$\n\030com.netk" +
+      "i.bip75.protocolB\010Messages"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -16511,7 +16966,7 @@ public final class Messages {
     internal_static_payments_InvoiceRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_InvoiceRequest_descriptor,
-        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Owners", "Outputs", "AttestationsRequested", "SenderPkiType", "SenderPkiData", "SenderSignature", });
+        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Owners", "Outputs", "AttestationsRequested", "SenderPkiType", "SenderPkiData", "SenderSignature", "RecipientVaspName", "RecipientChainAddress", });
     internal_static_payments_PaymentRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_payments_PaymentRequest_fieldAccessorTable = new

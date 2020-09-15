@@ -493,6 +493,13 @@ internal object TestData {
         )
     }
 
+    object Recipients {
+        val RECIPIENTS_PARAMETERS = RecipientParameters(
+            "VASP_1",
+            "1234567890ABCD"
+        )
+    }
+
     object PkiData {
         val PKI_DATA_ONE_OWNER_X509SHA256 = PkiDataParameters(
             attestation = Attestation.LEGAL_PERSON_SECONDARY_NAME,
