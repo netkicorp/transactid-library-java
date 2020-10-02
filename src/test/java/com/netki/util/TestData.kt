@@ -154,6 +154,13 @@ internal object TestData {
                         )
                     )
                 )
+            ),
+            protocolMessageMetadata = ProtocolMessageMetadata(
+                1,
+                StatusCode.OK,
+                MessageType.PAYMENT_ACK,
+                "Ok",
+                "randomIdentifier"
             )
         )
 
@@ -166,7 +173,14 @@ internal object TestData {
 
         val PAYMENT_ACK = PaymentAck(
             payment = PAYMENT,
-            memo = MEMO_PAYMENT_ACK
+            memo = MEMO_PAYMENT_ACK,
+            protocolMessageMetadata = ProtocolMessageMetadata(
+                1,
+                StatusCode.OK,
+                MessageType.PAYMENT_ACK,
+                "Ok",
+                "randomIdentifier"
+            )
         )
     }
 

@@ -38,7 +38,10 @@ data class PaymentRequest(
     /**
      * Sender's Signature of the whole message.
      */
-    val senderSignature: String? = null
+    val senderSignature: String? = null,
 
-
+    /**
+     * Metadata for the protocol message.
+     */
+    val protocolMessageMetadata: ProtocolMessageMetadata
 )

@@ -4,6 +4,9 @@ import com.netki.bip75.protocol.Messages
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
+import com.netki.model.MessageType
+import com.netki.model.StatusCode
+import com.netki.security.CryptoModule
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
@@ -26,14 +29,17 @@ import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
 import com.netki.util.TestData.Senders.SENDER_PKI_NONE
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+import com.netki.util.getSerializedMessage
 import com.netki.util.toAttestationType
+import com.netki.util.toByteString
+import com.netki.util.toProtocolMessage
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class transactIdTest {
+internal class TransactIdTest {
 
     private val transactId = TransactId.getInstance("src/main/resources/certificates")
     
@@ -188,13 +194,23 @@ internal class transactIdTest {
             transactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
-            .mergeFrom(invoiceRequestBinary)
+            .mergeFrom(invoiceRequestBinary.getSerializedMessage())
             .setMemo("Memo changed!!")
             .build()
             .toByteArray()
 
+        val messageProtocolCorrupted = Messages.ProtocolMessage.newBuilder()
+            .setVersion(1)
+            .setStatusCode(StatusCode.OK.code)
+            .setMessageType(Messages.ProtocolMessageType.INVOICE_REQUEST)
+            .setSerializedMessage(invoiceRequestCorrupted.toByteString())
+            .setStatusMessage("test")
+            .setIdentifier("random".toByteString())
+            .build()
+            .toByteArray()
+
         val exception = assertThrows(InvalidSignatureException::class.java) {
-            assert(transactId.isInvoiceRequestValid(invoiceRequestCorrupted))
+            assert(transactId.isInvoiceRequestValid(messageProtocolCorrupted))
         }
 
         assert(
@@ -214,7 +230,7 @@ internal class transactIdTest {
             transactId.createInvoiceRequest(INVOICE_REQUEST_DATA, owners, sender, REQUESTED_ATTESTATIONS)
 
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
-            .mergeFrom(invoiceRequestBinary)
+            .mergeFrom(invoiceRequestBinary.getSerializedMessage())
 
         val ownersWithInvalidSignature = mutableListOf<Messages.Owner>()
         invoiceRequestCorrupted.ownersList.forEachIndexed { index, owner ->
@@ -235,9 +251,18 @@ internal class transactIdTest {
         invoiceRequestCorrupted.clearOwners()
         invoiceRequestCorrupted.addAllOwners(ownersWithInvalidSignature)
 
+        val messageProtocolCorrupted = Messages.ProtocolMessage.newBuilder()
+            .setVersion(1)
+            .setStatusCode(StatusCode.OK.code)
+            .setMessageType(Messages.ProtocolMessageType.INVOICE_REQUEST)
+            .setSerializedMessage(invoiceRequestCorrupted.build().toByteString())
+            .setStatusMessage("test")
+            .setIdentifier("random".toByteString())
+            .build()
+            .toByteArray()
 
         val exception = assertThrows(InvalidSignatureException::class.java) {
-            assert(transactId.isInvoiceRequestValid(invoiceRequestCorrupted.build().toByteArray()))
+            assert(transactId.isInvoiceRequestValid(messageProtocolCorrupted))
         }
 
         assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION.name))
@@ -288,7 +313,7 @@ internal class transactIdTest {
             transactId.isInvoiceRequestValid("fakeInvoiceRequest".toByteArray())
         }
 
-        assert(exception.message?.contains("Invalid object for: invoiceRequest") ?: false)
+        assert(exception.message?.contains("Invalid object for") ?: false)
     }
 
     @Test
@@ -436,13 +461,23 @@ internal class transactIdTest {
             transactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
-            .mergeFrom(paymentRequestBinary)
+            .mergeFrom(paymentRequestBinary.getSerializedMessage())
             .setPaymentDetailsVersion(4)
             .build()
             .toByteArray()
 
+        val messageProtocolCorrupted = Messages.ProtocolMessage.newBuilder()
+            .setVersion(1)
+            .setStatusCode(StatusCode.OK.code)
+            .setMessageType(Messages.ProtocolMessageType.PAYMENT_REQUEST)
+            .setSerializedMessage(paymentRequestCorrupted.toByteString())
+            .setStatusMessage("test")
+            .setIdentifier("random".toByteString())
+            .build()
+            .toByteArray()
+
         val exception = assertThrows(InvalidSignatureException::class.java) {
-            assert(transactId.isPaymentRequestValid(paymentRequestCorrupted))
+            assert(transactId.isPaymentRequestValid(messageProtocolCorrupted))
         }
 
         assert(
@@ -462,7 +497,7 @@ internal class transactIdTest {
             transactId.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
-            .mergeFrom(paymentRequestBinary)
+            .mergeFrom(paymentRequestBinary.getSerializedMessage())
 
         val ownersWithInvalidSignature = mutableListOf<Messages.Owner>()
         paymentRequestCorrupted.ownersList.forEachIndexed { index, owner ->
@@ -484,8 +519,19 @@ internal class transactIdTest {
         paymentRequestCorrupted.addAllOwners(ownersWithInvalidSignature)
 
 
+        val messageProtocolCorrupted = Messages.ProtocolMessage.newBuilder()
+            .setVersion(1)
+            .setStatusCode(StatusCode.OK.code)
+            .setMessageType(Messages.ProtocolMessageType.PAYMENT_REQUEST)
+            .setSerializedMessage(paymentRequestCorrupted.build().toByteString())
+            .setStatusMessage("test")
+            .setIdentifier("random".toByteString())
+            .build()
+            .toByteArray()
+
+
         val exception = assertThrows(InvalidSignatureException::class.java) {
-            assert(transactId.isPaymentRequestValid(paymentRequestCorrupted.build().toByteArray()))
+            assert(transactId.isPaymentRequestValid(messageProtocolCorrupted))
         }
 
         assert(exception.message == SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(INVALID_ATTESTATION.name))
@@ -541,7 +587,7 @@ internal class transactIdTest {
             transactId.isPaymentRequestValid("fakePaymentRequest".toByteArray())
         }
 
-        assert(exception.message?.contains("Invalid object for: paymentRequest") ?: false)
+        assert(exception.message?.contains("Invalid object for") ?: false)
     }
 
     @Test

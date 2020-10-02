@@ -29,5 +29,10 @@ data class Payment(
     /**
      * Account owners.
      */
-    val owners: List<Owner> = emptyList()
+    val owners: List<Owner> = emptyList(),
+
+    /**
+     * Metadata for the protocol message.
+     */
+    val protocolMessageMetadata: ProtocolMessageMetadata
 )
