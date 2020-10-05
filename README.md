@@ -136,16 +136,28 @@ Create an object for sending like so:
  * @param ownersParameters of the accounts for this transaction.
  * @param senderParameters of the protocol message.
  * @param attestationsRequested list of attestations requested.
+ * @param recipientParameters information of the recipient of the message.
+ * @param messageInformation status and information of the message status, by default "OK".
  * @return binary object of the message created.
  * @throws InvalidOwnersException if the provided list of owners is not valid.
  */
 @Throws(InvalidOwnersException::class)
+@JvmOverloads
 fun createInvoiceRequest(
     invoiceRequestParameters: InvoiceRequestParameters,
     ownersParameters: List<OwnerParameters>,
     senderParameters: SenderParameters,
-    attestationsRequested: List<Attestation>
-): ByteArray
+    attestationsRequested: List<Attestation>,
+    recipientParameters: RecipientParameters? = null,
+    messageInformation: MessageInformation = MessageInformation()
+): ByteArray = bip75.createInvoiceRequest(
+    invoiceRequestParameters,
+    ownersParameters,
+    senderParameters,
+    attestationsRequested,
+    recipientParameters,
+    messageInformation
+)
 ```
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
@@ -232,18 +244,27 @@ Create an object for sending like so:
  * @param senderParameters of the protocol message.
  * @param attestationsRequested list of attestations requested.
  * @param paymentParametersVersion version of the PaymentDetails message.
+ * @param messageInformation status and information of the message status, by default "OK".
  * @return binary object of the message created.
  * @throws InvalidOwnersException if the provided list of owners is not valid.
-
  */
 @Throws(InvalidOwnersException::class)
+@JvmOverloads
 fun createPaymentRequest(
     paymentRequestParameters: PaymentRequestParameters,
     ownersParameters: List<OwnerParameters>,
     senderParameters: SenderParameters,
     attestationsRequested: List<Attestation>,
-    paymentParametersVersion: Int = 1
-): ByteArray
+    paymentParametersVersion: Int = 1,
+    messageInformation: MessageInformation = MessageInformation()
+): ByteArray = bip75.createPaymentRequest(
+    paymentRequestParameters,
+    ownersParameters,
+    senderParameters,
+    attestationsRequested,
+    paymentParametersVersion,
+    messageInformation
+)
 ```
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
@@ -325,14 +346,16 @@ Create an object for sending like so:
  *
  * @param paymentParameters data to create the Payment.
  * @param ownersParameters of the accounts for this transaction.
+ * @param messageInformation status and information of the message status, by default "OK".
  * @return binary object of the message created.
  * @throws InvalidOwnersException if the provided list of owners is not valid.
  */
 @Throws(InvalidOwnersException::class)
 fun createPayment(
     paymentParameters: PaymentParameters,
-    ownersParameters: List<OwnerParameters>
-): ByteArray
+    ownersParameters: List<OwnerParameters>,
+    messageInformation: MessageInformation = MessageInformation()
+): ByteArray = bip75.createPayment(paymentParameters, ownersParameters, messageInformation)
 ```
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
@@ -395,9 +418,14 @@ Create an object for sending like so:
  *
  * @param payment data to create the Payment.
  * @param memo note that should be displayed to the customer.
+ * @param messageInformation status and information of the message status, by default "OK".
  * @return binary object of the message created.
  */
-fun createPaymentAck(payment: Payment, memo: String): ByteArray
+fun createPaymentAck(
+    payment: Payment,
+    memo: String,
+    messageInformation: MessageInformation = MessageInformation()
+): ByteArray = bip75.createPaymentAck(payment, memo, messageInformation)
 ```
 
 This will provide you with a serialized binary that you can then send to someone else who is able to

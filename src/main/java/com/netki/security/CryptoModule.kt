@@ -366,4 +366,13 @@ internal object CryptoModule {
         str.close()
         return str.toString()
     }
+
+    /**
+     * Generate identifier for an specific message in ByteArray format
+     */
+    fun generateIdentifier(byteArray: ByteArray): String {
+        val hash256 = getHash256(byteArray)
+        val epochTime = System.currentTimeMillis() / 1000
+        return "$hash256$epochTime"
+    }
 }

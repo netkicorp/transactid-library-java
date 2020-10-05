@@ -38,6 +38,7 @@ class TransactId(private var bip75: Bip75) {
      * @param senderParameters of the protocol message.
      * @param attestationsRequested list of attestations requested.
      * @param recipientParameters information of the recipient of the message.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
@@ -48,9 +49,16 @@ class TransactId(private var bip75: Bip75) {
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
-        recipientParameters: RecipientParameters? = null
-    ): ByteArray =
-        bip75.createInvoiceRequest(invoiceRequestParameters, ownersParameters, senderParameters, attestationsRequested, recipientParameters)
+        recipientParameters: RecipientParameters? = null,
+        messageInformation: MessageInformation = MessageInformation()
+    ): ByteArray = bip75.createInvoiceRequest(
+        invoiceRequestParameters,
+        ownersParameters,
+        senderParameters,
+        attestationsRequested,
+        recipientParameters,
+        messageInformation
+    )
 
     /**
      * Validate if a binary InvoiceRequest is valid.
@@ -108,24 +116,27 @@ class TransactId(private var bip75: Bip75) {
      * @param senderParameters of the protocol message.
      * @param attestationsRequested list of attestations requested.
      * @param paymentParametersVersion version of the PaymentDetails message.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
+    @JvmOverloads
     fun createPaymentRequest(
         paymentRequestParameters: PaymentRequestParameters,
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
-        paymentParametersVersion: Int = 1
-    ): ByteArray =
-        bip75.createPaymentRequest(
-            paymentRequestParameters,
-            ownersParameters,
-            senderParameters,
-            attestationsRequested,
-            paymentParametersVersion
-        )
+        paymentParametersVersion: Int = 1,
+        messageInformation: MessageInformation = MessageInformation()
+    ): ByteArray = bip75.createPaymentRequest(
+        paymentRequestParameters,
+        ownersParameters,
+        senderParameters,
+        attestationsRequested,
+        paymentParametersVersion,
+        messageInformation
+    )
 
     /**
      * Validate if a binary PaymentRequest is valid.
@@ -179,14 +190,16 @@ class TransactId(private var bip75: Bip75) {
      *
      * @param paymentParameters data to create the Payment.
      * @param ownersParameters of the accounts for this transaction.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
     fun createPayment(
         paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>
-    ): ByteArray = bip75.createPayment(paymentParameters, ownersParameters)
+        ownersParameters: List<OwnerParameters>,
+        messageInformation: MessageInformation = MessageInformation()
+    ): ByteArray = bip75.createPayment(paymentParameters, ownersParameters, messageInformation)
 
     /**
      * Validate if a binary Payment is valid.
@@ -221,9 +234,14 @@ class TransactId(private var bip75: Bip75) {
      *
      * @param payment data to create the Payment.
      * @param memo note that should be displayed to the customer.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      */
-    fun createPaymentAck(payment: Payment, memo: String): ByteArray = bip75.createPaymentAck(payment, memo)
+    fun createPaymentAck(
+        payment: Payment,
+        memo: String,
+        messageInformation: MessageInformation = MessageInformation()
+    ): ByteArray = bip75.createPaymentAck(payment, memo, messageInformation)
 
     /**
      * Validate if a binary PaymentAck is valid.

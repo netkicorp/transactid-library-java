@@ -29,13 +29,18 @@ internal class Bip75ServiceNetki(
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
-        recipientParameters: RecipientParameters?
+        recipientParameters: RecipientParameters?,
+        messageInformation: MessageInformation
     ): ByteArray {
 
         ownersParameters.validate()
 
         val messageInvoiceRequestBuilder =
-            invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(senderParameters, attestationsRequested, recipientParameters)
+            invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
+                senderParameters,
+                attestationsRequested,
+                recipientParameters
+            )
 
         ownersParameters.forEach { owner ->
             val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
@@ -49,7 +54,8 @@ internal class Bip75ServiceNetki(
 
         val messageInvoiceRequest = messageInvoiceRequestBuilder.build()
 
-        return messageInvoiceRequest.signMessage(senderParameters).toByteArray()
+        val invoiceRequest = messageInvoiceRequest.signMessage(senderParameters).toByteArray()
+        return invoiceRequest.toProtocolMessage(MessageType.INVOICE_REQUEST, messageInformation)
     }
 
     /**
@@ -72,15 +78,15 @@ internal class Bip75ServiceNetki(
     }
 
     private fun parseInvoiceRequestBinary(invoiceRequestBinary: ByteArray): InvoiceRequest {
-        val messageInvoiceRequest = invoiceRequestBinary.toMessageInvoiceRequest()
-        return messageInvoiceRequest.toInvoiceRequest()
+        val messageInvoiceRequest = invoiceRequestBinary.getSerializedMessage().toMessageInvoiceRequest()
+        return messageInvoiceRequest.toInvoiceRequest(invoiceRequestBinary.extractProtocolMessageMetadata())
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isInvoiceRequestValid(invoiceRequestBinary: ByteArray): Boolean {
-        val messageInvoiceRequest = invoiceRequestBinary.toMessageInvoiceRequest()
+        val messageInvoiceRequest = invoiceRequestBinary.getSerializedMessage().toMessageInvoiceRequest()
 
         val messageInvoiceRequestUnsigned =
             messageInvoiceRequest.removeMessageSenderSignature() as Messages.InvoiceRequest
@@ -140,7 +146,8 @@ internal class Bip75ServiceNetki(
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
-        paymentParametersVersion: Int
+        paymentParametersVersion: Int,
+        messageInformation: MessageInformation
     ): ByteArray {
 
         ownersParameters.validate()
@@ -161,7 +168,8 @@ internal class Bip75ServiceNetki(
 
         val messagePaymentRequest = messagePaymentRequestBuilder.build()
 
-        return messagePaymentRequest.signMessage(senderParameters).toByteArray()
+        val paymentRequest = messagePaymentRequest.signMessage(senderParameters).toByteArray()
+        return paymentRequest.toProtocolMessage(MessageType.PAYMENT_REQUEST, messageInformation)
     }
 
     /**
@@ -182,15 +190,15 @@ internal class Bip75ServiceNetki(
     }
 
     private fun parsePaymentRequestBinary(paymentRequestBinary: ByteArray): PaymentRequest {
-        val messagePaymentRequest = paymentRequestBinary.toMessagePaymentRequest()
-        return messagePaymentRequest.toPaymentRequest()
+        val messagePaymentRequest = paymentRequestBinary.getSerializedMessage().toMessagePaymentRequest()
+        return messagePaymentRequest.toPaymentRequest(paymentRequestBinary.extractProtocolMessageMetadata())
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isPaymentRequestValid(paymentRequestBinary: ByteArray): Boolean {
-        val messagePaymentRequest = paymentRequestBinary.toMessagePaymentRequest()
+        val messagePaymentRequest = paymentRequestBinary.getSerializedMessage().toMessagePaymentRequest()
 
         val messagePaymentRequestUnsigned =
             messagePaymentRequest.removeMessageSenderSignature() as Messages.PaymentRequest
@@ -245,7 +253,8 @@ internal class Bip75ServiceNetki(
      */
     override fun createPayment(
         paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>
+        ownersParameters: List<OwnerParameters>,
+        messageInformation: MessageInformation
     ): ByteArray {
         ownersParameters.validate()
 
@@ -261,7 +270,8 @@ internal class Bip75ServiceNetki(
             paymentBuilder.addOwners(ownerMessage)
         }
 
-        return paymentBuilder.build().toByteArray()
+        val payment = paymentBuilder.build().toByteArray()
+        return payment.toProtocolMessage(MessageType.PAYMENT, messageInformation)
     }
 
 
@@ -269,15 +279,15 @@ internal class Bip75ServiceNetki(
      * {@inheritDoc}
      */
     override fun parsePayment(paymentBinary: ByteArray): Payment {
-        val messagePayment = paymentBinary.toMessagePayment()
-        return messagePayment.toPayment()
+        val messagePayment = paymentBinary.getSerializedMessage().toMessagePayment()
+        return messagePayment.toPayment(paymentBinary.extractProtocolMessageMetadata())
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isPaymentValid(paymentBinary: ByteArray): Boolean {
-        val payment = paymentBinary.toMessagePayment()
+        val payment = paymentBinary.getSerializedMessage().toMessagePayment()
 
         payment.ownersList.forEach { ownerMessage ->
             ownerMessage.attestationsList.forEach { attestationMessage ->
@@ -312,23 +322,28 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentAck(payment: Payment, memo: String): ByteArray {
-        return payment.toMessagePaymentAck(memo).toByteArray()
+    override fun createPaymentAck(
+        payment: Payment,
+        memo: String,
+        messageInformation: MessageInformation
+    ): ByteArray {
+        val paymentAck = payment.toMessagePaymentAck(memo).toByteArray()
+        return paymentAck.toProtocolMessage(MessageType.PAYMENT_ACK, messageInformation)
     }
 
     /**
      * {@inheritDoc}
      */
     override fun parsePaymentAck(paymentAckBinary: ByteArray): PaymentAck {
-        val messagePaymentAck = paymentAckBinary.toMessagePaymentAck()
-        return messagePaymentAck.toPaymentAck()
+        val messagePaymentAck = paymentAckBinary.getSerializedMessage().toMessagePaymentAck()
+        return messagePaymentAck.toPaymentAck(paymentAckBinary.extractProtocolMessageMetadata())
     }
 
     /**
      * {@inheritDoc}
      */
     override fun isPaymentAckValid(paymentAckBinary: ByteArray): Boolean {
-        paymentAckBinary.toMessagePaymentAck()
+        paymentAckBinary.getSerializedMessage().toMessagePaymentAck()
         return true
     }
 

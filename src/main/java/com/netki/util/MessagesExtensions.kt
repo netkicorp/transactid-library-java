@@ -50,7 +50,7 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
  *
  * @return InvoiceRequest.
  */
-internal fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
+internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: ProtocolMessageMetadata): InvoiceRequest {
     val owners = mutableListOf<Owner>()
     this.ownersList.forEach { messageOwner ->
         owners.add(messageOwner.toOwner())
@@ -77,7 +77,8 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(): InvoiceRequest {
         senderPkiData = this.senderPkiData.toStringLocal(),
         senderSignature = this.senderSignature.toStringLocal(),
         recipientVaspName = this.recipientVaspName,
-        recipientChainAddress = this.recipientChainAddress
+        recipientChainAddress = this.recipientChainAddress,
+        protocolMessageMetadata = protocolMessageMetadata
     )
 }
 
@@ -99,7 +100,7 @@ internal fun ByteArray.toMessageInvoiceRequest(): Messages.InvoiceRequest = try 
  *
  * @return PaymentRequest.
  */
-internal fun Messages.PaymentRequest.toPaymentRequest(): PaymentRequest {
+internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: ProtocolMessageMetadata): PaymentRequest {
     val paymentDetails = this.serializedPaymentDetails.toMessagePaymentDetails()
 
     val owners = mutableListOf<Owner>()
@@ -131,7 +132,8 @@ internal fun Messages.PaymentRequest.toPaymentRequest(): PaymentRequest {
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),
-        senderSignature = this.senderSignature.toStringLocal()
+        senderSignature = this.senderSignature.toStringLocal(),
+        protocolMessageMetadata = protocolMessageMetadata
     )
 }
 
@@ -259,7 +261,7 @@ internal fun Payment.toMessagePayment(): Messages.Payment {
  *
  * @return Payment.
  */
-internal fun Messages.Payment.toPayment(): Payment {
+internal fun Messages.Payment.toPayment(protocolMessageMetadata: ProtocolMessageMetadata? = null): Payment {
     val transactionList = mutableListOf<ByteArray>()
     for (messageTransaction in this.transactionsList) {
         transactionList.add(messageTransaction.toByteArray())
@@ -280,7 +282,8 @@ internal fun Messages.Payment.toPayment(): Payment {
         transactions = transactionList,
         outputs = outputs,
         memo = this.memo,
-        owners = owners
+        owners = owners,
+        protocolMessageMetadata = protocolMessageMetadata
     )
 }
 
@@ -302,7 +305,8 @@ internal fun ByteArray.toMessagePayment(): Messages.Payment = try {
  *
  * @return PaymentAck.
  */
-internal fun Messages.PaymentACK.toPaymentAck(): PaymentAck = PaymentAck(this.payment.toPayment(), this.memo)
+internal fun Messages.PaymentACK.toPaymentAck(protocolMessageMetadata: ProtocolMessageMetadata): PaymentAck =
+    PaymentAck(this.payment.toPayment(), this.memo, protocolMessageMetadata)
 
 
 /**
@@ -838,4 +842,62 @@ internal fun Messages.CurrencyType.toAddressCurrency(): AddressCurrency {
         Messages.CurrencyType.LITECOIN -> AddressCurrency.LITECOIN
         Messages.CurrencyType.BITCOIN_CASH -> AddressCurrency.BITCOIN_CASH
     }
+}
+
+/**
+ * Transform a message in ByteArray to Messages.ProtocolMessage
+ */
+internal fun ByteArray.toProtocolMessage(
+    messageType: MessageType,
+    messageInformation: MessageInformation
+) = Messages.ProtocolMessage.newBuilder()
+    .setVersion(1)
+    .setStatusCode(messageInformation.statusCode.code)
+    .setMessageType(
+        when (messageType) {
+            MessageType.INVOICE_REQUEST -> Messages.ProtocolMessageType.INVOICE_REQUEST
+            MessageType.PAYMENT_REQUEST -> Messages.ProtocolMessageType.PAYMENT_REQUEST
+            MessageType.PAYMENT -> Messages.ProtocolMessageType.PAYMENT
+            MessageType.PAYMENT_ACK -> Messages.ProtocolMessageType.PAYMENT_ACK
+            else -> Messages.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE
+        }
+    )
+    .setSerializedMessage(this.toByteString())
+    .setStatusMessage(messageInformation.statusMessage)
+    .setIdentifier(CryptoModule.generateIdentifier(this).toByteString())
+    .build()
+    .toByteArray()
+
+
+/**
+ * Method to extract serialized message from Messages.ProtocolMessage
+ */
+internal fun ByteArray.getSerializedMessage(): ByteArray {
+    try {
+        val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
+        return protocolMessageMessages.serializedMessage.toByteArray()
+    } catch (exception: Exception) {
+        exception.printStackTrace()
+        throw InvalidObjectException(PARSE_BINARY_MESSAGE_INVALID_INPUT.format(exception.message))
+    }
+}
+
+/**
+ * Method to extract the ProtocolMessageMetadata from a Messages.ProtocolMessage
+ */
+internal fun ByteArray.extractProtocolMessageMetadata(): ProtocolMessageMetadata {
+    val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
+    return ProtocolMessageMetadata(
+        protocolMessageMessages.version,
+        StatusCode.getByCode(protocolMessageMessages.statusCode)!!,
+        when (protocolMessageMessages.messageType) {
+            Messages.ProtocolMessageType.INVOICE_REQUEST -> MessageType.INVOICE_REQUEST
+            Messages.ProtocolMessageType.PAYMENT_REQUEST -> MessageType.PAYMENT_REQUEST
+            Messages.ProtocolMessageType.PAYMENT -> MessageType.PAYMENT
+            Messages.ProtocolMessageType.PAYMENT_ACK -> MessageType.PAYMENT_ACK
+            else -> MessageType.UNKNOWN_MESSAGE_TYPE
+        },
+        protocolMessageMessages.statusMessage,
+        protocolMessageMessages.identifier.toStringLocal()
+    )
 }
