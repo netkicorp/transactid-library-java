@@ -158,8 +158,8 @@ internal object TestData {
             protocolMessageMetadata = ProtocolMessageMetadata(
                 1,
                 StatusCode.OK,
-                MessageType.PAYMENT_ACK,
-                "Ok",
+                MessageType.PAYMENT,
+                "",
                 "randomIdentifier"
             )
         )
@@ -737,6 +737,13 @@ internal object TestData {
                 IvmsConstraints.BIZZ,
                 "This is the ADDRESS_ADDRESS_LINE"
             )
+        )
+    }
+
+    object MessageInformationData {
+        val MESSAGE_INFORMATION_CANCEL = MessageInformation(
+            StatusCode.CANCEL,
+            "Cancel for testing"
         )
     }
 }

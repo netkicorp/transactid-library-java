@@ -34,5 +34,5 @@ data class Payment(
     /**
      * Metadata for the protocol message.
      */
-    val protocolMessageMetadata: ProtocolMessageMetadata
+    val protocolMessageMetadata: ProtocolMessageMetadata? = null
 )

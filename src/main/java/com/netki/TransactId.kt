@@ -122,6 +122,7 @@ class TransactId(private var bip75: Bip75) {
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
+    @JvmOverloads
     fun createPaymentRequest(
         paymentRequestParameters: PaymentRequestParameters,
         ownersParameters: List<OwnerParameters>,

@@ -261,7 +261,7 @@ internal fun Payment.toMessagePayment(): Messages.Payment {
  *
  * @return Payment.
  */
-internal fun Messages.Payment.toPayment(protocolMessageMetadata: ProtocolMessageMetadata): Payment {
+internal fun Messages.Payment.toPayment(protocolMessageMetadata: ProtocolMessageMetadata? = null): Payment {
     val transactionList = mutableListOf<ByteArray>()
     for (messageTransaction in this.transactionsList) {
         transactionList.add(messageTransaction.toByteArray())
@@ -306,7 +306,7 @@ internal fun ByteArray.toMessagePayment(): Messages.Payment = try {
  * @return PaymentAck.
  */
 internal fun Messages.PaymentACK.toPaymentAck(protocolMessageMetadata: ProtocolMessageMetadata): PaymentAck =
-    PaymentAck(this.payment.toPayment(protocolMessageMetadata), this.memo, protocolMessageMetadata)
+    PaymentAck(this.payment.toPayment(), this.memo, protocolMessageMetadata)
 
 
 /**
