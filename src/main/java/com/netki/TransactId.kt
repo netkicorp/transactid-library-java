@@ -51,15 +51,14 @@ class TransactId(private var bip75: Bip75) {
         attestationsRequested: List<Attestation>,
         recipientParameters: RecipientParameters? = null,
         messageInformation: MessageInformation = MessageInformation()
-    ): ByteArray =
-        bip75.createInvoiceRequest(
-            invoiceRequestParameters,
-            ownersParameters,
-            senderParameters,
-            attestationsRequested,
-            recipientParameters,
-            messageInformation
-        )
+    ): ByteArray = bip75.createInvoiceRequest(
+        invoiceRequestParameters,
+        ownersParameters,
+        senderParameters,
+        attestationsRequested,
+        recipientParameters,
+        messageInformation
+    )
 
     /**
      * Validate if a binary InvoiceRequest is valid.
@@ -130,15 +129,14 @@ class TransactId(private var bip75: Bip75) {
         attestationsRequested: List<Attestation>,
         paymentParametersVersion: Int = 1,
         messageInformation: MessageInformation = MessageInformation()
-    ): ByteArray =
-        bip75.createPaymentRequest(
-            paymentRequestParameters,
-            ownersParameters,
-            senderParameters,
-            attestationsRequested,
-            paymentParametersVersion,
-            messageInformation
-        )
+    ): ByteArray = bip75.createPaymentRequest(
+        paymentRequestParameters,
+        ownersParameters,
+        senderParameters,
+        attestationsRequested,
+        paymentParametersVersion,
+        messageInformation
+    )
 
     /**
      * Validate if a binary PaymentRequest is valid.
