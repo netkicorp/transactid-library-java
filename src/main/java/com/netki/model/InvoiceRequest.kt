@@ -57,5 +57,10 @@ data class InvoiceRequest(
     /**
      * Recipient's vasp name
      */
-    val recipientChainAddress: String? = null
+    val recipientChainAddress: String? = null,
+
+    /**
+     * Metadata for the protocol message.
+     */
+    val protocolMessageMetadata: ProtocolMessageMetadata
 )

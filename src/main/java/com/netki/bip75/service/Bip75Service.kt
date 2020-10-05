@@ -16,6 +16,7 @@ internal interface Bip75Service {
      * @param senderParameters of the protocol message.
      * @param attestationsRequested list of attestations requested.
      * @param recipientParameters information of the recipient of the message.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
@@ -25,7 +26,8 @@ internal interface Bip75Service {
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
-        recipientParameters: RecipientParameters?
+        recipientParameters: RecipientParameters?,
+        messageInformation: MessageInformation = MessageInformation()
     ): ByteArray
 
     /**
@@ -82,6 +84,7 @@ internal interface Bip75Service {
      * @param senderParameters of the protocol message.
      * @param paymentParametersVersion version of the PaymentDetails message.
      * @param attestationsRequested list of attestations requested.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
@@ -91,7 +94,8 @@ internal interface Bip75Service {
         ownersParameters: List<OwnerParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
-        paymentParametersVersion: Int = 1
+        paymentParametersVersion: Int = 1,
+        messageInformation: MessageInformation = MessageInformation()
     ): ByteArray
 
     /**
@@ -143,11 +147,16 @@ internal interface Bip75Service {
      *
      * @param paymentParameters data to create the Payment.
      * @param ownersParameters of the accounts for this transaction.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      */
     @Throws(InvalidOwnersException::class)
-    fun createPayment(paymentParameters: PaymentParameters, ownersParameters: List<OwnerParameters>): ByteArray
+    fun createPayment(
+        paymentParameters: PaymentParameters,
+        ownersParameters: List<OwnerParameters>,
+        messageInformation: MessageInformation = MessageInformation()
+    ): ByteArray
 
     /**
      * Validate if a binary Payment is valid.
@@ -182,9 +191,14 @@ internal interface Bip75Service {
      *
      * @param payment data to create the Payment.
      * @param memo note that should be displayed to the customer.
+     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      */
-    fun createPaymentAck(payment: Payment, memo: String): ByteArray
+    fun createPaymentAck(
+        payment: Payment,
+        memo: String,
+        messageInformation: MessageInformation = MessageInformation()
+    ): ByteArray
 
     /**
      * Validate if a binary PaymentAck is valid.
