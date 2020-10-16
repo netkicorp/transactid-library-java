@@ -17,8 +17,7 @@ import com.netki.util.TestData.CertificateGeneration.CERTIFICATE_ATTESTATION_RES
 import com.netki.util.TestData.CertificateGeneration.CSRS_ATTESTATIONS
 import com.netki.util.TestData.CertificateGeneration.TRANSACTION_ID
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doNothing
@@ -255,7 +254,7 @@ internal class KeyManagementNetkiTest {
 
         val certificate = keyManagement.fetchCertificate("12345")
 
-        assert(certificate != null)
+        assertNotNull(certificate)
     }
 
     @Test
@@ -335,7 +334,7 @@ internal class KeyManagementNetkiTest {
 
         val certificate = keyManagement.fetchPrivateKey("12345")
 
-        assert(certificate != null)
+        assertNotNull(certificate)
     }
 
     @Test

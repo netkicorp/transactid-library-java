@@ -13,5 +13,10 @@ data class MessageInformation(
     /**
      * Human-readable Payment Protocol status message.
      */
-    val statusMessage: String = ""
+    val statusMessage: String = "",
+
+    /**
+     * Set to true if you want to encrypt message.
+     */
+    val encryptMessage: Boolean = false
 )
