@@ -18,7 +18,7 @@ data class InvoiceRequestParameters(
     /**
      * Secure (usually TLS-protected HTTP) location where an EncryptedProtocolMessage SHOULD be sent when ready.
      */
-    val notificationUrl: String,
+    val notificationUrl: String? = "",
 
     /**
      * One or more outputs where Bitcoins are to be sent.

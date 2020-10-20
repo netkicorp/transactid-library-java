@@ -84,8 +84,7 @@ class TransactId(private var bip75: Bip75) {
     fun isInvoiceRequestValid(
         invoiceRequestBinary: ByteArray,
         recipientParameters: RecipientParameters? = null
-    ): Boolean =
-        bip75.isInvoiceRequestValid(invoiceRequestBinary, recipientParameters)
+    ): Boolean = bip75.isInvoiceRequestValid(invoiceRequestBinary, recipientParameters)
 
     /**
      * Parse binary InvoiceRequest.
@@ -100,8 +99,7 @@ class TransactId(private var bip75: Bip75) {
     fun parseInvoiceRequest(
         invoiceRequestBinary: ByteArray,
         recipientParameters: RecipientParameters? = null
-    ): InvoiceRequest =
-        bip75.parseInvoiceRequest(invoiceRequestBinary, recipientParameters)
+    ): InvoiceRequest = bip75.parseInvoiceRequest(invoiceRequestBinary, recipientParameters)
 
     /**
      * Parse binary InvoiceRequest and also get the detailed information of the addresses.
@@ -183,8 +181,7 @@ class TransactId(private var bip75: Bip75) {
     fun isPaymentRequestValid(
         paymentRequestBinary: ByteArray,
         recipientParameters: RecipientParameters? = null
-    ): Boolean =
-        bip75.isPaymentRequestValid(paymentRequestBinary, recipientParameters)
+    ): Boolean = bip75.isPaymentRequestValid(paymentRequestBinary, recipientParameters)
 
     /**
      * Parse binary PaymentRequest.
@@ -200,8 +197,7 @@ class TransactId(private var bip75: Bip75) {
     fun parsePaymentRequest(
         paymentRequestBinary: ByteArray,
         recipientParameters: RecipientParameters? = null
-    ): PaymentRequest =
-        bip75.parsePaymentRequest(paymentRequestBinary, recipientParameters)
+    ): PaymentRequest = bip75.parsePaymentRequest(paymentRequestBinary, recipientParameters)
 
     /**
      * Parse binary PaymentRequest and also get the detailed information of the addresses.
@@ -224,8 +220,7 @@ class TransactId(private var bip75: Bip75) {
     fun parsePaymentRequestWithAddressesInfo(
         paymentRequestBinary: ByteArray,
         recipientParameters: RecipientParameters? = null
-    ): PaymentRequest =
-        bip75.parsePaymentRequestWithAddressesInfo(paymentRequestBinary, recipientParameters)
+    ): PaymentRequest = bip75.parsePaymentRequestWithAddressesInfo(paymentRequestBinary, recipientParameters)
 
     /**
      * Create binary Payment.
