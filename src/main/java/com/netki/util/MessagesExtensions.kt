@@ -3,12 +3,16 @@ package com.netki.util
 import com.google.protobuf.ByteString
 import com.google.protobuf.GeneratedMessageV3
 import com.netki.bip75.protocol.Messages
+import com.netki.exceptions.EncryptionException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidOwnersException
 import com.netki.model.*
 import com.netki.security.CryptoModule
+import com.netki.security.EncryptionModule
+import com.netki.util.ErrorInformation.ENCRYPTION_INVALID_ERROR
 import com.netki.util.ErrorInformation.PARSE_BINARY_MESSAGE_INVALID_INPUT
 import java.sql.Timestamp
+import java.util.*
 
 /**
  * Transform InvoiceRequestParameters to Messages.InvoiceRequest.Builder.
@@ -845,9 +849,22 @@ internal fun Messages.CurrencyType.toAddressCurrency(): AddressCurrency {
 }
 
 /**
- * Transform a message in ByteArray to Messages.ProtocolMessage
+ * Transform a message in ByteArray to ProtocolMessage
  */
 internal fun ByteArray.toProtocolMessage(
+    messageType: MessageType,
+    messageInformation: MessageInformation,
+    senderParameters: SenderParameters? = null,
+    recipientParameters: RecipientParameters? = null
+) = when (messageInformation.encryptMessage) {
+    true -> this.toProtocolMessageEncrypted(messageType, messageInformation, senderParameters, recipientParameters)
+    false -> this.toProtocolMessageUnencrypted(messageType, messageInformation)
+}
+
+/**
+ * Transform a message in ByteArray to Messages.ProtocolMessage
+ */
+internal fun ByteArray.toProtocolMessageUnencrypted(
     messageType: MessageType,
     messageInformation: MessageInformation
 ) = Messages.ProtocolMessage.newBuilder()
@@ -868,11 +885,102 @@ internal fun ByteArray.toProtocolMessage(
     .build()
     .toByteArray()
 
+/**
+ * Transform a message in ByteArray to Messages.EncryptedProtocolMessage
+ */
+internal fun ByteArray.toProtocolMessageEncrypted(
+    messageType: MessageType,
+    messageInformation: MessageInformation,
+    senderParameters: SenderParameters? = null,
+    recipientParameters: RecipientParameters? = null
+): ByteArray {
+
+    check(recipientParameters?.encryptionParameters?.publicKeyPem != null) {
+        throw EncryptionException(ErrorInformation.ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
+    }
+
+    check(
+        senderParameters?.encryptionParameters?.publicKeyPem != null &&
+                senderParameters.encryptionParameters.privateKeyPem != null
+    ) {
+        throw EncryptionException(ErrorInformation.ENCRYPTION_MISSING_SENDER_KEYS_ERROR)
+    }
+
+    check(CryptoModule.isECDSAKey(senderParameters?.encryptionParameters?.privateKeyPem)) {
+        throw EncryptionException(ErrorInformation.ENCRYPTION_INCORRECT_KEY_FORMAT_ERROR)
+    }
+
+    val encryptedMessage = EncryptionModule.encrypt(
+        Base64.getEncoder().encodeToString(this),
+        recipientParameters?.encryptionParameters?.publicKeyPem!!,
+        senderParameters?.encryptionParameters?.publicKeyPem!!,
+        senderParameters.encryptionParameters.privateKeyPem
+    )
+
+    val encryptedMessageUnsigned = Messages.EncryptedProtocolMessage.newBuilder()
+        .setVersion(1)
+        .setStatusCode(messageInformation.statusCode.code)
+        .setMessageType(
+            when (messageType) {
+                MessageType.INVOICE_REQUEST -> Messages.ProtocolMessageType.INVOICE_REQUEST
+                MessageType.PAYMENT_REQUEST -> Messages.ProtocolMessageType.PAYMENT_REQUEST
+                MessageType.PAYMENT -> Messages.ProtocolMessageType.PAYMENT
+                MessageType.PAYMENT_ACK -> Messages.ProtocolMessageType.PAYMENT_ACK
+                else -> Messages.ProtocolMessageType.UNKNOWN_MESSAGE_TYPE
+            }
+        )
+        .setStatusMessage(messageInformation.statusMessage)
+        .setIdentifier(CryptoModule.generateIdentifier(this).toByteString())
+        .setReceiverPublicKey(recipientParameters.encryptionParameters.publicKeyPem.toByteString())
+        .setSenderPublicKey(senderParameters.encryptionParameters.publicKeyPem.toByteString())
+        .setNonce(System.currentTimeMillis() / 1000)
+        .setEncryptedMessage(encryptedMessage.toByteString())
+        .setSignature("".toByteString())
+        .build()
+
+    val hash = CryptoModule.getHash256(encryptedMessageUnsigned.toByteArray())
+    val signature = CryptoModule.signStringECDSA(hash, senderParameters.encryptionParameters.privateKeyPem)
+
+    return Messages.EncryptedProtocolMessage.newBuilder()
+        .mergeFrom(encryptedMessageUnsigned)
+        .setSignature(signature.toByteString())
+        .build()
+        .toByteArray()
+}
+
+/**
+ * Validate if sender signature of a EncryptedProtocolMessage is valid.
+ *
+ * @return true if yes, false otherwise.
+ */
+internal fun ByteArray.validateMessageEncryptionSignature(): Boolean {
+    val signature = Messages.EncryptedProtocolMessage.parseFrom(this).signature.toStringLocal()
+    val encryptedProtocolMessage = Messages.EncryptedProtocolMessage.newBuilder()
+        .mergeFrom(this)
+        .setSignature("".toByteString())
+        .build()
+
+    val bytesHash = CryptoModule.getHash256(encryptedProtocolMessage.toByteArray())
+    return CryptoModule.validateSignatureECDSA(
+        signature,
+        bytesHash,
+        encryptedProtocolMessage.senderPublicKey.toStringLocal()
+    )
+}
 
 /**
  * Method to extract serialized message from Messages.ProtocolMessage
  */
-internal fun ByteArray.getSerializedMessage(): ByteArray {
+internal fun ByteArray.getSerializedMessage(isEncrypted: Boolean, recipientParameters: RecipientParameters? = null) =
+    when (isEncrypted) {
+        true -> this.getSerializedMessageEncryptedProtocolMessage(recipientParameters)
+        false -> this.getSerializedMessageProtocolMessage()
+    }
+
+/**
+ * Method to extract serialized message from Messages.ProtocolMessage
+ */
+internal fun ByteArray.getSerializedMessageProtocolMessage(): ByteArray {
     try {
         val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
         return protocolMessageMessages.serializedMessage.toByteArray()
@@ -883,21 +991,80 @@ internal fun ByteArray.getSerializedMessage(): ByteArray {
 }
 
 /**
+ * Method to extract serialized message from Messages.EncryptedProtocolMessage
+ */
+internal fun ByteArray.getSerializedMessageEncryptedProtocolMessage(recipientParameters: RecipientParameters?): ByteArray {
+    check(recipientParameters?.encryptionParameters?.publicKeyPem != null && recipientParameters.encryptionParameters.privateKeyPem != null) {
+        throw EncryptionException(ErrorInformation.DECRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
+    }
+
+    val protocolMessageMessages = try {
+        Messages.EncryptedProtocolMessage.parseFrom(this)
+    } catch (exception: Exception) {
+        exception.printStackTrace()
+        throw InvalidObjectException(PARSE_BINARY_MESSAGE_INVALID_INPUT.format(exception.message))
+    }
+    try {
+        val decryptedMessage = EncryptionModule.decrypt(
+            protocolMessageMessages.encryptedMessage.toStringLocal(),
+            recipientParameters?.encryptionParameters!!.privateKeyPem!!,
+            protocolMessageMessages.senderPublicKey.toStringLocal()
+        )
+        return Base64.getDecoder().decode(decryptedMessage)
+    } catch (exception: Exception) {
+        exception.printStackTrace()
+        throw EncryptionException(ENCRYPTION_INVALID_ERROR.format(exception.message), exception)
+    }
+}
+
+
+/**
  * Method to extract the ProtocolMessageMetadata from a Messages.ProtocolMessage
  */
 internal fun ByteArray.extractProtocolMessageMetadata(): ProtocolMessageMetadata {
-    val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
-    return ProtocolMessageMetadata(
-        protocolMessageMessages.version,
-        StatusCode.getByCode(protocolMessageMessages.statusCode)!!,
-        when (protocolMessageMessages.messageType) {
-            Messages.ProtocolMessageType.INVOICE_REQUEST -> MessageType.INVOICE_REQUEST
-            Messages.ProtocolMessageType.PAYMENT_REQUEST -> MessageType.PAYMENT_REQUEST
-            Messages.ProtocolMessageType.PAYMENT -> MessageType.PAYMENT
-            Messages.ProtocolMessageType.PAYMENT_ACK -> MessageType.PAYMENT_ACK
-            else -> MessageType.UNKNOWN_MESSAGE_TYPE
-        },
-        protocolMessageMessages.statusMessage,
-        protocolMessageMessages.identifier.toStringLocal()
-    )
+    try {
+        val protocolMessageMessages = Messages.EncryptedProtocolMessage.parseFrom(this)
+        return ProtocolMessageMetadata(
+            protocolMessageMessages.version,
+            StatusCode.getByCode(protocolMessageMessages.statusCode)!!,
+            when (protocolMessageMessages.messageType) {
+                Messages.ProtocolMessageType.INVOICE_REQUEST -> MessageType.INVOICE_REQUEST
+                Messages.ProtocolMessageType.PAYMENT_REQUEST -> MessageType.PAYMENT_REQUEST
+                Messages.ProtocolMessageType.PAYMENT -> MessageType.PAYMENT
+                Messages.ProtocolMessageType.PAYMENT_ACK -> MessageType.PAYMENT_ACK
+                else -> MessageType.UNKNOWN_MESSAGE_TYPE
+            },
+            protocolMessageMessages.statusMessage,
+            protocolMessageMessages.identifier.toStringLocal(),
+            true,
+            protocolMessageMessages.encryptedMessage.toStringLocal(),
+            protocolMessageMessages.receiverPublicKey.toStringLocal(),
+            protocolMessageMessages.senderPublicKey.toStringLocal(),
+            protocolMessageMessages.nonce,
+            protocolMessageMessages.signature.toStringLocal()
+        )
+    } catch (exception: Exception) {
+        // nothing to do here
+    }
+
+    try {
+        val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
+        return ProtocolMessageMetadata(
+            protocolMessageMessages.version,
+            StatusCode.getByCode(protocolMessageMessages.statusCode)!!,
+            when (protocolMessageMessages.messageType) {
+                Messages.ProtocolMessageType.INVOICE_REQUEST -> MessageType.INVOICE_REQUEST
+                Messages.ProtocolMessageType.PAYMENT_REQUEST -> MessageType.PAYMENT_REQUEST
+                Messages.ProtocolMessageType.PAYMENT -> MessageType.PAYMENT
+                Messages.ProtocolMessageType.PAYMENT_ACK -> MessageType.PAYMENT_ACK
+                else -> MessageType.UNKNOWN_MESSAGE_TYPE
+            },
+            protocolMessageMessages.statusMessage,
+            protocolMessageMessages.identifier.toStringLocal(),
+            false
+        )
+    } catch (exception: Exception) {
+        exception.printStackTrace()
+        throw InvalidObjectException(PARSE_BINARY_MESSAGE_INVALID_INPUT.format(exception.message))
+    }
 }

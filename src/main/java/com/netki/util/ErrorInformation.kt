@@ -33,4 +33,13 @@ object ErrorInformation {
         "The IvmConstraint: %s, for the attestation: %s, is not valid."
     const val CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER =
         "The data: %s, for the attestation: %s, is not valid, the valid characters for the data are a-zA-Z0-9_. -"
+    const val ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR =
+        "To encrypt the message you need to have the recipient's public key in your RecipientParameters.EncryptionParameters object."
+    const val ENCRYPTION_MISSING_SENDER_KEYS_ERROR =
+        "To encrypt the message you need to have the sender's public/private keys in your SenderParameters.EncryptionParameters object."
+    const val ENCRYPTION_INCORRECT_KEY_FORMAT_ERROR =
+        "To encrypt the message you need to have a private key with ECDSA algorithm."
+    const val ENCRYPTION_INVALID_ERROR = "Unable to decrypt the message with the given keys, error: %s"
+    const val DECRYPTION_MISSING_RECIPIENT_KEYS_ERROR =
+        "To decrypt the message you need to have the recipient's public key in your RecipientParameters.EncryptionParameters object."
 }

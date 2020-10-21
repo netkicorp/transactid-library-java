@@ -5,12 +5,18 @@ package com.netki.model
  */
 data class RecipientParameters(
     /**
-     * Recipient's vasp name
+     * Recipient's vasp name.
      */
-    val vaspName: String,
+    val vaspName: String? = null,
 
     /**
-     * Recipient's vasp name
+     * Recipient's vasp name.
      */
-    val chainAddress: String
+    val chainAddress: String? = null,
+
+    /**
+     * Parameters needed if you want to encrypt the protocol message.
+     * If you add the parameters here, the encryption of the message will happen automatically.
+     */
+    val encryptionParameters: EncryptionParameters? = null
 )

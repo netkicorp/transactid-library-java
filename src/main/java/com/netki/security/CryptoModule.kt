@@ -38,6 +38,11 @@ internal object CryptoModule {
     private const val SIGNATURE_ALGORITHM = "SHA256withRSA"
 
     /**
+     * Algorithm to create digital signature with ECDSA keys.
+     */
+    private const val SIGNATURE_ALGORITHM_ECDSA = "SHA256withECDSA"
+
+    /**
      * Algorithm to create hash.
      */
     private const val DIGEST_ALGORITHM = "SHA-256"
@@ -105,6 +110,47 @@ internal object CryptoModule {
             update(data.toByteArray())
             verify(signBytes)
         }
+    }
+
+    /**
+     * Sign string with ECDSA private key.
+     *
+     * @param stringToSign plain string to sign.
+     * @param privateKeyPem to sign.
+     * @return signature.
+     */
+    fun signStringECDSA(stringToSign: String, privateKeyPem: String): String {
+        val privateKey = privateKeyPemToObject(privateKeyPem)
+        val signature: ByteArray = Signature.getInstance(SIGNATURE_ALGORITHM_ECDSA).run {
+            initSign(privateKey)
+            update(stringToSign.toByteArray())
+            sign()
+        }
+        return getEncoder().encodeToString(signature)
+    }
+
+    /**
+     * Validate if a signature is valid with ECDSA public key.
+     *
+     * @param signature to validate.
+     * @param data that was signed.
+     * @param publicKey to validate the signature.
+     * @return true if is valid, false otherwise.
+     */
+    fun validateSignatureECDSA(signature: String, data: String, publicKeyPem: String): Boolean {
+        return try {
+            val publicKey = publicKeyPemToObject(publicKeyPem)
+            val signBytes = getDecoder().decode(signature.toByteArray(Charsets.UTF_8))
+            Signature.getInstance(SIGNATURE_ALGORITHM_ECDSA).run {
+                initVerify(publicKey)
+                update(data.toByteArray())
+                verify(signBytes)
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            false
+        }
+
     }
 
     /**
@@ -374,5 +420,10 @@ internal object CryptoModule {
         val hash256 = getHash256(byteArray)
         val epochTime = System.currentTimeMillis() / 1000
         return "$hash256$epochTime"
+    }
+
+    fun isECDSAKey(privateKeyPem: String): Boolean {
+        val key = privateKeyPemToObject(privateKeyPem)
+        return key.algorithm == "ECDSA"
     }
 }
