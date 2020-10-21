@@ -41,5 +41,5 @@ object ErrorInformation {
         "To encrypt the message you need to have a private key with ECDSA algorithm."
     const val ENCRYPTION_INVALID_ERROR = "Unable to decrypt the message with the given keys, error: %s"
     const val DECRYPTION_MISSING_RECIPIENT_KEYS_ERROR =
-        "To decrypt the message you need to have the recipient's public key in your RecipientParameters.EncryptionParameters object."
+        "To decrypt the message you need to have the recipient's private key in your RecipientParameters.EncryptionParameters object."
 }

@@ -29,8 +29,8 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setAmount(this.amount)
         .setMemo(this.memo)
         .setNotificationUrl(this.notificationUrl)
-        .setSenderPkiType(senderParameters.pkiDataParameters.type.value)
-        .setSenderPkiData(senderParameters.pkiDataParameters.certificatePem.toByteString())
+        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
+        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
         .setSenderSignature("".toByteString())
 
     this.outputs.forEach { output ->
@@ -156,8 +156,8 @@ internal fun Messages.PaymentDetails.toPaymentRequest(
     val paymentRequestBuilder = Messages.PaymentRequest.newBuilder()
         .setPaymentDetailsVersion(paymentParametersVersion)
         .setSerializedPaymentDetails(this.toByteString())
-        .setSenderPkiType(senderParameters.pkiDataParameters.type.value)
-        .setSenderPkiData(senderParameters.pkiDataParameters.certificatePem.toByteString())
+        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
+        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
         .setSenderSignature("".toByteString())
 
     attestationsRequested.forEach {
@@ -516,7 +516,7 @@ internal fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters):
  * @return Messages.InvoiceRequest signed.
  */
 internal fun Messages.InvoiceRequest.signWithSender(senderParameters: SenderParameters): Messages.InvoiceRequest {
-    val signature = this.sign(senderParameters.pkiDataParameters.privateKeyPem)
+    val signature = this.sign(senderParameters.pkiDataParameters?.privateKeyPem!!)
 
     return Messages.InvoiceRequest.newBuilder()
         .mergeFrom(this)
@@ -530,7 +530,7 @@ internal fun Messages.InvoiceRequest.signWithSender(senderParameters: SenderPara
  * @return Messages.PaymentRequest signed.
  */
 internal fun Messages.PaymentRequest.signWithSender(senderParameters: SenderParameters): Messages.PaymentRequest {
-    val signature = this.sign(senderParameters.pkiDataParameters.privateKeyPem)
+    val signature = this.sign(senderParameters.pkiDataParameters?.privateKeyPem!!)
 
     return Messages.PaymentRequest.newBuilder()
         .mergeFrom(this)
@@ -994,7 +994,7 @@ internal fun ByteArray.getSerializedMessageProtocolMessage(): ByteArray {
  * Method to extract serialized message from Messages.EncryptedProtocolMessage
  */
 internal fun ByteArray.getSerializedMessageEncryptedProtocolMessage(recipientParameters: RecipientParameters?): ByteArray {
-    check(recipientParameters?.encryptionParameters?.publicKeyPem != null && recipientParameters.encryptionParameters.privateKeyPem != null) {
+    check(recipientParameters?.encryptionParameters?.privateKeyPem != null) {
         throw EncryptionException(ErrorInformation.DECRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
     }
 
