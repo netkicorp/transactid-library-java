@@ -382,8 +382,8 @@ internal class TransactIdTest {
             }
         }
 
-        assert(sender.pkiDataParameters.type == invoiceRequest.senderPkiType)
-        assert(sender.pkiDataParameters.certificatePem == invoiceRequest.senderPkiData)
+        assert(sender.pkiDataParameters?.type == invoiceRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == invoiceRequest.senderPkiData)
         assert(!invoiceRequest.senderSignature.isNullOrBlank())
         assert(!invoiceRequest.protocolMessageMetadata.identifier.isBlank())
         assert(invoiceRequest.protocolMessageMetadata.version == 1L)
@@ -480,8 +480,8 @@ internal class TransactIdTest {
             }
         }
 
-        assert(sender.pkiDataParameters.type == invoiceRequest.senderPkiType)
-        assert(sender.pkiDataParameters.certificatePem == invoiceRequest.senderPkiData)
+        assert(sender.pkiDataParameters?.type == invoiceRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == invoiceRequest.senderPkiData)
         assert(!invoiceRequest.senderSignature.isNullOrBlank())
         assert(!invoiceRequest.protocolMessageMetadata.identifier.isBlank())
         assert(invoiceRequest.protocolMessageMetadata.version == 1L)
@@ -532,8 +532,8 @@ internal class TransactIdTest {
             }
         }
 
-        assert(sender.pkiDataParameters.type == invoiceRequest.senderPkiType)
-        assert(sender.pkiDataParameters.certificatePem == invoiceRequest.senderPkiData)
+        assert(sender.pkiDataParameters?.type == invoiceRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == invoiceRequest.senderPkiData)
         assert(!invoiceRequest.senderSignature.isNullOrBlank())
         assert(!invoiceRequest.protocolMessageMetadata.identifier.isBlank())
         assert(invoiceRequest.protocolMessageMetadata.version == 1L)
@@ -812,8 +812,8 @@ internal class TransactIdTest {
             }
         }
 
-        assert(sender.pkiDataParameters.type == paymentRequest.senderPkiType)
-        assert(sender.pkiDataParameters.certificatePem == paymentRequest.senderPkiData)
+        assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
         assert(!paymentRequest.senderSignature.isNullOrBlank())
         assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
         assert(paymentRequest.protocolMessageMetadata.version == 1L)
@@ -868,8 +868,8 @@ internal class TransactIdTest {
             }
         }
 
-        assert(sender.pkiDataParameters.type == paymentRequest.senderPkiType)
-        assert(sender.pkiDataParameters.certificatePem == paymentRequest.senderPkiData)
+        assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
         assert(!paymentRequest.senderSignature.isNullOrBlank())
         assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
         assert(paymentRequest.protocolMessageMetadata.version == 1L)
@@ -1054,8 +1054,8 @@ internal class TransactIdTest {
             }
         }
 
-        assert(sender.pkiDataParameters.type == paymentRequest.senderPkiType)
-        assert(sender.pkiDataParameters.certificatePem == paymentRequest.senderPkiData)
+        assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
         assert(!paymentRequest.senderSignature.isNullOrBlank())
         assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
         assert(paymentRequest.protocolMessageMetadata.version == 1L)

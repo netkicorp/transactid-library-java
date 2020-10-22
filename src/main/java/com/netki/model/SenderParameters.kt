@@ -7,7 +7,7 @@ data class SenderParameters(
     /**
      * PkiData associated to the sender.
      */
-    val pkiDataParameters: PkiDataParameters,
+    val pkiDataParameters: PkiDataParameters? = null,
 
     /**
      * Parameters needed if you want to encrypt the protocol message.
