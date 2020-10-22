@@ -1,7 +1,5 @@
 package com.netki.model
 
-import com.google.gson.JsonObject
-
 /**
  * Alerts associated to an address.
  */

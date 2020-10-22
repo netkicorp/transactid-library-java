@@ -8,13 +8,17 @@ import com.netki.keymanagement.repo.data.AttestationResponse
 import com.netki.keymanagement.repo.data.CertificateAttestationResponse
 import com.netki.keymanagement.repo.data.CsrAttestation
 import com.netki.model.*
+import com.netki.security.CryptoModule
 import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
+import com.netki.util.TestData.Encryption.ENCRYPTION_RECIPIENT
+import com.netki.util.TestData.Encryption.ENCRYPTION_SENDER
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_TWO
+import com.netki.util.TestData.Keys.generateKeyPairECDSA
 import com.netki.util.TestData.Payment.Output.OUTPUTS
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256
 import com.netki.util.TestData.PkiData.PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE
@@ -36,10 +40,13 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import java.math.BigInteger
 import java.security.*
 import java.security.cert.Certificate
+import java.security.spec.ECGenParameterSpec
+import java.security.spec.ECParameterSpec
 import java.sql.Timestamp
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+
 
 internal object TestData {
 
@@ -50,6 +57,15 @@ internal object TestData {
             val keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC")
             keyPairGenerator.initialize(2048, SecureRandom())
             return keyPairGenerator.generateKeyPair()
+        }
+
+        fun generateKeyPairECDSA(): KeyPair {
+            val parameters = AlgorithmParameters.getInstance("EC")
+            parameters.init(ECGenParameterSpec("secp256k1"))
+            val ecParameterSpec: ECParameterSpec = parameters.getParameterSpec(ECParameterSpec::class.java)
+            val keyGen = KeyPairGenerator.getInstance("EC")
+            keyGen.initialize(ecParameterSpec, SecureRandom())
+            return keyGen.generateKeyPair()
         }
 
         fun generateCertificate(keyPair: KeyPair, hashAlgorithm: String, cn: String): Certificate {
@@ -505,12 +521,23 @@ internal object TestData {
         val SENDER_PKI_X509SHA256_INVALID_CERTIFICATE = SenderParameters(
             PKI_DATA_SENDER_X509SHA256_INVALID_CERTIFICATE
         )
+
+        val SENDER_PKI_X509SHA256_WITH_ENCRYPTION = SenderParameters(
+            PKI_DATA_SENDER_X509SHA256,
+            ENCRYPTION_SENDER
+        )
     }
 
     object Recipients {
         val RECIPIENTS_PARAMETERS = RecipientParameters(
             "VASP_1",
             "1234567890ABCD"
+        )
+
+        val RECIPIENTS_PARAMETERS_WITH_ENCRYPTION = RecipientParameters(
+            "VASP_1",
+            "1234567890ABCD",
+            ENCRYPTION_RECIPIENT
         )
     }
 
@@ -744,6 +771,24 @@ internal object TestData {
         val MESSAGE_INFORMATION_CANCEL = MessageInformation(
             StatusCode.CANCEL,
             "Cancel for testing"
+        )
+
+        val MESSAGE_INFORMATION_ENCRYPTION = MessageInformation(
+            encryptMessage = true
+        )
+    }
+
+    object Encryption {
+        private val keysRecipient = generateKeyPairECDSA()
+        val ENCRYPTION_RECIPIENT = EncryptionParameters(
+            CryptoModule.objectToPrivateKeyPem(keysRecipient.private),
+            CryptoModule.objectToPublicKeyPem(keysRecipient.public)
+        )
+
+        private val keysSender = generateKeyPairECDSA()
+        val ENCRYPTION_SENDER = EncryptionParameters(
+            CryptoModule.objectToPrivateKeyPem(keysSender.private),
+            CryptoModule.objectToPublicKeyPem(keysSender.public)
         )
     }
 }

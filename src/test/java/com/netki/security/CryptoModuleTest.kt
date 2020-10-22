@@ -4,6 +4,8 @@ import com.netki.util.TestData
 import com.netki.util.TestData.Hash.SHA_256_HASH_LENGTH
 import com.netki.util.TestData.Keys.HASH_ALGORITHM
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -112,5 +114,36 @@ internal class CryptoModuleTest {
     @Test
     fun `Transform valid PublicKey object to PEM format`() {
         CryptoModule.objectToPublicKeyPem(publicKey)
+    }
+
+    @Test
+    fun `Validate the key is type ECDSA with valid key`() {
+        val pairKey = TestData.Keys.generateKeyPairECDSA()
+        val keyPem = CryptoModule.objectToPrivateKeyPem(pairKey.private)
+
+        assertTrue(CryptoModule.isECDSAKey(keyPem))
+    }
+
+    @Test
+    fun `Validate the key is type ECDSA with invalid key`() {
+        val keyPem = CryptoModule.objectToPrivateKeyPem(privateKey)
+
+        assertFalse(CryptoModule.isECDSAKey(keyPem))
+    }
+
+    @Test
+    fun `Sign string and validate with PrivateKeyPem ECDSA`() {
+        val keyPair = TestData.Keys.generateKeyPairECDSA()
+        val signature = CryptoModule.signStringECDSA(
+            TestData.Signature.STRING_TEST,
+            CryptoModule.objectToPrivateKeyPem(keyPair.private)
+        )
+        assert(
+            CryptoModule.validateSignatureECDSA(
+                signature,
+                TestData.Signature.STRING_TEST,
+                CryptoModule.objectToPublicKeyPem(keyPair.public)
+            )
+        )
     }
 }
