@@ -26,14 +26,16 @@ internal class Bip75ServiceNetki(
      */
     override fun createInvoiceRequest(
         invoiceRequestParameters: InvoiceRequestParameters,
-        ownersParameters: List<OwnerParameters>,
+        originatorParameters: List<OriginatorParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
         recipientParameters: RecipientParameters?,
         messageInformation: MessageInformation
     ): ByteArray {
 
-        ownersParameters.validate()
+        originatorParameters.validate(true, OwnerType.ORIGINATOR)
+        beneficiaryParameters.validate(false, OwnerType.BENEFICIARY)
 
         val messageInvoiceRequestBuilder =
             invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
@@ -42,14 +44,24 @@ internal class Bip75ServiceNetki(
                 recipientParameters
             )
 
-        ownersParameters.forEach { owner ->
-            val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
+        beneficiaryParameters.forEach { beneficiary ->
+            val beneficiaryMessage = beneficiary.toMessageBeneficiaryBuilderWithoutAttestations()
 
-            owner.pkiDataParametersSets.forEach { pkiData ->
-                ownerMessage.addAttestations(pkiData.toMessageAttestation(owner.isPrimaryForTransaction))
+            beneficiary.pkiDataParametersSets.forEach { pkiData ->
+                beneficiaryMessage.addAttestations(pkiData.toMessageAttestation(false))
             }
 
-            messageInvoiceRequestBuilder.addOwners(ownerMessage)
+            messageInvoiceRequestBuilder.addBeneficiaries(beneficiaryMessage)
+        }
+
+        originatorParameters.forEach { originator ->
+            val originatorMessage = originator.toMessageOriginatorBuilderWithoutAttestations()
+
+            originator.pkiDataParametersSets.forEach { pkiData ->
+                originatorMessage.addAttestations(pkiData.toMessageAttestation(originator.isPrimaryForTransaction))
+            }
+
+            messageInvoiceRequestBuilder.addOriginators(originatorMessage)
         }
 
         val messageInvoiceRequest = messageInvoiceRequestBuilder.build()
@@ -142,8 +154,8 @@ internal class Bip75ServiceNetki(
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
 
-        messageInvoiceRequestUnsigned.ownersList.forEach { ownerMessage ->
-            ownerMessage.attestationsList.forEach { attestationMessage ->
+        messageInvoiceRequestUnsigned.originatorsList.forEach { originatorMessage ->
+            originatorMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificateChain(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
@@ -157,11 +169,28 @@ internal class Bip75ServiceNetki(
                     )
                 }
 
-                val isSignatureValid = attestationMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
+                val isSignatureValid = attestationMessage.validateMessageSignature(originatorMessage.primaryForTransaction)
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
                         SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                            attestationMessage.attestation
+                        )
+                    )
+                }
+            }
+        }
+
+        messageInvoiceRequestUnsigned.originatorsList.forEach { beneficiaryMessage ->
+            beneficiaryMessage.attestationsList.forEach { attestationMessage ->
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
+                    attestationMessage.pkiData.toStringLocal()
+                )
+
+                check(isCertificateOwnerChainValid) {
+                    throw InvalidCertificateChainException(
+                        CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )
@@ -177,7 +206,7 @@ internal class Bip75ServiceNetki(
      */
     override fun createPaymentRequest(
         paymentRequestParameters: PaymentRequestParameters,
-        ownersParameters: List<OwnerParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
         paymentParametersVersion: Int,
@@ -185,20 +214,20 @@ internal class Bip75ServiceNetki(
         recipientParameters: RecipientParameters?
     ): ByteArray {
 
-        ownersParameters.validate()
+        beneficiaryParameters.validate(true, OwnerType.BENEFICIARY)
 
         val messagePaymentRequestBuilder = paymentRequestParameters
             .toMessagePaymentDetails()
             .toPaymentRequest(senderParameters, paymentParametersVersion, attestationsRequested)
 
-        ownersParameters.forEach { owner ->
-            val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
+        beneficiaryParameters.forEach { beneficiary ->
+            val beneficiaryMessage = beneficiary.toMessageBeneficiaryBuilderWithoutAttestations()
 
-            owner.pkiDataParametersSets.forEach { pkiData ->
-                ownerMessage.addAttestations(pkiData.toMessageAttestation(owner.isPrimaryForTransaction))
+            beneficiary.pkiDataParametersSets.forEach { pkiData ->
+                beneficiaryMessage.addAttestations(pkiData.toMessageAttestation(beneficiary.isPrimaryForTransaction))
             }
 
-            messagePaymentRequestBuilder.addOwners(ownerMessage)
+            messagePaymentRequestBuilder.addBeneficiaries(beneficiaryMessage)
         }
 
         val messagePaymentRequest = messagePaymentRequestBuilder.build()
@@ -291,8 +320,8 @@ internal class Bip75ServiceNetki(
         check(isSenderSignatureValid) {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
-        messagePaymentRequestUnsigned.ownersList.forEach { ownerMessage ->
-            ownerMessage.attestationsList.forEach { attestationMessage ->
+        messagePaymentRequestUnsigned.beneficiariesList.forEach { beneficiaryMessage ->
+            beneficiaryMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificateChain(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
@@ -306,7 +335,7 @@ internal class Bip75ServiceNetki(
                     )
                 }
 
-                val isSignatureValid = attestationMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
+                val isSignatureValid = attestationMessage.validateMessageSignature(beneficiaryMessage.primaryForTransaction)
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
@@ -326,23 +355,35 @@ internal class Bip75ServiceNetki(
      */
     override fun createPayment(
         paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>,
+        originatorParameters: List<OriginatorParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         messageInformation: MessageInformation,
         senderParameters: SenderParameters?,
         recipientParameters: RecipientParameters?
     ): ByteArray {
-        ownersParameters.validate()
+        originatorParameters.validate(true, OwnerType.ORIGINATOR)
+        beneficiaryParameters.validate(false, OwnerType.BENEFICIARY)
 
         val paymentBuilder = paymentParameters.toMessagePaymentBuilder()
 
-        ownersParameters.forEach { owner ->
-            val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
+        beneficiaryParameters.forEach { beneficiary ->
+            val beneficiaryMessage = beneficiary.toMessageBeneficiaryBuilderWithoutAttestations()
 
-            owner.pkiDataParametersSets.forEach { pkiData ->
-                ownerMessage.addAttestations(pkiData.toMessageAttestation(owner.isPrimaryForTransaction))
+            beneficiary.pkiDataParametersSets.forEach { pkiData ->
+                beneficiaryMessage.addAttestations(pkiData.toMessageAttestation(false))
             }
 
-            paymentBuilder.addOwners(ownerMessage)
+            paymentBuilder.addBeneficiaries(beneficiaryMessage)
+        }
+
+        originatorParameters.forEach { originator ->
+            val originatorMessage = originator.toMessageOriginatorBuilderWithoutAttestations()
+
+            originator.pkiDataParametersSets.forEach { pkiData ->
+                originatorMessage.addAttestations(pkiData.toMessageAttestation(originator.isPrimaryForTransaction))
+            }
+
+            paymentBuilder.addOriginators(originatorMessage)
         }
 
         val payment = paymentBuilder.build().toByteArray()
@@ -390,8 +431,8 @@ internal class Bip75ServiceNetki(
             }
         }
 
-        payment.ownersList.forEach { ownerMessage ->
-            ownerMessage.attestationsList.forEach { attestationMessage ->
+        payment.originatorsList.forEach { originatorMessage ->
+            originatorMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificateChain(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
@@ -405,11 +446,28 @@ internal class Bip75ServiceNetki(
                     )
                 }
 
-                val isSignatureValid = attestationMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
+                val isSignatureValid = attestationMessage.validateMessageSignature(originatorMessage.primaryForTransaction)
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
                         SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                            attestationMessage.attestation
+                        )
+                    )
+                }
+            }
+        }
+
+        payment.originatorsList.forEach { beneficiaryMessage ->
+            beneficiaryMessage.attestationsList.forEach { attestationMessage ->
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
+                    attestationMessage.pkiData.toStringLocal()
+                )
+
+                check(isCertificateOwnerChainValid) {
+                    throw InvalidCertificateChainException(
+                        CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )

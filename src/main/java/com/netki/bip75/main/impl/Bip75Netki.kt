@@ -14,14 +14,16 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      */
     override fun createInvoiceRequest(
         invoiceRequestParameters: InvoiceRequestParameters,
-        ownersParameters: List<OwnerParameters>,
+        originatorParameters: List<OriginatorParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
         recipientParameters: RecipientParameters?,
         messageInformation: MessageInformation
     ) = bip75Service.createInvoiceRequest(
         invoiceRequestParameters,
-        ownersParameters,
+        originatorParameters,
+        beneficiaryParameters,
         senderParameters,
         attestationsRequested,
         recipientParameters,
@@ -53,7 +55,7 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      */
     override fun createPaymentRequest(
         paymentRequestParameters: PaymentRequestParameters,
-        ownersParameters: List<OwnerParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
         paymentParametersVersion: Int,
@@ -61,7 +63,7 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
         recipientParameters: RecipientParameters?
     ) = bip75Service.createPaymentRequest(
         paymentRequestParameters,
-        ownersParameters,
+        beneficiaryParameters,
         senderParameters,
         attestationsRequested,
         paymentParametersVersion,
@@ -95,13 +97,15 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      */
     override fun createPayment(
         paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>,
+        originatorParameters: List<OriginatorParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         messageInformation: MessageInformation,
         senderParameters: SenderParameters?,
         recipientParameters: RecipientParameters?
     ) = bip75Service.createPayment(
         paymentParameters,
-        ownersParameters,
+        originatorParameters,
+        beneficiaryParameters,
         messageInformation,
         senderParameters,
         recipientParameters

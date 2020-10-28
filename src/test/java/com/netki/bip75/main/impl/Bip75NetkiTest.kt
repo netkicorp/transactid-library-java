@@ -12,13 +12,15 @@ import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_INTERNAL_ERROR_PROVID
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER
 import com.netki.util.TestData.Address.ADDRESS_INFORMATION
 import com.netki.util.TestData.Attestations.REQUESTED_ATTESTATIONS
+import com.netki.util.TestData.Beneficiaries.NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
+import com.netki.util.TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_NONE
+import com.netki.util.TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
 import com.netki.util.TestData.InvoiceRequest.INVOICE_REQUEST_DATA
-import com.netki.util.TestData.Owners.NO_PRIMARY_OWNER_PKI_X509SHA256
-import com.netki.util.TestData.Owners.PRIMARY_OWNER_PKI_X509SHA256
+import com.netki.util.TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+import com.netki.util.TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256
 import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
 import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -51,16 +53,23 @@ internal class Bip75NetkiTest {
             )
         ).thenReturn(ADDRESS_INFORMATION)
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val originators = listOf(
+            PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
+
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
         val sender = SENDER_PKI_X509SHA256
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA, owners, sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(
+            INVOICE_REQUEST_DATA,
+            originators,
+            beneficiaries,
+            sender,
+            REQUESTED_ATTESTATIONS
+        )
 
         val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
@@ -87,16 +96,23 @@ internal class Bip75NetkiTest {
             )
         ).thenReturn(AddressInformation())
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val originators = listOf(
+            PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
+
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
         val sender = SENDER_PKI_X509SHA256
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA, owners, sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(
+            INVOICE_REQUEST_DATA,
+            originators,
+            beneficiaries,
+            sender,
+            REQUESTED_ATTESTATIONS
+        )
 
         val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
@@ -127,18 +143,25 @@ internal class Bip75NetkiTest {
             )
         )
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val originators = listOf(
+            PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-        val sender = SENDER_PKI_X509SHA256
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA, owners, sender,
-                REQUESTED_ATTESTATIONS
-            )
 
-        val exception = Assertions.assertThrows(AddressProviderUnauthorizedException::class.java) {
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestBinary = transactId.createInvoiceRequest(
+            INVOICE_REQUEST_DATA,
+            originators,
+            beneficiaries,
+            sender,
+            REQUESTED_ATTESTATIONS
+        )
+
+        val exception = assertThrows(AddressProviderUnauthorizedException::class.java) {
             bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
         }
 
@@ -162,18 +185,25 @@ internal class Bip75NetkiTest {
             )
         )
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val originators = listOf(
+            PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-        val sender = SENDER_PKI_X509SHA256
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA, owners, sender,
-                REQUESTED_ATTESTATIONS
-            )
 
-        val exception = Assertions.assertThrows(AddressProviderErrorException::class.java) {
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestBinary = transactId.createInvoiceRequest(
+            INVOICE_REQUEST_DATA,
+            originators,
+            beneficiaries,
+            sender,
+            REQUESTED_ATTESTATIONS
+        )
+
+        val exception = assertThrows(AddressProviderErrorException::class.java) {
             bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
         }
 
@@ -189,14 +219,20 @@ internal class Bip75NetkiTest {
             )
         ).thenReturn(ADDRESS_INFORMATION)
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val originators = listOf(
+            PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
+
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
         val sender = SENDER_PKI_X509SHA256
         val invoiceRequestBinary = transactId.createInvoiceRequest(
             INVOICE_REQUEST_DATA,
-            owners,
+            originators,
+            beneficiaries,
             sender,
             REQUESTED_ATTESTATIONS,
             RECIPIENTS_PARAMETERS
@@ -227,14 +263,15 @@ internal class Bip75NetkiTest {
             )
         ).thenReturn(ADDRESS_INFORMATION)
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
+
         val sender = SENDER_PKI_X509SHA256
 
         val paymentRequestBinary =
-            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
+            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequest = bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
@@ -259,14 +296,15 @@ internal class Bip75NetkiTest {
             )
         ).thenReturn(AddressInformation())
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
+
         val sender = SENDER_PKI_X509SHA256
 
         val paymentRequestBinary =
-            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
+            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
 
         val paymentRequest = bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
@@ -297,16 +335,17 @@ internal class Bip75NetkiTest {
             )
         )
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
+
         val sender = SENDER_PKI_X509SHA256
 
         val paymentRequestBinary =
-            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
+            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
 
-        val exception = Assertions.assertThrows(AddressProviderUnauthorizedException::class.java) {
+        val exception = assertThrows(AddressProviderUnauthorizedException::class.java) {
             bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
         }
 
@@ -330,16 +369,17 @@ internal class Bip75NetkiTest {
             )
         )
 
-        val owners = listOf(
-            PRIMARY_OWNER_PKI_X509SHA256,
-            NO_PRIMARY_OWNER_PKI_X509SHA256
+        val beneficiaries = listOf(
+            PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
+
         val sender = SENDER_PKI_X509SHA256
 
         val paymentRequestBinary =
-            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, owners, sender, REQUESTED_ATTESTATIONS)
+            bip75Netki.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
 
-        val exception = Assertions.assertThrows(AddressProviderErrorException::class.java) {
+        val exception = assertThrows(AddressProviderErrorException::class.java) {
             bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
         }
 

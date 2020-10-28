@@ -9,20 +9,21 @@ message InvoiceRequest {
   optional uint64 amount = 1 [default = 0];                   // amount is integer-number-of-satoshis
   optional string memo = 2;                                   // Human-readable description of invoice request for the receiver
   optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
-  repeated Owner owners = 4;                                  // Account owners
-  repeated Output outputs = 5;                                // Where payment should be sent
-  repeated AttestationType attestationsRequested = 6;         // List of attestations requested
-  required string sender_pki_type = 7 [default = "none"];     // none / x509+sha256
-  required bytes  sender_pki_data = 8;                        // Sender's pki data, depends on pki_type
-  required bytes  sender_signature = 9;                       // Sender's Signature of the whole message
-  optional string recipient_vasp_name = 10;                   // Recipient's vasp name
-  optional string recipient_chain_address = 11;               // Recipient's chain address
+  repeated Originator originators = 4;                        // Originators of the InvoiceRequest
+  repeated Beneficiary beneficiaries = 5;                     // Beneficiaries of the InvoiceRequest
+  repeated Output outputs = 6;                                // Where payment should be sent
+  repeated AttestationType attestationsRequested = 7;         // List of attestations requested
+  required string sender_pki_type = 8 [default = "none"];     // none / x509+sha256
+  required bytes  sender_pki_data = 9;                        // Sender's pki data, depends on pki_type
+  required bytes  sender_signature = 10;                       // Sender's Signature of the whole message
+  optional string recipient_vasp_name = 11;                   // Recipient's vasp name
+  optional string recipient_chain_address = 12;               // Recipient's chain address
 }
 
 message PaymentRequest {
   optional uint32 payment_details_version = 1 [default = 1];
   required bytes serialized_payment_details = 2;              // PaymentDetails
-  repeated Owner owners = 3;                                  // Account owners containing the requested attestations
+  repeated Beneficiary beneficiaries = 3;                     // Beneficiaries of the InvoiceRequest
   repeated AttestationType attestationsRequested = 4;         // List of attestations requested
   required string sender_pki_type = 5 [default = "none"];     // none / x509+sha256
   required bytes  sender_pki_data = 6;                        // Sender's pki data, depends on pki_type
@@ -30,11 +31,12 @@ message PaymentRequest {
 }
 
 message Payment {
-  optional bytes merchant_data = 1;       // From PaymentDetails.merchant_data
-  repeated bytes transactions = 2;        // Signed transactions that satisfy PaymentDetails.outputs
-  repeated Output refund_to = 3;          // Where to send refunds, if a refund is necessary
-  optional string memo = 4;               // Human-readable message for the merchant
-  repeated Owner owners = 5;              // Account owners containing the requested attestations
+  optional bytes merchant_data = 1;         // From PaymentDetails.merchant_data
+  repeated bytes transactions = 2;          // Signed transactions that satisfy PaymentDetails.outputs
+  repeated Output refund_to = 3;            // Where to send refunds, if a refund is necessary
+  optional string memo = 4;                 // Human-readable message for the merchant
+  repeated Originator originators = 5;      // Originators of the InvoiceRequest
+  repeated Beneficiary beneficiaries = 6;   // Beneficiaries of the InvoiceRequest
 }
 
 message PaymentACK {
@@ -42,9 +44,14 @@ message PaymentACK {
   optional string memo = 2;               // Human-readable message for customer
 }
 
-message Owner {
+message Beneficiary {
   required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
-  repeated Attestation attestations = 2;                          // All the owner attestations for the message
+  repeated Attestation attestations = 2;                          // All the Beneficiary attestations for the message
+}
+
+message Originator {
+  required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
+  repeated Attestation attestations = 2;                          // All the Beneficiary attestations for the message
 }
 
 message Attestation {

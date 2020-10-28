@@ -16,9 +16,9 @@ data class PaymentRequest(
     val paymentRequestParameters: PaymentRequestParameters,
 
     /**
-     * Account owners.
+     * Beneficiaries account.
      */
-    val owners: List<Owner> = emptyList(),
+    val beneficiaries: List<Beneficiary> = emptyList(),
 
     /**
      * List of attestations requested

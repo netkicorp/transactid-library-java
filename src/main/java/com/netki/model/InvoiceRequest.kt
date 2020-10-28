@@ -20,9 +20,14 @@ data class InvoiceRequest(
     val notificationUrl: String? = null,
 
     /**
-     * Account owners.
+     * Originators account.
      */
-    val owners: List<Owner> = emptyList(),
+    val originators: List<Originator> = emptyList(),
+
+    /**
+     * Beneficiaries account.
+     */
+    val beneficiaries: List<Beneficiary> = emptyList(),
 
     /**
      * One or more outputs where Bitcoins are to be sent.

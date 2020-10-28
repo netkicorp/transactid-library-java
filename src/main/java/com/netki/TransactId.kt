@@ -34,7 +34,8 @@ class TransactId(private var bip75: Bip75) {
      * Create InvoiceRequest message.
      *
      * @param invoiceRequestParameters data to create the InvoiceRequest.
-     * @param ownersParameters of the accounts for this transaction.
+     * @param originatorParameters list of originators for this transaction.
+     * @param beneficiaryParameters list of beneficiaries for this transaction.
      * @param senderParameters of the protocol message.
      * @param attestationsRequested list of attestations requested.
      * @param recipientParameters information of the recipient of the message.
@@ -47,14 +48,16 @@ class TransactId(private var bip75: Bip75) {
     @JvmOverloads
     fun createInvoiceRequest(
         invoiceRequestParameters: InvoiceRequestParameters,
-        ownersParameters: List<OwnerParameters>,
+        originatorParameters: List<OriginatorParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
         recipientParameters: RecipientParameters? = null,
         messageInformation: MessageInformation = MessageInformation()
     ): ByteArray = bip75.createInvoiceRequest(
         invoiceRequestParameters,
-        ownersParameters,
+        originatorParameters,
+        beneficiaryParameters,
         senderParameters,
         attestationsRequested,
         recipientParameters,
@@ -128,7 +131,7 @@ class TransactId(private var bip75: Bip75) {
      * Create binary PaymentRequest.
      *
      * @param paymentRequestParameters data to create the PaymentRequest.
-     * @param ownersParameters of the accounts for this transaction.
+     * @param beneficiaryParameters list of beneficiaries for this transaction.
      * @param senderParameters of the protocol message.
      * @param attestationsRequested list of attestations requested.
      * @param paymentParametersVersion version of the PaymentDetails message.
@@ -142,7 +145,7 @@ class TransactId(private var bip75: Bip75) {
     @JvmOverloads
     fun createPaymentRequest(
         paymentRequestParameters: PaymentRequestParameters,
-        ownersParameters: List<OwnerParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         senderParameters: SenderParameters,
         attestationsRequested: List<Attestation>,
         paymentParametersVersion: Int = 1,
@@ -150,7 +153,7 @@ class TransactId(private var bip75: Bip75) {
         recipientParameters: RecipientParameters? = null
     ): ByteArray = bip75.createPaymentRequest(
         paymentRequestParameters,
-        ownersParameters,
+        beneficiaryParameters,
         senderParameters,
         attestationsRequested,
         paymentParametersVersion,
@@ -226,7 +229,8 @@ class TransactId(private var bip75: Bip75) {
      * Create binary Payment.
      *
      * @param paymentParameters data to create the Payment.
-     * @param ownersParameters of the accounts for this transaction.
+     * @param originatorParameters list of originators for this transaction.
+     * @param beneficiaryParameters list of beneficiaries for this transaction.
      * @param messageInformation status and information of the message status, by default "OK".
      * @param senderParameters of the protocol message.
      * @param recipientParameters information of the recipient of the message.
@@ -237,13 +241,15 @@ class TransactId(private var bip75: Bip75) {
     @JvmOverloads
     fun createPayment(
         paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>,
+        originatorParameters: List<OriginatorParameters>,
+        beneficiaryParameters: List<BeneficiaryParameters>,
         messageInformation: MessageInformation = MessageInformation(),
         senderParameters: SenderParameters? = null,
         recipientParameters: RecipientParameters? = null
     ): ByteArray = bip75.createPayment(
         paymentParameters,
-        ownersParameters,
+        originatorParameters,
+        beneficiaryParameters,
         messageInformation,
         senderParameters,
         recipientParameters

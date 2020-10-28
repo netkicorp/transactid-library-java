@@ -159,8 +159,20 @@ internal object TestData {
             ),
             outputs = OUTPUTS,
             memo = MEMO,
-            owners = listOf(
-                Owner(
+            beneficiaries = listOf(
+                Beneficiary(
+                    isPrimaryForTransaction = true,
+                    pkiDataSet = listOf(
+                        PkiData(
+                            attestation = Attestation.ADDRESS_COUNTRY,
+                            certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
+                            type = PkiType.X509SHA256
+                        )
+                    )
+                )
+            ),
+            originators = listOf(
+                Originator(
                     isPrimaryForTransaction = true,
                     pkiDataSet = listOf(
                         PkiData(
@@ -477,33 +489,65 @@ internal object TestData {
                 "-----END CERTIFICATE-----"
     }
 
-    object Owners {
-        val PRIMARY_OWNER_PKI_X509SHA256 = OwnerParameters(
+    object Beneficiaries {
+        val PRIMARY_BENEFICIARY_PKI_X509SHA256 = BeneficiaryParameters(
             true,
             listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
         )
 
-        val PRIMARY_OWNER_PKI_X509SHA256_INVALID_CERTIFICATE = OwnerParameters(
+        val PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE = BeneficiaryParameters(
             true,
             listOf(PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE, PKI_DATA_TWO_OWNER_X509SHA256)
         )
 
-        val PRIMARY_OWNER_PKI_NONE = OwnerParameters(
+        val PRIMARY_BENEFICIARY_PKI_NONE = BeneficiaryParameters(
             true,
             listOf(PKI_DATA_OWNER_NONE)
         )
 
-        val NO_PRIMARY_OWNER_PKI_X509SHA256 = OwnerParameters(
+        val NO_PRIMARY_BENEFICIARY_PKI_X509SHA256 = BeneficiaryParameters(
             false,
             listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
         )
 
-        val NO_PRIMARY_OWNER_PKI_NONE = OwnerParameters(
+        val NO_PRIMARY_BENEFICIARY_PKI_NONE = BeneficiaryParameters(
             false,
             listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
         )
 
-        val PRIMARY_OWNER_PKI_X509SHA256_BUNDLED_CERTIFICATE = OwnerParameters(
+        val PRIMARY_BENEFICIARY_PKI_X509SHA256_BUNDLED_CERTIFICATE = BeneficiaryParameters(
+            true,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+    }
+
+    object Originators {
+        val PRIMARY_ORIGINATOR_PKI_X509SHA256 = OriginatorParameters(
+            true,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val PRIMARY_ORIGINATOR_PKI_X509SHA256_INVALID_CERTIFICATE = OriginatorParameters(
+            true,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256_INVALID_CERTIFICATE, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val PRIMARY_ORIGINATOR_PKI_NONE = OriginatorParameters(
+            true,
+            listOf(PKI_DATA_OWNER_NONE)
+        )
+
+        val NO_PRIMARY_ORIGINATOR_PKI_X509SHA256 = OriginatorParameters(
+            false,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val NO_PRIMARY_ORIGINATOR_PKI_NONE = OriginatorParameters(
+            false,
+            listOf(PKI_DATA_ONE_OWNER_X509SHA256, PKI_DATA_TWO_OWNER_X509SHA256)
+        )
+
+        val PRIMARY_ORIGINATOR_PKI_X509SHA256_BUNDLED_CERTIFICATE = OriginatorParameters(
             true,
             listOf(PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE, PKI_DATA_TWO_OWNER_X509SHA256)
         )

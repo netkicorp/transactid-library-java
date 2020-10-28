@@ -55,9 +55,14 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
  * @return InvoiceRequest.
  */
 internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: ProtocolMessageMetadata): InvoiceRequest {
-    val owners = mutableListOf<Owner>()
-    this.ownersList.forEach { messageOwner ->
-        owners.add(messageOwner.toOwner())
+    val beneficiaries = mutableListOf<Beneficiary>()
+    this.beneficiariesList.forEach { messageBeneficiary ->
+        beneficiaries.add(messageBeneficiary.toBeneficiary())
+    }
+
+    val originators = mutableListOf<Originator>()
+    this.originatorsList.forEach { messageOriginator ->
+        originators.add(messageOriginator.toOriginator())
     }
 
     val outputs = mutableListOf<Output>()
@@ -74,7 +79,8 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: P
         amount = this.amount,
         memo = this.memo,
         notificationUrl = this.notificationUrl,
-        owners = owners,
+        originators = originators,
+        beneficiaries = beneficiaries,
         outputs = outputs,
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
@@ -107,10 +113,11 @@ internal fun ByteArray.toMessageInvoiceRequest(): Messages.InvoiceRequest = try 
 internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: ProtocolMessageMetadata): PaymentRequest {
     val paymentDetails = this.serializedPaymentDetails.toMessagePaymentDetails()
 
-    val owners = mutableListOf<Owner>()
-    this.ownersList.forEach { messageOwner ->
-        owners.add(messageOwner.toOwner())
+    val beneficiaries = mutableListOf<Beneficiary>()
+    this.beneficiariesList.forEach { messageBeneficiary ->
+        beneficiaries.add(messageBeneficiary.toBeneficiary())
     }
+
     val outputs = mutableListOf<Output>()
     paymentDetails.outputsList.forEach { messageOutput ->
         outputs.add(messageOutput.toOutput())
@@ -132,7 +139,7 @@ internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: P
             paymentUrl = paymentDetails.paymentUrl,
             merchantData = paymentDetails.merchantData.toStringLocal()
         ),
-        owners = owners,
+        beneficiaries = beneficiaries,
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),
@@ -253,8 +260,12 @@ internal fun Payment.toMessagePayment(): Messages.Payment {
         messagePaymentBuilder.addRefundTo(output.toMessageOutput())
     }
 
-    this.owners.forEach { owner ->
-        messagePaymentBuilder.addOwners(owner.toMessageOwner())
+    this.beneficiaries.forEach { beneficiary ->
+        messagePaymentBuilder.addBeneficiaries(beneficiary.toMessageBeneficiary())
+    }
+
+    this.originators.forEach { originator ->
+        messagePaymentBuilder.addOriginators(originator.toMessageOriginator())
     }
 
     return messagePaymentBuilder.build()
@@ -276,9 +287,14 @@ internal fun Messages.Payment.toPayment(protocolMessageMetadata: ProtocolMessage
         outputs.add(messageOutput.toOutput())
     }
 
-    val owners = mutableListOf<Owner>()
-    for (messageOwner in this.ownersList) {
-        owners.add(messageOwner.toOwner())
+    val beneficiaries = mutableListOf<Beneficiary>()
+    for (messageBeneficiary in this.beneficiariesList) {
+        beneficiaries.add(messageBeneficiary.toBeneficiary())
+    }
+
+    val originators = mutableListOf<Originator>()
+    for (messageOriginator in this.originatorsList) {
+        originators.add(messageOriginator.toOriginator())
     }
 
     return Payment(
@@ -286,7 +302,8 @@ internal fun Messages.Payment.toPayment(protocolMessageMetadata: ProtocolMessage
         transactions = transactionList,
         outputs = outputs,
         memo = this.memo,
-        owners = owners,
+        beneficiaries = beneficiaries,
+        originators = originators,
         protocolMessageMetadata = protocolMessageMetadata
     )
 }
@@ -356,12 +373,12 @@ internal fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuil
     .build()
 
 /**
- * Transform OwnerParameters object to Messages.Owner object.
+ * Transform BeneficiaryParameters object to Messages.Beneficiary object.
  *
- * @return Messages.Owner.
+ * @return Messages.Beneficiary.
  */
-internal fun OwnerParameters.toMessageOwner(): Messages.Owner {
-    val messageOwnerBuilder = Messages.Owner.newBuilder()
+internal fun BeneficiaryParameters.toMessageBeneficiary(): Messages.Beneficiary {
+    val messageBeneficiaryBuilder = Messages.Beneficiary.newBuilder()
         .setPrimaryForTransaction(this.isPrimaryForTransaction)
 
     this.pkiDataParametersSets.forEachIndexed { index, pkiData ->
@@ -372,19 +389,50 @@ internal fun OwnerParameters.toMessageOwner(): Messages.Owner {
             .setSignature("".toByteString())
             .build()
 
-        messageOwnerBuilder.addAttestations(index, messageAttestation)
+        messageBeneficiaryBuilder.addAttestations(index, messageAttestation)
     }
 
-    return messageOwnerBuilder.build()
+    return messageBeneficiaryBuilder.build()
 }
 
 /**
- * Transform OwnerParameters object to Messages.Owner.Builder object.
+ * Transform OriginatorParameters object to Messages.Originator object.
  *
- * @return Messages.Owner.
+ * @return Messages.Originator.
  */
-internal fun OwnerParameters.toMessageOwnerBuilderWithoutAttestations(): Messages.Owner.Builder =
-    Messages.Owner.newBuilder().setPrimaryForTransaction(this.isPrimaryForTransaction)
+internal fun OriginatorParameters.toMessageOriginator(): Messages.Originator {
+    val messageOriginatorBuilder = Messages.Originator.newBuilder()
+        .setPrimaryForTransaction(this.isPrimaryForTransaction)
+
+    this.pkiDataParametersSets.forEachIndexed { index, pkiData ->
+        val messageAttestation = Messages.Attestation.newBuilder()
+            .setAttestation(pkiData.attestation?.toAttestationType())
+            .setPkiType(pkiData.type.value)
+            .setPkiData(pkiData.certificatePem.toByteString())
+            .setSignature("".toByteString())
+            .build()
+
+        messageOriginatorBuilder.addAttestations(index, messageAttestation)
+    }
+
+    return messageOriginatorBuilder.build()
+}
+
+/**
+ * Transform BeneficiaryParameters object to Messages.Beneficiary.Builder object.
+ *
+ * @return Messages.Beneficiary.
+ */
+internal fun BeneficiaryParameters.toMessageBeneficiaryBuilderWithoutAttestations(): Messages.Beneficiary.Builder =
+    Messages.Beneficiary.newBuilder().setPrimaryForTransaction(this.isPrimaryForTransaction)
+
+/**
+ * Transform OriginatorParameters object to Messages.Originator.Builder object.
+ *
+ * @return Messages.Originator.
+ */
+internal fun OriginatorParameters.toMessageOriginatorBuilderWithoutAttestations(): Messages.Originator.Builder =
+    Messages.Originator.newBuilder().setPrimaryForTransaction(this.isPrimaryForTransaction)
 
 /**
  * Transform PkiDataParameters object to Messages.Attestation object.
@@ -446,27 +494,40 @@ internal fun Messages.Attestation.removeSignature(): Messages.Attestation = Mess
     .build()
 
 /**
- * Transform Messages.Owner to Owner object.
+ * Transform Messages.Beneficiary to Beneficiary object.
  *
- * @return Owner.
+ * @return Beneficiary.
  */
-internal fun Messages.Owner.toOwner(): Owner {
+internal fun Messages.Beneficiary.toBeneficiary(): Beneficiary {
     val pkiDataSets = mutableListOf<PkiData>()
     this.attestationsList.forEach { messageAttestation ->
         pkiDataSets.add(messageAttestation.toPkiData())
     }
-    return Owner(this.primaryForTransaction, pkiDataSets)
+    return Beneficiary(this.primaryForTransaction, pkiDataSets)
 }
 
 /**
- * Transform Owner to Messages.Owner object.
+ * Transform Messages.Originator to Originator object.
  *
- * @return Messages.Owner.
+ * @return Originator.
  */
-internal fun Owner.toMessageOwner(): Messages.Owner {
-    val messageOwner = Messages.Owner.newBuilder()
+internal fun Messages.Originator.toOriginator(): Originator {
+    val pkiDataSets = mutableListOf<PkiData>()
+    this.attestationsList.forEach { messageAttestation ->
+        pkiDataSets.add(messageAttestation.toPkiData())
+    }
+    return Originator(this.primaryForTransaction, pkiDataSets)
+}
 
-    messageOwner.primaryForTransaction = this.isPrimaryForTransaction
+/**
+ * Transform Beneficiary to Messages.Beneficiary object.
+ *
+ * @return Messages.Beneficiary.
+ */
+internal fun Beneficiary.toMessageBeneficiary(): Messages.Beneficiary {
+    val messageBeneficiary = Messages.Beneficiary.newBuilder()
+
+    messageBeneficiary.primaryForTransaction = this.isPrimaryForTransaction
     this.pkiDataSet.forEach { pkiDataSet ->
         val attestation = Messages.Attestation.newBuilder()
             .setAttestation(pkiDataSet.attestation?.toAttestationType())
@@ -474,11 +535,35 @@ internal fun Owner.toMessageOwner(): Messages.Owner {
             .setPkiType(pkiDataSet.type.value)
             .setSignature(pkiDataSet.signature?.toByteString())
             .build()
-        messageOwner.addAttestations(attestation)
+        messageBeneficiary.addAttestations(attestation)
     }
 
-    return messageOwner.build()
+    return messageBeneficiary.build()
 }
+
+
+/**
+ * Transform Owner to Messages.Owner object.
+ *
+ * @return Messages.Owner.
+ */
+internal fun Originator.toMessageOriginator(): Messages.Originator {
+    val messageOriginator = Messages.Originator.newBuilder()
+
+    messageOriginator.primaryForTransaction = this.isPrimaryForTransaction
+    this.pkiDataSet.forEach { pkiDataSet ->
+        val attestation = Messages.Attestation.newBuilder()
+            .setAttestation(pkiDataSet.attestation?.toAttestationType())
+            .setPkiData(pkiDataSet.certificatePem.toByteString())
+            .setPkiType(pkiDataSet.type.value)
+            .setSignature(pkiDataSet.signature?.toByteString())
+            .build()
+        messageOriginator.addAttestations(attestation)
+    }
+
+    return messageOriginator.build()
+}
+
 
 /**
  * Transform Messages.Attestation to PkiData object.
@@ -644,11 +729,11 @@ internal fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRe
         .build()
 
 /**
- * Get all the signatures In a list of Owners including the certificate.
+ * Get all the signatures In a list of Beneficiaries including the certificate.
  *
  * @return OwnerSignaturesWithCertificate.
  */
-internal fun List<Messages.Owner>.getSignatures(): List<OwnerSignaturesWithCertificate> {
+internal fun List<Messages.Beneficiary>.getSignaturesBeneficiary(): List<OwnerSignaturesWithCertificate> {
     val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
     this.forEach { owner ->
         val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
@@ -671,14 +756,41 @@ internal fun List<Messages.Owner>.getSignatures(): List<OwnerSignaturesWithCerti
 }
 
 /**
- * Remove all the signatures In a list of Owners including the certificate.
+ * Get all the signatures In a list of Owners including the certificate.
  *
- * @return MutableList<Messages.Owner> without signatures.
+ * @return OwnerSignaturesWithCertificate.
  */
-internal fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages.Owner> {
-    val ownersWithoutSignature = mutableListOf<Messages.Owner>()
+internal fun List<Messages.Originator>.getSignaturesOriginator(): List<OwnerSignaturesWithCertificate> {
+    val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
+    this.forEach { owner ->
+        val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
+        owner.attestationsList.forEach { attestation ->
+            when (attestation.pkiType) {
+                PkiType.NONE.value -> {
+                    // nothing to do here
+                }
+                else -> {
+                    ownerSignaturesWithCertificate[attestation.attestation.toAttestation()] = Pair(
+                        CryptoModule.certificatePemToClientCertificate(attestation.pkiData.toStringLocal()),
+                        attestation.signature.toStringLocal()
+                    )
+                }
+            }
+        }
+        listOwnerSignaturesWithCertificate.add(ownerSignaturesWithCertificate)
+    }
+    return listOwnerSignaturesWithCertificate
+}
+
+/**
+ * Remove all the signatures in a list of Beneficiaries.
+ *
+ * @return MutableList<Messages.Beneficiary> without signatures.
+ */
+internal fun List<Messages.Beneficiary>.removeBeneficiarySignatures(): MutableList<Messages.Beneficiary> {
+    val beneficiaryWithoutSignature = mutableListOf<Messages.Beneficiary>()
     this.forEachIndexed { index, owner ->
-        val ownerWithoutSignaturesBuilder = Messages.Owner.newBuilder()
+        val ownerWithoutSignaturesBuilder = Messages.Beneficiary.newBuilder()
             .mergeFrom(owner)
         owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
             ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
@@ -689,9 +801,33 @@ internal fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages
                     .build()
             )
         }
-        ownersWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
+        beneficiaryWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
     }
-    return ownersWithoutSignature
+    return beneficiaryWithoutSignature
+}
+
+/**
+ * Remove all the signatures in a list of Originators.
+ *
+ * @return MutableList<Messages.Originator> without signatures.
+ */
+internal fun List<Messages.Originator>.removeOriginatorSignatures(): MutableList<Messages.Originator> {
+    val originatorWithoutSignature = mutableListOf<Messages.Originator>()
+    this.forEachIndexed { index, owner ->
+        val ownerWithoutSignaturesBuilder = Messages.Originator.newBuilder()
+            .mergeFrom(owner)
+        owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
+            ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
+            ownerWithoutSignaturesBuilder.addAttestations(
+                attestationIndex, Messages.Attestation.newBuilder()
+                    .mergeFrom(attestation)
+                    .setSignature("".toByteString())
+                    .build()
+            )
+        }
+        originatorWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
+    }
+    return originatorWithoutSignature
 }
 
 /**
@@ -700,15 +836,36 @@ internal fun List<Messages.Owner>.removeOwnersSignatures(): MutableList<Messages
  *
  * @throws InvalidOwnersException if is not a valid list.
  */
-internal fun List<OwnerParameters>.validate() {
+internal fun List<OwnerParameters>.validate(required: Boolean, ownerType: OwnerType) {
+    if (required && this.isEmpty()) {
+        throw InvalidOwnersException(
+            String.format(
+                ErrorInformation.OWNERS_VALIDATION_EMPTY_ERROR,
+                ownerType.description
+            )
+        )
+    } else if (!required && this.isEmpty()) {
+        return
+    }
+
     val numberOfPrimaryOwners = this.filter { it.isPrimaryForTransaction }.size
 
     check(numberOfPrimaryOwners != 0) {
-        throw InvalidOwnersException(ErrorInformation.OWNERS_VALIDATION_NO_PRIMARY_OWNER)
+        throw InvalidOwnersException(
+            String.format(
+                ErrorInformation.OWNERS_VALIDATION_NO_PRIMARY_OWNER,
+                ownerType.description
+            )
+        )
     }
 
     check(numberOfPrimaryOwners <= 1) {
-        throw InvalidOwnersException(ErrorInformation.OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS)
+        throw InvalidOwnersException(
+            String.format(
+                ErrorInformation.OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS,
+                ownerType.description
+            )
+        )
     }
 }
 
