@@ -33,8 +33,8 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
         .setSenderSignature("".toByteString())
 
-    this.outputs.forEach { output ->
-        invoiceRequestBuilder.addOutputs(output.toMessageOutput())
+    this.originatorsAddresses.forEach { output ->
+        invoiceRequestBuilder.addOriginatorsAddresses(output.toMessageOutput())
     }
 
     attestationsRequested.forEach {
@@ -65,9 +65,9 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: P
         originators.add(messageOriginator.toOriginator())
     }
 
-    val outputs = mutableListOf<Output>()
-    this.outputsList.forEach { messageOutput ->
-        outputs.add(messageOutput.toOutput())
+    val originatorsAddresses = mutableListOf<Output>()
+    this.originatorsAddressesList.forEach { messageOutput ->
+        originatorsAddresses.add(messageOutput.toOutput())
     }
 
     val attestationsRequested = mutableListOf<Attestation>()
@@ -81,7 +81,7 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: P
         notificationUrl = this.notificationUrl,
         originators = originators,
         beneficiaries = beneficiaries,
-        outputs = outputs,
+        originatorsAddresses = originatorsAddresses,
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),
@@ -118,9 +118,9 @@ internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: P
         beneficiaries.add(messageBeneficiary.toBeneficiary())
     }
 
-    val outputs = mutableListOf<Output>()
-    paymentDetails.outputsList.forEach { messageOutput ->
-        outputs.add(messageOutput.toOutput())
+    val beneficiariesAddresses = mutableListOf<Output>()
+    paymentDetails.beneficiariesAddressesList.forEach { messageOutput ->
+        beneficiariesAddresses.add(messageOutput.toOutput())
     }
 
     val attestationsRequested = mutableListOf<Attestation>()
@@ -131,7 +131,7 @@ internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: P
     return PaymentRequest(
         paymentDetailsVersion = this.paymentDetailsVersion,
         network = paymentDetails.network,
-        outputs = outputs,
+        beneficiariesAddresses = beneficiariesAddresses,
         time = Timestamp(paymentDetails.time),
         expires = Timestamp(paymentDetails.expires),
         memo = paymentDetails.memo,
@@ -186,8 +186,8 @@ internal fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.Paymen
         .setPaymentUrl(this.paymentUrl)
         .setMerchantData(this.merchantData?.toByteString())
 
-    this.outputs.forEach { output ->
-        messagePaymentDetailsBuilder.addOutputs(output.toMessageOutput())
+    this.beneficiariesAddresses.forEach { output ->
+        messagePaymentDetailsBuilder.addBeneficiariesAddresses(output.toMessageOutput())
     }
 
     return messagePaymentDetailsBuilder.build()

@@ -30,9 +30,9 @@ data class InvoiceRequest @JvmOverloads constructor(
     val beneficiaries: List<Beneficiary> = emptyList(),
 
     /**
-     * One or more outputs where Bitcoins are to be sent.
+     * Where the payment comes from.
      */
-    val outputs: List<Output> = emptyList(),
+    val originatorsAddresses: List<Output> = emptyList(),
 
     /**
      * List of attestations requested

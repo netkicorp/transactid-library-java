@@ -75,7 +75,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -100,7 +100,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -126,7 +126,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -152,7 +152,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -178,7 +178,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -201,7 +201,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             senderParameters = sender,
             attestationsRequested = REQUESTED_ATTESTATIONS
@@ -223,7 +223,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = emptyList(),
             senderParameters = sender,
@@ -249,7 +249,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -279,7 +279,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -309,7 +309,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -357,7 +357,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -382,7 +382,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = emptyList(),
             senderParameters = sender,
@@ -412,7 +412,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -450,7 +450,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -480,7 +480,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -510,7 +510,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -527,7 +527,7 @@ internal class TransactIdTest {
         assert(invoiceRequestParameters.memo == invoiceRequest.memo)
         assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
-        assert(OUTPUTS.size == invoiceRequest.outputs.size)
+        assert(OUTPUTS.size == invoiceRequest.originatorsAddresses.size)
 
         assert(invoiceRequest.originators.size == 2)
         assert(invoiceRequest.beneficiaries.size == 1)
@@ -573,7 +573,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -635,7 +635,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -650,7 +650,7 @@ internal class TransactIdTest {
         assert(invoiceRequestParameters.memo == invoiceRequest.memo)
         assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
-        assert(OUTPUTS.size == invoiceRequest.outputs.size)
+        assert(OUTPUTS.size == invoiceRequest.originatorsAddresses.size)
 
         assert(invoiceRequest.originators.size == 2)
         assert(invoiceRequest.beneficiaries.size == 1)
@@ -691,7 +691,7 @@ internal class TransactIdTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = OUTPUTS,
+            originatorsAddresses = OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = emptyList(),
             senderParameters = sender,
@@ -707,7 +707,7 @@ internal class TransactIdTest {
         assert(invoiceRequestParameters.memo == invoiceRequest.memo)
         assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
-        assert(OUTPUTS.size == invoiceRequest.outputs.size)
+        assert(OUTPUTS.size == invoiceRequest.originatorsAddresses.size)
 
         assert(invoiceRequest.originators.size == 2)
         assert(invoiceRequest.beneficiaries.isEmpty())
@@ -754,7 +754,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -778,7 +778,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -803,7 +803,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -828,7 +828,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_NONE
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -853,7 +853,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_NONE
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -878,7 +878,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -903,7 +903,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -928,7 +928,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -957,7 +957,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -986,7 +986,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1033,7 +1033,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_NONE
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1096,7 +1096,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1112,13 +1112,12 @@ internal class TransactIdTest {
         val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary)
 
         assert(paymentRequest.network == paymentRequestParameters.network)
-        assert(paymentRequest.outputs == paymentRequestParameters.outputs)
         assert(paymentRequest.time == paymentRequestParameters.time)
         assert(paymentRequest.expires == paymentRequestParameters.expires)
         assert(paymentRequest.memo == paymentRequestParameters.memo)
         assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
         assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
-        assert(paymentRequest.outputs.size == paymentRequestParameters.outputs.size)
+        assert(paymentRequest.beneficiariesAddresses.size == paymentRequestParameters.beneficiariesAddresses.size)
 
         assert(paymentRequest.beneficiaries.size == 2)
         paymentRequest.beneficiaries.forEachIndexed() { index, beneficiary ->
@@ -1154,7 +1153,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1171,13 +1170,13 @@ internal class TransactIdTest {
         val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary)
 
         assert(paymentRequest.network == paymentRequestParameters.network)
-        assert(paymentRequest.outputs == paymentRequestParameters.outputs)
+        assert(paymentRequest.beneficiariesAddresses == paymentRequestParameters.beneficiariesAddresses)
         assert(paymentRequest.time == paymentRequestParameters.time)
         assert(paymentRequest.expires == paymentRequestParameters.expires)
         assert(paymentRequest.memo == paymentRequestParameters.memo)
         assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
         assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
-        assert(paymentRequest.outputs.size == paymentRequestParameters.outputs.size)
+        assert(paymentRequest.beneficiariesAddresses.size == paymentRequestParameters.beneficiariesAddresses.size)
 
         assert(paymentRequest.beneficiaries.size == 2)
         paymentRequest.beneficiaries.forEachIndexed() { index, beneficiary ->
@@ -1223,7 +1222,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1250,7 +1249,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1279,7 +1278,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1316,7 +1315,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1345,7 +1344,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1373,7 +1372,7 @@ internal class TransactIdTest {
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = OUTPUTS,
+            beneficiariesAddresses = OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -1391,13 +1390,13 @@ internal class TransactIdTest {
         val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION)
 
         assert(paymentRequest.network == paymentRequestParameters.network)
-        assert(paymentRequest.outputs == paymentRequestParameters.outputs)
+        assert(paymentRequest.beneficiariesAddresses == paymentRequestParameters.beneficiariesAddresses)
         assert(paymentRequest.time == paymentRequestParameters.time)
         assert(paymentRequest.expires == paymentRequestParameters.expires)
         assert(paymentRequest.memo == paymentRequestParameters.memo)
         assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
         assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
-        assert(paymentRequest.outputs.size == paymentRequestParameters.outputs.size)
+        assert(paymentRequest.beneficiariesAddresses.size == paymentRequestParameters.beneficiariesAddresses.size)
 
         assert(paymentRequest.beneficiaries.size == 2)
         paymentRequest.beneficiaries.forEachIndexed { index, beneficiary ->

@@ -773,43 +773,43 @@ public final class Messages {
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
     java.util.List<com.netki.bip75.protocol.Messages.Output> 
-        getOutputsList();
+        getOriginatorsAddressesList();
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    com.netki.bip75.protocol.Messages.Output getOutputs(int index);
+    com.netki.bip75.protocol.Messages.Output getOriginatorsAddresses(int index);
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    int getOutputsCount();
+    int getOriginatorsAddressesCount();
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
     java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-        getOutputsOrBuilderList();
+        getOriginatorsAddressesOrBuilderList();
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+    com.netki.bip75.protocol.Messages.OutputOrBuilder getOriginatorsAddressesOrBuilder(
         int index);
 
     /**
@@ -983,7 +983,7 @@ public final class Messages {
       notificationUrl_ = "";
       originators_ = java.util.Collections.emptyList();
       beneficiaries_ = java.util.Collections.emptyList();
-      outputs_ = java.util.Collections.emptyList();
+      originatorsAddresses_ = java.util.Collections.emptyList();
       attestationsRequested_ = java.util.Collections.emptyList();
       senderPkiType_ = "none";
       senderPkiData_ = com.google.protobuf.ByteString.EMPTY;
@@ -1060,10 +1060,10 @@ public final class Messages {
             }
             case 50: {
               if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-                outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
+                originatorsAddresses_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
                 mutable_bitField0_ |= 0x00000020;
               }
-              outputs_.add(
+              originatorsAddresses_.add(
                   input.readMessage(com.netki.bip75.protocol.Messages.Output.PARSER, extensionRegistry));
               break;
             }
@@ -1152,7 +1152,7 @@ public final class Messages {
           beneficiaries_ = java.util.Collections.unmodifiableList(beneficiaries_);
         }
         if (((mutable_bitField0_ & 0x00000020) != 0)) {
-          outputs_ = java.util.Collections.unmodifiableList(outputs_);
+          originatorsAddresses_ = java.util.Collections.unmodifiableList(originatorsAddresses_);
         }
         if (((mutable_bitField0_ & 0x00000040) != 0)) {
           attestationsRequested_ = java.util.Collections.unmodifiableList(attestationsRequested_);
@@ -1424,59 +1424,59 @@ public final class Messages {
       return beneficiaries_.get(index);
     }
 
-    public static final int OUTPUTS_FIELD_NUMBER = 6;
-    private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_;
+    public static final int ORIGINATORSADDRESSES_FIELD_NUMBER = 6;
+    private java.util.List<com.netki.bip75.protocol.Messages.Output> originatorsAddresses_;
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
-      return outputs_;
+    public java.util.List<com.netki.bip75.protocol.Messages.Output> getOriginatorsAddressesList() {
+      return originatorsAddresses_;
     }
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
     public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-        getOutputsOrBuilderList() {
-      return outputs_;
+        getOriginatorsAddressesOrBuilderList() {
+      return originatorsAddresses_;
     }
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    public int getOutputsCount() {
-      return outputs_.size();
+    public int getOriginatorsAddressesCount() {
+      return originatorsAddresses_.size();
     }
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
-      return outputs_.get(index);
+    public com.netki.bip75.protocol.Messages.Output getOriginatorsAddresses(int index) {
+      return originatorsAddresses_.get(index);
     }
     /**
      * <pre>
      * Where the payment comes from
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 6;</code>
+     * <code>repeated .payments.Output originatorsAddresses = 6;</code>
      */
-    public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+    public com.netki.bip75.protocol.Messages.OutputOrBuilder getOriginatorsAddressesOrBuilder(
         int index) {
-      return outputs_.get(index);
+      return originatorsAddresses_.get(index);
     }
 
     public static final int ATTESTATIONSREQUESTED_FIELD_NUMBER = 7;
@@ -1788,8 +1788,8 @@ public final class Messages {
       for (int i = 0; i < beneficiaries_.size(); i++) {
         output.writeMessage(5, beneficiaries_.get(i));
       }
-      for (int i = 0; i < outputs_.size(); i++) {
-        output.writeMessage(6, outputs_.get(i));
+      for (int i = 0; i < originatorsAddresses_.size(); i++) {
+        output.writeMessage(6, originatorsAddresses_.get(i));
       }
       for (int i = 0; i < attestationsRequested_.size(); i++) {
         output.writeEnum(7, attestationsRequested_.get(i));
@@ -1836,9 +1836,9 @@ public final class Messages {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, beneficiaries_.get(i));
       }
-      for (int i = 0; i < outputs_.size(); i++) {
+      for (int i = 0; i < originatorsAddresses_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, outputs_.get(i));
+          .computeMessageSize(6, originatorsAddresses_.get(i));
       }
       {
         int dataSize = 0;
@@ -1900,8 +1900,8 @@ public final class Messages {
           .equals(other.getOriginatorsList())) return false;
       if (!getBeneficiariesList()
           .equals(other.getBeneficiariesList())) return false;
-      if (!getOutputsList()
-          .equals(other.getOutputsList())) return false;
+      if (!getOriginatorsAddressesList()
+          .equals(other.getOriginatorsAddressesList())) return false;
       if (!attestationsRequested_.equals(other.attestationsRequested_)) return false;
       if (hasSenderPkiType() != other.hasSenderPkiType()) return false;
       if (hasSenderPkiType()) {
@@ -1960,9 +1960,9 @@ public final class Messages {
         hash = (37 * hash) + BENEFICIARIES_FIELD_NUMBER;
         hash = (53 * hash) + getBeneficiariesList().hashCode();
       }
-      if (getOutputsCount() > 0) {
-        hash = (37 * hash) + OUTPUTS_FIELD_NUMBER;
-        hash = (53 * hash) + getOutputsList().hashCode();
+      if (getOriginatorsAddressesCount() > 0) {
+        hash = (37 * hash) + ORIGINATORSADDRESSES_FIELD_NUMBER;
+        hash = (53 * hash) + getOriginatorsAddressesList().hashCode();
       }
       if (getAttestationsRequestedCount() > 0) {
         hash = (37 * hash) + ATTESTATIONSREQUESTED_FIELD_NUMBER;
@@ -2118,7 +2118,7 @@ public final class Messages {
                 .alwaysUseFieldBuilders) {
           getOriginatorsFieldBuilder();
           getBeneficiariesFieldBuilder();
-          getOutputsFieldBuilder();
+          getOriginatorsAddressesFieldBuilder();
         }
       }
       @java.lang.Override
@@ -2142,11 +2142,11 @@ public final class Messages {
         } else {
           beneficiariesBuilder_.clear();
         }
-        if (outputsBuilder_ == null) {
-          outputs_ = java.util.Collections.emptyList();
+        if (originatorsAddressesBuilder_ == null) {
+          originatorsAddresses_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000020);
         } else {
-          outputsBuilder_.clear();
+          originatorsAddressesBuilder_.clear();
         }
         attestationsRequested_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -2218,14 +2218,14 @@ public final class Messages {
         } else {
           result.beneficiaries_ = beneficiariesBuilder_.build();
         }
-        if (outputsBuilder_ == null) {
+        if (originatorsAddressesBuilder_ == null) {
           if (((bitField0_ & 0x00000020) != 0)) {
-            outputs_ = java.util.Collections.unmodifiableList(outputs_);
+            originatorsAddresses_ = java.util.Collections.unmodifiableList(originatorsAddresses_);
             bitField0_ = (bitField0_ & ~0x00000020);
           }
-          result.outputs_ = outputs_;
+          result.originatorsAddresses_ = originatorsAddresses_;
         } else {
-          result.outputs_ = outputsBuilder_.build();
+          result.originatorsAddresses_ = originatorsAddressesBuilder_.build();
         }
         if (((bitField0_ & 0x00000040) != 0)) {
           attestationsRequested_ = java.util.Collections.unmodifiableList(attestationsRequested_);
@@ -2366,29 +2366,29 @@ public final class Messages {
             }
           }
         }
-        if (outputsBuilder_ == null) {
-          if (!other.outputs_.isEmpty()) {
-            if (outputs_.isEmpty()) {
-              outputs_ = other.outputs_;
+        if (originatorsAddressesBuilder_ == null) {
+          if (!other.originatorsAddresses_.isEmpty()) {
+            if (originatorsAddresses_.isEmpty()) {
+              originatorsAddresses_ = other.originatorsAddresses_;
               bitField0_ = (bitField0_ & ~0x00000020);
             } else {
-              ensureOutputsIsMutable();
-              outputs_.addAll(other.outputs_);
+              ensureOriginatorsAddressesIsMutable();
+              originatorsAddresses_.addAll(other.originatorsAddresses_);
             }
             onChanged();
           }
         } else {
-          if (!other.outputs_.isEmpty()) {
-            if (outputsBuilder_.isEmpty()) {
-              outputsBuilder_.dispose();
-              outputsBuilder_ = null;
-              outputs_ = other.outputs_;
+          if (!other.originatorsAddresses_.isEmpty()) {
+            if (originatorsAddressesBuilder_.isEmpty()) {
+              originatorsAddressesBuilder_.dispose();
+              originatorsAddressesBuilder_ = null;
+              originatorsAddresses_ = other.originatorsAddresses_;
               bitField0_ = (bitField0_ & ~0x00000020);
-              outputsBuilder_ = 
+              originatorsAddressesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getOutputsFieldBuilder() : null;
+                   getOriginatorsAddressesFieldBuilder() : null;
             } else {
-              outputsBuilder_.addAllMessages(other.outputs_);
+              originatorsAddressesBuilder_.addAllMessages(other.originatorsAddresses_);
             }
           }
         }
@@ -3356,30 +3356,30 @@ public final class Messages {
         return beneficiariesBuilder_;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Output> originatorsAddresses_ =
         java.util.Collections.emptyList();
-      private void ensureOutputsIsMutable() {
+      private void ensureOriginatorsAddressesIsMutable() {
         if (!((bitField0_ & 0x00000020) != 0)) {
-          outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(outputs_);
+          originatorsAddresses_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(originatorsAddresses_);
           bitField0_ |= 0x00000020;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> outputsBuilder_;
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> originatorsAddressesBuilder_;
 
       /**
        * <pre>
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
-        if (outputsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(outputs_);
+      public java.util.List<com.netki.bip75.protocol.Messages.Output> getOriginatorsAddressesList() {
+        if (originatorsAddressesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(originatorsAddresses_);
         } else {
-          return outputsBuilder_.getMessageList();
+          return originatorsAddressesBuilder_.getMessageList();
         }
       }
       /**
@@ -3387,13 +3387,13 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public int getOutputsCount() {
-        if (outputsBuilder_ == null) {
-          return outputs_.size();
+      public int getOriginatorsAddressesCount() {
+        if (originatorsAddressesBuilder_ == null) {
+          return originatorsAddresses_.size();
         } else {
-          return outputsBuilder_.getCount();
+          return originatorsAddressesBuilder_.getCount();
         }
       }
       /**
@@ -3401,13 +3401,13 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
-        if (outputsBuilder_ == null) {
-          return outputs_.get(index);
+      public com.netki.bip75.protocol.Messages.Output getOriginatorsAddresses(int index) {
+        if (originatorsAddressesBuilder_ == null) {
+          return originatorsAddresses_.get(index);
         } else {
-          return outputsBuilder_.getMessage(index);
+          return originatorsAddressesBuilder_.getMessage(index);
         }
       }
       /**
@@ -3415,19 +3415,19 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder setOutputs(
+      public Builder setOriginatorsAddresses(
           int index, com.netki.bip75.protocol.Messages.Output value) {
-        if (outputsBuilder_ == null) {
+        if (originatorsAddressesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureOutputsIsMutable();
-          outputs_.set(index, value);
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.set(index, value);
           onChanged();
         } else {
-          outputsBuilder_.setMessage(index, value);
+          originatorsAddressesBuilder_.setMessage(index, value);
         }
         return this;
       }
@@ -3436,16 +3436,16 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder setOutputs(
+      public Builder setOriginatorsAddresses(
           int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.set(index, builderForValue.build());
+        if (originatorsAddressesBuilder_ == null) {
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.set(index, builderForValue.build());
           onChanged();
         } else {
-          outputsBuilder_.setMessage(index, builderForValue.build());
+          originatorsAddressesBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
@@ -3454,18 +3454,18 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder addOutputs(com.netki.bip75.protocol.Messages.Output value) {
-        if (outputsBuilder_ == null) {
+      public Builder addOriginatorsAddresses(com.netki.bip75.protocol.Messages.Output value) {
+        if (originatorsAddressesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureOutputsIsMutable();
-          outputs_.add(value);
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.add(value);
           onChanged();
         } else {
-          outputsBuilder_.addMessage(value);
+          originatorsAddressesBuilder_.addMessage(value);
         }
         return this;
       }
@@ -3474,19 +3474,19 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder addOutputs(
+      public Builder addOriginatorsAddresses(
           int index, com.netki.bip75.protocol.Messages.Output value) {
-        if (outputsBuilder_ == null) {
+        if (originatorsAddressesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureOutputsIsMutable();
-          outputs_.add(index, value);
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.add(index, value);
           onChanged();
         } else {
-          outputsBuilder_.addMessage(index, value);
+          originatorsAddressesBuilder_.addMessage(index, value);
         }
         return this;
       }
@@ -3495,16 +3495,16 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder addOutputs(
+      public Builder addOriginatorsAddresses(
           com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.add(builderForValue.build());
+        if (originatorsAddressesBuilder_ == null) {
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.add(builderForValue.build());
           onChanged();
         } else {
-          outputsBuilder_.addMessage(builderForValue.build());
+          originatorsAddressesBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
@@ -3513,16 +3513,16 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder addOutputs(
+      public Builder addOriginatorsAddresses(
           int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.add(index, builderForValue.build());
+        if (originatorsAddressesBuilder_ == null) {
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.add(index, builderForValue.build());
           onChanged();
         } else {
-          outputsBuilder_.addMessage(index, builderForValue.build());
+          originatorsAddressesBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
@@ -3531,17 +3531,17 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder addAllOutputs(
+      public Builder addAllOriginatorsAddresses(
           java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Output> values) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
+        if (originatorsAddressesBuilder_ == null) {
+          ensureOriginatorsAddressesIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, outputs_);
+              values, originatorsAddresses_);
           onChanged();
         } else {
-          outputsBuilder_.addAllMessages(values);
+          originatorsAddressesBuilder_.addAllMessages(values);
         }
         return this;
       }
@@ -3550,15 +3550,15 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder clearOutputs() {
-        if (outputsBuilder_ == null) {
-          outputs_ = java.util.Collections.emptyList();
+      public Builder clearOriginatorsAddresses() {
+        if (originatorsAddressesBuilder_ == null) {
+          originatorsAddresses_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000020);
           onChanged();
         } else {
-          outputsBuilder_.clear();
+          originatorsAddressesBuilder_.clear();
         }
         return this;
       }
@@ -3567,15 +3567,15 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public Builder removeOutputs(int index) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.remove(index);
+      public Builder removeOriginatorsAddresses(int index) {
+        if (originatorsAddressesBuilder_ == null) {
+          ensureOriginatorsAddressesIsMutable();
+          originatorsAddresses_.remove(index);
           onChanged();
         } else {
-          outputsBuilder_.remove(index);
+          originatorsAddressesBuilder_.remove(index);
         }
         return this;
       }
@@ -3584,24 +3584,24 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output.Builder getOutputsBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder getOriginatorsAddressesBuilder(
           int index) {
-        return getOutputsFieldBuilder().getBuilder(index);
+        return getOriginatorsAddressesFieldBuilder().getBuilder(index);
       }
       /**
        * <pre>
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+      public com.netki.bip75.protocol.Messages.OutputOrBuilder getOriginatorsAddressesOrBuilder(
           int index) {
-        if (outputsBuilder_ == null) {
-          return outputs_.get(index);  } else {
-          return outputsBuilder_.getMessageOrBuilder(index);
+        if (originatorsAddressesBuilder_ == null) {
+          return originatorsAddresses_.get(index);  } else {
+          return originatorsAddressesBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
@@ -3609,14 +3609,14 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
       public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-           getOutputsOrBuilderList() {
-        if (outputsBuilder_ != null) {
-          return outputsBuilder_.getMessageOrBuilderList();
+           getOriginatorsAddressesOrBuilderList() {
+        if (originatorsAddressesBuilder_ != null) {
+          return originatorsAddressesBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(outputs_);
+          return java.util.Collections.unmodifiableList(originatorsAddresses_);
         }
       }
       /**
@@ -3624,10 +3624,10 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder() {
-        return getOutputsFieldBuilder().addBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder addOriginatorsAddressesBuilder() {
+        return getOriginatorsAddressesFieldBuilder().addBuilder(
             com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
@@ -3635,11 +3635,11 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder addOriginatorsAddressesBuilder(
           int index) {
-        return getOutputsFieldBuilder().addBuilder(
+        return getOriginatorsAddressesFieldBuilder().addBuilder(
             index, com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
@@ -3647,25 +3647,25 @@ public final class Messages {
        * Where the payment comes from
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 6;</code>
+       * <code>repeated .payments.Output originatorsAddresses = 6;</code>
        */
       public java.util.List<com.netki.bip75.protocol.Messages.Output.Builder> 
-           getOutputsBuilderList() {
-        return getOutputsFieldBuilder().getBuilderList();
+           getOriginatorsAddressesBuilderList() {
+        return getOriginatorsAddressesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
           com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-          getOutputsFieldBuilder() {
-        if (outputsBuilder_ == null) {
-          outputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+          getOriginatorsAddressesFieldBuilder() {
+        if (originatorsAddressesBuilder_ == null) {
+          originatorsAddressesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder>(
-                  outputs_,
+                  originatorsAddresses_,
                   ((bitField0_ & 0x00000020) != 0),
                   getParentForChildren(),
                   isClean());
-          outputs_ = null;
+          originatorsAddresses_ = null;
         }
-        return outputsBuilder_;
+        return originatorsAddressesBuilder_;
       }
 
       private java.util.List<java.lang.Integer> attestationsRequested_ =
@@ -12745,43 +12745,43 @@ public final class Messages {
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
     java.util.List<com.netki.bip75.protocol.Messages.Output> 
-        getOutputsList();
+        getBeneficiariesAddressesList();
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    com.netki.bip75.protocol.Messages.Output getOutputs(int index);
+    com.netki.bip75.protocol.Messages.Output getBeneficiariesAddresses(int index);
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    int getOutputsCount();
+    int getBeneficiariesAddressesCount();
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
     java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-        getOutputsOrBuilderList();
+        getBeneficiariesAddressesOrBuilderList();
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+    com.netki.bip75.protocol.Messages.OutputOrBuilder getBeneficiariesAddressesOrBuilder(
         int index);
 
     /**
@@ -12913,7 +12913,7 @@ public final class Messages {
     }
     private PaymentDetails() {
       network_ = "main";
-      outputs_ = java.util.Collections.emptyList();
+      beneficiariesAddresses_ = java.util.Collections.emptyList();
       memo_ = "";
       paymentUrl_ = "";
       merchantData_ = com.google.protobuf.ByteString.EMPTY;
@@ -12958,10 +12958,10 @@ public final class Messages {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
+                beneficiariesAddresses_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              outputs_.add(
+              beneficiariesAddresses_.add(
                   input.readMessage(com.netki.bip75.protocol.Messages.Output.PARSER, extensionRegistry));
               break;
             }
@@ -13008,7 +13008,7 @@ public final class Messages {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          outputs_ = java.util.Collections.unmodifiableList(outputs_);
+          beneficiariesAddresses_ = java.util.Collections.unmodifiableList(beneficiariesAddresses_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -13085,59 +13085,59 @@ public final class Messages {
       }
     }
 
-    public static final int OUTPUTS_FIELD_NUMBER = 2;
-    private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_;
+    public static final int BENEFICIARIESADDRESSES_FIELD_NUMBER = 2;
+    private java.util.List<com.netki.bip75.protocol.Messages.Output> beneficiariesAddresses_;
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
-      return outputs_;
+    public java.util.List<com.netki.bip75.protocol.Messages.Output> getBeneficiariesAddressesList() {
+      return beneficiariesAddresses_;
     }
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
     public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-        getOutputsOrBuilderList() {
-      return outputs_;
+        getBeneficiariesAddressesOrBuilderList() {
+      return beneficiariesAddresses_;
     }
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    public int getOutputsCount() {
-      return outputs_.size();
+    public int getBeneficiariesAddressesCount() {
+      return beneficiariesAddresses_.size();
     }
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
-      return outputs_.get(index);
+    public com.netki.bip75.protocol.Messages.Output getBeneficiariesAddresses(int index) {
+      return beneficiariesAddresses_.get(index);
     }
     /**
      * <pre>
      * Where payment should be sent
      * </pre>
      *
-     * <code>repeated .payments.Output outputs = 2;</code>
+     * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
      */
-    public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+    public com.netki.bip75.protocol.Messages.OutputOrBuilder getBeneficiariesAddressesOrBuilder(
         int index) {
-      return outputs_.get(index);
+      return beneficiariesAddresses_.get(index);
     }
 
     public static final int TIME_FIELD_NUMBER = 3;
@@ -13350,8 +13350,8 @@ public final class Messages {
       if (((bitField0_ & 0x00000001) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, network_);
       }
-      for (int i = 0; i < outputs_.size(); i++) {
-        output.writeMessage(2, outputs_.get(i));
+      for (int i = 0; i < beneficiariesAddresses_.size(); i++) {
+        output.writeMessage(2, beneficiariesAddresses_.get(i));
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         output.writeUInt64(3, time_);
@@ -13380,9 +13380,9 @@ public final class Messages {
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, network_);
       }
-      for (int i = 0; i < outputs_.size(); i++) {
+      for (int i = 0; i < beneficiariesAddresses_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, outputs_.get(i));
+          .computeMessageSize(2, beneficiariesAddresses_.get(i));
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
@@ -13422,8 +13422,8 @@ public final class Messages {
         if (!getNetwork()
             .equals(other.getNetwork())) return false;
       }
-      if (!getOutputsList()
-          .equals(other.getOutputsList())) return false;
+      if (!getBeneficiariesAddressesList()
+          .equals(other.getBeneficiariesAddressesList())) return false;
       if (hasTime() != other.hasTime()) return false;
       if (hasTime()) {
         if (getTime()
@@ -13464,9 +13464,9 @@ public final class Messages {
         hash = (37 * hash) + NETWORK_FIELD_NUMBER;
         hash = (53 * hash) + getNetwork().hashCode();
       }
-      if (getOutputsCount() > 0) {
-        hash = (37 * hash) + OUTPUTS_FIELD_NUMBER;
-        hash = (53 * hash) + getOutputsList().hashCode();
+      if (getBeneficiariesAddressesCount() > 0) {
+        hash = (37 * hash) + BENEFICIARIESADDRESSES_FIELD_NUMBER;
+        hash = (53 * hash) + getBeneficiariesAddressesList().hashCode();
       }
       if (hasTime()) {
         hash = (37 * hash) + TIME_FIELD_NUMBER;
@@ -13618,7 +13618,7 @@ public final class Messages {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getOutputsFieldBuilder();
+          getBeneficiariesAddressesFieldBuilder();
         }
       }
       @java.lang.Override
@@ -13626,11 +13626,11 @@ public final class Messages {
         super.clear();
         network_ = "main";
         bitField0_ = (bitField0_ & ~0x00000001);
-        if (outputsBuilder_ == null) {
-          outputs_ = java.util.Collections.emptyList();
+        if (beneficiariesAddressesBuilder_ == null) {
+          beneficiariesAddresses_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
         } else {
-          outputsBuilder_.clear();
+          beneficiariesAddressesBuilder_.clear();
         }
         time_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -13674,14 +13674,14 @@ public final class Messages {
           to_bitField0_ |= 0x00000001;
         }
         result.network_ = network_;
-        if (outputsBuilder_ == null) {
+        if (beneficiariesAddressesBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0)) {
-            outputs_ = java.util.Collections.unmodifiableList(outputs_);
+            beneficiariesAddresses_ = java.util.Collections.unmodifiableList(beneficiariesAddresses_);
             bitField0_ = (bitField0_ & ~0x00000002);
           }
-          result.outputs_ = outputs_;
+          result.beneficiariesAddresses_ = beneficiariesAddresses_;
         } else {
-          result.outputs_ = outputsBuilder_.build();
+          result.beneficiariesAddresses_ = beneficiariesAddressesBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.time_ = time_;
@@ -13757,29 +13757,29 @@ public final class Messages {
           network_ = other.network_;
           onChanged();
         }
-        if (outputsBuilder_ == null) {
-          if (!other.outputs_.isEmpty()) {
-            if (outputs_.isEmpty()) {
-              outputs_ = other.outputs_;
+        if (beneficiariesAddressesBuilder_ == null) {
+          if (!other.beneficiariesAddresses_.isEmpty()) {
+            if (beneficiariesAddresses_.isEmpty()) {
+              beneficiariesAddresses_ = other.beneficiariesAddresses_;
               bitField0_ = (bitField0_ & ~0x00000002);
             } else {
-              ensureOutputsIsMutable();
-              outputs_.addAll(other.outputs_);
+              ensureBeneficiariesAddressesIsMutable();
+              beneficiariesAddresses_.addAll(other.beneficiariesAddresses_);
             }
             onChanged();
           }
         } else {
-          if (!other.outputs_.isEmpty()) {
-            if (outputsBuilder_.isEmpty()) {
-              outputsBuilder_.dispose();
-              outputsBuilder_ = null;
-              outputs_ = other.outputs_;
+          if (!other.beneficiariesAddresses_.isEmpty()) {
+            if (beneficiariesAddressesBuilder_.isEmpty()) {
+              beneficiariesAddressesBuilder_.dispose();
+              beneficiariesAddressesBuilder_ = null;
+              beneficiariesAddresses_ = other.beneficiariesAddresses_;
               bitField0_ = (bitField0_ & ~0x00000002);
-              outputsBuilder_ = 
+              beneficiariesAddressesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getOutputsFieldBuilder() : null;
+                   getBeneficiariesAddressesFieldBuilder() : null;
             } else {
-              outputsBuilder_.addAllMessages(other.outputs_);
+              beneficiariesAddressesBuilder_.addAllMessages(other.beneficiariesAddresses_);
             }
           }
         }
@@ -13943,30 +13943,30 @@ public final class Messages {
         return this;
       }
 
-      private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_ =
+      private java.util.List<com.netki.bip75.protocol.Messages.Output> beneficiariesAddresses_ =
         java.util.Collections.emptyList();
-      private void ensureOutputsIsMutable() {
+      private void ensureBeneficiariesAddressesIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
-          outputs_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(outputs_);
+          beneficiariesAddresses_ = new java.util.ArrayList<com.netki.bip75.protocol.Messages.Output>(beneficiariesAddresses_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> outputsBuilder_;
+          com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> beneficiariesAddressesBuilder_;
 
       /**
        * <pre>
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public java.util.List<com.netki.bip75.protocol.Messages.Output> getOutputsList() {
-        if (outputsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(outputs_);
+      public java.util.List<com.netki.bip75.protocol.Messages.Output> getBeneficiariesAddressesList() {
+        if (beneficiariesAddressesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(beneficiariesAddresses_);
         } else {
-          return outputsBuilder_.getMessageList();
+          return beneficiariesAddressesBuilder_.getMessageList();
         }
       }
       /**
@@ -13974,13 +13974,13 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public int getOutputsCount() {
-        if (outputsBuilder_ == null) {
-          return outputs_.size();
+      public int getBeneficiariesAddressesCount() {
+        if (beneficiariesAddressesBuilder_ == null) {
+          return beneficiariesAddresses_.size();
         } else {
-          return outputsBuilder_.getCount();
+          return beneficiariesAddressesBuilder_.getCount();
         }
       }
       /**
@@ -13988,13 +13988,13 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output getOutputs(int index) {
-        if (outputsBuilder_ == null) {
-          return outputs_.get(index);
+      public com.netki.bip75.protocol.Messages.Output getBeneficiariesAddresses(int index) {
+        if (beneficiariesAddressesBuilder_ == null) {
+          return beneficiariesAddresses_.get(index);
         } else {
-          return outputsBuilder_.getMessage(index);
+          return beneficiariesAddressesBuilder_.getMessage(index);
         }
       }
       /**
@@ -14002,19 +14002,19 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder setOutputs(
+      public Builder setBeneficiariesAddresses(
           int index, com.netki.bip75.protocol.Messages.Output value) {
-        if (outputsBuilder_ == null) {
+        if (beneficiariesAddressesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureOutputsIsMutable();
-          outputs_.set(index, value);
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.set(index, value);
           onChanged();
         } else {
-          outputsBuilder_.setMessage(index, value);
+          beneficiariesAddressesBuilder_.setMessage(index, value);
         }
         return this;
       }
@@ -14023,16 +14023,16 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder setOutputs(
+      public Builder setBeneficiariesAddresses(
           int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.set(index, builderForValue.build());
+        if (beneficiariesAddressesBuilder_ == null) {
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.set(index, builderForValue.build());
           onChanged();
         } else {
-          outputsBuilder_.setMessage(index, builderForValue.build());
+          beneficiariesAddressesBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
@@ -14041,18 +14041,18 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder addOutputs(com.netki.bip75.protocol.Messages.Output value) {
-        if (outputsBuilder_ == null) {
+      public Builder addBeneficiariesAddresses(com.netki.bip75.protocol.Messages.Output value) {
+        if (beneficiariesAddressesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureOutputsIsMutable();
-          outputs_.add(value);
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.add(value);
           onChanged();
         } else {
-          outputsBuilder_.addMessage(value);
+          beneficiariesAddressesBuilder_.addMessage(value);
         }
         return this;
       }
@@ -14061,19 +14061,19 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder addOutputs(
+      public Builder addBeneficiariesAddresses(
           int index, com.netki.bip75.protocol.Messages.Output value) {
-        if (outputsBuilder_ == null) {
+        if (beneficiariesAddressesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureOutputsIsMutable();
-          outputs_.add(index, value);
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.add(index, value);
           onChanged();
         } else {
-          outputsBuilder_.addMessage(index, value);
+          beneficiariesAddressesBuilder_.addMessage(index, value);
         }
         return this;
       }
@@ -14082,16 +14082,16 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder addOutputs(
+      public Builder addBeneficiariesAddresses(
           com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.add(builderForValue.build());
+        if (beneficiariesAddressesBuilder_ == null) {
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.add(builderForValue.build());
           onChanged();
         } else {
-          outputsBuilder_.addMessage(builderForValue.build());
+          beneficiariesAddressesBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
@@ -14100,16 +14100,16 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder addOutputs(
+      public Builder addBeneficiariesAddresses(
           int index, com.netki.bip75.protocol.Messages.Output.Builder builderForValue) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.add(index, builderForValue.build());
+        if (beneficiariesAddressesBuilder_ == null) {
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.add(index, builderForValue.build());
           onChanged();
         } else {
-          outputsBuilder_.addMessage(index, builderForValue.build());
+          beneficiariesAddressesBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
@@ -14118,17 +14118,17 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder addAllOutputs(
+      public Builder addAllBeneficiariesAddresses(
           java.lang.Iterable<? extends com.netki.bip75.protocol.Messages.Output> values) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
+        if (beneficiariesAddressesBuilder_ == null) {
+          ensureBeneficiariesAddressesIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, outputs_);
+              values, beneficiariesAddresses_);
           onChanged();
         } else {
-          outputsBuilder_.addAllMessages(values);
+          beneficiariesAddressesBuilder_.addAllMessages(values);
         }
         return this;
       }
@@ -14137,15 +14137,15 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder clearOutputs() {
-        if (outputsBuilder_ == null) {
-          outputs_ = java.util.Collections.emptyList();
+      public Builder clearBeneficiariesAddresses() {
+        if (beneficiariesAddressesBuilder_ == null) {
+          beneficiariesAddresses_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
-          outputsBuilder_.clear();
+          beneficiariesAddressesBuilder_.clear();
         }
         return this;
       }
@@ -14154,15 +14154,15 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public Builder removeOutputs(int index) {
-        if (outputsBuilder_ == null) {
-          ensureOutputsIsMutable();
-          outputs_.remove(index);
+      public Builder removeBeneficiariesAddresses(int index) {
+        if (beneficiariesAddressesBuilder_ == null) {
+          ensureBeneficiariesAddressesIsMutable();
+          beneficiariesAddresses_.remove(index);
           onChanged();
         } else {
-          outputsBuilder_.remove(index);
+          beneficiariesAddressesBuilder_.remove(index);
         }
         return this;
       }
@@ -14171,24 +14171,24 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output.Builder getOutputsBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder getBeneficiariesAddressesBuilder(
           int index) {
-        return getOutputsFieldBuilder().getBuilder(index);
+        return getBeneficiariesAddressesFieldBuilder().getBuilder(index);
       }
       /**
        * <pre>
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public com.netki.bip75.protocol.Messages.OutputOrBuilder getOutputsOrBuilder(
+      public com.netki.bip75.protocol.Messages.OutputOrBuilder getBeneficiariesAddressesOrBuilder(
           int index) {
-        if (outputsBuilder_ == null) {
-          return outputs_.get(index);  } else {
-          return outputsBuilder_.getMessageOrBuilder(index);
+        if (beneficiariesAddressesBuilder_ == null) {
+          return beneficiariesAddresses_.get(index);  } else {
+          return beneficiariesAddressesBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
@@ -14196,14 +14196,14 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
       public java.util.List<? extends com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-           getOutputsOrBuilderList() {
-        if (outputsBuilder_ != null) {
-          return outputsBuilder_.getMessageOrBuilderList();
+           getBeneficiariesAddressesOrBuilderList() {
+        if (beneficiariesAddressesBuilder_ != null) {
+          return beneficiariesAddressesBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(outputs_);
+          return java.util.Collections.unmodifiableList(beneficiariesAddresses_);
         }
       }
       /**
@@ -14211,10 +14211,10 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder() {
-        return getOutputsFieldBuilder().addBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder addBeneficiariesAddressesBuilder() {
+        return getBeneficiariesAddressesFieldBuilder().addBuilder(
             com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
@@ -14222,11 +14222,11 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
-      public com.netki.bip75.protocol.Messages.Output.Builder addOutputsBuilder(
+      public com.netki.bip75.protocol.Messages.Output.Builder addBeneficiariesAddressesBuilder(
           int index) {
-        return getOutputsFieldBuilder().addBuilder(
+        return getBeneficiariesAddressesFieldBuilder().addBuilder(
             index, com.netki.bip75.protocol.Messages.Output.getDefaultInstance());
       }
       /**
@@ -14234,25 +14234,25 @@ public final class Messages {
        * Where payment should be sent
        * </pre>
        *
-       * <code>repeated .payments.Output outputs = 2;</code>
+       * <code>repeated .payments.Output beneficiariesAddresses = 2;</code>
        */
       public java.util.List<com.netki.bip75.protocol.Messages.Output.Builder> 
-           getOutputsBuilderList() {
-        return getOutputsFieldBuilder().getBuilderList();
+           getBeneficiariesAddressesBuilderList() {
+        return getBeneficiariesAddressesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
           com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder> 
-          getOutputsFieldBuilder() {
-        if (outputsBuilder_ == null) {
-          outputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+          getBeneficiariesAddressesFieldBuilder() {
+        if (beneficiariesAddressesBuilder_ == null) {
+          beneficiariesAddressesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               com.netki.bip75.protocol.Messages.Output, com.netki.bip75.protocol.Messages.Output.Builder, com.netki.bip75.protocol.Messages.OutputOrBuilder>(
-                  outputs_,
+                  beneficiariesAddresses_,
                   ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
-          outputs_ = null;
+          beneficiariesAddresses_ = null;
         }
-        return outputsBuilder_;
+        return beneficiariesAddressesBuilder_;
       }
 
       private long time_ ;
@@ -18809,83 +18809,84 @@ public final class Messages {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rpayment.proto\022\010payments\"\221\003\n\016InvoiceReq" +
+      "\n\rpayment.proto\022\010payments\"\236\003\n\016InvoiceReq" +
       "uest\022\021\n\006amount\030\001 \001(\004:\0010\022\014\n\004memo\030\002 \001(\t\022\030\n" +
       "\020notification_url\030\003 \001(\t\022)\n\013originators\030\004" +
       " \003(\0132\024.payments.Originator\022,\n\rbeneficiar" +
-      "ies\030\005 \003(\0132\025.payments.Beneficiary\022!\n\007outp" +
-      "uts\030\006 \003(\0132\020.payments.Output\0228\n\025attestati" +
-      "onsRequested\030\007 \003(\0162\031.payments.Attestatio" +
-      "nType\022\035\n\017sender_pki_type\030\010 \001(\t:\004none\022\027\n\017" +
-      "sender_pki_data\030\t \001(\014\022\030\n\020sender_signatur" +
-      "e\030\n \001(\014\022\033\n\023recipient_vasp_name\030\013 \001(\t\022\037\n\027" +
-      "recipient_chain_address\030\014 \001(\t\"\222\002\n\016Paymen" +
-      "tRequest\022\"\n\027payment_details_version\030\001 \001(" +
-      "\r:\0011\022\"\n\032serialized_payment_details\030\002 \002(\014" +
-      "\022,\n\rbeneficiaries\030\003 \003(\0132\025.payments.Benef" +
-      "iciary\0228\n\025attestationsRequested\030\004 \003(\0162\031." +
-      "payments.AttestationType\022\035\n\017sender_pki_t" +
-      "ype\030\005 \002(\t:\004none\022\027\n\017sender_pki_data\030\006 \001(\014" +
-      "\022\030\n\020sender_signature\030\007 \001(\014\"\302\001\n\007Payment\022\025" +
-      "\n\rmerchant_data\030\001 \001(\014\022\024\n\014transactions\030\002 " +
-      "\003(\014\022#\n\trefund_to\030\003 \003(\0132\020.payments.Output" +
-      "\022\014\n\004memo\030\004 \001(\t\022)\n\013originators\030\005 \003(\0132\024.pa" +
-      "yments.Originator\022,\n\rbeneficiaries\030\006 \003(\013" +
-      "2\025.payments.Beneficiary\">\n\nPaymentACK\022\"\n" +
-      "\007payment\030\001 \002(\0132\021.payments.Payment\022\014\n\004mem" +
-      "o\030\002 \001(\t\"a\n\013Beneficiary\022%\n\027primary_for_tr" +
-      "ansaction\030\001 \002(\010:\004true\022+\n\014attestations\030\002 " +
-      "\003(\0132\025.payments.Attestation\"`\n\nOriginator" +
-      "\022%\n\027primary_for_transaction\030\001 \002(\010:\004true\022" +
-      "+\n\014attestations\030\002 \003(\0132\025.payments.Attesta" +
-      "tion\"z\n\013Attestation\022.\n\013attestation\030\001 \001(\016" +
-      "2\031.payments.AttestationType\022\026\n\010pki_type\030" +
-      "\002 \001(\t:\004none\022\020\n\010pki_data\030\003 \001(\014\022\021\n\tsignatu" +
-      "re\030\004 \001(\014\"\243\001\n\016PaymentDetails\022\025\n\007network\030\001" +
-      " \001(\t:\004main\022!\n\007outputs\030\002 \003(\0132\020.payments.O" +
-      "utput\022\014\n\004time\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004" +
-      "memo\030\005 \001(\t\022\023\n\013payment_url\030\006 \001(\t\022\025\n\rmerch" +
-      "ant_data\030\007 \001(\014\"U\n\006Output\022\021\n\006amount\030\001 \001(\004" +
-      ":\0010\022\016\n\006script\030\002 \001(\014\022(\n\010currency\030\003 \001(\0162\026." +
-      "payments.CurrencyType\"\272\001\n\017ProtocolMessag" +
-      "e\022\022\n\007version\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002" +
-      "(\004:\0011\0223\n\014message_type\030\003 \002(\0162\035.payments.P" +
-      "rotocolMessageType\022\032\n\022serialized_message" +
-      "\030\004 \002(\014\022\026\n\016status_message\030\005 \001(\t\022\022\n\nidenti" +
-      "fier\030\006 \002(\014\"\234\002\n\030EncryptedProtocolMessage\022" +
-      "\022\n\007version\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004" +
-      ":\0011\0223\n\014message_type\030\003 \002(\0162\035.payments.Pro" +
-      "tocolMessageType\022\031\n\021encrypted_message\030\004 " +
-      "\002(\014\022\033\n\023receiver_public_key\030\005 \002(\014\022\031\n\021send" +
-      "er_public_key\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nid" +
-      "entifier\030\010 \002(\014\022\026\n\016status_message\030\t \001(\t\022\021" +
-      "\n\tsignature\030\n \001(\014*w\n\023ProtocolMessageType" +
-      "\022\030\n\024UNKNOWN_MESSAGE_TYPE\020\000\022\023\n\017INVOICE_RE" +
-      "QUEST\020\001\022\023\n\017PAYMENT_REQUEST\020\002\022\013\n\007PAYMENT\020" +
-      "\003\022\017\n\013PAYMENT_ACK\020\004*\241\006\n\017AttestationType\022\035" +
-      "\n\031LEGAL_PERSON_PRIMARY_NAME\020\000\022\037\n\033LEGAL_P" +
-      "ERSON_SECONDARY_NAME\020\001\022\026\n\022ADDRESS_DEPART" +
-      "MENT\020\002\022\032\n\026ADDRESS_SUB_DEPARTMENT\020\003\022\027\n\023AD" +
-      "DRESS_STREET_NAME\020\004\022\033\n\027ADDRESS_BUILDING_" +
-      "NUMBER\020\005\022\031\n\025ADDRESS_BUILDING_NAME\020\006\022\021\n\rA" +
-      "DDRESS_FLOOR\020\007\022\023\n\017ADDRESS_POSTBOX\020\010\022\020\n\014A" +
-      "DDRESS_ROOM\020\t\022\024\n\020ADDRESS_POSTCODE\020\n\022\025\n\021A" +
-      "DDRESS_TOWN_NAME\020\013\022\036\n\032ADDRESS_TOWN_LOCAT" +
-      "ION_NAME\020\014\022\031\n\025ADDRESS_DISTRICT_NAME\020\r\022 \n" +
-      "\034ADDRESS_COUNTRY_SUB_DIVISION\020\016\022\030\n\024ADDRE" +
-      "SS_ADDRESS_LINE\020\017\022\023\n\017ADDRESS_COUNTRY\020\020\022\035" +
-      "\n\031NATURAL_PERSON_FIRST_NAME\020\021\022\034\n\030NATURAL" +
-      "_PERSON_LAST_NAME\020\022\022!\n\035BENEFICIARY_PERSO" +
-      "N_FIRST_NAME\020\023\022 \n\034BENEFICIARY_PERSON_LAS" +
-      "T_NAME\020\024\022\016\n\nBIRTH_DATE\020\025\022\017\n\013BIRTH_PLACE\020" +
-      "\026\022\030\n\024COUNTRY_OF_RESIDENCE\020\027\022\023\n\017ISSUING_C" +
-      "OUNTRY\020\030\022\036\n\032NATIONAL_IDENTIFIER_NUMBER\020\031" +
-      "\022\027\n\023NATIONAL_IDENTIFIER\020\032\022\022\n\016ACCOUNT_NUM" +
-      "BER\020\033\022\033\n\027CUSTOMER_IDENTIFICATION\020\034\022\032\n\026RE" +
-      "GISTRATION_AUTHORITY\020\035*I\n\014CurrencyType\022\013" +
-      "\n\007BITCOIN\020\000\022\014\n\010ETHEREUM\020\001\022\014\n\010LITECOIN\020\002\022" +
-      "\020\n\014BITCOIN_CASH\020\003B$\n\030com.netki.bip75.pro" +
-      "tocolB\010Messages"
+      "ies\030\005 \003(\0132\025.payments.Beneficiary\022.\n\024orig" +
+      "inatorsAddresses\030\006 \003(\0132\020.payments.Output" +
+      "\0228\n\025attestationsRequested\030\007 \003(\0162\031.paymen" +
+      "ts.AttestationType\022\035\n\017sender_pki_type\030\010 " +
+      "\001(\t:\004none\022\027\n\017sender_pki_data\030\t \001(\014\022\030\n\020se" +
+      "nder_signature\030\n \001(\014\022\033\n\023recipient_vasp_n" +
+      "ame\030\013 \001(\t\022\037\n\027recipient_chain_address\030\014 \001" +
+      "(\t\"\222\002\n\016PaymentRequest\022\"\n\027payment_details" +
+      "_version\030\001 \001(\r:\0011\022\"\n\032serialized_payment_" +
+      "details\030\002 \002(\014\022,\n\rbeneficiaries\030\003 \003(\0132\025.p" +
+      "ayments.Beneficiary\0228\n\025attestationsReque" +
+      "sted\030\004 \003(\0162\031.payments.AttestationType\022\035\n" +
+      "\017sender_pki_type\030\005 \002(\t:\004none\022\027\n\017sender_p" +
+      "ki_data\030\006 \001(\014\022\030\n\020sender_signature\030\007 \001(\014\"" +
+      "\302\001\n\007Payment\022\025\n\rmerchant_data\030\001 \001(\014\022\024\n\014tr" +
+      "ansactions\030\002 \003(\014\022#\n\trefund_to\030\003 \003(\0132\020.pa" +
+      "yments.Output\022\014\n\004memo\030\004 \001(\t\022)\n\013originato" +
+      "rs\030\005 \003(\0132\024.payments.Originator\022,\n\rbenefi" +
+      "ciaries\030\006 \003(\0132\025.payments.Beneficiary\">\n\n" +
+      "PaymentACK\022\"\n\007payment\030\001 \002(\0132\021.payments.P" +
+      "ayment\022\014\n\004memo\030\002 \001(\t\"a\n\013Beneficiary\022%\n\027p" +
+      "rimary_for_transaction\030\001 \002(\010:\004true\022+\n\014at" +
+      "testations\030\002 \003(\0132\025.payments.Attestation\"" +
+      "`\n\nOriginator\022%\n\027primary_for_transaction" +
+      "\030\001 \002(\010:\004true\022+\n\014attestations\030\002 \003(\0132\025.pay" +
+      "ments.Attestation\"z\n\013Attestation\022.\n\013atte" +
+      "station\030\001 \001(\0162\031.payments.AttestationType" +
+      "\022\026\n\010pki_type\030\002 \001(\t:\004none\022\020\n\010pki_data\030\003 \001" +
+      "(\014\022\021\n\tsignature\030\004 \001(\014\"\262\001\n\016PaymentDetails" +
+      "\022\025\n\007network\030\001 \001(\t:\004main\0220\n\026beneficiaries" +
+      "Addresses\030\002 \003(\0132\020.payments.Output\022\014\n\004tim" +
+      "e\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004memo\030\005 \001(\t\022\023" +
+      "\n\013payment_url\030\006 \001(\t\022\025\n\rmerchant_data\030\007 \001" +
+      "(\014\"U\n\006Output\022\021\n\006amount\030\001 \001(\004:\0010\022\016\n\006scrip" +
+      "t\030\002 \001(\014\022(\n\010currency\030\003 \001(\0162\026.payments.Cur" +
+      "rencyType\"\272\001\n\017ProtocolMessage\022\022\n\007version" +
+      "\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014mes" +
+      "sage_type\030\003 \002(\0162\035.payments.ProtocolMessa" +
+      "geType\022\032\n\022serialized_message\030\004 \002(\014\022\026\n\016st" +
+      "atus_message\030\005 \001(\t\022\022\n\nidentifier\030\006 \002(\014\"\234" +
+      "\002\n\030EncryptedProtocolMessage\022\022\n\007version\030\001" +
+      " \002(\004:\0011\022\026\n\013status_code\030\002 \002(\004:\0011\0223\n\014messa" +
+      "ge_type\030\003 \002(\0162\035.payments.ProtocolMessage" +
+      "Type\022\031\n\021encrypted_message\030\004 \002(\014\022\033\n\023recei" +
+      "ver_public_key\030\005 \002(\014\022\031\n\021sender_public_ke" +
+      "y\030\006 \002(\014\022\r\n\005nonce\030\007 \002(\004\022\022\n\nidentifier\030\010 \002" +
+      "(\014\022\026\n\016status_message\030\t \001(\t\022\021\n\tsignature\030" +
+      "\n \001(\014*w\n\023ProtocolMessageType\022\030\n\024UNKNOWN_" +
+      "MESSAGE_TYPE\020\000\022\023\n\017INVOICE_REQUEST\020\001\022\023\n\017P" +
+      "AYMENT_REQUEST\020\002\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMENT" +
+      "_ACK\020\004*\241\006\n\017AttestationType\022\035\n\031LEGAL_PERS" +
+      "ON_PRIMARY_NAME\020\000\022\037\n\033LEGAL_PERSON_SECOND" +
+      "ARY_NAME\020\001\022\026\n\022ADDRESS_DEPARTMENT\020\002\022\032\n\026AD" +
+      "DRESS_SUB_DEPARTMENT\020\003\022\027\n\023ADDRESS_STREET" +
+      "_NAME\020\004\022\033\n\027ADDRESS_BUILDING_NUMBER\020\005\022\031\n\025" +
+      "ADDRESS_BUILDING_NAME\020\006\022\021\n\rADDRESS_FLOOR" +
+      "\020\007\022\023\n\017ADDRESS_POSTBOX\020\010\022\020\n\014ADDRESS_ROOM\020" +
+      "\t\022\024\n\020ADDRESS_POSTCODE\020\n\022\025\n\021ADDRESS_TOWN_" +
+      "NAME\020\013\022\036\n\032ADDRESS_TOWN_LOCATION_NAME\020\014\022\031" +
+      "\n\025ADDRESS_DISTRICT_NAME\020\r\022 \n\034ADDRESS_COU" +
+      "NTRY_SUB_DIVISION\020\016\022\030\n\024ADDRESS_ADDRESS_L" +
+      "INE\020\017\022\023\n\017ADDRESS_COUNTRY\020\020\022\035\n\031NATURAL_PE" +
+      "RSON_FIRST_NAME\020\021\022\034\n\030NATURAL_PERSON_LAST" +
+      "_NAME\020\022\022!\n\035BENEFICIARY_PERSON_FIRST_NAME" +
+      "\020\023\022 \n\034BENEFICIARY_PERSON_LAST_NAME\020\024\022\016\n\n" +
+      "BIRTH_DATE\020\025\022\017\n\013BIRTH_PLACE\020\026\022\030\n\024COUNTRY" +
+      "_OF_RESIDENCE\020\027\022\023\n\017ISSUING_COUNTRY\020\030\022\036\n\032" +
+      "NATIONAL_IDENTIFIER_NUMBER\020\031\022\027\n\023NATIONAL" +
+      "_IDENTIFIER\020\032\022\022\n\016ACCOUNT_NUMBER\020\033\022\033\n\027CUS" +
+      "TOMER_IDENTIFICATION\020\034\022\032\n\026REGISTRATION_A" +
+      "UTHORITY\020\035*I\n\014CurrencyType\022\013\n\007BITCOIN\020\000\022" +
+      "\014\n\010ETHEREUM\020\001\022\014\n\010LITECOIN\020\002\022\020\n\014BITCOIN_C" +
+      "ASH\020\003B$\n\030com.netki.bip75.protocolB\010Messa" +
+      "ges"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -18896,7 +18897,7 @@ public final class Messages {
     internal_static_payments_InvoiceRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_InvoiceRequest_descriptor,
-        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Originators", "Beneficiaries", "Outputs", "AttestationsRequested", "SenderPkiType", "SenderPkiData", "SenderSignature", "RecipientVaspName", "RecipientChainAddress", });
+        new java.lang.String[] { "Amount", "Memo", "NotificationUrl", "Originators", "Beneficiaries", "OriginatorsAddresses", "AttestationsRequested", "SenderPkiType", "SenderPkiData", "SenderSignature", "RecipientVaspName", "RecipientChainAddress", });
     internal_static_payments_PaymentRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_payments_PaymentRequest_fieldAccessorTable = new
@@ -18938,7 +18939,7 @@ public final class Messages {
     internal_static_payments_PaymentDetails_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_payments_PaymentDetails_descriptor,
-        new java.lang.String[] { "Network", "Outputs", "Time", "Expires", "Memo", "PaymentUrl", "MerchantData", });
+        new java.lang.String[] { "Network", "BeneficiariesAddresses", "Time", "Expires", "Memo", "PaymentUrl", "MerchantData", });
     internal_static_payments_Output_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_payments_Output_fieldAccessorTable = new

@@ -18,9 +18,9 @@ data class PaymentRequest @JvmOverloads constructor(
     val network: String? = "main",
 
     /**
-     * One or more outputs where Bitcoins are to be sent.
+     * Where payment should be sent.
      */
-    val outputs: List<Output> = emptyList(),
+    val beneficiariesAddresses: List<Output> = emptyList(),
 
     /**
      * Unix timestamp (seconds since 1-Jan-1970 UTC) when the PaymentRequest was created.

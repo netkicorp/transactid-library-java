@@ -89,7 +89,7 @@ internal class Bip75ServiceNetki(
         recipientParameters: RecipientParameters?
     ): InvoiceRequest {
         val invoiceRequest = parseInvoiceRequestBinary(invoiceRequestBinary, recipientParameters)
-        invoiceRequest.outputs.forEach { output ->
+        invoiceRequest.originatorsAddresses.forEach { output ->
             val addressInfo = addressInformationService.getAddressInformation(output.currency, output.script)
             output.addressInformation = addressInfo
         }
@@ -253,7 +253,7 @@ internal class Bip75ServiceNetki(
         recipientParameters: RecipientParameters?
     ): PaymentRequest {
         val paymentRequest = parsePaymentRequestBinary(paymentRequestBinary, recipientParameters)
-        paymentRequest.outputs.forEach { output ->
+        paymentRequest.beneficiariesAddresses.forEach { output ->
             val addressInfo = addressInformationService.getAddressInformation(output.currency, output.script)
             output.addressInformation = addressInfo
         }

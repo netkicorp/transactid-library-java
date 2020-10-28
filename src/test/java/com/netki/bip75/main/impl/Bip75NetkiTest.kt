@@ -67,7 +67,7 @@ internal class Bip75NetkiTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -78,10 +78,10 @@ internal class Bip75NetkiTest {
 
         val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
-        assertEquals(invoiceRequest.outputs.size, invoiceRequestData.outputs.size)
+        assertEquals(invoiceRequest.originatorsAddresses.size, invoiceRequestData.originatorsAddresses.size)
         assertTrue(invoiceRequest.recipientChainAddress.isNullOrBlank())
         assertTrue(invoiceRequest.recipientVaspName.isNullOrBlank())
-        invoiceRequest.outputs.forEach { output ->
+        invoiceRequest.originatorsAddresses.forEach { output ->
             run {
                 assert(!output.addressInformation?.identifier.isNullOrBlank())
                 assertNotNull(output.addressInformation?.alerts)
@@ -113,7 +113,7 @@ internal class Bip75NetkiTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -124,8 +124,8 @@ internal class Bip75NetkiTest {
 
         val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
-        assertEquals(invoiceRequest.outputs.size, invoiceRequestData.outputs.size)
-        invoiceRequest.outputs.forEach { output ->
+        assertEquals(invoiceRequest.originatorsAddresses.size, invoiceRequestData.originatorsAddresses.size)
+        invoiceRequest.originatorsAddresses.forEach { output ->
             run {
                 assert(output.addressInformation?.identifier.isNullOrBlank())
                 assert(output.addressInformation?.currencyVerbose.isNullOrBlank())
@@ -163,7 +163,7 @@ internal class Bip75NetkiTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -207,7 +207,7 @@ internal class Bip75NetkiTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -243,7 +243,7 @@ internal class Bip75NetkiTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
@@ -254,10 +254,10 @@ internal class Bip75NetkiTest {
 
         val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
 
-        assertEquals(invoiceRequest.outputs.size, invoiceRequestData.outputs.size)
+        assertEquals(invoiceRequest.originatorsAddresses.size, invoiceRequestData.originatorsAddresses.size)
         assertEquals(invoiceRequest.recipientChainAddress, RECIPIENTS_PARAMETERS.chainAddress)
         assertEquals(invoiceRequest.recipientVaspName, RECIPIENTS_PARAMETERS.vaspName)
-        invoiceRequest.outputs.forEach { output ->
+        invoiceRequest.originatorsAddresses.forEach { output ->
             run {
                 assert(!output.addressInformation?.identifier.isNullOrBlank())
                 assertNotNull(output.addressInformation?.alerts)
@@ -284,7 +284,7 @@ internal class Bip75NetkiTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -299,8 +299,8 @@ internal class Bip75NetkiTest {
 
         val paymentRequest = bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
-        assertEquals(paymentRequest.outputs.size, paymentRequestParameters.outputs.size)
-        paymentRequest.outputs.forEach { output ->
+        assertEquals(paymentRequest.beneficiariesAddresses.size, paymentRequestParameters.beneficiariesAddresses.size)
+        paymentRequest.beneficiariesAddresses.forEach { output ->
             run {
                 assert(!output.addressInformation?.identifier.isNullOrBlank())
                 assertNotNull(output.addressInformation?.alerts)
@@ -327,7 +327,7 @@ internal class Bip75NetkiTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -341,8 +341,8 @@ internal class Bip75NetkiTest {
 
         val paymentRequest = bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
-        assertEquals(paymentRequest.outputs.size, paymentRequestParameters.outputs.size)
-        paymentRequest.outputs.forEach { output ->
+        assertEquals(paymentRequest.beneficiariesAddresses.size, paymentRequestParameters.beneficiariesAddresses.size)
+        paymentRequest.beneficiariesAddresses.forEach { output ->
             run {
                 assert(output.addressInformation?.identifier.isNullOrBlank())
                 assert(output.addressInformation?.currencyVerbose.isNullOrBlank())
@@ -375,7 +375,7 @@ internal class Bip75NetkiTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -419,7 +419,7 @@ internal class Bip75NetkiTest {
         val sender = SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            outputs = TestData.Payment.Output.OUTPUTS,
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",

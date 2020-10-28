@@ -11,11 +11,11 @@ message InvoiceRequest {
   optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
   repeated Originator originators = 4;                        // Originators of the InvoiceRequest
   repeated Beneficiary beneficiaries = 5;                     // Beneficiaries of the InvoiceRequest
-  repeated Output outputs = 6;                                // Where the payment comes from
+  repeated Output originatorsAddresses = 6;                   // Where the payment comes from
   repeated AttestationType attestationsRequested = 7;         // List of attestations requested
   optional string sender_pki_type = 8 [default = "none"];     // none / x509+sha256
   optional bytes  sender_pki_data = 9;                        // Sender's pki data, depends on pki_type
-  optional bytes  sender_signature = 10;                       // Sender's Signature of the whole message
+  optional bytes  sender_signature = 10;                      // Sender's Signature of the whole message
   optional string recipient_vasp_name = 11;                   // Recipient's vasp name
   optional string recipient_chain_address = 12;               // Recipient's chain address
 }
@@ -63,7 +63,7 @@ message Attestation {
 
 message PaymentDetails {
   optional string network = 1 [default = "main"];   // "main" or "test"
-  repeated Output outputs = 2;                      // Where payment should be sent
+  repeated Output beneficiariesAddresses = 2;       // Where payment should be sent
   required uint64 time = 3;                         // Timestamp; when payment request created
   optional uint64 expires = 4;                      // Timestamp; when this request should be considered invalid
   optional string memo = 5;                         // Human-readable description of request for the customer
