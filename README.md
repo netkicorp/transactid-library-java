@@ -133,26 +133,12 @@ Create an object for sending like so:
  * Create InvoiceRequest message.
  *
  * @param invoiceRequestParameters data to create the InvoiceRequest.
- * @param ownersParameters of the accounts for this transaction.
- * @param senderParameters of the protocol message.
- * @param attestationsRequested list of attestations requested.
- * @param recipientParameters information of the recipient of the message.
- * @param messageInformation status and information of the message status, by default "OK".
- * @return binary object of the message created.
- * @throws InvalidOwnersException if the provided list of owners is not valid.
- * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(InvalidOwnersException::class, EncryptionException::class)
-@JvmOverloads
-fun createInvoiceRequest(
-    invoiceRequestParameters: InvoiceRequestParameters,
-    ownersParameters: List<OwnerParameters>,
-    senderParameters: SenderParameters,
-    attestationsRequested: List<Attestation>,
-    recipientParameters: RecipientParameters? = null,
-    messageInformation: MessageInformation = MessageInformation()
-): ByteArray
+fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters): ByteArray = bip75
 ```
+
+[For detailed documentation of InvoiceRequestParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/InvoiceRequestParameters.kt)
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
 parse and validate one of these things.
@@ -251,28 +237,15 @@ Create an object for sending like so:
  * Create binary PaymentRequest.
  *
  * @param paymentRequestParameters data to create the PaymentRequest.
- * @param ownersParameters of the accounts for this transaction.
- * @param senderParameters of the protocol message.
- * @param attestationsRequested list of attestations requested.
- * @param paymentParametersVersion version of the PaymentDetails message.
- * @param messageInformation status and information of the message status, by default "OK".
- * @param recipientParameters information of the recipient of the message.
  * @return binary object of the message created.
  * @throws InvalidOwnersException if the provided list of owners is not valid.
  * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(InvalidOwnersException::class, EncryptionException::class)
-@JvmOverloads
-fun createPaymentRequest(
-    paymentRequestParameters: PaymentRequestParameters,
-    ownersParameters: List<OwnerParameters>,
-    senderParameters: SenderParameters,
-    attestationsRequested: List<Attestation>,
-    paymentParametersVersion: Int = 1,
-    messageInformation: MessageInformation = MessageInformation(),
-    recipientParameters: RecipientParameters? = null
-): ByteArray
+fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters): ByteArray
 ```
+
+[For detailed documentation of PaymentRequestParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/PaymentRequestParameters.kt)
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
 parse and validate one of these things.
@@ -372,23 +345,14 @@ Create an object for sending like so:
  * Create binary Payment.
  *
  * @param paymentParameters data to create the Payment.
- * @param ownersParameters of the accounts for this transaction.
- * @param messageInformation status and information of the message status, by default "OK".
- * @param senderParameters of the protocol message.
- * @param recipientParameters information of the recipient of the message.
  * @return binary object of the message created.
  * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(EncryptionException::class)
-@JvmOverloads
-fun createPayment(
-    paymentParameters: PaymentParameters,
-    ownersParameters: List<OwnerParameters>,
-    messageInformation: MessageInformation = MessageInformation(),
-    senderParameters: SenderParameters? = null,
-    recipientParameters: RecipientParameters? = null
-): ByteArray
+fun createPayment(paymentParameters: PaymentParameters): ByteArray
 ```
+
+[For detailed documentation of PaymentParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/PaymentParameters.kt)
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
 parse and validate one of these things.
@@ -454,24 +418,15 @@ Create an object for sending like so:
 /**
  * Create binary PaymentAck.
  *
- * @param payment data to create the Payment.
- * @param memo note that should be displayed to the customer.
- * @param messageInformation status and information of the message status, by default "OK".
- * @param senderParameters of the protocol message.
- * @param recipientParameters information of the recipient of the message.
+ * @param paymentAckParameters data to create the PaymentAck.
  * @return binary object of the message created.
  * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(EncryptionException::class)
-@JvmOverloads
-fun createPaymentAck(
-    payment: Payment,
-    memo: String,
-    messageInformation: MessageInformation = MessageInformation(),
-    senderParameters: SenderParameters? = null,
-    recipientParameters: RecipientParameters? = null
-): ByteArray 
+fun createPaymentAck(paymentAckParameters: PaymentAckParameters): ByteArray
 ```
+
+[For detailed documentation of PaymentAckParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/PaymentAckParameters.kt)
 
 This will provide you with a serialized binary that you can then send to someone else who is able to
 parse and validate one of these things.
