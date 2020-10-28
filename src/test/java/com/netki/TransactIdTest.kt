@@ -5,8 +5,7 @@ import com.netki.exceptions.EncryptionException
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
-import com.netki.model.MessageType
-import com.netki.model.StatusCode
+import com.netki.model.*
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR
@@ -22,7 +21,6 @@ import com.netki.util.TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_NONE
 import com.netki.util.TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
 import com.netki.util.TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_BUNDLED_CERTIFICATE
 import com.netki.util.TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE
-import com.netki.util.TestData.InvoiceRequest.INVOICE_REQUEST_DATA
 import com.netki.util.TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL
 import com.netki.util.TestData.MessageInformationData.MESSAGE_INFORMATION_ENCRYPTION
 import com.netki.util.TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_NONE
@@ -35,8 +33,6 @@ import com.netki.util.TestData.Payment.MEMO
 import com.netki.util.TestData.Payment.MEMO_PAYMENT_ACK
 import com.netki.util.TestData.Payment.Output.OUTPUTS
 import com.netki.util.TestData.Payment.PAYMENT
-import com.netki.util.TestData.Payment.PAYMENT_PARAMETERS
-import com.netki.util.TestData.PaymentRequest.PAYMENT_DETAILS
 import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS
 import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
 import com.netki.util.TestData.Senders.SENDER_PKI_NONE
@@ -50,6 +46,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.sql.Timestamp
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class TransactIdTest {
@@ -66,24 +63,26 @@ internal class TransactIdTest {
     fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData`() {
         val originators = listOf(
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
-            
+
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
 
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -93,21 +92,22 @@ internal class TransactIdTest {
         val originators = listOf(
             PRIMARY_ORIGINATOR_PKI_X509SHA256_BUNDLED_CERTIFICATE
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -118,21 +118,22 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256_BUNDLED_CERTIFICATE,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -143,21 +144,22 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_NONE,
             NO_PRIMARY_ORIGINATOR_PKI_NONE
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_NONE
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -172,15 +174,18 @@ internal class TransactIdTest {
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_NONE
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -192,15 +197,17 @@ internal class TransactIdTest {
             NO_PRIMARY_ORIGINATOR_PKI_NONE
         )
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                emptyList(),
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -212,15 +219,18 @@ internal class TransactIdTest {
             NO_PRIMARY_ORIGINATOR_PKI_NONE
         )
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                emptyList(),
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
     }
@@ -231,21 +241,22 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
@@ -260,21 +271,22 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256_INVALID_CERTIFICATE,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(transactId.isInvoiceRequestValid(invoiceRequestBinary))
@@ -285,25 +297,26 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and invalid Sender signature`() {
-        val originator = listOf(
+        val originators = listOf(
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originator,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary.getSerializedMessage(false))
@@ -336,22 +349,24 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val invoiceRequestBinary = transactId.createInvoiceRequest(
-            INVOICE_REQUEST_DATA,
-            originators,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
-            MESSAGE_INFORMATION_ENCRYPTION
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
         )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assertTrue(transactId.isInvoiceRequestValid(invoiceRequestBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION))
     }
@@ -363,16 +378,20 @@ internal class TransactIdTest {
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val invoiceRequestBinary = transactId.createInvoiceRequest(
-            INVOICE_REQUEST_DATA,
-            originators,
-            emptyList(),
-            sender,
-            REQUESTED_ATTESTATIONS,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
-            MESSAGE_INFORMATION_ENCRYPTION
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
         )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         assertThrows(EncryptionException::class.java) {
             transactId.isInvoiceRequestValid(invoiceRequestBinary)
@@ -385,22 +404,24 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val invoiceRequestBinary = transactId.createInvoiceRequest(
-            INVOICE_REQUEST_DATA,
-            originators,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
-            MESSAGE_INFORMATION_ENCRYPTION
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
         )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val messageProtocolCorrupted = Messages.EncryptedProtocolMessage.newBuilder()
             .mergeFrom(invoiceRequestBinary)
@@ -421,23 +442,25 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
+        )
 
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS,
-                RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
-                MESSAGE_INFORMATION_ENCRYPTION
-            )
+            transactId.createInvoiceRequest(invoiceRequestParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_SENDER_KEYS_ERROR)
@@ -449,23 +472,25 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            recipientParameters = RECIPIENTS_PARAMETERS,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
+        )
 
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS,
-                RECIPIENTS_PARAMETERS,
-                MESSAGE_INFORMATION_ENCRYPTION
-            )
+            transactId.createInvoiceRequest(invoiceRequestParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
@@ -477,28 +502,30 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val invoiceRequestBinary = transactId.createInvoiceRequest(
-            INVOICE_REQUEST_DATA,
-            originators,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
-            MESSAGE_INFORMATION_ENCRYPTION
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
         )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val invoiceRequest = transactId.parseInvoiceRequest(invoiceRequestBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION)
 
-        assert(INVOICE_REQUEST_DATA.amount == invoiceRequest.amount)
-        assert(INVOICE_REQUEST_DATA.memo == invoiceRequest.memo)
-        assert(INVOICE_REQUEST_DATA.notificationUrl == invoiceRequest.notificationUrl)
+        assert(invoiceRequestParameters.amount == invoiceRequest.amount)
+        assert(invoiceRequestParameters.memo == invoiceRequest.memo)
+        assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
         assert(OUTPUTS.size == invoiceRequest.outputs.size)
 
@@ -538,21 +565,22 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_NONE
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary.getSerializedMessage(false))
@@ -599,27 +627,28 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-
         val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS
-            )
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val invoiceRequest = transactId.parseInvoiceRequest(invoiceRequestBinary)
 
-        assert(INVOICE_REQUEST_DATA.amount == invoiceRequest.amount)
-        assert(INVOICE_REQUEST_DATA.memo == invoiceRequest.memo)
-        assert(INVOICE_REQUEST_DATA.notificationUrl == invoiceRequest.notificationUrl)
+        assert(invoiceRequestParameters.amount == invoiceRequest.amount)
+        assert(invoiceRequestParameters.memo == invoiceRequest.memo)
+        assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
         assert(OUTPUTS.size == invoiceRequest.outputs.size)
 
@@ -658,22 +687,25 @@ internal class TransactIdTest {
         )
         val sender = SENDER_PKI_X509SHA256
 
-        val invoiceRequestBinary =
-            transactId.createInvoiceRequest(
-                INVOICE_REQUEST_DATA,
-                originators,
-                emptyList(),
-                sender,
-                REQUESTED_ATTESTATIONS,
-                null,
-                MESSAGE_INFORMATION_CANCEL
-            )
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            outputs = OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_CANCEL
+        )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
 
         val invoiceRequest = transactId.parseInvoiceRequest(invoiceRequestBinary)
 
-        assert(INVOICE_REQUEST_DATA.amount == invoiceRequest.amount)
-        assert(INVOICE_REQUEST_DATA.memo == invoiceRequest.memo)
-        assert(INVOICE_REQUEST_DATA.notificationUrl == invoiceRequest.notificationUrl)
+        assert(invoiceRequestParameters.amount == invoiceRequest.amount)
+        assert(invoiceRequestParameters.memo == invoiceRequest.memo)
+        assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
         assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
         assert(OUTPUTS.size == invoiceRequest.outputs.size)
 
@@ -720,9 +752,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -733,9 +776,20 @@ internal class TransactIdTest {
             PRIMARY_BENEFICIARY_PKI_X509SHA256_BUNDLED_CERTIFICATE
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -747,9 +801,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -761,9 +826,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_NONE
         )
         val sender = SENDER_PKI_NONE
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -775,9 +851,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_NONE
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -789,9 +876,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_NONE
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -803,9 +901,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_NONE
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assert(transactId.isPaymentRequestValid(paymentRequestBinary))
     }
@@ -817,9 +926,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(transactId.isPaymentRequestValid(paymentRequestBinary))
@@ -835,9 +955,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val exception = assertThrows(InvalidCertificateChainException::class.java) {
             assert(transactId.isPaymentRequestValid(paymentRequestBinary))
@@ -853,9 +984,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
             .mergeFrom(paymentRequestBinary.getSerializedMessage(false))
@@ -889,9 +1031,20 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_NONE
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
             .mergeFrom(paymentRequestBinary.getSerializedMessage(false))
@@ -941,22 +1094,31 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(PAYMENT_DETAILS, beneficiaries, sender, REQUESTED_ATTESTATIONS)
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary)
 
-        val paymentDetails = paymentRequest.paymentRequestParameters
-
-        assert(paymentDetails.network == PAYMENT_DETAILS.network)
-        assert(paymentDetails.outputs == PAYMENT_DETAILS.outputs)
-        assert(paymentDetails.time == PAYMENT_DETAILS.time)
-        assert(paymentDetails.expires == PAYMENT_DETAILS.expires)
-        assert(paymentDetails.memo == PAYMENT_DETAILS.memo)
-        assert(paymentDetails.paymentUrl == PAYMENT_DETAILS.paymentUrl)
-        assert(paymentDetails.merchantData == PAYMENT_DETAILS.merchantData)
-        assert(paymentDetails.outputs.size == PAYMENT_DETAILS.outputs.size)
+        assert(paymentRequest.network == paymentRequestParameters.network)
+        assert(paymentRequest.outputs == paymentRequestParameters.outputs)
+        assert(paymentRequest.time == paymentRequestParameters.time)
+        assert(paymentRequest.expires == paymentRequestParameters.expires)
+        assert(paymentRequest.memo == paymentRequestParameters.memo)
+        assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
+        assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
+        assert(paymentRequest.outputs.size == paymentRequestParameters.outputs.size)
 
         assert(paymentRequest.beneficiaries.size == 2)
         paymentRequest.beneficiaries.forEachIndexed() { index, beneficiary ->
@@ -990,29 +1152,32 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_CANCEL
+        )
 
-        val paymentRequestBinary =
-            transactId.createPaymentRequest(
-                PAYMENT_DETAILS,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS,
-                1,
-                MESSAGE_INFORMATION_CANCEL
-            )
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary)
 
-        val paymentDetails = paymentRequest.paymentRequestParameters
-
-        assert(paymentDetails.network == PAYMENT_DETAILS.network)
-        assert(paymentDetails.outputs == PAYMENT_DETAILS.outputs)
-        assert(paymentDetails.time == PAYMENT_DETAILS.time)
-        assert(paymentDetails.expires == PAYMENT_DETAILS.expires)
-        assert(paymentDetails.memo == PAYMENT_DETAILS.memo)
-        assert(paymentDetails.paymentUrl == PAYMENT_DETAILS.paymentUrl)
-        assert(paymentDetails.merchantData == PAYMENT_DETAILS.merchantData)
-        assert(paymentDetails.outputs.size == PAYMENT_DETAILS.outputs.size)
+        assert(paymentRequest.network == paymentRequestParameters.network)
+        assert(paymentRequest.outputs == paymentRequestParameters.outputs)
+        assert(paymentRequest.time == paymentRequestParameters.time)
+        assert(paymentRequest.expires == paymentRequestParameters.expires)
+        assert(paymentRequest.memo == paymentRequestParameters.memo)
+        assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
+        assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
+        assert(paymentRequest.outputs.size == paymentRequestParameters.outputs.size)
 
         assert(paymentRequest.beneficiaries.size == 2)
         paymentRequest.beneficiaries.forEachIndexed() { index, beneficiary ->
@@ -1056,16 +1221,22 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentRequestBinary = transactId.createPaymentRequest(
-            PAYMENT_DETAILS,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            1,
-            MESSAGE_INFORMATION_CANCEL,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_CANCEL,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assertTrue(transactId.isPaymentRequestValid(paymentRequestBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION))
     }
@@ -1077,16 +1248,22 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentRequestBinary = transactId.createPaymentRequest(
-            PAYMENT_DETAILS,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            1,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         assertThrows(EncryptionException::class.java) {
             transactId.isPaymentRequestValid(paymentRequestBinary)
@@ -1100,16 +1277,22 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentRequestBinary = transactId.createPaymentRequest(
-            PAYMENT_DETAILS,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            1,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val messageProtocolCorrupted = Messages.EncryptedProtocolMessage.newBuilder()
             .mergeFrom(paymentRequestBinary)
@@ -1131,17 +1314,23 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        )
 
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createPaymentRequest(
-                PAYMENT_DETAILS,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS,
-                1,
-                MESSAGE_INFORMATION_ENCRYPTION,
-                RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
-            )
+            transactId.createPaymentRequest(paymentRequestParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_SENDER_KEYS_ERROR)
@@ -1154,16 +1343,22 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION
+        )
 
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createPaymentRequest(
-                PAYMENT_DETAILS,
-                beneficiaries,
-                sender,
-                REQUESTED_ATTESTATIONS,
-                1,
-                MESSAGE_INFORMATION_ENCRYPTION
-            )
+            transactId.createPaymentRequest(paymentRequestParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
@@ -1176,29 +1371,33 @@ internal class TransactIdTest {
             NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentRequestBinary = transactId.createPaymentRequest(
-            PAYMENT_DETAILS,
-            beneficiaries,
-            sender,
-            REQUESTED_ATTESTATIONS,
-            1,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            outputs = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
 
         val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION)
 
-        val paymentDetails = paymentRequest.paymentRequestParameters
-
-        assert(paymentDetails.network == PAYMENT_DETAILS.network)
-        assert(paymentDetails.outputs == PAYMENT_DETAILS.outputs)
-        assert(paymentDetails.time == PAYMENT_DETAILS.time)
-        assert(paymentDetails.expires == PAYMENT_DETAILS.expires)
-        assert(paymentDetails.memo == PAYMENT_DETAILS.memo)
-        assert(paymentDetails.paymentUrl == PAYMENT_DETAILS.paymentUrl)
-        assert(paymentDetails.merchantData == PAYMENT_DETAILS.merchantData)
-        assert(paymentDetails.outputs.size == PAYMENT_DETAILS.outputs.size)
+        assert(paymentRequest.network == paymentRequestParameters.network)
+        assert(paymentRequest.outputs == paymentRequestParameters.outputs)
+        assert(paymentRequest.time == paymentRequestParameters.time)
+        assert(paymentRequest.expires == paymentRequestParameters.expires)
+        assert(paymentRequest.memo == paymentRequestParameters.memo)
+        assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
+        assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
+        assert(paymentRequest.outputs.size == paymentRequestParameters.outputs.size)
 
         assert(paymentRequest.beneficiaries.size == 2)
         paymentRequest.beneficiaries.forEachIndexed { index, beneficiary ->
@@ -1237,12 +1436,22 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
 
-        val paymentBinary = transactId.createPayment(PAYMENT_PARAMETERS, originators, beneficiaries)
+        val paymentBinary = transactId.createPayment(paymentParameters)
 
         assert(transactId.isPaymentValid(paymentBinary))
     }
@@ -1253,18 +1462,28 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
 
-        val paymentBinary = transactId.createPayment(PAYMENT_PARAMETERS, originators, beneficiaries)
+        val paymentBinary = transactId.createPayment(paymentParameters)
         val payment = transactId.parsePayment(paymentBinary)
 
-        assert(payment.merchantData == PAYMENT_PARAMETERS.merchantData)
-        assert(payment.transactions.size == PAYMENT_PARAMETERS.transactions.size)
-        assert(payment.outputs == PAYMENT_PARAMETERS.outputs)
-        assert(payment.memo == PAYMENT_PARAMETERS.memo)
+        assert(payment.merchantData == paymentParameters.merchantData)
+        assert(payment.transactions.size == paymentParameters.transactions.size)
+        assert(payment.outputs == paymentParameters.outputs)
+        assert(payment.memo == paymentParameters.memo)
         assert(payment.originators.size == originators.size)
         assert(payment.beneficiaries.size == beneficiaries.size)
         assert(!payment.protocolMessageMetadata!!.identifier.isBlank())
@@ -1280,14 +1499,25 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-        val paymentBinary =
-            transactId.createPayment(PAYMENT_PARAMETERS, originators, emptyList(), MESSAGE_INFORMATION_CANCEL)
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = emptyList(),
+            messageInformation = MESSAGE_INFORMATION_CANCEL
+        )
+        val paymentBinary = transactId.createPayment(paymentParameters)
         val payment = transactId.parsePayment(paymentBinary)
 
-        assert(payment.merchantData == PAYMENT_PARAMETERS.merchantData)
-        assert(payment.transactions.size == PAYMENT_PARAMETERS.transactions.size)
-        assert(payment.outputs == PAYMENT_PARAMETERS.outputs)
-        assert(payment.memo == PAYMENT_PARAMETERS.memo)
+        assert(payment.merchantData == paymentParameters.merchantData)
+        assert(payment.transactions.size == paymentParameters.transactions.size)
+        assert(payment.outputs == paymentParameters.outputs)
+        assert(payment.memo == paymentParameters.memo)
         assert(payment.originators.size == originators.size)
         assert(payment.beneficiaries.isEmpty())
         assert(!payment.protocolMessageMetadata!!.identifier.isBlank())
@@ -1303,21 +1533,26 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentBinary = transactId.createPayment(
-            PAYMENT_PARAMETERS,
-            originators,
-            beneficiaries,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            sender,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = sender,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentBinary = transactId.createPayment(paymentParameters)
 
         assertTrue(transactId.isPaymentValid(paymentBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION))
     }
@@ -1328,21 +1563,26 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256_BUNDLED_CERTIFICATE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentBinary = transactId.createPayment(
-            PAYMENT_PARAMETERS,
-            originators,
-            beneficiaries,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            sender,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = sender,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentBinary = transactId.createPayment(paymentParameters)
 
         assertThrows(EncryptionException::class.java) {
             transactId.isPaymentValid(paymentBinary)
@@ -1355,21 +1595,26 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentBinary = transactId.createPayment(
-            PAYMENT_PARAMETERS,
-            originators,
-            beneficiaries,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            sender,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = sender,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentBinary = transactId.createPayment(paymentParameters)
 
         val messageProtocolCorrupted = Messages.EncryptedProtocolMessage.newBuilder()
             .mergeFrom(paymentBinary)
@@ -1386,21 +1631,28 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentBinary encrypted, without sender's public and private key`() {
-        val originator = listOf(
+        val originators = listOf(
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = emptyList(),
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = sender,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        )
 
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createPayment(
-                PAYMENT_PARAMETERS,
-                originator,
-                emptyList(),
-                MESSAGE_INFORMATION_ENCRYPTION,
-                sender,
-                RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
-            )
+            transactId.createPayment(paymentParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_SENDER_KEYS_ERROR)
@@ -1413,15 +1665,21 @@ internal class TransactIdTest {
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = sender
+        )
 
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createPayment(
-                PAYMENT_PARAMETERS,
-                originators,
-                emptyList(),
-                MESSAGE_INFORMATION_ENCRYPTION,
-                sender
-            )
+            transactId.createPayment(paymentParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
@@ -1433,27 +1691,32 @@ internal class TransactIdTest {
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
             NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_NONE
         )
-
         val sender = SENDER_PKI_X509SHA256_WITH_ENCRYPTION
-
-        val paymentBinary = transactId.createPayment(
-            PAYMENT_PARAMETERS,
-            originators,
-            beneficiaries,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            sender,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = sender,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentBinary = transactId.createPayment(paymentParameters)
         val payment = transactId.parsePayment(paymentBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION)
 
-        assert(payment.merchantData == PAYMENT_PARAMETERS.merchantData)
-        assert(payment.transactions.size == PAYMENT_PARAMETERS.transactions.size)
-        assert(payment.outputs == PAYMENT_PARAMETERS.outputs)
-        assert(payment.memo == PAYMENT_PARAMETERS.memo)
+        assert(payment.merchantData == paymentParameters.merchantData)
+        assert(payment.transactions.size == paymentParameters.transactions.size)
+        assert(payment.outputs == paymentParameters.outputs)
+        assert(payment.memo == paymentParameters.memo)
         assert(payment.originators.size == originators.size)
         assert(payment.beneficiaries.size == beneficiaries.size)
         assert(!payment.protocolMessageMetadata?.identifier!!.isBlank())
@@ -1477,14 +1740,22 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentAckBinary`() {
-        val paymentAckBinary = transactId.createPaymentAck(PAYMENT, MEMO)
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO
+        )
+        val paymentAckBinary = transactId.createPaymentAck(paymentAckParameters)
 
         assert(transactId.isPaymentAckValid(paymentAckBinary))
     }
 
     @Test
     fun `Create and parse PaymentAckBinary to PaymentAck`() {
-        val paymentBinary = transactId.createPaymentAck(PAYMENT, MEMO_PAYMENT_ACK)
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO_PAYMENT_ACK
+        )
+        val paymentBinary = transactId.createPaymentAck(paymentAckParameters)
         val paymentAck = transactId.parsePaymentAck(paymentBinary)
 
         assert(paymentAck.payment.merchantData == PAYMENT.merchantData)
@@ -1503,14 +1774,23 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentAckBinary with message information`() {
-        val paymentAckBinary = transactId.createPaymentAck(PAYMENT, MEMO)
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO
+        )
+        val paymentAckBinary = transactId.createPaymentAck(paymentAckParameters)
 
         assert(transactId.isPaymentAckValid(paymentAckBinary))
     }
 
     @Test
     fun `Create and parse PaymentAckBinary to PaymentAck with message information`() {
-        val paymentBinary = transactId.createPaymentAck(PAYMENT, MEMO_PAYMENT_ACK, MESSAGE_INFORMATION_CANCEL)
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO_PAYMENT_ACK,
+            messageInformation = MESSAGE_INFORMATION_CANCEL
+        )
+        val paymentBinary = transactId.createPaymentAck(paymentAckParameters)
         val paymentAck = transactId.parsePaymentAck(paymentBinary)
 
         assert(paymentAck.payment.merchantData == PAYMENT.merchantData)
@@ -1536,26 +1816,29 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentAckBinary Encrypted, Owners and Sender with PkiData`() {
-        val paymentAckBinary = transactId.createPaymentAck(
-            PAYMENT,
-            MEMO,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+        val paymentAckBinary = transactId.createPaymentAck(paymentAckParameters)
 
         assert(transactId.isPaymentAckValid(paymentAckBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION))
     }
 
     @Test
     fun `Create and validate PaymentAckBinary Encrypted, Owners and Sender with PkiData without RecipientParametersEncryptionParameters`() {
-        val paymentAckBinary = transactId.createPaymentAck(
-            PAYMENT,
-            MEMO,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentAckBinary = transactId.createPaymentAck(paymentAckParameters)
 
         assertThrows(EncryptionException::class.java) {
             transactId.isPaymentAckValid(paymentAckBinary)
@@ -1564,13 +1847,15 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and validate PaymentAckBinary, Owners and Sender with PkiData and invalid Encryption signature`() {
-        val paymentAckBinary = transactId.createPaymentAck(
-            PAYMENT,
-            MEMO,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentAckBinary = transactId.createPaymentAck(paymentAckParameters)
 
         val messageProtocolCorrupted = Messages.EncryptedProtocolMessage.newBuilder()
             .mergeFrom(paymentAckBinary)
@@ -1588,13 +1873,15 @@ internal class TransactIdTest {
     @Test
     fun `Create and validate PaymentAckBinary encrypted, without sender's public and private key`() {
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createPaymentAck(
-                PAYMENT,
-                MEMO,
-                MESSAGE_INFORMATION_ENCRYPTION,
-                SENDER_PKI_X509SHA256,
-                RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+            val paymentAckParameters = PaymentAckParameters(
+                payment = PAYMENT,
+                memo = MEMO,
+                messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+                senderParameters = SENDER_PKI_X509SHA256,
+                recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
             )
+
+            transactId.createPaymentAck(paymentAckParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_SENDER_KEYS_ERROR)
@@ -1603,13 +1890,15 @@ internal class TransactIdTest {
     @Test
     fun `Create and validate PaymentAckBinary encrypted, without recipient's public key`() {
         val exception = assertThrows(EncryptionException::class.java) {
-            transactId.createPaymentAck(
-                PAYMENT,
-                MEMO,
-                MESSAGE_INFORMATION_ENCRYPTION,
-                SENDER_PKI_X509SHA256,
-                RECIPIENTS_PARAMETERS
+            val paymentAckParameters = PaymentAckParameters(
+                payment = PAYMENT,
+                memo = MEMO,
+                messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+                senderParameters = SENDER_PKI_X509SHA256,
+                recipientParameters = RECIPIENTS_PARAMETERS
             )
+
+            transactId.createPaymentAck(paymentAckParameters)
         }
 
         assert(exception.message == ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR)
@@ -1617,13 +1906,15 @@ internal class TransactIdTest {
 
     @Test
     fun `Create and parse PaymentAckBinary encrypted to PaymentAck`() {
-        val paymentBinary = transactId.createPaymentAck(
-            PAYMENT,
-            MEMO_PAYMENT_ACK,
-            MESSAGE_INFORMATION_ENCRYPTION,
-            SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
-            RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        val paymentAckParameters = PaymentAckParameters(
+            payment = PAYMENT,
+            memo = MEMO_PAYMENT_ACK,
+            messageInformation = MESSAGE_INFORMATION_ENCRYPTION,
+            senderParameters = SENDER_PKI_X509SHA256_WITH_ENCRYPTION,
+            recipientParameters = RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
+
+        val paymentBinary = transactId.createPaymentAck(paymentAckParameters)
         val paymentAck = transactId.parsePaymentAck(paymentBinary, RECIPIENTS_PARAMETERS_WITH_ENCRYPTION)
 
         assert(paymentAck.payment.merchantData == PAYMENT.merchantData)

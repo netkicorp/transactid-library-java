@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Representation of InvoiceRequest message.
  */
-data class InvoiceRequest(
+data class InvoiceRequest @JvmOverloads constructor(
     /**
      * Integer-number-of-satoshis.
      */

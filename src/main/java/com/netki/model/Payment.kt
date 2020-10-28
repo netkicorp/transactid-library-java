@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Representation of Payment message.
  */
-data class Payment(
+data class Payment @JvmOverloads constructor(
 
     /**
      * Copied from PaymentDetails.merchant_data.

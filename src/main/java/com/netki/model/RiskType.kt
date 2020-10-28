@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Types of risks of an address alert.
  */
-data class RiskType(
+data class RiskType @JvmOverloads constructor(
 
     /**
      * 	The risk type of the selected risk_types for the fired alert, [-1] if could not fetch the risk type.

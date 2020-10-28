@@ -5,7 +5,7 @@ import java.sql.Timestamp
 /**
  * Representation of PaymentDetails message.
  */
-data class PaymentRequestParameters(
+data class PaymentRequestParameters @JvmOverloads constructor(
 
     /**
      * Either "main" for payments on the production Bitcoin network, or "test" for payments on test network.
@@ -41,5 +41,35 @@ data class PaymentRequestParameters(
     /**
      * Arbitrary data that may be used by the merchant to identify the PaymentRequest.
      */
-    val merchantData: String? = null
+    val merchantData: String? = null,
+
+    /**
+     * List of beneficiaries for this transaction.
+     */
+    val beneficiaryParameters: List<BeneficiaryParameters>,
+
+    /**
+     * The sender of the protocol message.
+     */
+    val senderParameters: SenderParameters,
+
+    /**
+     * List of attestations requested for the transaction.
+     */
+    val attestationsRequested: List<Attestation>,
+
+    /**
+     * Information of the recipient of the message.
+     */
+    val recipientParameters: RecipientParameters? = null,
+
+    /**
+     * Status and information of the protocol message status, by default "OK".
+     */
+    val messageInformation: MessageInformation = MessageInformation(),
+
+    /**
+     * Version of the PaymentDetails message.
+     */
+    val paymentParametersVersion: Int = 1
 )

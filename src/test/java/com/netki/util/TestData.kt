@@ -117,39 +117,9 @@ internal object TestData {
         const val STRING_TEST = "This is just a random string to sign"
     }
 
-    object InvoiceRequest {
-        val INVOICE_REQUEST_DATA = InvoiceRequestParameters(
-            amount = 1000,
-            memo = "memo",
-            notificationUrl = "notificationUrl",
-            outputs = OUTPUTS
-        )
-    }
-
-    object PaymentRequest {
-        val PAYMENT_DETAILS = PaymentRequestParameters(
-            network = "main",
-            outputs = OUTPUTS,
-            time = Timestamp(System.currentTimeMillis()),
-            expires = Timestamp(System.currentTimeMillis()),
-            memo = "memo",
-            paymentUrl = "www.payment.url/test",
-            merchantData = "merchant data"
-        )
-    }
-
     object Payment {
         const val MEMO = "memo"
         const val MEMO_PAYMENT_ACK = "memo_payment_ack"
-        val PAYMENT_PARAMETERS = PaymentParameters(
-            merchantData = "merchant data",
-            transactions = arrayListOf(
-                "transaction1".toByteArray(),
-                "transaction2".toByteArray()
-            ),
-            outputs = OUTPUTS,
-            memo = MEMO
-        )
 
         val PAYMENT = Payment(
             merchantData = "merchant data",

@@ -770,7 +770,7 @@ public final class Messages {
 
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -779,7 +779,7 @@ public final class Messages {
         getOutputsList();
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -787,7 +787,7 @@ public final class Messages {
     com.netki.bip75.protocol.Messages.Output getOutputs(int index);
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -795,7 +795,7 @@ public final class Messages {
     int getOutputsCount();
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -804,7 +804,7 @@ public final class Messages {
         getOutputsOrBuilderList();
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -846,7 +846,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 8 [default = "none"];</code>
+     * <code>optional string sender_pki_type = 8 [default = "none"];</code>
      * @return Whether the senderPkiType field is set.
      */
     boolean hasSenderPkiType();
@@ -855,7 +855,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 8 [default = "none"];</code>
+     * <code>optional string sender_pki_type = 8 [default = "none"];</code>
      * @return The senderPkiType.
      */
     java.lang.String getSenderPkiType();
@@ -864,7 +864,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 8 [default = "none"];</code>
+     * <code>optional string sender_pki_type = 8 [default = "none"];</code>
      * @return The bytes for senderPkiType.
      */
     com.google.protobuf.ByteString
@@ -875,7 +875,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 9;</code>
+     * <code>optional bytes sender_pki_data = 9;</code>
      * @return Whether the senderPkiData field is set.
      */
     boolean hasSenderPkiData();
@@ -884,7 +884,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 9;</code>
+     * <code>optional bytes sender_pki_data = 9;</code>
      * @return The senderPkiData.
      */
     com.google.protobuf.ByteString getSenderPkiData();
@@ -894,7 +894,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 10;</code>
+     * <code>optional bytes sender_signature = 10;</code>
      * @return Whether the senderSignature field is set.
      */
     boolean hasSenderSignature();
@@ -903,7 +903,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 10;</code>
+     * <code>optional bytes sender_signature = 10;</code>
      * @return The senderSignature.
      */
     com.google.protobuf.ByteString getSenderSignature();
@@ -1428,7 +1428,7 @@ public final class Messages {
     private java.util.List<com.netki.bip75.protocol.Messages.Output> outputs_;
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -1438,7 +1438,7 @@ public final class Messages {
     }
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -1449,7 +1449,7 @@ public final class Messages {
     }
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -1459,7 +1459,7 @@ public final class Messages {
     }
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -1469,7 +1469,7 @@ public final class Messages {
     }
     /**
      * <pre>
-     * Where payment should be sent
+     * Where the payment comes from
      * </pre>
      *
      * <code>repeated .payments.Output outputs = 6;</code>
@@ -1509,7 +1509,6 @@ public final class Messages {
      * </pre>
      *
      * <code>repeated .payments.AttestationType attestationsRequested = 7;</code>
-     * @param value The attestationsRequested to add.
      */
     public int getAttestationsRequestedCount() {
       return attestationsRequested_.size();
@@ -1534,7 +1533,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 8 [default = "none"];</code>
+     * <code>optional string sender_pki_type = 8 [default = "none"];</code>
      * @return Whether the senderPkiType field is set.
      */
     public boolean hasSenderPkiType() {
@@ -1545,7 +1544,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 8 [default = "none"];</code>
+     * <code>optional string sender_pki_type = 8 [default = "none"];</code>
      * @return The senderPkiType.
      */
     public java.lang.String getSenderPkiType() {
@@ -1567,7 +1566,7 @@ public final class Messages {
      * none / x509+sha256
      * </pre>
      *
-     * <code>required string sender_pki_type = 8 [default = "none"];</code>
+     * <code>optional string sender_pki_type = 8 [default = "none"];</code>
      * @return The bytes for senderPkiType.
      */
     public com.google.protobuf.ByteString
@@ -1591,7 +1590,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 9;</code>
+     * <code>optional bytes sender_pki_data = 9;</code>
      * @return Whether the senderPkiData field is set.
      */
     public boolean hasSenderPkiData() {
@@ -1602,7 +1601,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 9;</code>
+     * <code>optional bytes sender_pki_data = 9;</code>
      * @return The senderPkiData.
      */
     public com.google.protobuf.ByteString getSenderPkiData() {
@@ -1616,7 +1615,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 10;</code>
+     * <code>optional bytes sender_signature = 10;</code>
      * @return Whether the senderSignature field is set.
      */
     public boolean hasSenderSignature() {
@@ -1627,7 +1626,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 10;</code>
+     * <code>optional bytes sender_signature = 10;</code>
      * @return The senderSignature.
      */
     public com.google.protobuf.ByteString getSenderSignature() {
@@ -1755,18 +1754,6 @@ public final class Messages {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasSenderPkiType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSenderPkiData()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSenderSignature()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       for (int i = 0; i < getOriginatorsCount(); i++) {
         if (!getOriginators(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -1775,12 +1762,6 @@ public final class Messages {
       }
       for (int i = 0; i < getBeneficiariesCount(); i++) {
         if (!getBeneficiaries(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      for (int i = 0; i < getOutputsCount(); i++) {
-        if (!getOutputs(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -2449,15 +2430,6 @@ public final class Messages {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasSenderPkiType()) {
-          return false;
-        }
-        if (!hasSenderPkiData()) {
-          return false;
-        }
-        if (!hasSenderSignature()) {
-          return false;
-        }
         for (int i = 0; i < getOriginatorsCount(); i++) {
           if (!getOriginators(i).isInitialized()) {
             return false;
@@ -2465,11 +2437,6 @@ public final class Messages {
         }
         for (int i = 0; i < getBeneficiariesCount(); i++) {
           if (!getBeneficiaries(i).isInitialized()) {
-            return false;
-          }
-        }
-        for (int i = 0; i < getOutputsCount(); i++) {
-          if (!getOutputs(i).isInitialized()) {
             return false;
           }
         }
@@ -3403,7 +3370,7 @@ public final class Messages {
 
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3417,7 +3384,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3431,7 +3398,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3445,7 +3412,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3466,7 +3433,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3484,7 +3451,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3504,7 +3471,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3525,7 +3492,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3543,7 +3510,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3561,7 +3528,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3580,7 +3547,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3597,7 +3564,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3614,7 +3581,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3625,7 +3592,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3639,7 +3606,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3654,7 +3621,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3665,7 +3632,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3677,7 +3644,7 @@ public final class Messages {
       }
       /**
        * <pre>
-       * Where payment should be sent
+       * Where the payment comes from
        * </pre>
        *
        * <code>repeated .payments.Output outputs = 6;</code>
@@ -3821,7 +3788,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 8 [default = "none"];</code>
+       * <code>optional string sender_pki_type = 8 [default = "none"];</code>
        * @return Whether the senderPkiType field is set.
        */
       public boolean hasSenderPkiType() {
@@ -3832,7 +3799,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 8 [default = "none"];</code>
+       * <code>optional string sender_pki_type = 8 [default = "none"];</code>
        * @return The senderPkiType.
        */
       public java.lang.String getSenderPkiType() {
@@ -3854,7 +3821,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 8 [default = "none"];</code>
+       * <code>optional string sender_pki_type = 8 [default = "none"];</code>
        * @return The bytes for senderPkiType.
        */
       public com.google.protobuf.ByteString
@@ -3875,7 +3842,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 8 [default = "none"];</code>
+       * <code>optional string sender_pki_type = 8 [default = "none"];</code>
        * @param value The senderPkiType to set.
        * @return This builder for chaining.
        */
@@ -3894,7 +3861,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 8 [default = "none"];</code>
+       * <code>optional string sender_pki_type = 8 [default = "none"];</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderPkiType() {
@@ -3908,7 +3875,7 @@ public final class Messages {
        * none / x509+sha256
        * </pre>
        *
-       * <code>required string sender_pki_type = 8 [default = "none"];</code>
+       * <code>optional string sender_pki_type = 8 [default = "none"];</code>
        * @param value The bytes for senderPkiType to set.
        * @return This builder for chaining.
        */
@@ -3929,7 +3896,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 9;</code>
+       * <code>optional bytes sender_pki_data = 9;</code>
        * @return Whether the senderPkiData field is set.
        */
       public boolean hasSenderPkiData() {
@@ -3940,7 +3907,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 9;</code>
+       * <code>optional bytes sender_pki_data = 9;</code>
        * @return The senderPkiData.
        */
       public com.google.protobuf.ByteString getSenderPkiData() {
@@ -3951,7 +3918,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 9;</code>
+       * <code>optional bytes sender_pki_data = 9;</code>
        * @param value The senderPkiData to set.
        * @return This builder for chaining.
        */
@@ -3969,7 +3936,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 9;</code>
+       * <code>optional bytes sender_pki_data = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderPkiData() {
@@ -3985,7 +3952,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 10;</code>
+       * <code>optional bytes sender_signature = 10;</code>
        * @return Whether the senderSignature field is set.
        */
       public boolean hasSenderSignature() {
@@ -3996,7 +3963,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 10;</code>
+       * <code>optional bytes sender_signature = 10;</code>
        * @return The senderSignature.
        */
       public com.google.protobuf.ByteString getSenderSignature() {
@@ -4007,7 +3974,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 10;</code>
+       * <code>optional bytes sender_signature = 10;</code>
        * @param value The senderSignature to set.
        * @return This builder for chaining.
        */
@@ -4025,7 +3992,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 10;</code>
+       * <code>optional bytes sender_signature = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderSignature() {
@@ -4444,7 +4411,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 6;</code>
+     * <code>optional bytes sender_pki_data = 6;</code>
      * @return Whether the senderPkiData field is set.
      */
     boolean hasSenderPkiData();
@@ -4453,7 +4420,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 6;</code>
+     * <code>optional bytes sender_pki_data = 6;</code>
      * @return The senderPkiData.
      */
     com.google.protobuf.ByteString getSenderPkiData();
@@ -4463,7 +4430,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 7;</code>
+     * <code>optional bytes sender_signature = 7;</code>
      * @return Whether the senderSignature field is set.
      */
     boolean hasSenderSignature();
@@ -4472,7 +4439,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 7;</code>
+     * <code>optional bytes sender_signature = 7;</code>
      * @return The senderSignature.
      */
     com.google.protobuf.ByteString getSenderSignature();
@@ -4766,7 +4733,6 @@ public final class Messages {
      * </pre>
      *
      * <code>repeated .payments.AttestationType attestationsRequested = 4;</code>
-     * @param value The attestationsRequested to add.
      */
     public int getAttestationsRequestedCount() {
       return attestationsRequested_.size();
@@ -4848,7 +4814,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 6;</code>
+     * <code>optional bytes sender_pki_data = 6;</code>
      * @return Whether the senderPkiData field is set.
      */
     public boolean hasSenderPkiData() {
@@ -4859,7 +4825,7 @@ public final class Messages {
      * Sender's pki data, depends on pki_type
      * </pre>
      *
-     * <code>required bytes sender_pki_data = 6;</code>
+     * <code>optional bytes sender_pki_data = 6;</code>
      * @return The senderPkiData.
      */
     public com.google.protobuf.ByteString getSenderPkiData() {
@@ -4873,7 +4839,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 7;</code>
+     * <code>optional bytes sender_signature = 7;</code>
      * @return Whether the senderSignature field is set.
      */
     public boolean hasSenderSignature() {
@@ -4884,7 +4850,7 @@ public final class Messages {
      * Sender's Signature of the whole message
      * </pre>
      *
-     * <code>required bytes sender_signature = 7;</code>
+     * <code>optional bytes sender_signature = 7;</code>
      * @return The senderSignature.
      */
     public com.google.protobuf.ByteString getSenderSignature() {
@@ -4903,14 +4869,6 @@ public final class Messages {
         return false;
       }
       if (!hasSenderPkiType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSenderPkiData()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSenderSignature()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -5398,12 +5356,6 @@ public final class Messages {
           return false;
         }
         if (!hasSenderPkiType()) {
-          return false;
-        }
-        if (!hasSenderPkiData()) {
-          return false;
-        }
-        if (!hasSenderSignature()) {
           return false;
         }
         for (int i = 0; i < getBeneficiariesCount(); i++) {
@@ -6067,7 +6019,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 6;</code>
+       * <code>optional bytes sender_pki_data = 6;</code>
        * @return Whether the senderPkiData field is set.
        */
       public boolean hasSenderPkiData() {
@@ -6078,7 +6030,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 6;</code>
+       * <code>optional bytes sender_pki_data = 6;</code>
        * @return The senderPkiData.
        */
       public com.google.protobuf.ByteString getSenderPkiData() {
@@ -6089,7 +6041,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 6;</code>
+       * <code>optional bytes sender_pki_data = 6;</code>
        * @param value The senderPkiData to set.
        * @return This builder for chaining.
        */
@@ -6107,7 +6059,7 @@ public final class Messages {
        * Sender's pki data, depends on pki_type
        * </pre>
        *
-       * <code>required bytes sender_pki_data = 6;</code>
+       * <code>optional bytes sender_pki_data = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderPkiData() {
@@ -6123,7 +6075,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 7;</code>
+       * <code>optional bytes sender_signature = 7;</code>
        * @return Whether the senderSignature field is set.
        */
       public boolean hasSenderSignature() {
@@ -6134,7 +6086,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 7;</code>
+       * <code>optional bytes sender_signature = 7;</code>
        * @return The senderSignature.
        */
       public com.google.protobuf.ByteString getSenderSignature() {
@@ -6145,7 +6097,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 7;</code>
+       * <code>optional bytes sender_signature = 7;</code>
        * @param value The senderSignature to set.
        * @return This builder for chaining.
        */
@@ -6163,7 +6115,7 @@ public final class Messages {
        * Sender's Signature of the whole message
        * </pre>
        *
-       * <code>required bytes sender_signature = 7;</code>
+       * <code>optional bytes sender_signature = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderSignature() {
@@ -6873,12 +6825,6 @@ public final class Messages {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      for (int i = 0; i < getRefundToCount(); i++) {
-        if (!getRefundTo(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       for (int i = 0; i < getOriginatorsCount(); i++) {
         if (!getOriginators(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -7401,11 +7347,6 @@ public final class Messages {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        for (int i = 0; i < getRefundToCount(); i++) {
-          if (!getRefundTo(i).isInitialized()) {
-            return false;
-          }
-        }
         for (int i = 0; i < getOriginatorsCount(); i++) {
           if (!getOriginators(i).isInitialized()) {
             return false;
@@ -9890,12 +9831,6 @@ public final class Messages {
         memoizedIsInitialized = 0;
         return false;
       }
-      for (int i = 0; i < getAttestationsCount(); i++) {
-        if (!getAttestations(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -10238,11 +10173,6 @@ public final class Messages {
       public final boolean isInitialized() {
         if (!hasPrimaryForTransaction()) {
           return false;
-        }
-        for (int i = 0; i < getAttestationsCount(); i++) {
-          if (!getAttestations(i).isInitialized()) {
-            return false;
-          }
         }
         return true;
       }
@@ -10940,12 +10870,6 @@ public final class Messages {
         memoizedIsInitialized = 0;
         return false;
       }
-      for (int i = 0; i < getAttestationsCount(); i++) {
-        if (!getAttestations(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -11288,11 +11212,6 @@ public final class Messages {
       public final boolean isInitialized() {
         if (!hasPrimaryForTransaction()) {
           return false;
-        }
-        for (int i = 0; i < getAttestationsCount(); i++) {
-          if (!getAttestations(i).isInitialized()) {
-            return false;
-          }
         }
         return true;
       }
@@ -11762,7 +11681,7 @@ public final class Messages {
      * none / x509+sha256 / x509+sha1
      * </pre>
      *
-     * <code>required string pki_type = 2 [default = "none"];</code>
+     * <code>optional string pki_type = 2 [default = "none"];</code>
      * @return Whether the pkiType field is set.
      */
     boolean hasPkiType();
@@ -11771,7 +11690,7 @@ public final class Messages {
      * none / x509+sha256 / x509+sha1
      * </pre>
      *
-     * <code>required string pki_type = 2 [default = "none"];</code>
+     * <code>optional string pki_type = 2 [default = "none"];</code>
      * @return The pkiType.
      */
     java.lang.String getPkiType();
@@ -11780,7 +11699,7 @@ public final class Messages {
      * none / x509+sha256 / x509+sha1
      * </pre>
      *
-     * <code>required string pki_type = 2 [default = "none"];</code>
+     * <code>optional string pki_type = 2 [default = "none"];</code>
      * @return The bytes for pkiType.
      */
     com.google.protobuf.ByteString
@@ -11969,7 +11888,7 @@ public final class Messages {
      * none / x509+sha256 / x509+sha1
      * </pre>
      *
-     * <code>required string pki_type = 2 [default = "none"];</code>
+     * <code>optional string pki_type = 2 [default = "none"];</code>
      * @return Whether the pkiType field is set.
      */
     public boolean hasPkiType() {
@@ -11980,7 +11899,7 @@ public final class Messages {
      * none / x509+sha256 / x509+sha1
      * </pre>
      *
-     * <code>required string pki_type = 2 [default = "none"];</code>
+     * <code>optional string pki_type = 2 [default = "none"];</code>
      * @return The pkiType.
      */
     public java.lang.String getPkiType() {
@@ -12002,7 +11921,7 @@ public final class Messages {
      * none / x509+sha256 / x509+sha1
      * </pre>
      *
-     * <code>required string pki_type = 2 [default = "none"];</code>
+     * <code>optional string pki_type = 2 [default = "none"];</code>
      * @return The bytes for pkiType.
      */
     public com.google.protobuf.ByteString
@@ -12076,10 +11995,6 @@ public final class Messages {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasPkiType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -12439,9 +12354,6 @@ public final class Messages {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasPkiType()) {
-          return false;
-        }
         return true;
       }
 
@@ -12529,7 +12441,7 @@ public final class Messages {
        * none / x509+sha256 / x509+sha1
        * </pre>
        *
-       * <code>required string pki_type = 2 [default = "none"];</code>
+       * <code>optional string pki_type = 2 [default = "none"];</code>
        * @return Whether the pkiType field is set.
        */
       public boolean hasPkiType() {
@@ -12540,7 +12452,7 @@ public final class Messages {
        * none / x509+sha256 / x509+sha1
        * </pre>
        *
-       * <code>required string pki_type = 2 [default = "none"];</code>
+       * <code>optional string pki_type = 2 [default = "none"];</code>
        * @return The pkiType.
        */
       public java.lang.String getPkiType() {
@@ -12562,7 +12474,7 @@ public final class Messages {
        * none / x509+sha256 / x509+sha1
        * </pre>
        *
-       * <code>required string pki_type = 2 [default = "none"];</code>
+       * <code>optional string pki_type = 2 [default = "none"];</code>
        * @return The bytes for pkiType.
        */
       public com.google.protobuf.ByteString
@@ -12583,7 +12495,7 @@ public final class Messages {
        * none / x509+sha256 / x509+sha1
        * </pre>
        *
-       * <code>required string pki_type = 2 [default = "none"];</code>
+       * <code>optional string pki_type = 2 [default = "none"];</code>
        * @param value The pkiType to set.
        * @return This builder for chaining.
        */
@@ -12602,7 +12514,7 @@ public final class Messages {
        * none / x509+sha256 / x509+sha1
        * </pre>
        *
-       * <code>required string pki_type = 2 [default = "none"];</code>
+       * <code>optional string pki_type = 2 [default = "none"];</code>
        * @return This builder for chaining.
        */
       public Builder clearPkiType() {
@@ -12616,7 +12528,7 @@ public final class Messages {
        * none / x509+sha256 / x509+sha1
        * </pre>
        *
-       * <code>required string pki_type = 2 [default = "none"];</code>
+       * <code>optional string pki_type = 2 [default = "none"];</code>
        * @param value The bytes for pkiType to set.
        * @return This builder for chaining.
        */
@@ -13428,12 +13340,6 @@ public final class Messages {
         memoizedIsInitialized = 0;
         return false;
       }
-      for (int i = 0; i < getOutputsCount(); i++) {
-        if (!getOutputs(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -13905,11 +13811,6 @@ public final class Messages {
       public final boolean isInitialized() {
         if (!hasTime()) {
           return false;
-        }
-        for (int i = 0; i < getOutputsCount(); i++) {
-          if (!getOutputs(i).isInitialized()) {
-            return false;
-          }
         }
         return true;
       }
@@ -14812,7 +14713,7 @@ public final class Messages {
      * usually one of the standard Script forms
      * </pre>
      *
-     * <code>required bytes script = 2;</code>
+     * <code>optional bytes script = 2;</code>
      * @return Whether the script field is set.
      */
     boolean hasScript();
@@ -14821,7 +14722,7 @@ public final class Messages {
      * usually one of the standard Script forms
      * </pre>
      *
-     * <code>required bytes script = 2;</code>
+     * <code>optional bytes script = 2;</code>
      * @return The script.
      */
     com.google.protobuf.ByteString getScript();
@@ -14831,7 +14732,7 @@ public final class Messages {
      * The currency of the provided Script
      * </pre>
      *
-     * <code>required .payments.CurrencyType currency = 3;</code>
+     * <code>optional .payments.CurrencyType currency = 3;</code>
      * @return Whether the currency field is set.
      */
     boolean hasCurrency();
@@ -14840,7 +14741,7 @@ public final class Messages {
      * The currency of the provided Script
      * </pre>
      *
-     * <code>required .payments.CurrencyType currency = 3;</code>
+     * <code>optional .payments.CurrencyType currency = 3;</code>
      * @return The currency.
      */
     com.netki.bip75.protocol.Messages.CurrencyType getCurrency();
@@ -14980,7 +14881,7 @@ public final class Messages {
      * usually one of the standard Script forms
      * </pre>
      *
-     * <code>required bytes script = 2;</code>
+     * <code>optional bytes script = 2;</code>
      * @return Whether the script field is set.
      */
     public boolean hasScript() {
@@ -14991,7 +14892,7 @@ public final class Messages {
      * usually one of the standard Script forms
      * </pre>
      *
-     * <code>required bytes script = 2;</code>
+     * <code>optional bytes script = 2;</code>
      * @return The script.
      */
     public com.google.protobuf.ByteString getScript() {
@@ -15005,7 +14906,7 @@ public final class Messages {
      * The currency of the provided Script
      * </pre>
      *
-     * <code>required .payments.CurrencyType currency = 3;</code>
+     * <code>optional .payments.CurrencyType currency = 3;</code>
      * @return Whether the currency field is set.
      */
     public boolean hasCurrency() {
@@ -15016,7 +14917,7 @@ public final class Messages {
      * The currency of the provided Script
      * </pre>
      *
-     * <code>required .payments.CurrencyType currency = 3;</code>
+     * <code>optional .payments.CurrencyType currency = 3;</code>
      * @return The currency.
      */
     public com.netki.bip75.protocol.Messages.CurrencyType getCurrency() {
@@ -15032,14 +14933,6 @@ public final class Messages {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasScript()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasCurrency()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -15374,12 +15267,6 @@ public final class Messages {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasScript()) {
-          return false;
-        }
-        if (!hasCurrency()) {
-          return false;
-        }
         return true;
       }
 
@@ -15462,7 +15349,7 @@ public final class Messages {
        * usually one of the standard Script forms
        * </pre>
        *
-       * <code>required bytes script = 2;</code>
+       * <code>optional bytes script = 2;</code>
        * @return Whether the script field is set.
        */
       public boolean hasScript() {
@@ -15473,7 +15360,7 @@ public final class Messages {
        * usually one of the standard Script forms
        * </pre>
        *
-       * <code>required bytes script = 2;</code>
+       * <code>optional bytes script = 2;</code>
        * @return The script.
        */
       public com.google.protobuf.ByteString getScript() {
@@ -15484,7 +15371,7 @@ public final class Messages {
        * usually one of the standard Script forms
        * </pre>
        *
-       * <code>required bytes script = 2;</code>
+       * <code>optional bytes script = 2;</code>
        * @param value The script to set.
        * @return This builder for chaining.
        */
@@ -15502,7 +15389,7 @@ public final class Messages {
        * usually one of the standard Script forms
        * </pre>
        *
-       * <code>required bytes script = 2;</code>
+       * <code>optional bytes script = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearScript() {
@@ -15518,7 +15405,7 @@ public final class Messages {
        * The currency of the provided Script
        * </pre>
        *
-       * <code>required .payments.CurrencyType currency = 3;</code>
+       * <code>optional .payments.CurrencyType currency = 3;</code>
        * @return Whether the currency field is set.
        */
       public boolean hasCurrency() {
@@ -15529,7 +15416,7 @@ public final class Messages {
        * The currency of the provided Script
        * </pre>
        *
-       * <code>required .payments.CurrencyType currency = 3;</code>
+       * <code>optional .payments.CurrencyType currency = 3;</code>
        * @return The currency.
        */
       public com.netki.bip75.protocol.Messages.CurrencyType getCurrency() {
@@ -15542,7 +15429,7 @@ public final class Messages {
        * The currency of the provided Script
        * </pre>
        *
-       * <code>required .payments.CurrencyType currency = 3;</code>
+       * <code>optional .payments.CurrencyType currency = 3;</code>
        * @param value The currency to set.
        * @return This builder for chaining.
        */
@@ -15560,7 +15447,7 @@ public final class Messages {
        * The currency of the provided Script
        * </pre>
        *
-       * <code>required .payments.CurrencyType currency = 3;</code>
+       * <code>optional .payments.CurrencyType currency = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearCurrency() {
@@ -18929,17 +18816,17 @@ public final class Messages {
       "ies\030\005 \003(\0132\025.payments.Beneficiary\022!\n\007outp" +
       "uts\030\006 \003(\0132\020.payments.Output\0228\n\025attestati" +
       "onsRequested\030\007 \003(\0162\031.payments.Attestatio" +
-      "nType\022\035\n\017sender_pki_type\030\010 \002(\t:\004none\022\027\n\017" +
-      "sender_pki_data\030\t \002(\014\022\030\n\020sender_signatur" +
-      "e\030\n \002(\014\022\033\n\023recipient_vasp_name\030\013 \001(\t\022\037\n\027" +
+      "nType\022\035\n\017sender_pki_type\030\010 \001(\t:\004none\022\027\n\017" +
+      "sender_pki_data\030\t \001(\014\022\030\n\020sender_signatur" +
+      "e\030\n \001(\014\022\033\n\023recipient_vasp_name\030\013 \001(\t\022\037\n\027" +
       "recipient_chain_address\030\014 \001(\t\"\222\002\n\016Paymen" +
       "tRequest\022\"\n\027payment_details_version\030\001 \001(" +
       "\r:\0011\022\"\n\032serialized_payment_details\030\002 \002(\014" +
       "\022,\n\rbeneficiaries\030\003 \003(\0132\025.payments.Benef" +
       "iciary\0228\n\025attestationsRequested\030\004 \003(\0162\031." +
       "payments.AttestationType\022\035\n\017sender_pki_t" +
-      "ype\030\005 \002(\t:\004none\022\027\n\017sender_pki_data\030\006 \002(\014" +
-      "\022\030\n\020sender_signature\030\007 \002(\014\"\302\001\n\007Payment\022\025" +
+      "ype\030\005 \002(\t:\004none\022\027\n\017sender_pki_data\030\006 \001(\014" +
+      "\022\030\n\020sender_signature\030\007 \001(\014\"\302\001\n\007Payment\022\025" +
       "\n\rmerchant_data\030\001 \001(\014\022\024\n\014transactions\030\002 " +
       "\003(\014\022#\n\trefund_to\030\003 \003(\0132\020.payments.Output" +
       "\022\014\n\004memo\030\004 \001(\t\022)\n\013originators\030\005 \003(\0132\024.pa" +
@@ -18953,13 +18840,13 @@ public final class Messages {
       "+\n\014attestations\030\002 \003(\0132\025.payments.Attesta" +
       "tion\"z\n\013Attestation\022.\n\013attestation\030\001 \001(\016" +
       "2\031.payments.AttestationType\022\026\n\010pki_type\030" +
-      "\002 \002(\t:\004none\022\020\n\010pki_data\030\003 \001(\014\022\021\n\tsignatu" +
+      "\002 \001(\t:\004none\022\020\n\010pki_data\030\003 \001(\014\022\021\n\tsignatu" +
       "re\030\004 \001(\014\"\243\001\n\016PaymentDetails\022\025\n\007network\030\001" +
       " \001(\t:\004main\022!\n\007outputs\030\002 \003(\0132\020.payments.O" +
       "utput\022\014\n\004time\030\003 \002(\004\022\017\n\007expires\030\004 \001(\004\022\014\n\004" +
       "memo\030\005 \001(\t\022\023\n\013payment_url\030\006 \001(\t\022\025\n\rmerch" +
       "ant_data\030\007 \001(\014\"U\n\006Output\022\021\n\006amount\030\001 \001(\004" +
-      ":\0010\022\016\n\006script\030\002 \002(\014\022(\n\010currency\030\003 \002(\0162\026." +
+      ":\0010\022\016\n\006script\030\002 \001(\014\022(\n\010currency\030\003 \001(\0162\026." +
       "payments.CurrencyType\"\272\001\n\017ProtocolMessag" +
       "e\022\022\n\007version\030\001 \002(\004:\0011\022\026\n\013status_code\030\002 \002" +
       "(\004:\0011\0223\n\014message_type\030\003 \002(\0162\035.payments.P" +

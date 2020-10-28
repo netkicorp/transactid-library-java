@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Detailed information about an address.
  */
-data class AddressInformation(
+data class AddressInformation @JvmOverloads constructor(
 
     /**
      * Address.

@@ -26,7 +26,7 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
     recipientParameters: RecipientParameters?
 ): Messages.InvoiceRequest.Builder {
     val invoiceRequestBuilder = Messages.InvoiceRequest.newBuilder()
-        .setAmount(this.amount)
+        .setAmount(this.amount ?: 0)
         .setMemo(this.memo)
         .setNotificationUrl(this.notificationUrl)
         .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
@@ -42,7 +42,7 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
     }
 
     recipientParameters?.let {
-        invoiceRequestBuilder.recipientChainAddress = recipientParameters.chainAddress
+        invoiceRequestBuilder.recipientChainAddress = recipientParameters.chainAddress ?: ""
         invoiceRequestBuilder.recipientVaspName = recipientParameters.vaspName
     }
 
@@ -130,15 +130,13 @@ internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: P
 
     return PaymentRequest(
         paymentDetailsVersion = this.paymentDetailsVersion,
-        paymentRequestParameters = PaymentRequestParameters(
-            network = paymentDetails.network,
-            outputs = outputs,
-            time = Timestamp(paymentDetails.time),
-            expires = Timestamp(paymentDetails.expires),
-            memo = paymentDetails.memo,
-            paymentUrl = paymentDetails.paymentUrl,
-            merchantData = paymentDetails.merchantData.toStringLocal()
-        ),
+        network = paymentDetails.network,
+        outputs = outputs,
+        time = Timestamp(paymentDetails.time),
+        expires = Timestamp(paymentDetails.expires),
+        memo = paymentDetails.memo,
+        paymentUrl = paymentDetails.paymentUrl,
+        merchantData = paymentDetails.merchantData.toStringLocal(),
         beneficiaries = beneficiaries,
         attestationsRequested = attestationsRequested,
         senderPkiType = this.senderPkiType.getType(),
@@ -348,7 +346,7 @@ internal fun ByteArray.toMessagePaymentAck(): Messages.PaymentACK = try {
  *
  * @return Messages.PaymentACK.
  */
-internal fun Payment.toMessagePaymentAck(memo: String): Messages.PaymentACK = Messages.PaymentACK.newBuilder()
+internal fun Payment.toMessagePaymentAck(memo: String?): Messages.PaymentACK = Messages.PaymentACK.newBuilder()
     .setPayment(this.toMessagePayment())
     .setMemo(memo)
     .build()

@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Contains a certificate associated to an specific attestation.
  */
-data class AttestationCertificate(
+data class AttestationCertificate constructor(
 
     /**
      * The type of attestation.

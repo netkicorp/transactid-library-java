@@ -3,16 +3,16 @@ package com.netki.model
 /**
  * Data of the recipient of the message to be used to create a message.
  */
-data class RecipientParameters(
+data class RecipientParameters @JvmOverloads constructor(
     /**
      * Recipient's vasp name.
      */
-    val vaspName: String? = null,
+    val vaspName: String? = "",
 
     /**
      * Recipient's vasp name.
      */
-    val chainAddress: String? = null,
+    val chainAddress: String? = "",
 
     /**
      * Parameters needed if you want to encrypt the protocol message.

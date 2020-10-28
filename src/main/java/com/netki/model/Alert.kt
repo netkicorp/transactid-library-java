@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Alerts associated to an address.
  */
-data class Alert(
+data class Alert @JvmOverloads constructor(
 
     /**
      * Name of the fired alert.
