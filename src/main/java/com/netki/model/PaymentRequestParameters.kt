@@ -1,10 +1,12 @@
 package com.netki.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import java.sql.Timestamp
 
 /**
  * Representation of PaymentDetails message.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class PaymentRequestParameters @JvmOverloads constructor(
 
     /**
