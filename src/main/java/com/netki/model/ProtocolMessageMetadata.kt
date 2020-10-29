@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Metadata for the protocol message.
  */
-data class ProtocolMessageMetadata(
+data class ProtocolMessageMetadata @JvmOverloads constructor(
     /**
      * Protocol version number.
      */

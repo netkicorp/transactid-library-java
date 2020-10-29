@@ -12,21 +12,8 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createInvoiceRequest(
-        invoiceRequestParameters: InvoiceRequestParameters,
-        ownersParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>,
-        recipientParameters: RecipientParameters?,
-        messageInformation: MessageInformation
-    ) = bip75Service.createInvoiceRequest(
-        invoiceRequestParameters,
-        ownersParameters,
-        senderParameters,
-        attestationsRequested,
-        recipientParameters,
-        messageInformation
-    )
+    override fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters) =
+        bip75Service.createInvoiceRequest(invoiceRequestParameters)
 
     /**
      * {@inheritDoc}
@@ -51,23 +38,8 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentRequest(
-        paymentRequestParameters: PaymentRequestParameters,
-        ownersParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>,
-        paymentParametersVersion: Int,
-        messageInformation: MessageInformation,
-        recipientParameters: RecipientParameters?
-    ) = bip75Service.createPaymentRequest(
-        paymentRequestParameters,
-        ownersParameters,
-        senderParameters,
-        attestationsRequested,
-        paymentParametersVersion,
-        messageInformation,
-        recipientParameters
-    )
+    override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters) =
+        bip75Service.createPaymentRequest(paymentRequestParameters)
 
     /**
      * {@inheritDoc}
@@ -93,19 +65,7 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(
-        paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>,
-        messageInformation: MessageInformation,
-        senderParameters: SenderParameters?,
-        recipientParameters: RecipientParameters?
-    ) = bip75Service.createPayment(
-        paymentParameters,
-        ownersParameters,
-        messageInformation,
-        senderParameters,
-        recipientParameters
-    )
+    override fun createPayment(paymentParameters: PaymentParameters) = bip75Service.createPayment(paymentParameters)
 
     /**
      * {@inheritDoc}
@@ -122,12 +82,8 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentAck(
-        payment: Payment, memo: String,
-        messageInformation: MessageInformation,
-        senderParameters: SenderParameters?,
-        recipientParameters: RecipientParameters?
-    ) = bip75Service.createPaymentAck(payment, memo, messageInformation, senderParameters, recipientParameters)
+    override fun createPaymentAck(paymentAckParameters: PaymentAckParameters) =
+        bip75Service.createPaymentAck(paymentAckParameters)
 
     /**
      * {@inheritDoc}

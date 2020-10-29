@@ -9,32 +9,34 @@ message InvoiceRequest {
   optional uint64 amount = 1 [default = 0];                   // amount is integer-number-of-satoshis
   optional string memo = 2;                                   // Human-readable description of invoice request for the receiver
   optional string notification_url = 3;                       // URL to notify on EncryptedPaymentRequest ready
-  repeated Owner owners = 4;                                  // Account owners
-  repeated Output outputs = 5;                                // Where payment should be sent
-  repeated AttestationType attestationsRequested = 6;         // List of attestations requested
-  required string sender_pki_type = 7 [default = "none"];     // none / x509+sha256
-  required bytes  sender_pki_data = 8;                        // Sender's pki data, depends on pki_type
-  required bytes  sender_signature = 9;                       // Sender's Signature of the whole message
-  optional string recipient_vasp_name = 10;                   // Recipient's vasp name
-  optional string recipient_chain_address = 11;               // Recipient's chain address
+  repeated Originator originators = 4;                        // Originators of the InvoiceRequest
+  repeated Beneficiary beneficiaries = 5;                     // Beneficiaries of the InvoiceRequest
+  repeated Output originatorsAddresses = 6;                   // Where the payment comes from
+  repeated AttestationType attestationsRequested = 7;         // List of attestations requested
+  optional string sender_pki_type = 8 [default = "none"];     // none / x509+sha256
+  optional bytes  sender_pki_data = 9;                        // Sender's pki data, depends on pki_type
+  optional bytes  sender_signature = 10;                      // Sender's Signature of the whole message
+  optional string recipient_vasp_name = 11;                   // Recipient's vasp name
+  optional string recipient_chain_address = 12;               // Recipient's chain address
 }
 
 message PaymentRequest {
   optional uint32 payment_details_version = 1 [default = 1];
   required bytes serialized_payment_details = 2;              // PaymentDetails
-  repeated Owner owners = 3;                                  // Account owners containing the requested attestations
+  repeated Beneficiary beneficiaries = 3;                     // Beneficiaries of the InvoiceRequest
   repeated AttestationType attestationsRequested = 4;         // List of attestations requested
   required string sender_pki_type = 5 [default = "none"];     // none / x509+sha256
-  required bytes  sender_pki_data = 6;                        // Sender's pki data, depends on pki_type
-  required bytes  sender_signature = 7;                       // Sender's Signature of the whole message
+  optional bytes  sender_pki_data = 6;                        // Sender's pki data, depends on pki_type
+  optional bytes  sender_signature = 7;                       // Sender's Signature of the whole message
 }
 
 message Payment {
-  optional bytes merchant_data = 1;       // From PaymentDetails.merchant_data
-  repeated bytes transactions = 2;        // Signed transactions that satisfy PaymentDetails.outputs
-  repeated Output refund_to = 3;          // Where to send refunds, if a refund is necessary
-  optional string memo = 4;               // Human-readable message for the merchant
-  repeated Owner owners = 5;              // Account owners containing the requested attestations
+  optional bytes merchant_data = 1;         // From PaymentDetails.merchant_data
+  repeated bytes transactions = 2;          // Signed transactions that satisfy PaymentDetails.outputs
+  repeated Output refund_to = 3;            // Where to send refunds, if a refund is necessary
+  optional string memo = 4;                 // Human-readable message for the merchant
+  repeated Originator originators = 5;      // Originators of the InvoiceRequest
+  repeated Beneficiary beneficiaries = 6;   // Beneficiaries of the InvoiceRequest
 }
 
 message PaymentACK {
@@ -42,21 +44,26 @@ message PaymentACK {
   optional string memo = 2;               // Human-readable message for customer
 }
 
-message Owner {
+message Beneficiary {
   required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
-  repeated Attestation attestations = 2;                          // All the owner attestations for the message
+  repeated Attestation attestations = 2;                          // All the Beneficiary attestations for the message
+}
+
+message Originator {
+  required bool primary_for_transaction = 1 [default = true];     // True if this is the primary account owner for this transaction, there can be only one primary owner per transaction
+  repeated Attestation attestations = 2;                          // All the Beneficiary attestations for the message
 }
 
 message Attestation {
   optional AttestationType attestation = 1;           // Type of attestation
-  required string pki_type = 2 [default = "none"];    // none / x509+sha256 / x509+sha1
+  optional string pki_type = 2 [default = "none"];    // none / x509+sha256 / x509+sha1
   optional bytes  pki_data = 3;                       // Depends on pki_type
   optional bytes  signature = 4;                      // PKI-dependent signature
 }
 
 message PaymentDetails {
   optional string network = 1 [default = "main"];   // "main" or "test"
-  repeated Output outputs = 2;                      // Where payment should be sent
+  repeated Output beneficiariesAddresses = 2;       // Where payment should be sent
   required uint64 time = 3;                         // Timestamp; when payment request created
   optional uint64 expires = 4;                      // Timestamp; when this request should be considered invalid
   optional string memo = 5;                         // Human-readable description of request for the customer
@@ -66,8 +73,8 @@ message PaymentDetails {
 
 message Output {
   optional uint64 amount = 1 [default = 0]; // amount is integer-number-of-satoshis
-  required bytes script = 2;                // usually one of the standard Script forms
-  required CurrencyType currency = 3;       // The currency of the provided Script
+  optional bytes script = 2;                // usually one of the standard Script forms
+  optional CurrencyType currency = 3;       // The currency of the provided Script
 }
 
 enum ProtocolMessageType {

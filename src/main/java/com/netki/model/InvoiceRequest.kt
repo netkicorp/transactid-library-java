@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Representation of InvoiceRequest message.
  */
-data class InvoiceRequest(
+data class InvoiceRequest @JvmOverloads constructor(
     /**
      * Integer-number-of-satoshis.
      */
@@ -20,14 +20,19 @@ data class InvoiceRequest(
     val notificationUrl: String? = null,
 
     /**
-     * Account owners.
+     * Originators account.
      */
-    val owners: List<Owner> = emptyList(),
+    val originators: List<Originator> = emptyList(),
 
     /**
-     * One or more outputs where Bitcoins are to be sent.
+     * Beneficiaries account.
      */
-    val outputs: List<Output> = emptyList(),
+    val beneficiaries: List<Beneficiary> = emptyList(),
+
+    /**
+     * Where the payment comes from.
+     */
+    val originatorsAddresses: List<Output> = emptyList(),
 
     /**
      * List of attestations requested

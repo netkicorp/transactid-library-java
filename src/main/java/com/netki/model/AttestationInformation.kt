@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Represents some data associated to an specific type of attestation.
  */
-data class AttestationInformation(
+data class AttestationInformation constructor(
 
     /**
      * The type of attestation.

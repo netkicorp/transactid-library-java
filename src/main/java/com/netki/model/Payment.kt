@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Representation of Payment message.
  */
-data class Payment(
+data class Payment @JvmOverloads constructor(
 
     /**
      * Copied from PaymentDetails.merchant_data.
@@ -27,9 +27,14 @@ data class Payment(
     val memo: String? = null,
 
     /**
-     * Account owners.
+     * Originators account.
      */
-    val owners: List<Owner> = emptyList(),
+    val originators: List<Originator> = emptyList(),
+
+    /**
+     * Beneficiaries account.
+     */
+    val beneficiaries: List<Beneficiary> = emptyList(),
 
     /**
      * Metadata for the protocol message.

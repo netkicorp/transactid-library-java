@@ -24,49 +24,53 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createInvoiceRequest(
-        invoiceRequestParameters: InvoiceRequestParameters,
-        ownersParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>,
-        recipientParameters: RecipientParameters?,
-        messageInformation: MessageInformation
-    ): ByteArray {
+    override fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters): ByteArray {
 
-        ownersParameters.validate()
+        invoiceRequestParameters.originatorParameters.validate(true, OwnerType.ORIGINATOR)
+        invoiceRequestParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
 
         val messageInvoiceRequestBuilder =
             invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
-                senderParameters,
-                attestationsRequested,
-                recipientParameters
+                invoiceRequestParameters.senderParameters,
+                invoiceRequestParameters.attestationsRequested,
+                invoiceRequestParameters.recipientParameters
             )
 
-        ownersParameters.forEach { owner ->
-            val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
+        invoiceRequestParameters.beneficiaryParameters?.forEach { beneficiary ->
+            val beneficiaryMessage = beneficiary.toMessageBeneficiaryBuilderWithoutAttestations()
 
-            owner.pkiDataParametersSets.forEach { pkiData ->
-                ownerMessage.addAttestations(pkiData.toMessageAttestation(owner.isPrimaryForTransaction))
+            beneficiary.pkiDataParametersSets.forEach { pkiData ->
+                beneficiaryMessage.addAttestations(pkiData.toMessageAttestation(false))
             }
 
-            messageInvoiceRequestBuilder.addOwners(ownerMessage)
+            messageInvoiceRequestBuilder.addBeneficiaries(beneficiaryMessage)
+        }
+
+        invoiceRequestParameters.originatorParameters.forEach { originator ->
+            val originatorMessage = originator.toMessageOriginatorBuilderWithoutAttestations()
+
+            originator.pkiDataParametersSets.forEach { pkiData ->
+                originatorMessage.addAttestations(pkiData.toMessageAttestation(originator.isPrimaryForTransaction))
+            }
+
+            messageInvoiceRequestBuilder.addOriginators(originatorMessage)
         }
 
         val messageInvoiceRequest = messageInvoiceRequestBuilder.build()
 
-        val invoiceRequest = messageInvoiceRequest.signMessage(senderParameters).toByteArray()
-        return when (messageInformation.encryptMessage) {
+        val invoiceRequest = messageInvoiceRequest.signMessage(invoiceRequestParameters.senderParameters).toByteArray()
+        return when (invoiceRequestParameters.messageInformation.encryptMessage) {
             true -> invoiceRequest.toProtocolMessageEncrypted(
                 MessageType.INVOICE_REQUEST,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                invoiceRequestParameters.messageInformation,
+                invoiceRequestParameters.senderParameters,
+                invoiceRequestParameters.recipientParameters
             )
             false -> invoiceRequest.toProtocolMessage(
                 MessageType.INVOICE_REQUEST,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                invoiceRequestParameters.messageInformation,
+                invoiceRequestParameters.senderParameters,
+                invoiceRequestParameters.recipientParameters
             )
         }
     }
@@ -85,7 +89,7 @@ internal class Bip75ServiceNetki(
         recipientParameters: RecipientParameters?
     ): InvoiceRequest {
         val invoiceRequest = parseInvoiceRequestBinary(invoiceRequestBinary, recipientParameters)
-        invoiceRequest.outputs.forEach { output ->
+        invoiceRequest.originatorsAddresses.forEach { output ->
             val addressInfo = addressInformationService.getAddressInformation(output.currency, output.script)
             output.addressInformation = addressInfo
         }
@@ -142,8 +146,8 @@ internal class Bip75ServiceNetki(
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
 
-        messageInvoiceRequestUnsigned.ownersList.forEach { ownerMessage ->
-            ownerMessage.attestationsList.forEach { attestationMessage ->
+        messageInvoiceRequestUnsigned.originatorsList.forEach { originatorMessage ->
+            originatorMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificateChain(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
@@ -157,11 +161,29 @@ internal class Bip75ServiceNetki(
                     )
                 }
 
-                val isSignatureValid = attestationMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
+                val isSignatureValid =
+                    attestationMessage.validateMessageSignature(originatorMessage.primaryForTransaction)
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
                         SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                            attestationMessage.attestation
+                        )
+                    )
+                }
+            }
+        }
+
+        messageInvoiceRequestUnsigned.originatorsList.forEach { beneficiaryMessage ->
+            beneficiaryMessage.attestationsList.forEach { attestationMessage ->
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
+                    attestationMessage.pkiData.toStringLocal()
+                )
+
+                check(isCertificateOwnerChainValid) {
+                    throw InvalidCertificateChainException(
+                        CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )
@@ -175,48 +197,44 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentRequest(
-        paymentRequestParameters: PaymentRequestParameters,
-        ownersParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>,
-        paymentParametersVersion: Int,
-        messageInformation: MessageInformation,
-        recipientParameters: RecipientParameters?
-    ): ByteArray {
+    override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters): ByteArray {
 
-        ownersParameters.validate()
+        paymentRequestParameters.beneficiaryParameters.validate(true, OwnerType.BENEFICIARY)
 
         val messagePaymentRequestBuilder = paymentRequestParameters
             .toMessagePaymentDetails()
-            .toPaymentRequest(senderParameters, paymentParametersVersion, attestationsRequested)
+            .toPaymentRequest(
+                paymentRequestParameters.senderParameters,
+                paymentRequestParameters.paymentParametersVersion,
+                paymentRequestParameters.attestationsRequested
+            )
 
-        ownersParameters.forEach { owner ->
-            val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
+        paymentRequestParameters.beneficiaryParameters.forEach { beneficiary ->
+            val beneficiaryMessage = beneficiary.toMessageBeneficiaryBuilderWithoutAttestations()
 
-            owner.pkiDataParametersSets.forEach { pkiData ->
-                ownerMessage.addAttestations(pkiData.toMessageAttestation(owner.isPrimaryForTransaction))
+            beneficiary.pkiDataParametersSets.forEach { pkiData ->
+                beneficiaryMessage.addAttestations(pkiData.toMessageAttestation(beneficiary.isPrimaryForTransaction))
             }
 
-            messagePaymentRequestBuilder.addOwners(ownerMessage)
+            messagePaymentRequestBuilder.addBeneficiaries(beneficiaryMessage)
         }
 
         val messagePaymentRequest = messagePaymentRequestBuilder.build()
 
-        val paymentRequest = messagePaymentRequest.signMessage(senderParameters).toByteArray()
+        val paymentRequest = messagePaymentRequest.signMessage(paymentRequestParameters.senderParameters).toByteArray()
 
-        return when (messageInformation.encryptMessage) {
+        return when (paymentRequestParameters.messageInformation.encryptMessage) {
             true -> paymentRequest.toProtocolMessageEncrypted(
                 MessageType.PAYMENT_REQUEST,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                paymentRequestParameters.messageInformation,
+                paymentRequestParameters.senderParameters,
+                paymentRequestParameters.recipientParameters
             )
             false -> paymentRequest.toProtocolMessage(
                 MessageType.PAYMENT_REQUEST,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                paymentRequestParameters.messageInformation,
+                paymentRequestParameters.senderParameters,
+                paymentRequestParameters.recipientParameters
             )
         }
     }
@@ -235,7 +253,7 @@ internal class Bip75ServiceNetki(
         recipientParameters: RecipientParameters?
     ): PaymentRequest {
         val paymentRequest = parsePaymentRequestBinary(paymentRequestBinary, recipientParameters)
-        paymentRequest.paymentRequestParameters.outputs.forEach { output ->
+        paymentRequest.beneficiariesAddresses.forEach { output ->
             val addressInfo = addressInformationService.getAddressInformation(output.currency, output.script)
             output.addressInformation = addressInfo
         }
@@ -291,8 +309,8 @@ internal class Bip75ServiceNetki(
         check(isSenderSignatureValid) {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
         }
-        messagePaymentRequestUnsigned.ownersList.forEach { ownerMessage ->
-            ownerMessage.attestationsList.forEach { attestationMessage ->
+        messagePaymentRequestUnsigned.beneficiariesList.forEach { beneficiaryMessage ->
+            beneficiaryMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificateChain(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
@@ -306,7 +324,8 @@ internal class Bip75ServiceNetki(
                     )
                 }
 
-                val isSignatureValid = attestationMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
+                val isSignatureValid =
+                    attestationMessage.validateMessageSignature(beneficiaryMessage.primaryForTransaction)
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
@@ -324,41 +343,46 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(
-        paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>,
-        messageInformation: MessageInformation,
-        senderParameters: SenderParameters?,
-        recipientParameters: RecipientParameters?
-    ): ByteArray {
-        ownersParameters.validate()
+    override fun createPayment(paymentParameters: PaymentParameters): ByteArray {
+        paymentParameters.originatorParameters.validate(true, OwnerType.ORIGINATOR)
+        paymentParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
 
         val paymentBuilder = paymentParameters.toMessagePaymentBuilder()
 
-        ownersParameters.forEach { owner ->
-            val ownerMessage = owner.toMessageOwnerBuilderWithoutAttestations()
+        paymentParameters.beneficiaryParameters?.forEach { beneficiary ->
+            val beneficiaryMessage = beneficiary.toMessageBeneficiaryBuilderWithoutAttestations()
 
-            owner.pkiDataParametersSets.forEach { pkiData ->
-                ownerMessage.addAttestations(pkiData.toMessageAttestation(owner.isPrimaryForTransaction))
+            beneficiary.pkiDataParametersSets.forEach { pkiData ->
+                beneficiaryMessage.addAttestations(pkiData.toMessageAttestation(false))
             }
 
-            paymentBuilder.addOwners(ownerMessage)
+            paymentBuilder.addBeneficiaries(beneficiaryMessage)
+        }
+
+        paymentParameters.originatorParameters.forEach { originator ->
+            val originatorMessage = originator.toMessageOriginatorBuilderWithoutAttestations()
+
+            originator.pkiDataParametersSets.forEach { pkiData ->
+                originatorMessage.addAttestations(pkiData.toMessageAttestation(originator.isPrimaryForTransaction))
+            }
+
+            paymentBuilder.addOriginators(originatorMessage)
         }
 
         val payment = paymentBuilder.build().toByteArray()
 
-        return when (messageInformation.encryptMessage) {
+        return when (paymentParameters.messageInformation.encryptMessage) {
             true -> payment.toProtocolMessageEncrypted(
                 MessageType.PAYMENT,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                paymentParameters.messageInformation,
+                paymentParameters.senderParameters,
+                paymentParameters.recipientParameters
             )
             false -> payment.toProtocolMessage(
                 MessageType.PAYMENT,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                paymentParameters.messageInformation,
+                paymentParameters.senderParameters,
+                paymentParameters.recipientParameters
             )
         }
     }
@@ -390,8 +414,8 @@ internal class Bip75ServiceNetki(
             }
         }
 
-        payment.ownersList.forEach { ownerMessage ->
-            ownerMessage.attestationsList.forEach { attestationMessage ->
+        payment.originatorsList.forEach { originatorMessage ->
+            originatorMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificateChain(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
@@ -405,11 +429,29 @@ internal class Bip75ServiceNetki(
                     )
                 }
 
-                val isSignatureValid = attestationMessage.validateMessageSignature(ownerMessage.primaryForTransaction)
+                val isSignatureValid =
+                    attestationMessage.validateMessageSignature(originatorMessage.primaryForTransaction)
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
                         SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                            attestationMessage.attestation
+                        )
+                    )
+                }
+            }
+        }
+
+        payment.originatorsList.forEach { beneficiaryMessage ->
+            beneficiaryMessage.attestationsList.forEach { attestationMessage ->
+                val isCertificateOwnerChainValid = validateCertificateChain(
+                    attestationMessage.getAttestationPkiType(),
+                    attestationMessage.pkiData.toStringLocal()
+                )
+
+                check(isCertificateOwnerChainValid) {
+                    throw InvalidCertificateChainException(
+                        CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )
@@ -423,27 +465,21 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentAck(
-        payment: Payment,
-        memo: String,
-        messageInformation: MessageInformation,
-        senderParameters: SenderParameters?,
-        recipientParameters: RecipientParameters?
-    ): ByteArray {
-        val paymentAck = payment.toMessagePaymentAck(memo).toByteArray()
+    override fun createPaymentAck(paymentAckParameters: PaymentAckParameters): ByteArray {
+        val paymentAck = paymentAckParameters.payment.toMessagePaymentAck(paymentAckParameters.memo).toByteArray()
 
-        return when (messageInformation.encryptMessage) {
+        return when (paymentAckParameters.messageInformation.encryptMessage) {
             true -> paymentAck.toProtocolMessageEncrypted(
                 MessageType.PAYMENT_ACK,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                paymentAckParameters.messageInformation,
+                paymentAckParameters.senderParameters,
+                paymentAckParameters.recipientParameters
             )
             false -> paymentAck.toProtocolMessage(
                 MessageType.PAYMENT_ACK,
-                messageInformation,
-                senderParameters,
-                recipientParameters
+                paymentAckParameters.messageInformation,
+                paymentAckParameters.senderParameters,
+                paymentAckParameters.recipientParameters
             )
         }
     }

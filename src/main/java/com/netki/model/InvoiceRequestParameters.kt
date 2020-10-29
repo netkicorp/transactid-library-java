@@ -3,17 +3,47 @@ package com.netki.model
 /**
  * Data to create InvoiceRequest message.
  */
-data class InvoiceRequestParameters(
+data class InvoiceRequestParameters @JvmOverloads constructor(
+
+    /**
+     * List of originators for this transaction.
+     */
+    val originatorParameters: List<OriginatorParameters>,
+
+    /**
+     * The sender of the protocol message.
+     */
+    val senderParameters: SenderParameters,
+
+    /**
+     * List of attestations requested for the transaction.
+     */
+    val attestationsRequested: List<Attestation>,
 
     /**
      * Integer-number-of-satoshis.
      */
-    val amount: Long,
+    val amount: Long? = null,
 
     /**
      * Human-readable description of invoice request for the receiver.
      */
-    val memo: String,
+    val memo: String? = "",
+
+    /**
+     * Where the payment comes from.
+     */
+    val originatorsAddresses: List<Output> = emptyList(),
+
+    /**
+     * List of beneficiaries for this transaction.
+     */
+    val beneficiaryParameters: List<BeneficiaryParameters>? = emptyList(),
+
+    /**
+     * Information of the recipient of the message.
+     */
+    val recipientParameters: RecipientParameters? = RecipientParameters(),
 
     /**
      * Secure (usually TLS-protected HTTP) location where an EncryptedProtocolMessage SHOULD be sent when ready.
@@ -21,7 +51,7 @@ data class InvoiceRequestParameters(
     val notificationUrl: String? = "",
 
     /**
-     * One or more outputs where Bitcoins are to be sent.
+     * Status and information of the protocol message status, by default "OK".
      */
-    val outputs: List<Output> = emptyList()
+    val messageInformation: MessageInformation = MessageInformation()
 )
