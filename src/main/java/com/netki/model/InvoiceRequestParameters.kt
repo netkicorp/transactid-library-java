@@ -1,8 +1,12 @@
 package com.netki.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
 /**
  * Data to create InvoiceRequest message.
  */
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class InvoiceRequestParameters @JvmOverloads constructor(
 
     /**
