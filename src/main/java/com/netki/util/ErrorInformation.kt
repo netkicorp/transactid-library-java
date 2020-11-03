@@ -2,8 +2,9 @@ package com.netki.util
 
 object ErrorInformation {
 
-    const val OWNERS_VALIDATION_NO_PRIMARY_OWNER = "There should be one primary owner"
-    const val OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS = "There can be only one primary owner"
+    const val OWNERS_VALIDATION_NO_PRIMARY_OWNER = "There should be one primary %s"
+    const val OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS = "There can be only one primary %s"
+    const val OWNERS_VALIDATION_EMPTY_ERROR = "There should be at least one %s for this message"
     const val SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE = "Sender signature is not valid"
     const val SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE = "Owner signature is not valid for attestation %s"
     const val CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA =

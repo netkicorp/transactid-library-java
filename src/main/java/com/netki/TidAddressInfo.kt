@@ -20,7 +20,6 @@ class TidAddressInfo(private val addressInformationProvider: AddressInformationP
          * @return instance of TidAddressInfo.
          */
         @JvmStatic
-        @JvmOverloads
         fun getInstance(authorizationKey: String): TidAddressInfo {
             val addressInformation = AddressInformationFactory.getInstance(authorizationKey)
             return TidAddressInfo(addressInformation)

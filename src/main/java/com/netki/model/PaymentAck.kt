@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Representation of PaymentAck message.
  */
-data class PaymentAck(
+data class PaymentAck @JvmOverloads constructor(
 
     /**
      * Copy of the Payment message that triggered this PaymentACK.

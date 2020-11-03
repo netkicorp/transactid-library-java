@@ -12,24 +12,12 @@ interface Bip75 {
      * Create InvoiceRequest message.
      *
      * @param invoiceRequestParameters data to create the InvoiceRequest.
-     * @param ownersParameters of the accounts for this transaction.
-     * @param senderParameters of the protocol message.
-     * @param attestationsRequested list of attestations requested.
-     * @param recipientParameters information of the recipient of the message.
-     * @param messageInformation status and information of the message status, by default "OK".
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(InvalidOwnersException::class, EncryptionException::class)
-    fun createInvoiceRequest(
-        invoiceRequestParameters: InvoiceRequestParameters,
-        ownersParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>,
-        recipientParameters: RecipientParameters? = null,
-        messageInformation: MessageInformation = MessageInformation()
-    ): ByteArray
+    fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters): ByteArray
 
     /**
      * Validate if a binary InvoiceRequest is valid.
@@ -96,26 +84,12 @@ interface Bip75 {
      * Create binary PaymentRequest.
      *
      * @param paymentRequestParameters data to create the PaymentRequest.
-     * @param ownersParameters of the accounts for this transaction.
-     * @param senderParameters of the protocol message.
-     * @param attestationsRequested list of attestations requested.
-     * @param paymentParametersVersion version of the PaymentDetails message.
-     * @param messageInformation status and information of the message status, by default "OK".
-     * @param recipientParameters information of the recipient of the message.
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(InvalidOwnersException::class, EncryptionException::class)
-    fun createPaymentRequest(
-        paymentRequestParameters: PaymentRequestParameters,
-        ownersParameters: List<OwnerParameters>,
-        senderParameters: SenderParameters,
-        attestationsRequested: List<Attestation>,
-        paymentParametersVersion: Int = 1,
-        messageInformation: MessageInformation = MessageInformation(),
-        recipientParameters: RecipientParameters? = null
-    ): ByteArray
+    fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters): ByteArray
 
     /**
      * Validate if a binary PaymentRequest is valid.
@@ -182,21 +156,11 @@ interface Bip75 {
      * Create binary Payment.
      *
      * @param paymentParameters data to create the Payment.
-     * @param ownersParameters of the accounts for this transaction.
-     * @param messageInformation status and information of the message status, by default "OK".
-     * @param senderParameters of the protocol message.
-     * @param recipientParameters information of the recipient of the message.
      * @return binary object of the message created.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(EncryptionException::class)
-    fun createPayment(
-        paymentParameters: PaymentParameters,
-        ownersParameters: List<OwnerParameters>,
-        messageInformation: MessageInformation = MessageInformation(),
-        senderParameters: SenderParameters? = null,
-        recipientParameters: RecipientParameters? = null
-    ): ByteArray
+    fun createPayment(paymentParameters: PaymentParameters): ByteArray
 
     /**
      * Validate if a binary Payment is valid.
@@ -234,22 +198,12 @@ interface Bip75 {
     /**
      * Create binary PaymentAck.
      *
-     * @param payment data to create the Payment.
-     * @param memo note that should be displayed to the customer.
-     * @param messageInformation status and information of the message status, by default "OK".
-     * @param senderParameters of the protocol message.
-     * @param recipientParameters information of the recipient of the message.
+     * @param paymentAckParameters data to create the PaymentAck.
      * @return binary object of the message created.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(EncryptionException::class)
-    fun createPaymentAck(
-        payment: Payment,
-        memo: String,
-        messageInformation: MessageInformation = MessageInformation(),
-        senderParameters: SenderParameters? = null,
-        recipientParameters: RecipientParameters? = null
-    ): ByteArray
+    fun createPaymentAck(paymentAckParameters: PaymentAckParameters): ByteArray
 
     /**
      * Validate if a binary PaymentAck is valid.

@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Pki data in a message.
  */
-data class PkiData(
+data class PkiData @JvmOverloads constructor(
 
     /**
      * Type of certificate.

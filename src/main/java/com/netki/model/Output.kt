@@ -3,7 +3,7 @@ package com.netki.model
 /**
  * Representation of Output message.
  */
-data class Output(
+data class Output @JvmOverloads constructor(
 
     /**
      * Number of satoshis (0.00000001 BTC) to be paid.

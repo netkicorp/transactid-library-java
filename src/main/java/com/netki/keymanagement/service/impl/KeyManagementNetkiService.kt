@@ -64,13 +64,13 @@ internal class KeyManagementNetkiService(
     }
 
     private fun validateAttestationData(attestationsInformation: List<AttestationInformation>) {
-        attestationsInformation.forEach { attestationsInformation ->
-            if (!attestationsInformation.data.isAlphaNumeric()) {
+        attestationsInformation.forEach { information ->
+            if (!information.data.isAlphaNumeric()) {
                 throw CertificateProviderException(
                     String.format(
                         CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER,
-                        attestationsInformation.data,
-                        attestationsInformation.attestation
+                        information.data,
+                        information.attestation
                     )
                 )
             }
