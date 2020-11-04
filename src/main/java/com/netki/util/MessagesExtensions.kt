@@ -1172,7 +1172,6 @@ internal fun ByteArray.getSerializedMessageEncryptedProtocolMessage(recipientPar
     }
 }
 
-
 /**
  * Method to extract the ProtocolMessageMetadata from a Messages.ProtocolMessage
  */
@@ -1218,6 +1217,37 @@ internal fun ByteArray.extractProtocolMessageMetadata(): ProtocolMessageMetadata
             protocolMessageMessages.identifier.toStringLocal(),
             false
         )
+    } catch (exception: Exception) {
+        exception.printStackTrace()
+        throw InvalidObjectException(PARSE_BINARY_MESSAGE_INVALID_INPUT.format(exception.message))
+    }
+}
+
+/**
+ * Method to change the status to ProtocolMessageMetadata.
+ */
+internal fun ByteArray.changeStatus(statusCode: StatusCode, statusMessage: String): ByteArray {
+    try {
+        val protocolMessageMessages = Messages.EncryptedProtocolMessage.parseFrom(this)
+        return Messages.EncryptedProtocolMessage.newBuilder()
+            .mergeFrom(protocolMessageMessages)
+            .setStatusCode(statusCode.code)
+            .setStatusMessage(statusMessage)
+            .build()
+            .toByteArray()
+
+    } catch (exception: Exception) {
+        // nothing to do here
+    }
+
+    try {
+        val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
+        return Messages.ProtocolMessage.newBuilder()
+            .mergeFrom(protocolMessageMessages)
+            .setStatusCode(statusCode.code)
+            .setStatusMessage(statusMessage)
+            .build()
+            .toByteArray()
     } catch (exception: Exception) {
         exception.printStackTrace()
         throw InvalidObjectException(PARSE_BINARY_MESSAGE_INVALID_INPUT.format(exception.message))

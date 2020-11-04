@@ -96,4 +96,13 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
      */
     override fun isPaymentAckValid(paymentAckBinary: ByteArray, recipientParameters: RecipientParameters?) =
         bip75Service.isPaymentAckValid(paymentAckBinary, recipientParameters)
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun changeStatusMessageProtocol(
+        protocolMessage: ByteArray,
+        statusCode: StatusCode,
+        statusMessage: String
+    ) = bip75Service.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
 }

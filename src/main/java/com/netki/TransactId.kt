@@ -262,4 +262,20 @@ class TransactId(private var bip75: Bip75) {
     @JvmOverloads
     fun parsePaymentAck(paymentAckBinary: ByteArray, recipientParameters: RecipientParameters? = null): PaymentAck =
         bip75.parsePaymentAck(paymentAckBinary, recipientParameters)
+
+    /**
+     * Change the status code and/or the message for a protocol message.
+     * @param protocolMessage to change status.
+     * @param statusCode new status code.
+     * @param statusMessage new message.
+     * @return binary object of the message created.
+     * @exception InvalidObjectException if the binary is malformed.
+     */
+    @Throws(InvalidObjectException::class)
+    @JvmOverloads
+    fun changeStatusMessageProtocol(
+        protocolMessage: ByteArray,
+        statusCode: StatusCode,
+        statusMessage: String = ""
+    ) : ByteArray = bip75.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
 }
