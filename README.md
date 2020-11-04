@@ -471,6 +471,29 @@ fun parsePaymentAck(paymentAckBinary: ByteArray, recipientParameters: RecipientP
 
 And that will return an object with all of the fields of the PaymentACK and the values that were filled in.
 
+## Payment Protocol Status Communication
+[Every ProtocolMessage or EncryptedProtocolMessage MUST include a status code which conveys information about the last message received](https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki#payment-protocol-status-communication), if any (for the first message sent, use a status of 1 "OK" even though there was no previous message). In the case of an error that causes the Payment Protocol process to be stopped or requires that message be retried, a ProtocolMessage or EncryptedProtocolMessage SHOULD be returned by the party generating the error. The content of the message MUST contain the same serialized_message or encrypted_message and identifier (if present) and MUST have the status_code set appropriately.
+
+To be able to change the status of a protocol message you can do it using the following method.
+
+```kotlin
+/**
+ * Change the status code and/or the message for a protocol message.
+ * @param protocolMessage to change status.
+ * @param statusCode new status code.
+ * @param statusMessage new message.
+ * @return binary object of the message created.
+ * @exception InvalidObjectException if the binary is malformed.
+ */
+@Throws(InvalidObjectException::class)
+@JvmOverloads
+fun changeStatusMessageProtocol(
+    protocolMessage: ByteArray,
+    statusCode: StatusCode,
+    statusMessage: String = ""
+) : ByteArray
+```
+
 # Key Management system
 
 This library contains a module to create and administrate KeyPairs and certificates.

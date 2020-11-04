@@ -19,7 +19,7 @@ ext {
     jacksonVersion = "2.11.3"
 
     groupId = 'com.netki'
-    versionRelease = '1.0.0-beta1'
+    versionRelease = '1.0.0-beta2'
     artifactId = 'transactid'
 }
 
