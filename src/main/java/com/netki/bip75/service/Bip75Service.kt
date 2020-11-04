@@ -228,4 +228,19 @@ internal interface Bip75Service {
      */
     @Throws(InvalidObjectException::class, EncryptionException::class)
     fun parsePaymentAck(paymentAckBinary: ByteArray, recipientParameters: RecipientParameters? = null): PaymentAck
+
+    /**
+     * Change the status code and/or the message for a protocol message.
+     * @param protocolMessage to change status.
+     * @param statusCode new status code.
+     * @param statusMessage new message.
+     * @return binary object of the message created.
+     * @exception InvalidObjectException if the binary is malformed.
+     */
+    @Throws(InvalidObjectException::class)
+    fun changeStatusMessageProtocol(
+        protocolMessage: ByteArray,
+        statusCode: StatusCode,
+        statusMessage: String = ""
+    ): ByteArray
 }

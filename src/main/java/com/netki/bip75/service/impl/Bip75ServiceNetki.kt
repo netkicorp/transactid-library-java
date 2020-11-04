@@ -515,6 +515,15 @@ internal class Bip75ServiceNetki(
     }
 
     /**
+     * {@inheritDoc}
+     */
+    override fun changeStatusMessageProtocol(
+        protocolMessage: ByteArray,
+        statusCode: StatusCode,
+        statusMessage: String
+    ) = protocolMessage.changeStatus(statusCode, statusMessage)
+
+    /**
      * Validate if a certificate belongs to a valid Certificate chain.
      *
      * @return true if yes, false otherwise.
