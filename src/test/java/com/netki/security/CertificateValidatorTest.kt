@@ -2,10 +2,12 @@ package com.netki.security
 
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.model.CertificateChain
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CERTIFICATE_EXPIRED
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
+import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_EXPIRED
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.INTERMEDIATE_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.ROOT_CERTIFICATE_RANDOM
@@ -24,22 +26,22 @@ internal class CertificateValidatorTest {
 
     @Test
     fun `Verify correct certificate chain for client certificate one`() {
-        assert(certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_ONE))
+        assert(certificateValidator.validateCertificate(CLIENT_CERTIFICATE_CHAIN_ONE))
     }
 
     @Test
     fun `Verify correct certificate chain for client certificate two`() {
-        assert(certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_TWO))
+        assert(certificateValidator.validateCertificate(CLIENT_CERTIFICATE_CHAIN_TWO))
     }
 
     @Test
     fun `Verify correct certificate chain for client certificate three bundle`() {
-        assert(certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE))
+        assert(certificateValidator.validateCertificate(CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE))
     }
 
     @Test
     fun `Verify incorrect certificate chain for client certificate`() {
-        assert(!certificateValidator.validateCertificateChain(CLIENT_CERTIFICATE_RANDOM))
+        assert(!certificateValidator.validateCertificate(CLIENT_CERTIFICATE_RANDOM))
     }
 
     @Test
@@ -88,5 +90,13 @@ internal class CertificateValidatorTest {
     @Test
     fun `Verify client certificate is not self signed`() {
         assert(!intermediateCertificateRandom.isSelfSigned())
+    }
+
+    @Test
+    fun `Verify correct certificate expiration date for client certificate one`() {
+        val exception = Assertions.assertThrows(InvalidCertificateException::class.java) {
+            certificateValidator.validateCertificateExpiration(CLIENT_CERTIFICATE_EXPIRED)
+        }
+        assert(exception.message?.contains("The certificate is expired") ?: false)
     }
 }

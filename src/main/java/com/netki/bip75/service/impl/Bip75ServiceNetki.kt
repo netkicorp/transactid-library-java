@@ -4,6 +4,7 @@ import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
 import com.netki.bip75.service.Bip75Service
 import com.netki.exceptions.InvalidCertificateChainException
+import com.netki.exceptions.InvalidCertificateException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator
@@ -130,7 +131,7 @@ internal class Bip75ServiceNetki(
         val messageInvoiceRequestUnsigned =
             messageInvoiceRequest.removeMessageSenderSignature() as Messages.InvoiceRequest
 
-        val isCertificateChainValid = validateCertificateChain(
+        val isCertificateChainValid = validateCertificate(
             messageInvoiceRequest.getMessagePkiType(),
             messageInvoiceRequest.senderPkiData.toStringLocal()
         )
@@ -148,7 +149,7 @@ internal class Bip75ServiceNetki(
 
         messageInvoiceRequestUnsigned.originatorsList.forEach { originatorMessage ->
             originatorMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid = validateCertificateChain(
+                val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
                 )
@@ -176,7 +177,7 @@ internal class Bip75ServiceNetki(
 
         messageInvoiceRequestUnsigned.originatorsList.forEach { beneficiaryMessage ->
             beneficiaryMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid = validateCertificateChain(
+                val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
                 )
@@ -294,7 +295,7 @@ internal class Bip75ServiceNetki(
         val messagePaymentRequestUnsigned =
             messagePaymentRequest.removeMessageSenderSignature() as Messages.PaymentRequest
 
-        val isCertificateChainValid = validateCertificateChain(
+        val isCertificateChainValid = validateCertificate(
             messagePaymentRequest.getMessagePkiType(),
             messagePaymentRequest.senderPkiData.toStringLocal()
         )
@@ -311,7 +312,7 @@ internal class Bip75ServiceNetki(
         }
         messagePaymentRequestUnsigned.beneficiariesList.forEach { beneficiaryMessage ->
             beneficiaryMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid = validateCertificateChain(
+                val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
                 )
@@ -416,7 +417,7 @@ internal class Bip75ServiceNetki(
 
         payment.originatorsList.forEach { originatorMessage ->
             originatorMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid = validateCertificateChain(
+                val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
                 )
@@ -444,7 +445,7 @@ internal class Bip75ServiceNetki(
 
         payment.originatorsList.forEach { beneficiaryMessage ->
             beneficiaryMessage.attestationsList.forEach { attestationMessage ->
-                val isCertificateOwnerChainValid = validateCertificateChain(
+                val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
                     attestationMessage.pkiData.toStringLocal()
                 )
@@ -524,15 +525,19 @@ internal class Bip75ServiceNetki(
     ) = protocolMessage.changeStatus(statusCode, statusMessage)
 
     /**
-     * Validate if a certificate belongs to a valid Certificate chain.
+     * Validate if a certificate is valid.
      *
-     * @return true if yes, false otherwise.
+     * @return true if yes, an exception with the detail otherwise.
      */
-    private fun validateCertificateChain(pkiType: PkiType, certificate: String): Boolean {
+    @Throws(
+        InvalidCertificateException::class,
+        InvalidCertificateChainException::class
+    )
+    private fun validateCertificate(pkiType: PkiType, certificate: String): Boolean {
         return when (pkiType) {
             PkiType.NONE -> true
             PkiType.X509SHA256 -> {
-                certificateValidator.validateCertificateChain(certificate)
+                certificateValidator.validateCertificate(certificate)
             }
         }
     }

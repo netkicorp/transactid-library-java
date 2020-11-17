@@ -4,6 +4,8 @@ import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.model.CertificateChain
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CERTIFICATE_CHAINS_NOT_FOUND
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CERTIFICATE_EXPIRED
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CERTIFICATE_NOT_YET_VALID
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_NOT_CORRECT_CERTIFICATE_ERROR
 import com.netki.util.FilesUtil
 import java.io.FileInputStream
@@ -20,6 +22,52 @@ private const val CERT_EXTENSION = ".cer"
 internal class CertificateValidator(
     private val trustStoreLocation: String
 ) {
+
+    /**
+     * Method to validate if a certificates is valid.
+     *
+     * @param clientCertificatesPem certificate to validate, could be a client certificate including its own certificates chain.
+     * @return true if the client certificate is valid.
+     * @exception InvalidCertificateException if there is a problem with the certificates.
+     * @exception InvalidCertificateChainException if there is a problem with the certificates chain.
+     */
+    @Throws(
+        InvalidCertificateException::class,
+        InvalidCertificateChainException::class
+    )
+    fun validateCertificate(clientCertificatesPem: String) =
+        validateCertificateChain(clientCertificatesPem) && validateCertificateExpiration(clientCertificatesPem)
+
+    /**
+     * Method to validate if a certificates is valid.
+     *
+     * @param clientCertificatesPem certificate to validate.
+     * @return true if the certificate is valid.
+     * @exception InvalidCertificateException if there is a problem with the certificates.
+     */
+    @Throws(InvalidCertificateException::class)
+    fun validateCertificateExpiration(clientCertificatesPem: String): Boolean {
+        val certificates = CryptoModule.certificatesPemToObject(clientCertificatesPem)
+        val clientCertificate = CryptoModule.getClientCertificate(certificates)
+        try {
+            clientCertificate.checkValidity()
+        } catch (exception: CertificateNotYetValidException) {
+            throw InvalidCertificateException(
+                String.format(
+                    CERTIFICATE_VALIDATION_CERTIFICATE_NOT_YET_VALID,
+                    clientCertificate.notBefore
+                )
+            )
+        } catch (exception: CertificateExpiredException) {
+            throw InvalidCertificateException(
+                String.format(
+                    CERTIFICATE_VALIDATION_CERTIFICATE_EXPIRED,
+                    clientCertificate.notAfter
+                )
+            )
+        }
+        return true
+    }
 
     /**
      * Method to validate if a chain of certificates is valid.
@@ -46,10 +94,11 @@ internal class CertificateValidator(
      * @return true if the chain is valid.
      * @exception InvalidCertificateException if there is a problem with the certificates.
      */
-    @Throws(
-        InvalidCertificateException::class
-    )
-    fun validateCertificateChain(clientCertificatesPem: String, certificateChains: List<CertificateChain>): Boolean {
+    @Throws(InvalidCertificateException::class)
+    fun validateCertificateChain(
+        clientCertificatesPem: String,
+        certificateChains: List<CertificateChain>
+    ): Boolean {
 
         val certificates = CryptoModule.certificatesPemToObject(clientCertificatesPem)
         val clientCertificate = CryptoModule.getClientCertificate(certificates)
