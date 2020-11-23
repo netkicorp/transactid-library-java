@@ -10,7 +10,7 @@ plugins {
 ext {
     dokkaVersion = '0.9.17'
     protoVersion = '3.10.0'
-    bouncyCastleVersion = '1.64'
+    bouncyCastleVersion = '1.67'
     junitVersion = '5.3.1'
     jacocoVersion = '0.8.4'
     vaultDriverVersion = '5.1.0'

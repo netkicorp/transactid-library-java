@@ -2,13 +2,13 @@ package com.netki.security
 
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.model.CertificateChain
-import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CERTIFICATE_EXPIRED
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_ONE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_THREE_BUNDLE
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_EXPIRED
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
+import com.netki.util.TestData.KeyPairs.CLIENT_CERT_REVOKED
 import com.netki.util.TestData.KeyPairs.INTERMEDIATE_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.ROOT_CERTIFICATE_RANDOM
 import org.junit.jupiter.api.Assertions
@@ -93,10 +93,24 @@ internal class CertificateValidatorTest {
     }
 
     @Test
-    fun `Verify correct certificate expiration date for client certificate one`() {
+    fun `Verify correct certificate expiration date for valid certificate`() {
+        assert(certificateValidator.validateCertificateExpiration(CLIENT_CERTIFICATE_CHAIN_ONE))
+    }
+
+    @Test
+    fun `Verify incorrect certificate expiration date for expired certificate`() {
         val exception = Assertions.assertThrows(InvalidCertificateException::class.java) {
             certificateValidator.validateCertificateExpiration(CLIENT_CERTIFICATE_EXPIRED)
         }
         assert(exception.message?.contains("The certificate is expired") ?: false)
     }
+
+    @Test
+    fun `Verify that a certificate is revoked`() {
+        val exception = Assertions.assertThrows(InvalidCertificateException::class.java) {
+            assert(certificateValidator.validateCertificateRevocation(CLIENT_CERT_REVOKED))
+        }
+        assert(exception.message?.contains("The certificate is revoked by CRL") ?: false)
+    }
+
 }

@@ -558,6 +558,95 @@ internal object TestData {
                 "0MC2Hb46TpSi125sC8KKfPog88Tk5c0NqMuRkrF8hey1FGlmDoLnzc7ILaZRfyHB\n" +
                 "NVOFBkpdn627G190\n" +
                 "-----END CERTIFICATE-----"
+
+        const val CLIENT_CERT_REVOKED = "-----BEGIN CERTIFICATE-----\n" +
+                "MIIGvzCCBaegAwIBAgIQA3G1iob2zpw+y3v0L5II/DANBgkqhkiG9w0BAQsFADBN\n" +
+                "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E\n" +
+                "aWdpQ2VydCBTSEEyIFNlY3VyZSBTZXJ2ZXIgQ0EwHhcNMTkxMDA0MDAwMDAwWhcN\n" +
+                "MjExMDA4MTIwMDAwWjB0MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5p\n" +
+                "YTEVMBMGA1UEBxMMV2FsbnV0IENyZWVrMRwwGgYDVQQKExNMdWNhcyBHYXJyb24g\n" +
+                "VG9ycmVzMRswGQYDVQQDExJyZXZva2VkLmJhZHNzbC5jb20wggEiMA0GCSqGSIb3\n" +
+                "DQEBAQUAA4IBDwAwggEKAoIBAQC0Ljkn9nZW+vmCL6At8tAyGZlV3IlElvdzI6/3\n" +
+                "pF4+dL9Zec1fC+eP+wMZv4+eY9L/Anx2/hbpAvyGkF+YXNaaui6V6NilxfScnae5\n" +
+                "3rhKcWL9Kih9Aq9G1g0dcWHZTNuXFQA09FOBvI6UOd7YvkJ/JOoCU8ZbgD4RLtLZ\n" +
+                "C20Yhqwh1nfZSKlPo1sd86U2ZNZNH0a38zUQ9XtFOt2kGNu9o07DEJsZhOWWlZtd\n" +
+                "51ZyqyeFaRTc4V42zWnKc8CCB338fo0u+8vJeS6XNkMPFpRFDr3TCWvZ4AP+KgAQ\n" +
+                "m5c48FMRXo165qG+LjKp/2NPoMbqNbhZ5KtDokjAGggRvmzDAgMBAAGjggNyMIID\n" +
+                "bjAfBgNVHSMEGDAWgBQPgGEcgjFh1S8o541GOLQs4cbZ4jAdBgNVHQ4EFgQUOE25\n" +
+                "xq19bGjCX3XXG27LpumeOq0wNQYDVR0RBC4wLIIScmV2b2tlZC5iYWRzc2wuY29t\n" +
+                "ghZ3d3cucmV2b2tlZC5iYWRzc2wuY29tMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUE\n" +
+                "FjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwawYDVR0fBGQwYjAvoC2gK4YpaHR0cDov\n" +
+                "L2NybDMuZGlnaWNlcnQuY29tL3NzY2Etc2hhMi1nNi5jcmwwL6AtoCuGKWh0dHA6\n" +
+                "Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9zc2NhLXNoYTItZzYuY3JsMEwGA1UdIARFMEMw\n" +
+                "NwYJYIZIAYb9bAEBMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vd3d3LmRpZ2ljZXJ0\n" +
+                "LmNvbS9DUFMwCAYGZ4EMAQIDMHwGCCsGAQUFBwEBBHAwbjAkBggrBgEFBQcwAYYY\n" +
+                "aHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEYGCCsGAQUFBzAChjpodHRwOi8vY2Fj\n" +
+                "ZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRTSEEyU2VjdXJlU2VydmVyQ0EuY3J0\n" +
+                "MAwGA1UdEwEB/wQCMAAwggF9BgorBgEEAdZ5AgQCBIIBbQSCAWkBZwB1AKS5CZC0\n" +
+                "GFgUh7sTosxncAo8NZgE+RvfuON3zQ7IDdwQAAABbZjwwc8AAAQDAEYwRAIgWPi8\n" +
+                "7t5MzJnvLDJGmCppeQwyHa1VkvAG811Mg19KbcsCIDpbsejn8Feo/pD1g3xUHm9y\n" +
+                "2a5K3ZT2qOI+FfwaNcm7AHYAh3W/51l8+IxDmV+9827/Vo1HVjb/SrVgwbTq/16g\n" +
+                "gw8AAAFtmPDCOgAABAMARzBFAiEAmciNTmK3x9F52b+jyQonojj5PR3UTX7I1EY2\n" +
+                "yrbyDVsCIDhrUCuwgpjKzdEkKXC8pTrPT750awtW28nCTZLaCVb1AHYARJRlLrDu\n" +
+                "zq/EQAfYqP4owNrmgr7YyzG1P9MzlrW2gagAAAFtmPDBQQAABAMARzBFAiEAwXnV\n" +
+                "kwbWLzukEmOVbs8IQHiQaERcC3RD7IrKHt4dUvMCIFfUv6IL18E/ROuuFQYDwZrv\n" +
+                "DpbCjJdvFw9Cb++GhzzBMA0GCSqGSIb3DQEBCwUAA4IBAQAXzncD0qMluMFZDLOx\n" +
+                "Pzev4B56a0EW7X5YJnyy32UVms+VAp5TDDN1kAxmphecVWRc5DpEn+acXM3hHzx0\n" +
+                "hBfbYYpAANy96MRgGg3qYIN14OV8QzGIIxCRVDzH3f7kQR1bgZvCQC6fs3JnRJ8l\n" +
+                "OhCFNnktylrwV1p48DxxBULjI1oYtXKikEdxs7ZgulOIoVFCSPtzF+MeSwyqYv8I\n" +
+                "OCMAvbctgnsuo0eekLyVlJOTe7Cw+hjz5nYX5yCc2wFu0vlL0kw8d6DaS1isZBZ5\n" +
+                "p7fCfVZfW4WLJdgxYgATKoTkxVFpcTOr4TodGE3G8fOu6G/BknS9r3g5pLpWaNc6\n" +
+                "NtqK\n" +
+                "-----END CERTIFICATE-----\n" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIElDCCA3ygAwIBAgIQAf2j627KdciIQ4tyS8+8kTANBgkqhkiG9w0BAQsFADBh\n" +
+                "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
+                "d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\n" +
+                "QTAeFw0xMzAzMDgxMjAwMDBaFw0yMzAzMDgxMjAwMDBaME0xCzAJBgNVBAYTAlVT\n" +
+                "MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxJzAlBgNVBAMTHkRpZ2lDZXJ0IFNIQTIg\n" +
+                "U2VjdXJlIFNlcnZlciBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\n" +
+                "ANyuWJBNwcQwFZA1W248ghX1LFy949v/cUP6ZCWA1O4Yok3wZtAKc24RmDYXZK83\n" +
+                "nf36QYSvx6+M/hpzTc8zl5CilodTgyu5pnVILR1WN3vaMTIa16yrBvSqXUu3R0bd\n" +
+                "KpPDkC55gIDvEwRqFDu1m5K+wgdlTvza/P96rtxcflUxDOg5B6TXvi/TC2rSsd9f\n" +
+                "/ld0Uzs1gN2ujkSYs58O09rg1/RrKatEp0tYhG2SS4HD2nOLEpdIkARFdRrdNzGX\n" +
+                "kujNVA075ME/OV4uuPNcfhCOhkEAjUVmR7ChZc6gqikJTvOX6+guqw9ypzAO+sf0\n" +
+                "/RR3w6RbKFfCs/mC/bdFWJsCAwEAAaOCAVowggFWMBIGA1UdEwEB/wQIMAYBAf8C\n" +
+                "AQAwDgYDVR0PAQH/BAQDAgGGMDQGCCsGAQUFBwEBBCgwJjAkBggrBgEFBQcwAYYY\n" +
+                "aHR0cDovL29jc3AuZGlnaWNlcnQuY29tMHsGA1UdHwR0MHIwN6A1oDOGMWh0dHA6\n" +
+                "Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RDQS5jcmwwN6A1\n" +
+                "oDOGMWh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RD\n" +
+                "QS5jcmwwPQYDVR0gBDYwNDAyBgRVHSAAMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8v\n" +
+                "d3d3LmRpZ2ljZXJ0LmNvbS9DUFMwHQYDVR0OBBYEFA+AYRyCMWHVLyjnjUY4tCzh\n" +
+                "xtniMB8GA1UdIwQYMBaAFAPeUDVW0Uy7ZvCj4hsbw5eyPdFVMA0GCSqGSIb3DQEB\n" +
+                "CwUAA4IBAQAjPt9L0jFCpbZ+QlwaRMxp0Wi0XUvgBCFsS+JtzLHgl4+mUwnNqipl\n" +
+                "5TlPHoOlblyYoiQm5vuh7ZPHLgLGTUq/sELfeNqzqPlt/yGFUzZgTHbO7Djc1lGA\n" +
+                "8MXW5dRNJ2Srm8c+cftIl7gzbckTB+6WohsYFfZcTEDts8Ls/3HB40f/1LkAtDdC\n" +
+                "2iDJ6m6K7hQGrn2iWZiIqBtvLfTyyRRfJs8sjX7tN8Cp1Tm5gr8ZDOo0rwAhaPit\n" +
+                "c+LJMto4JQtV05od8GiG7S5BNO98pVAdvzr508EIDObtHopYJeS4d60tbvVS3bR0\n" +
+                "j6tJLp07kzQoH3jOlOrHvdPJbRzeXDLz\n" +
+                "-----END CERTIFICATE-----\n" +
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\n" +
+                "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
+                "d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\n" +
+                "QTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT\n" +
+                "MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\n" +
+                "b20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG\n" +
+                "9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB\n" +
+                "CSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97\n" +
+                "nh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt\n" +
+                "43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P\n" +
+                "T19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4\n" +
+                "gdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO\n" +
+                "BgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR\n" +
+                "TLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw\n" +
+                "DQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr\n" +
+                "hMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg\n" +
+                "06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF\n" +
+                "PnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls\n" +
+                "YSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk\n" +
+                "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\n" +
+                "-----END CERTIFICATE-----"
     }
 
     object Beneficiaries {
