@@ -51,7 +51,7 @@ import java.sql.Timestamp
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class TransactIdTest {
 
-    private val transactId = TransactId.getInstance("src/main/resources/certificates")
+    private val transactId = TransactId.getInstance("src/test/resources/certificates")
     private val pairKey = TestData.Keys.generateKeyPairECDSA()
 
     @BeforeAll

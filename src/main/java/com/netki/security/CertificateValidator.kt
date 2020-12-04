@@ -14,6 +14,7 @@ import org.bouncycastle.asn1.DERIA5String
 import org.bouncycastle.asn1.DEROctetString
 import org.bouncycastle.asn1.x509.*
 import java.io.ByteArrayInputStream
+import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.net.URL
@@ -31,10 +32,34 @@ import kotlin.collections.HashSet
  * Class with methods to validate things related with certificates.
  */
 private const val CERT_EXTENSION = ".cer"
+private const val CA_CERT_DEV = "src/main/java/com/netki/ca/certificates/TransactIdCACertDev"
+private const val CA_CERT_PROD = "src/main/java/com/netki/ca/certificates/TransactIdCACertProd"
+private const val CA_CERT_NAME = "TransactIdCA.cer"
 
 internal class CertificateValidator(
-    private val trustStoreLocation: String
+    private val trustStoreLocation: String,
+    developmentMode: Boolean = false
 ) {
+
+    /**
+     * Initialize the CertificateValidator
+     */
+    init {
+        val caCertificate = readCaCertificate(developmentMode)
+        writeCert(caCertificate)
+    }
+
+    private fun readCaCertificate(developmentMode: Boolean): String {
+        val file = when(developmentMode){
+            true -> File(CA_CERT_DEV)
+            false -> File(CA_CERT_PROD)
+        }
+        return file.readText()
+    }
+
+    private fun writeCert(caCertificate: String) {
+        File("$trustStoreLocation/$CA_CERT_NAME").writeText(caCertificate)
+    }
 
     /**
      * Method to validate if a certificates is valid.

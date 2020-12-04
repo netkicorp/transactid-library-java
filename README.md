@@ -103,14 +103,17 @@ To use the methods to create the BIP messages you need to fetch an instance with
  * @param trustStoreLocation Path with the directory that contains the trust certificates chains.
  * This should be accessible and have with read permissions for the app that is running the library.
  * @param authorizationKey Key to connect fetch detailed information of addresses.
+ * @param developmentMode set to true if you are using this library in a sandbox environment.
  * @return instance of TransactId.
  */
+```
 @JvmStatic
 @JvmOverloads
-fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): TransactId {
-    val bip75 = Bip75Factory.getInstance(trustStoreLocation, authorizationKey)
-    return TransactId(bip75)
-}
+fun getInstance(
+    trustStoreLocation: String,
+    authorizationKey: String? = "",
+    developmentMode: Boolean = false
+): TransactId
 ```
 The authorizationKey should be a valid Merkle key.
 

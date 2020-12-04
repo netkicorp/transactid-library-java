@@ -22,7 +22,7 @@ internal class CertificateValidatorTest {
     private val rootCertificateRandom = CryptoModule.certificatePemToObject(ROOT_CERTIFICATE_RANDOM) as X509Certificate
     private val intermediateCertificateRandom =
         CryptoModule.certificatePemToObject(INTERMEDIATE_CERTIFICATE_RANDOM) as X509Certificate
-    private val certificateValidator = CertificateValidator("src/main/resources/certificates")
+    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
 
     @Test
     fun `Verify correct certificate chain for client certificate one`() {

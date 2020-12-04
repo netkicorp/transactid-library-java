@@ -8,10 +8,9 @@ import com.netki.bip75.main.impl.Bip75Netki
 import com.netki.bip75.service.Bip75Service
 import com.netki.bip75.service.impl.Bip75ServiceNetki
 import com.netki.security.CertificateValidator
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 
@@ -27,7 +26,11 @@ internal object Bip75Factory {
      * @return Bip75 instance.
      */
     @JvmOverloads
-    fun getInstance(trustStoreLocation: String, authorizationKey: String? = null): Bip75 {
+    fun getInstance(
+        trustStoreLocation: String,
+        authorizationKey: String? = null,
+        developmentMode: Boolean = false
+    ): Bip75 {
         Security.addProvider(BouncyCastleProvider())
 
         val client: HttpClient by lazy {
@@ -40,7 +43,7 @@ internal object Bip75Factory {
 
         val gson = Gson()
 
-        val certificateValidator = CertificateValidator(trustStoreLocation)
+        val certificateValidator = CertificateValidator(trustStoreLocation, developmentMode)
 
         val addressInformationRepo = MerkleRepo(client, authorizationKey ?: "", gson)
 
