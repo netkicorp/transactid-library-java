@@ -32,6 +32,7 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
         .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
         .setSenderSignature("".toByteString())
+        .setSenderEvCert(senderParameters.evCertificatePem?.toByteString())
 
     this.originatorsAddresses.forEach { output ->
         invoiceRequestBuilder.addOriginatorsAddresses(output.toMessageOutput())
@@ -86,6 +87,7 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: P
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),
         senderSignature = this.senderSignature.toStringLocal(),
+        senderEvCert = this.senderEvCert.toStringLocal(),
         recipientVaspName = this.recipientVaspName,
         recipientChainAddress = this.recipientChainAddress,
         protocolMessageMetadata = protocolMessageMetadata

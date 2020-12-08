@@ -17,6 +17,7 @@ object ErrorInformation {
     const val CERTIFICATE_VALIDATION_CLIENT_CERTIFICATE_NOT_FOUND = "No client certificate found in the certificates"
     const val CERTIFICATE_VALIDATION_CERTIFICATE_EXPIRED = "The certificate is expired, expiration date: %s"
     const val CERTIFICATE_VALIDATION_CERTIFICATE_REVOKED = "The certificate is revoked by CRL: %s"
+    const val CERTIFICATE_VALIDATION_EV_NOT_VALID = "The certificate is not a valid EV certificate."
     const val CERTIFICATE_VALIDATION_CERTIFICATE_NOT_YET_VALID = "The certificate is not yet valid, starting date: %s"
     const val PARSE_BINARY_MESSAGE_INVALID_INPUT = "Invalid object for message, error: %s"
     const val KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION = "This is not a valid x509 certificate, error: %s"

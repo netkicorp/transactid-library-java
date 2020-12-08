@@ -9,6 +9,7 @@ import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator
 import com.netki.util.*
+import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_EV_NOT_VALID
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
@@ -145,6 +146,14 @@ internal class Bip75ServiceNetki(
 
         check(isSenderSignatureValid) {
             throw InvalidSignatureException(SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE)
+        }
+
+        val senderEvCert = messageInvoiceRequest.senderEvCert.toStringLocal()
+        if (!senderEvCert.isBlank()) {
+            val isEvCert = certificateValidator.isEvCertificate(senderEvCert)
+            check(isEvCert) {
+                throw InvalidCertificateException(CERTIFICATE_VALIDATION_EV_NOT_VALID)
+            }
         }
 
         messageInvoiceRequestUnsigned.originatorsList.forEach { originatorMessage ->

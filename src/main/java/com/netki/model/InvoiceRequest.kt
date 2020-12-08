@@ -54,6 +54,12 @@ data class InvoiceRequest @JvmOverloads constructor(
      */
     val senderSignature: String? = null,
 
+
+    /**
+     * EV Certificate in PEM format.
+     */
+    val senderEvCert: String? = null,
+
     /**
      * Recipient's vasp name
      */

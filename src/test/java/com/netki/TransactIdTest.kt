@@ -676,8 +676,8 @@ internal class TransactIdTest {
         assert(invoiceRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
         assert(invoiceRequest.protocolMessageMetadata.statusMessage.isEmpty())
         assert(invoiceRequest.protocolMessageMetadata.messageType == MessageType.INVOICE_REQUEST)
+        assert(!invoiceRequest.senderEvCert.isNullOrBlank())
     }
-
 
     @Test
     fun `Create and parse InvoiceRequestBinary to InvoiceRequest with message information`() {

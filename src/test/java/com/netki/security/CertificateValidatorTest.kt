@@ -9,9 +9,11 @@ import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_EXPIRED
 import com.netki.util.TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.CLIENT_CERT_REVOKED
+import com.netki.util.TestData.KeyPairs.EV_CERT
 import com.netki.util.TestData.KeyPairs.INTERMEDIATE_CERTIFICATE_RANDOM
 import com.netki.util.TestData.KeyPairs.ROOT_CERTIFICATE_RANDOM
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.security.cert.X509Certificate
@@ -113,4 +115,13 @@ internal class CertificateValidatorTest {
         assert(exception.message?.contains("The certificate is revoked by CRL") ?: false)
     }
 
+    @Test
+    fun `Verify a certificate is EV type`() {
+        assert(certificateValidator.isEvCertificate(EV_CERT))
+    }
+
+    @Test
+    fun `Verify a certificate is not EV type`() {
+        assertFalse(certificateValidator.isEvCertificate(CLIENT_CERTIFICATE_CHAIN_ONE))
+    }
 }
