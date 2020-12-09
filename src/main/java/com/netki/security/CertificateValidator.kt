@@ -2,6 +2,8 @@
 
 package com.netki.security
 
+import com.netki.ca.certificates.CaCertificates.TRANSACT_ID_DEV
+import com.netki.ca.certificates.CaCertificates.TRANSACT_ID_PROD
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.model.CertificateChain
@@ -37,16 +39,15 @@ import kotlin.collections.HashSet
 /**
  * Class with methods to validate things related with certificates.
  */
-private const val CERT_EXTENSION = ".pem"
-private const val CA_CERT_DEV = "src/main/java/com/netki/ca/certificates/TransactIdCACertDev"
-private const val CA_CERT_PROD = "src/main/java/com/netki/ca/certificates/TransactIdCACertProd"
+private const val CERT_EXTENSION = ".cer"
+private const val PEM_EXTENSION = ".pem"
 private const val CA_CERT_NAME = "TransactIdCA.pem"
 
 internal class CertificateValidator(
     private val trustStoreLocation: String,
     developmentMode: Boolean = false
 ) {
-    private lateinit var policies: Array<ObjectIdentifier>
+    private var policies: Array<ObjectIdentifier>
 
     /**
      * Initialize the CertificateValidator
@@ -86,11 +87,10 @@ internal class CertificateValidator(
     }
 
     private fun readCaCertificate(developmentMode: Boolean): String {
-        val file = when (developmentMode) {
-            true -> File(CA_CERT_DEV)
-            false -> File(CA_CERT_PROD)
+        return when (developmentMode) {
+            true -> TRANSACT_ID_DEV
+            false -> TRANSACT_ID_PROD
         }
-        return file.readText()
     }
 
     private fun writeCert(caCertificate: String) {
@@ -295,7 +295,9 @@ internal class CertificateValidator(
     private fun getCertificates(): List<List<X509Certificate>> {
         val certificatesList = mutableListOf<List<X509Certificate>>()
         val certificateChainFiles = try {
-            FilesUtil.getFilesFromDirectory(trustStoreLocation).filter { it.name.endsWith(CERT_EXTENSION) }
+            FilesUtil.getFilesFromDirectory(trustStoreLocation).filter {
+                it.name.endsWith(CERT_EXTENSION) || it.name.endsWith(PEM_EXTENSION)
+            }
         } catch (exception: Exception) {
             throw InvalidCertificateChainException(exception.message, exception)
         }
