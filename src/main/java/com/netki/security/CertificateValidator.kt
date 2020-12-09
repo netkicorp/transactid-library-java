@@ -37,10 +37,10 @@ import kotlin.collections.HashSet
 /**
  * Class with methods to validate things related with certificates.
  */
-private const val CERT_EXTENSION = ".cer"
+private const val CERT_EXTENSION = ".pem"
 private const val CA_CERT_DEV = "src/main/java/com/netki/ca/certificates/TransactIdCACertDev"
 private const val CA_CERT_PROD = "src/main/java/com/netki/ca/certificates/TransactIdCACertProd"
-private const val CA_CERT_NAME = "TransactIdCA.cer"
+private const val CA_CERT_NAME = "TransactIdCA.pem"
 
 internal class CertificateValidator(
     private val trustStoreLocation: String,

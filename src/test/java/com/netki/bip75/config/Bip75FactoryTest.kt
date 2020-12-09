@@ -9,7 +9,7 @@ internal class Bip75FactoryTest {
     @Test
     fun `Validate proper instance creation of Bip75`() {
         val trustStoreUrl = "src/test/resources/certificates"
-        val certificateName = "TransactIdCA.cer"
+        val certificateName = "TransactIdCA.pem"
         val bip75Instance = Bip75Factory.getInstance(trustStoreUrl)
 
         assert(bip75Instance is Bip75Netki)
