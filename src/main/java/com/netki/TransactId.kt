@@ -283,4 +283,14 @@ class TransactId(private var bip75: Bip75) {
         statusCode: StatusCode,
         statusMessage: String = ""
     ): ByteArray = bip75.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
+
+    /**
+     * Method to extract the metadata related to a protocol message.
+     * @param protocolMessage to extract metadata from.
+     * @return metadata related to the message.
+     * @exception InvalidObjectException if the binary is malformed.
+     */
+    @Throws(InvalidObjectException::class)
+    fun getProtocolMessageMetadata(protocolMessage: ByteArray): ProtocolMessageMetadata =
+        bip75.getProtocolMessageMetadata(protocolMessage)
 }

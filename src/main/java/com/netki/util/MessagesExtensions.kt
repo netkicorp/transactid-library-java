@@ -32,7 +32,7 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
         .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
         .setSenderSignature("".toByteString())
-        .setSenderEvCert(senderParameters.evCertificatePem?.toByteString())
+        .setSenderEvCert(senderParameters.evCertificatePem?.toByteString() ?: "".toByteString())
 
     this.originatorsAddresses.forEach { output ->
         invoiceRequestBuilder.addOriginatorsAddresses(output.toMessageOutput())

@@ -243,4 +243,13 @@ internal interface Bip75Service {
         statusCode: StatusCode,
         statusMessage: String = ""
     ): ByteArray
+
+    /**
+     * Method to extract the metadata related to a protocol message.
+     * @param protocolMessage to extract metadata from.
+     * @return metadata related to the message.
+     * @exception InvalidObjectException if the binary is malformed.
+     */
+    @Throws(InvalidObjectException::class)
+    fun getProtocolMessageMetadata(protocolMessage: ByteArray): ProtocolMessageMetadata
 }

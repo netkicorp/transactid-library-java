@@ -550,4 +550,10 @@ internal class Bip75ServiceNetki(
             }
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun getProtocolMessageMetadata(protocolMessage: ByteArray) =
+        protocolMessage.extractProtocolMessageMetadata()
 }
