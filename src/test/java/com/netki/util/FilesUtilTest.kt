@@ -8,7 +8,7 @@ internal class FilesUtilTest {
 
     @Test
     fun `Get the files from certificates resources folder`() {
-        val files = FilesUtil.getFilesFromDirectory("src/main/resources/certificates")
+        val files = FilesUtil.getFilesFromDirectory("src/test/resources/certificates")
 
         assert(files.isNotEmpty())
     }

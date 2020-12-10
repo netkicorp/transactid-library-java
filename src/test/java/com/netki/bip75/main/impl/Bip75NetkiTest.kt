@@ -36,7 +36,7 @@ internal class Bip75NetkiTest {
 
     private lateinit var bip75Netki: Bip75Netki
     private lateinit var mockAddressInformationService: AddressInformationService
-    private val certificateValidator = CertificateValidator("src/main/resources/certificates")
+    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
     private lateinit var transactId: TransactId
 
     @BeforeAll

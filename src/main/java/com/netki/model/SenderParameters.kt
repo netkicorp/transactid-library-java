@@ -13,5 +13,10 @@ data class SenderParameters @JvmOverloads constructor(
      * Parameters needed if you want to encrypt the protocol message.
      * If you add the parameters here, the encryption of the message will happen automatically.
      */
-    val encryptionParameters: EncryptionParameters? = null
+    val encryptionParameters: EncryptionParameters? = null,
+
+    /**
+     * EV Certificate in PEM format.
+     */
+    val evCertificatePem: String? = null
 )
