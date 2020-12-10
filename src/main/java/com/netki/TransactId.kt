@@ -20,12 +20,17 @@ class TransactId(private var bip75: Bip75) {
          * @param trustStoreLocation Path with the directory that contains the trust certificates chains.
          * This should be accessible and have with read permissions for the app that is running the library.
          * @param authorizationKey Key to connect fetch detailed information of addresses.
+         * @param developmentMode set to true if you are using this library in a sandbox environment.
          * @return instance of TransactId.
          */
         @JvmStatic
         @JvmOverloads
-        fun getInstance(trustStoreLocation: String, authorizationKey: String? = ""): TransactId {
-            val bip75 = Bip75Factory.getInstance(trustStoreLocation, authorizationKey)
+        fun getInstance(
+            trustStoreLocation: String,
+            authorizationKey: String? = "",
+            developmentMode: Boolean = false
+        ): TransactId {
+            val bip75 = Bip75Factory.getInstance(trustStoreLocation, authorizationKey, developmentMode)
             return TransactId(bip75)
         }
     }
@@ -277,5 +282,15 @@ class TransactId(private var bip75: Bip75) {
         protocolMessage: ByteArray,
         statusCode: StatusCode,
         statusMessage: String = ""
-    ) : ByteArray = bip75.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
+    ): ByteArray = bip75.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
+
+    /**
+     * Method to extract the metadata related to a protocol message.
+     * @param protocolMessage to extract metadata from.
+     * @return metadata related to the message.
+     * @exception InvalidObjectException if the binary is malformed.
+     */
+    @Throws(InvalidObjectException::class)
+    fun getProtocolMessageMetadata(protocolMessage: ByteArray): ProtocolMessageMetadata =
+        bip75.getProtocolMessageMetadata(protocolMessage)
 }

@@ -16,8 +16,9 @@ message InvoiceRequest {
   optional string sender_pki_type = 8 [default = "none"];     // none / x509+sha256
   optional bytes  sender_pki_data = 9;                        // Sender's pki data, depends on pki_type
   optional bytes  sender_signature = 10;                      // Sender's Signature of the whole message
-  optional string recipient_vasp_name = 11;                   // Recipient's vasp name
-  optional string recipient_chain_address = 12;               // Recipient's chain address
+  optional bytes  sender_ev_cert = 11;                        // Sender's EV cert
+  optional string recipient_vasp_name = 12;                   // Recipient's vasp name
+  optional string recipient_chain_address = 13;               // Recipient's chain address
 }
 
 message PaymentRequest {

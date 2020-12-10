@@ -105,4 +105,10 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
         statusCode: StatusCode,
         statusMessage: String
     ) = bip75Service.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun getProtocolMessageMetadata(protocolMessage: ByteArray): ProtocolMessageMetadata =
+        bip75Service.getProtocolMessageMetadata(protocolMessage)
 }
