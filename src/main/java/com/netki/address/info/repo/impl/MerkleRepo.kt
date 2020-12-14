@@ -2,7 +2,7 @@ package com.netki.address.info.repo.impl
 
 import com.google.gson.Gson
 import com.netki.address.info.repo.AddressInformationRepo
-import com.netki.address.info.repo.data.MerkleAddressInformation
+import com.netki.address.info.repo.data.MerkleAddress
 import com.netki.address.info.repo.data.toAddressInformation
 import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
@@ -29,7 +29,7 @@ private const val X_API_KEY_HEADER = "X-API-KEY"
 private const val IDENTIFIER_PARAM = "identifier"
 private const val CURRENCY_PARAM = "currency"
 private const val MERKLE_BASE_URL = "https://api.merklescience.com/"
-private const val ADDRESS_INFO_PATH = "api/v2.1/addresses/"
+private const val ADDRESS_INFO_PATH = "api/v3/addresses/"
 
 internal class MerkleRepo(
     private val client: HttpClient,
@@ -43,14 +43,14 @@ internal class MerkleRepo(
     override fun getAddressInformation(currency: AddressCurrency, address: String): AddressInformation {
         return try {
             runBlocking {
-                client.post<MerkleAddressInformation>("$MERKLE_BASE_URL$ADDRESS_INFO_PATH") {
+                client.post<MerkleAddress>("$MERKLE_BASE_URL$ADDRESS_INFO_PATH") {
                     header(X_API_KEY_HEADER, authorizationKey)
                     body = MultiPartFormDataContent(formData {
                         append(IDENTIFIER_PARAM, address)
                         append(CURRENCY_PARAM, currency.id)
                     })
                 }
-            }.toAddressInformation(gson)
+            }.toAddressInformation()
         } catch (exception: Exception) {
             when (exception) {
                 is ServerResponseException -> {

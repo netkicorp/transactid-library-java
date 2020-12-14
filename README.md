@@ -793,7 +793,7 @@ The information returned for the addresses is:
 /**
  * Detailed information about an address.
  */
-data class AddressInformation(
+data class AddressInformation @JvmOverloads constructor(
 
     /**
      * Address.
@@ -804,12 +804,28 @@ data class AddressInformation(
     /**
      * Describes all alerts fired for this address.
      */
+    @Deprecated("Not used anymore")
     val alerts: List<Alert>? = emptyList(),
 
     /**
      * Total amount in cryptocurrency available with address.
      */
     val balance: Double? = 0.0,
+
+    /**
+     * A list of entities who were beneficiaries in a transaction.
+     */
+    val beneficiary: List<AddressTagInformation>? = null,
+
+    /**
+     * Case status for transaction.
+     */
+    val caseStatus: Int? = null,
+
+    /**
+     * Case status for transaction.
+     */
+    val caseStatusVerbose: String? = null,
 
     /**
      * The currency code for the blockchain this address was searched on, [-1] if could not get the currency of the address.
@@ -832,6 +848,11 @@ data class AddressInformation(
     val latestTransactionTime: String? = "",
 
     /**
+     * A list of entities who were originators in a transaction.
+     */
+    val originator: List<AddressTagInformation>? = null,
+
+    /**
      * An integer indicating if this address is Low Risk [1], Medium Risk [2] or High Risk [3] address or if no risks were detected [0], [-1] if could not fetch the risk level.
      */
     val riskLevel: Int? = -1,
@@ -840,6 +861,11 @@ data class AddressInformation(
      * Indicates if this address is Low Risk, Medium Risk , High Risk or if no risks were detected.
      */
     val riskLevelVerbose: String? = "",
+
+    /**
+     * Information about the owner and user.
+     */
+    val tags: AddressTags? = null,
 
     /**
      * Total amount received by the address in cryptocurrency.

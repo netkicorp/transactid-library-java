@@ -3,6 +3,7 @@ package com.netki.model
 /**
  * Types of risks of an address alert.
  */
+@Deprecated("Not used anymore")
 data class RiskType @JvmOverloads constructor(
 
     /**
