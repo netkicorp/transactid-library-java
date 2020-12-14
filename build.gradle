@@ -20,7 +20,7 @@ ext {
     kotlinReflectVersion = "1.3.70"
 
     groupId = 'com.netki'
-    versionRelease = '1.0.0-beta3'
+    versionRelease = '1.0.0-beta4'
     artifactId = 'transactid'
 }
 

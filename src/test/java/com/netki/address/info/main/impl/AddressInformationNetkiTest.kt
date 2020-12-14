@@ -6,7 +6,7 @@ import com.netki.address.info.service.impl.AddressInformationNetkiService
 import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
-import com.netki.util.TestData.Address.MERKLE_ADDRESS_INFORMATION
+import com.netki.util.TestData.Address.MERKLE_JSON_RESPONSE
 import com.netki.util.fullUrl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
@@ -18,6 +18,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -32,7 +33,6 @@ internal class AddressInformationNetkiTest {
 
     private val addressCurrency = AddressCurrency.BITCOIN
     private val address = "0x021r02389jsdf908234234"
-    private val gson = Gson()
 
     @BeforeAll
     fun setUp() {
@@ -47,9 +47,9 @@ internal class AddressInformationNetkiTest {
             engine {
                 addHandler { request ->
                     when (request.url.fullUrl) {
-                        "https://api.merklescience.com/api/v2.1/addresses/" -> {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
                             respond(
-                                gson.toJson(MERKLE_ADDRESS_INFORMATION),
+                                MERKLE_JSON_RESPONSE,
                                 HttpStatusCode.OK,
                                 headersOf("Content-Type", ContentType.Application.Json.toString())
                             )
@@ -67,35 +67,46 @@ internal class AddressInformationNetkiTest {
 
         val addressInformation = addressInformation.getAddressInformation(addressCurrency, address)
 
-        assertEquals(addressInformation.identifier, MERKLE_ADDRESS_INFORMATION.identifier)
-        assertEquals(addressInformation.alerts?.size, MERKLE_ADDRESS_INFORMATION.merkleAddressAlerts?.size)
-        assertEquals(addressInformation.balance, MERKLE_ADDRESS_INFORMATION.balance)
-        assertEquals(addressInformation.currency, MERKLE_ADDRESS_INFORMATION.currency)
-        assertEquals(addressInformation.currencyVerbose, MERKLE_ADDRESS_INFORMATION.currencyVerbose)
-        assertEquals(addressInformation.earliestTransactionTime, MERKLE_ADDRESS_INFORMATION.earliestTransactionTime)
-        assertEquals(addressInformation.latestTransactionTime, MERKLE_ADDRESS_INFORMATION.latestTransactionTime)
-        assertEquals(addressInformation.riskLevel, MERKLE_ADDRESS_INFORMATION.riskLevel)
-        assertEquals(addressInformation.riskLevelVerbose, MERKLE_ADDRESS_INFORMATION.riskLevelVerbose)
-        assertEquals(addressInformation.totalIncomingValue, MERKLE_ADDRESS_INFORMATION.totalIncomingValue)
-        assertEquals(addressInformation.totalIncomingValueUsd, MERKLE_ADDRESS_INFORMATION.totalIncomingValueUsd)
-        assertEquals(addressInformation.totalOutgoingValue, MERKLE_ADDRESS_INFORMATION.totalOutgoingValue)
-        assertEquals(addressInformation.totalOutgoingValueUsd, MERKLE_ADDRESS_INFORMATION.totalOutgoingValueUsd)
-        assertEquals(addressInformation.createdAt, MERKLE_ADDRESS_INFORMATION.createdAt)
-        assertEquals(addressInformation.updatedAt, MERKLE_ADDRESS_INFORMATION.updatedAt)
+        assertEquals("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", addressInformation.identifier)
+        assertEquals(10.0, addressInformation.balance)
+        assertEquals(1, addressInformation.currency)
+        assertEquals("Ethereum", addressInformation.currencyVerbose)
+        assertEquals("2018-08-03T19:30:30Z", addressInformation.earliestTransactionTime)
+        assertEquals("2020-10-09T03:22:20Z", addressInformation.latestTransactionTime)
+        assertEquals(3, addressInformation.riskLevel)
+        assertEquals("High Risk", addressInformation.riskLevelVerbose)
+        assertEquals("0.0000", addressInformation.totalIncomingValue)
+        assertEquals("397181.45", addressInformation.totalIncomingValueUsd)
+        assertEquals("0.0100", addressInformation.totalOutgoingValue)
+        assertEquals("9.00", addressInformation.totalOutgoingValueUsd)
+        assertEquals("2020-07-06T11:44:19.210445Z", addressInformation.createdAt)
+        assertEquals("2020-10-09T03:23:46.836948Z", addressInformation.updatedAt)
 
-        addressInformation.alerts?.forEach { alert ->
-            run {
-                MERKLE_ADDRESS_INFORMATION.merkleAddressAlerts?.forEach { merkleAlert ->
-                    if (alert.ruleName == merkleAlert.ruleName) {
-                        assertEquals(alert.riskLevel, merkleAlert.riskLevel)
-                        assertEquals(alert.riskLevelVerbose, merkleAlert.riskLevelVerbose)
-                        assertEquals(alert.riskTypes?.size, merkleAlert.merkleAddressRiskTypes?.size)
-                        assertEquals(alert.context, "{}")
-                        assertEquals(alert.createdAt, merkleAlert.createdAt)
-                    }
-                }
-            }
-        }
+        assertEquals(2, addressInformation.originator?.size)
+        assertEquals("Exchange", addressInformation.originator?.get(0)?.tagTypeVerbose)
+        assertEquals("Mandatory KYC and AML", addressInformation.originator?.get(0)?.tagSubtypeVerbose)
+        assertEquals("Bittrex", addressInformation.originator?.get(0)?.tagNameVerbose)
+        assertEquals("23310.30", addressInformation.originator?.get(0)?.totalValueUsd)
+        assertEquals(null, addressInformation.originator?.get(1)?.tagTypeVerbose)
+        assertEquals(null, addressInformation.originator?.get(1)?.tagSubtypeVerbose)
+        assertEquals(null, addressInformation.originator?.get(1)?.tagNameVerbose)
+        assertEquals("376903.01", addressInformation.originator?.get(1)?.totalValueUsd)
+
+        assertEquals(1, addressInformation.beneficiary?.size)
+        assertEquals(null, addressInformation.beneficiary?.get(0)?.tagTypeVerbose)
+        assertEquals(null, addressInformation.beneficiary?.get(0)?.tagSubtypeVerbose)
+        assertEquals(null, addressInformation.beneficiary?.get(0)?.tagNameVerbose)
+        assertEquals("1855.02", addressInformation.beneficiary?.get(0)?.totalValueUsd)
+
+        assertEquals(null, addressInformation.tags?.owner?.tagTypeVerbose)
+        assertEquals(null, addressInformation.tags?.owner?.tagSubtypeVerbose)
+        assertEquals(null, addressInformation.tags?.owner?.tagNameVerbose)
+
+        assertEquals("Smart Contract Platform", addressInformation.tags?.user?.tagTypeVerbose)
+        assertEquals("Token", addressInformation.tags?.user?.tagSubtypeVerbose)
+        assertEquals("USD Coin", addressInformation.tags?.user?.tagNameVerbose)
+
+        assertTrue(addressInformation.alerts!!.isEmpty())
     }
 
     @Test
@@ -107,7 +118,7 @@ internal class AddressInformationNetkiTest {
             engine {
                 addHandler { request ->
                     when (request.url.fullUrl) {
-                        "https://api.merklescience.com/api/v2.1/addresses/" -> {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
                             respond(
                                 "{}",
                                 HttpStatusCode.BadRequest,
@@ -140,7 +151,7 @@ internal class AddressInformationNetkiTest {
             engine {
                 addHandler { request ->
                     when (request.url.fullUrl) {
-                        "https://api.merklescience.com/api/v2.1/addresses/" -> {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
                             respond(
                                 "{}",
                                 HttpStatusCode.Unauthorized,
@@ -174,7 +185,7 @@ internal class AddressInformationNetkiTest {
             engine {
                 addHandler { request ->
                     when (request.url.fullUrl) {
-                        "https://api.merklescience.com/api/v2.1/addresses/" -> {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
                             respond(
                                 "{}",
                                 HttpStatusCode.InternalServerError,
