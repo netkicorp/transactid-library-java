@@ -3,6 +3,7 @@ package com.netki.model
 /**
  * Alerts associated to an address.
  */
+@Deprecated("Not used anymore")
 data class Alert @JvmOverloads constructor(
 
     /**

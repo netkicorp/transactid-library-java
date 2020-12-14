@@ -1,9 +1,5 @@
 package com.netki.util
 
-import com.google.gson.JsonObject
-import com.netki.address.info.repo.data.MerkleAddressAlert
-import com.netki.address.info.repo.data.MerkleAddressInformation
-import com.netki.address.info.repo.data.MerkleAddressRiskType
 import com.netki.keymanagement.repo.data.AttestationResponse
 import com.netki.keymanagement.repo.data.CertificateAttestationResponse
 import com.netki.keymanagement.repo.data.CsrAttestation
@@ -43,7 +39,6 @@ import java.security.*
 import java.security.cert.Certificate
 import java.security.spec.ECGenParameterSpec
 import java.security.spec.ECParameterSpec
-import java.sql.Timestamp
 import java.time.Duration
 import java.time.Instant
 import java.util.*
@@ -852,89 +847,9 @@ internal object TestData {
     }
 
     object Address {
-        val MERKLE_RISK_TYPES = listOf(
-            MerkleAddressRiskType(
-                riskType = 1,
-                riskTypeVerbose = "risk level 1"
-            ),
-            MerkleAddressRiskType(
-                riskType = 2,
-                riskTypeVerbose = "risk level 2"
-            )
-        )
-
-        val MERKLE_ALERTS = listOf(
-            MerkleAddressAlert(
-                ruleName = "Alert 1",
-                riskLevel = 1,
-                riskLevelVerbose = "risk level 1",
-                merkleAddressRiskTypes = MERKLE_RISK_TYPES,
-                context = JsonObject(),
-                createdAt = "2012-09-10 12:12:12"
-            ),
-            MerkleAddressAlert(
-                ruleName = "Alert 2",
-                riskLevel = 2,
-                riskLevelVerbose = "risk level 2",
-                merkleAddressRiskTypes = MERKLE_RISK_TYPES,
-                context = JsonObject(),
-                createdAt = "2019-05-12 12:12:12"
-            )
-        )
-
-        val MERKLE_ADDRESS_INFORMATION = MerkleAddressInformation(
-            identifier = "1234-5678-9103",
-            merkleAddressAlerts = MERKLE_ALERTS,
-            caseStatus = "case status",
-            caseStatusVerbose = "detail of case status",
-            balance = 6.56,
-            currency = 3,
-            currencyVerbose = "Bitcoin",
-            earliestTransactionTime = "2012-09-10 12:12:12",
-            latestTransactionTime = "2019-05-12 12:12:12",
-            riskLevel = 1,
-            riskLevelVerbose = "risk level 1",
-            totalIncomingValue = "10.0",
-            totalIncomingValueUsd = "15,0",
-            totalOutgoingValue = "8.0",
-            totalOutgoingValueUsd = "15.2",
-            createdAt = "2010-01-01 12:12:12",
-            updatedAt = "2010-01-01 12:12:12"
-        )
-
-        val RISK_TYPES = listOf(
-            RiskType(
-                riskType = 1,
-                riskTypeVerbose = "risk level 1"
-            ),
-            RiskType(
-                riskType = 2,
-                riskTypeVerbose = "risk level 2"
-            )
-        )
-
-        val ALERTS = listOf(
-            Alert(
-                ruleName = "Alert 1",
-                riskLevel = 1,
-                riskLevelVerbose = "risk level 1",
-                riskTypes = RISK_TYPES,
-                context = "{\"context\":\"this is the context\"}",
-                createdAt = "2012-09-10 12:12:12"
-            ),
-            Alert(
-                ruleName = "Alert 2",
-                riskLevel = 2,
-                riskLevelVerbose = "risk level 2",
-                riskTypes = RISK_TYPES,
-                context = "{\"context\":\"this is the context\"}",
-                createdAt = "2019-05-12 12:12:12"
-            )
-        )
 
         val ADDRESS_INFORMATION = AddressInformation(
             identifier = "1234-5678-9103",
-            alerts = ALERTS,
             balance = 6.56,
             currency = 3,
             currencyVerbose = "Bitcoin",
@@ -949,6 +864,55 @@ internal object TestData {
             createdAt = "2010-01-01 12:12:12",
             updatedAt = "2010-01-01 12:12:12"
         )
+
+        val MERKLE_JSON_RESPONSE = "{\n" +
+                "    \"identifier\": \"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\n" +
+                "    \"currency\": 1,\n" +
+                "    \"currency_verbose\": \"Ethereum\",\n" +
+                "    \"total_incoming_value\": \"0.0000\",\n" +
+                "    \"total_incoming_value_usd\": \"397181.45\",\n" +
+                "    \"total_outgoing_value\": \"0.0100\",\n" +
+                "    \"total_outgoing_value_usd\": \"9.00\",\n" +
+                "    \"balance\": 10.0,\n" +
+                "    \"earliest_transaction_time\": \"2018-08-03T19:30:30Z\",\n" +
+                "    \"latest_transaction_time\": \"2020-10-09T03:22:20Z\",\n" +
+                "    \"risk_level\": 3,\n" +
+                "    \"risk_level_verbose\": \"High Risk\",\n" +
+                "    \"case_status\": 1,\n" +
+                "    \"case_status_verbose\": \"Opened\",\n" +
+                "    \"created_at\": \"2020-07-06T11:44:19.210445Z\",\n" +
+                "    \"updated_at\": \"2020-10-09T03:23:46.836948Z\",\n" +
+                "    \"originator\": [\n" +
+                "        {\n" +
+                "            \"tag_type_verbose\": \"Exchange\",\n" +
+                "            \"tag_subtype_verbose\": \"Mandatory KYC and AML\",\n" +
+                "            \"tag_name_verbose\": \"Bittrex\",\n" +
+                "            \"total_value_usd\": \"23310.30\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"tag_type_verbose\": null,\n" +
+                "            \"tag_subtype_verbose\": null,\n" +
+                "            \"tag_name_verbose\": null,\n" +
+                "            \"total_value_usd\": \"376903.01\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"beneficiary\": [\n" +
+                "        {\n" +
+                "            \"tag_type_verbose\": null,\n" +
+                "            \"tag_subtype_verbose\": null,\n" +
+                "            \"tag_name_verbose\": null,\n" +
+                "            \"total_value_usd\": \"1855.02\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"tags\": {\n" +
+                "        \"owner\": {},\n" +
+                "        \"user\": {\n" +
+                "            \"tag_type_verbose\": \"Smart Contract Platform\",\n" +
+                "            \"tag_subtype_verbose\": \"Token\",\n" +
+                "            \"tag_name_verbose\": \"USD Coin\"\n" +
+                "        }\n" +
+                "    }\n" +
+                "}"
     }
 
     object CertificateGeneration {
