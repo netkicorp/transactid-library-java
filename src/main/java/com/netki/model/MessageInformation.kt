@@ -6,7 +6,7 @@ package com.netki.model
  */
 data class MessageInformation @JvmOverloads constructor(
     /**
-     * Message Protocol Status Code.
+     * Protocol Message Status Code.
      */
     val statusCode: StatusCode = StatusCode.OK,
 

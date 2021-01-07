@@ -3,7 +3,7 @@ package com.netki.model
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class PaymentAckParameters  @JvmOverloads constructor(
+data class PaymentAckParameters @JvmOverloads constructor(
 
     /**
      * Data to create the Payment.
@@ -29,4 +29,4 @@ data class PaymentAckParameters  @JvmOverloads constructor(
      * Status and information of the protocol message status, by default "OK".
      */
     val messageInformation: MessageInformation = MessageInformation()
-)
+) : ProtocolMessageParameters

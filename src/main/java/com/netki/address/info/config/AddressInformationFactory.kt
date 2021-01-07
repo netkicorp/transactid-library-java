@@ -1,14 +1,12 @@
 package com.netki.address.info.config
 
-import com.google.gson.Gson
 import com.netki.address.info.main.AddressInformationProvider
 import com.netki.address.info.main.impl.AddressInformationProviderNetki
 import com.netki.address.info.repo.impl.MerkleRepo
 import com.netki.address.info.service.impl.AddressInformationNetkiService
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
 
 /**
  * Factory to generate AddressInformation instance.
@@ -29,9 +27,7 @@ internal object AddressInformationFactory {
             }
         }
 
-        val gson = Gson()
-
-        val addressInformationRepo = MerkleRepo(client, authorizationKey, gson)
+        val addressInformationRepo = MerkleRepo(client, authorizationKey)
 
         val addressInformationService = AddressInformationNetkiService(addressInformationRepo)
 

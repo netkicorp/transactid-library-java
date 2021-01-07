@@ -134,7 +134,7 @@ internal object CryptoModule {
      *
      * @param signature to validate.
      * @param data that was signed.
-     * @param publicKey to validate the signature.
+     * @param publicKeyPem to validate the signature.
      * @return true if is valid, false otherwise.
      */
     fun validateSignatureECDSA(signature: String, data: String, publicKeyPem: String): Boolean {

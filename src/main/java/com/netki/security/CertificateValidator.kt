@@ -35,7 +35,6 @@ import javax.naming.Context
 import javax.naming.directory.InitialDirContext
 import kotlin.collections.HashSet
 
-
 /**
  * Class with methods to validate things related with certificates.
  */
@@ -364,9 +363,9 @@ internal class CertificateValidator(
      */
     private fun downloadCRL(crlUrl: String): X509CRL {
         return if (crlUrl.startsWith("http://") || crlUrl.startsWith("https://") || crlUrl.startsWith("ftp://")) {
-            downloadCrlFromWeb(crlUrl);
+            downloadCrlFromWeb(crlUrl)
         } else if (crlUrl.startsWith("ldap://")) {
-            downloadCrlFromLdap(crlUrl);
+            downloadCrlFromLdap(crlUrl)
         } else {
             throw InvalidCertificateException("Can not download CRL from certificate distribution point: $crlUrl")
         }
@@ -428,7 +427,6 @@ internal class CertificateValidator(
         return false
     }
 
-
     private fun isEVPolicy(policyInformation: PolicyInformation): Boolean {
         for (oid in policies) {
             if (oid == policyInformation.policyIdentifier.identifier) {
@@ -469,4 +467,3 @@ internal fun X509Certificate.isIntermediateCertificate() =
  */
 internal fun X509Certificate.isClientCertificate() =
     !this.isSelfSigned() && (this.keyUsage == null || !this.keyUsage[5]) && this.basicConstraints == -1
-

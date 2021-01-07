@@ -8,7 +8,7 @@ import com.netki.model.*
 /**
  * Generate Bip75 protocol messages.
  *
- * @see https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki
+ * @see 'https://github.com/bitcoin/bips/blob/master/bip-0075.mediawiki'.
  */
 class TransactId(private var bip75: Bip75) {
 
@@ -278,11 +278,11 @@ class TransactId(private var bip75: Bip75) {
      */
     @Throws(InvalidObjectException::class)
     @JvmOverloads
-    fun changeStatusMessageProtocol(
+    fun changeStatusProtocolMessage(
         protocolMessage: ByteArray,
         statusCode: StatusCode,
         statusMessage: String = ""
-    ): ByteArray = bip75.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
+    ): ByteArray = bip75.changeStatusProtocolMessage(protocolMessage, statusCode, statusMessage)
 
     /**
      * Method to extract the metadata related to a protocol message.

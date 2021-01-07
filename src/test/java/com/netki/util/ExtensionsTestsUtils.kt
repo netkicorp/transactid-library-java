@@ -1,8 +1,6 @@
 package com.netki.util
 
-import io.ktor.http.Url
-import io.ktor.http.fullPath
-import io.ktor.http.hostWithPort
+import io.ktor.http.*
 
 class ExtensionsTestsUtils
 

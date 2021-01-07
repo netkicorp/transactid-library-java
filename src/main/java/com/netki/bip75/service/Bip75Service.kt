@@ -238,7 +238,7 @@ internal interface Bip75Service {
      * @exception InvalidObjectException if the binary is malformed.
      */
     @Throws(InvalidObjectException::class)
-    fun changeStatusMessageProtocol(
+    fun changeStatusProtocolMessage(
         protocolMessage: ByteArray,
         statusCode: StatusCode,
         statusMessage: String = ""

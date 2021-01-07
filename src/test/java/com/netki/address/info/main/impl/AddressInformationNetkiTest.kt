@@ -1,6 +1,5 @@
 package com.netki.address.info.main.impl
 
-import com.google.gson.Gson
 import com.netki.address.info.repo.impl.MerkleRepo
 import com.netki.address.info.service.impl.AddressInformationNetkiService
 import com.netki.exceptions.AddressProviderErrorException
@@ -8,14 +7,10 @@ import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
 import com.netki.util.TestData.Address.MERKLE_JSON_RESPONSE
 import com.netki.util.fullUrl
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.headersOf
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.features.json.*
+import io.ktor.http.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -61,7 +56,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -132,7 +127,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -165,7 +160,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -199,7 +194,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
