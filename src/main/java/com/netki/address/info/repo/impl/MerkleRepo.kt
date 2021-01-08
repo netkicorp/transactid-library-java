@@ -1,6 +1,5 @@
 package com.netki.address.info.repo.impl
 
-import com.google.gson.Gson
 import com.netki.address.info.repo.AddressInformationRepo
 import com.netki.address.info.repo.data.MerkleAddress
 import com.netki.address.info.repo.data.toAddressInformation
@@ -10,13 +9,10 @@ import com.netki.model.AddressCurrency
 import com.netki.model.AddressInformation
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_INTERNAL_ERROR_PROVIDER
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER
-import io.ktor.client.HttpClient
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
-import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.header
-import io.ktor.client.request.post
+import io.ktor.client.*
+import io.ktor.client.features.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.InternalServerError
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
@@ -33,8 +29,7 @@ private const val ADDRESS_INFO_PATH = "api/v3/addresses/"
 
 internal class MerkleRepo(
     private val client: HttpClient,
-    private val authorizationKey: String,
-    private val gson: Gson
+    private val authorizationKey: String
 ) : AddressInformationRepo {
 
     /**

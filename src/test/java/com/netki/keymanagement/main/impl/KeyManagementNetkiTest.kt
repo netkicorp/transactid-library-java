@@ -18,6 +18,7 @@ import com.netki.util.TestData.CertificateGeneration.CSRS_ATTESTATIONS
 import com.netki.util.TestData.CertificateGeneration.TRANSACTION_ID
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doNothing
@@ -64,7 +65,7 @@ internal class KeyManagementNetkiTest {
         )
         val attestationInformationInvalid = listOf(attestationInformation)
 
-        val exception = Assertions.assertThrows(CertificateProviderException::class.java) {
+        val exception = assertThrows(CertificateProviderException::class.java) {
             keyManagement.generateCertificates(attestationInformationInvalid)
         }
 
@@ -97,7 +98,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store certificate on PEM format successfully`() {
-        Mockito.doNothing().`when`(mockDriver).storeCertificatePem(Mockito.anyString(), Mockito.anyString())
+        doNothing().`when`(mockDriver).storeCertificatePem(Mockito.anyString(), Mockito.anyString())
 
         val idResult = keyManagement.storeCertificatePem(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM)
 
@@ -106,9 +107,9 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store certificate on PEM format invalid certificate`() {
-        Mockito.doNothing().`when`(mockDriver).storeCertificatePem(Mockito.anyString(), Mockito.anyString())
+        doNothing().`when`(mockDriver).storeCertificatePem(Mockito.anyString(), Mockito.anyString())
 
-        val exception = Assertions.assertThrows(InvalidCertificateException::class.java) {
+        val exception = assertThrows(InvalidCertificateException::class.java) {
             keyManagement.storeCertificatePem("this is not a valid certificate")
         }
 
@@ -117,10 +118,10 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store certificate on PEM format driver error`() {
-        Mockito.`when`(mockDriver.storeCertificatePem(Mockito.anyString(), Mockito.anyString()))
+        `when`(mockDriver.storeCertificatePem(Mockito.anyString(), Mockito.anyString()))
             .thenThrow(RuntimeException("Random exception"))
 
-        val exception = Assertions.assertThrows(KeyManagementStoreException::class.java) {
+        val exception = assertThrows(KeyManagementStoreException::class.java) {
             keyManagement.storeCertificatePem(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM)
         }
 
@@ -129,7 +130,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store certificate object successfully`() {
-        Mockito.doNothing().`when`(mockDriver).storeCertificatePem(Mockito.anyString(), Mockito.anyString())
+        doNothing().`when`(mockDriver).storeCertificatePem(anyString(), anyString())
 
         val certificateObject =
             CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM) as X509Certificate
@@ -140,12 +141,12 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store certificate object driver error`() {
-        Mockito.`when`(mockDriver.storeCertificatePem(Mockito.anyString(), Mockito.anyString()))
+       `when`(mockDriver.storeCertificatePem (anyString(), Mockito.anyString()))
             .thenThrow(RuntimeException("Random exception"))
 
         val certificateObject =
             CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM) as X509Certificate
-        val exception = Assertions.assertThrows(KeyManagementStoreException::class.java) {
+        val exception = assertThrows(KeyManagementStoreException::class.java) {
             keyManagement.storeCertificate(certificateObject)
         }
 
@@ -154,7 +155,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key on PEM format successfully`() {
-        Mockito.doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
+        doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
 
         val idResult = keyManagement.storePrivateKeyPem(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
 
@@ -163,9 +164,9 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key on PEM format invalid private key`() {
-        Mockito.doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
+         doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
 
-        val exception = Assertions.assertThrows(InvalidPrivateKeyException::class.java) {
+        val exception = assertThrows(InvalidPrivateKeyException::class.java) {
             keyManagement.storePrivateKeyPem("this is not a valid private key")
         }
 
@@ -174,10 +175,10 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key on PEM format driver error`() {
-        Mockito.`when`(mockDriver.storePrivateKeyPem(Mockito.anyString(), Mockito.anyString()))
+        `when`(mockDriver.storePrivateKeyPem(Mockito.anyString(), Mockito.anyString()))
             .thenThrow(RuntimeException("Random exception"))
 
-        val exception = Assertions.assertThrows(KeyManagementStoreException::class.java) {
+        val exception = assertThrows(KeyManagementStoreException::class.java) {
             keyManagement.storePrivateKeyPem(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
         }
 
@@ -186,7 +187,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key object successfully`() {
-        Mockito.doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
+         doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
 
         val privateKeyObject = CryptoModule.privateKeyPemToObject(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
         val idResult = keyManagement.storePrivateKey(privateKeyObject)
@@ -196,11 +197,11 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key object driver error`() {
-        Mockito.`when`(mockDriver.storePrivateKeyPem(Mockito.anyString(), Mockito.anyString()))
+        `when`(mockDriver.storePrivateKeyPem(Mockito.anyString(), Mockito.anyString()))
             .thenThrow(RuntimeException("Random exception"))
 
         val privateKeyObject = CryptoModule.privateKeyPemToObject(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
-        val exception = Assertions.assertThrows(KeyManagementStoreException::class.java) {
+        val exception = assertThrows(KeyManagementStoreException::class.java) {
             keyManagement.storePrivateKey(privateKeyObject)
         }
 
@@ -209,7 +210,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate on PEM format successfully`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString()))
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString()))
             .thenReturn(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM)
 
         val certificate = keyManagement.fetchCertificatePem("12345")
@@ -219,8 +220,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate on PEM format driver error`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
-        val exception = Assertions.assertThrows(KeyManagementFetchException::class.java) {
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
+        val exception = assertThrows(KeyManagementFetchException::class.java) {
             keyManagement.fetchCertificatePem("12345")
         }
 
@@ -229,8 +230,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate on PEM format invalid certificate`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn("invalid certificate")
-        val exception = Assertions.assertThrows(InvalidCertificateException::class.java) {
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn("invalid certificate")
+        val exception = assertThrows(InvalidCertificateException::class.java) {
             keyManagement.fetchCertificatePem("12345")
         }
 
@@ -239,8 +240,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate on PEM format not found`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn(null)
-        val exception = Assertions.assertThrows(ObjectNotFoundException::class.java) {
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn(null)
+        val exception = assertThrows(ObjectNotFoundException::class.java) {
             keyManagement.fetchCertificatePem("12345")
         }
 
@@ -249,7 +250,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate object successfully`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString()))
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString()))
             .thenReturn(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM)
 
         val certificate = keyManagement.fetchCertificate("12345")
@@ -259,8 +260,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate object driver error`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
-        val exception = Assertions.assertThrows(KeyManagementFetchException::class.java) {
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
+        val exception = assertThrows(KeyManagementFetchException::class.java) {
             keyManagement.fetchCertificate("12345")
         }
 
@@ -269,8 +270,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate oobject invalid certificate`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn("invalid certificate")
-        val exception = Assertions.assertThrows(InvalidCertificateException::class.java) {
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn("invalid certificate")
+        val exception = assertThrows(InvalidCertificateException::class.java) {
             keyManagement.fetchCertificate("12345")
         }
 
@@ -279,8 +280,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch certificate object not found`() {
-        Mockito.`when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn(null)
-        val exception = Assertions.assertThrows(ObjectNotFoundException::class.java) {
+        `when`(mockDriver.fetchCertificatePem(Mockito.anyString())).thenReturn(null)
+        val exception = assertThrows(ObjectNotFoundException::class.java) {
             keyManagement.fetchCertificate("12345")
         }
 
@@ -289,7 +290,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key on PEM format successfully`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString()))
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString()))
             .thenReturn(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
 
         val privateKey = keyManagement.fetchPrivateKeyPem("12345")
@@ -299,8 +300,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key on PEM format driver error`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
-        val exception = Assertions.assertThrows(KeyManagementFetchException::class.java) {
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
+        val exception = assertThrows(KeyManagementFetchException::class.java) {
             keyManagement.fetchPrivateKeyPem("12345")
         }
 
@@ -309,8 +310,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key on PEM format invalid certificate`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn("invalid private key")
-        val exception = Assertions.assertThrows(InvalidPrivateKeyException::class.java) {
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn("invalid private key")
+        val exception = assertThrows(InvalidPrivateKeyException::class.java) {
             keyManagement.fetchPrivateKeyPem("12345")
         }
 
@@ -319,8 +320,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key on PEM format not found`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn(null)
-        val exception = Assertions.assertThrows(ObjectNotFoundException::class.java) {
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn(null)
+        val exception = assertThrows(ObjectNotFoundException::class.java) {
             keyManagement.fetchPrivateKeyPem("12345")
         }
 
@@ -329,7 +330,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key object successfully`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString()))
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString()))
             .thenReturn(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
 
         val certificate = keyManagement.fetchPrivateKey("12345")
@@ -339,8 +340,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key object driver error`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
-        val exception = Assertions.assertThrows(KeyManagementFetchException::class.java) {
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenThrow(RuntimeException("random error"))
+        val exception = assertThrows(KeyManagementFetchException::class.java) {
             keyManagement.fetchPrivateKey("12345")
         }
 
@@ -349,8 +350,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key object invalid private key`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn("invalid private key")
-        val exception = Assertions.assertThrows(InvalidPrivateKeyException::class.java) {
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn("invalid private key")
+        val exception = assertThrows(InvalidPrivateKeyException::class.java) {
             keyManagement.fetchPrivateKey("12345")
         }
 
@@ -359,8 +360,8 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Fetch private key object not found`() {
-        Mockito.`when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn(null)
-        val exception = Assertions.assertThrows(ObjectNotFoundException::class.java) {
+        `when`(mockDriver.fetchPrivateKeyPem(Mockito.anyString())).thenReturn(null)
+        val exception = assertThrows(ObjectNotFoundException::class.java) {
             keyManagement.fetchPrivateKey("12345")
         }
 

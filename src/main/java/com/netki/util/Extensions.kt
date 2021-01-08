@@ -31,3 +31,4 @@ internal fun ByteArray.toByteString(): ByteString = ByteString.copyFrom(this)
  * Validate if an string contains only alphanumeric and white spaces characters
  */
 internal fun String.isAlphaNumeric() = PATTERN.matcher(this).matches()
+

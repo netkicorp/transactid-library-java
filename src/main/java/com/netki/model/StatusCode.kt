@@ -1,7 +1,7 @@
 package com.netki.model
 
 /**
- * Message Protocol Status Code.
+ * Protocol Message Status Code.
  */
 enum class StatusCode(val code: Long) {
     OK(1),
@@ -21,7 +21,7 @@ enum class StatusCode(val code: Long) {
     CERTIFICATE_NOT_WELL_ROOTED(304);
 
     companion object {
-        private val values = values();
+        private val values = values()
         fun getByCode(code: Long) = values.firstOrNull { it.code == code }
     }
 }

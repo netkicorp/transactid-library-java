@@ -74,4 +74,4 @@ data class PaymentRequestParameters @JvmOverloads constructor(
      * Version of the PaymentDetails message.
      */
     val paymentParametersVersion: Int = 1
-)
+) : ProtocolMessageParameters

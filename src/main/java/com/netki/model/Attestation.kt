@@ -132,7 +132,7 @@ enum class Attestation(id: Int) {
 /**
  * List of IVMS Constraints.
  */
-enum class IvmsConstraints() {
+enum class IvmsConstraints {
     GEOG,
     BIZZ,
     HOME,

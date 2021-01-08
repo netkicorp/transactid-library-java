@@ -490,7 +490,7 @@ To be able to change the status of a protocol message you can do it using the fo
  */
 @Throws(InvalidObjectException::class)
 @JvmOverloads
-fun changeStatusMessageProtocol(
+fun changeStatusProtocolMessage(
     protocolMessage: ByteArray,
     statusCode: StatusCode,
     statusMessage: String = ""

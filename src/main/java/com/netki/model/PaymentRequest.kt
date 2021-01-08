@@ -77,4 +77,4 @@ data class PaymentRequest @JvmOverloads constructor(
      * Metadata for the protocol message.
      */
     val protocolMessageMetadata: ProtocolMessageMetadata
-)
+) : ProtocolMessage

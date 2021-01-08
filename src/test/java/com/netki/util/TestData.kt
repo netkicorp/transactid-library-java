@@ -34,6 +34,7 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.bc.BcDigestCalculatorProvider
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
+import org.mockito.Mockito
 import java.math.BigInteger
 import java.security.*
 import java.security.cert.Certificate
@@ -95,10 +96,10 @@ internal object TestData {
         }
 
         private fun createAuthorityKeyId(publicKey: PublicKey): AuthorityKeyIdentifier {
-            val publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
-            val digCalc = BcDigestCalculatorProvider().get(AlgorithmIdentifier(OIWObjectIdentifiers.idSHA1));
+            val publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.encoded)
+            val digCalc = BcDigestCalculatorProvider().get(AlgorithmIdentifier(OIWObjectIdentifiers.idSHA1))
 
-            return X509ExtensionUtils(digCalc).createAuthorityKeyIdentifier(publicKeyInfo);
+            return X509ExtensionUtils(digCalc).createAuthorityKeyIdentifier(publicKeyInfo)
         }
 
     }
@@ -865,7 +866,7 @@ internal object TestData {
             updatedAt = "2010-01-01 12:12:12"
         )
 
-        val MERKLE_JSON_RESPONSE = "{\n" +
+        const val MERKLE_JSON_RESPONSE = "{\n" +
                 "    \"identifier\": \"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\n" +
                 "    \"currency\": 1,\n" +
                 "    \"currency_verbose\": \"Ethereum\",\n" +
@@ -999,4 +1000,7 @@ internal object TestData {
             CryptoModule.objectToPublicKeyPem(keysSender.public)
         )
     }
+
+    fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }
+

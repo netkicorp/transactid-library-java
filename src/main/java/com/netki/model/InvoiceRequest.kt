@@ -54,7 +54,6 @@ data class InvoiceRequest @JvmOverloads constructor(
      */
     val senderSignature: String? = null,
 
-
     /**
      * EV Certificate in PEM format.
      */
@@ -74,4 +73,4 @@ data class InvoiceRequest @JvmOverloads constructor(
      * Metadata for the protocol message.
      */
     val protocolMessageMetadata: ProtocolMessageMetadata
-)
+) : ProtocolMessage

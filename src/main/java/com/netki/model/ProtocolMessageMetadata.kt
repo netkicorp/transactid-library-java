@@ -10,7 +10,7 @@ data class ProtocolMessageMetadata @JvmOverloads constructor(
     val version: Long,
 
     /**
-     * Message Protocol Status Code.
+     * Protocol Message Status Code.
      */
     val statusCode: StatusCode,
 

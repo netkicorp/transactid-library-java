@@ -329,7 +329,6 @@ internal fun ByteArray.toMessagePayment(): Messages.Payment = try {
 internal fun Messages.PaymentACK.toPaymentAck(protocolMessageMetadata: ProtocolMessageMetadata): PaymentAck =
     PaymentAck(this.payment.toPayment(), this.memo, protocolMessageMetadata)
 
-
 /**
  * Transform binary PaymentACK to Messages.PaymentACK.
  *
@@ -482,7 +481,6 @@ internal fun Messages.Attestation.validateMessageSignature(requireSignature: Boo
     else -> true
 }
 
-
 /**
  * Remove the signature from Messages.Attestation object.
  *
@@ -541,7 +539,6 @@ internal fun Beneficiary.toMessageBeneficiary(): Messages.Beneficiary {
     return messageBeneficiary.build()
 }
 
-
 /**
  * Transform Owner to Messages.Owner object.
  *
@@ -563,7 +560,6 @@ internal fun Originator.toMessageOriginator(): Messages.Originator {
 
     return messageOriginator.build()
 }
-
 
 /**
  * Transform Messages.Attestation to PkiData object.
@@ -792,7 +788,7 @@ internal fun List<Messages.Beneficiary>.removeBeneficiarySignatures(): MutableLi
     this.forEachIndexed { index, owner ->
         val ownerWithoutSignaturesBuilder = Messages.Beneficiary.newBuilder()
             .mergeFrom(owner)
-        owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
+        owner.attestationsList.forEachIndexed { attestationIndex, attestation ->
             ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
             ownerWithoutSignaturesBuilder.addAttestations(
                 attestationIndex, Messages.Attestation.newBuilder()
@@ -816,7 +812,7 @@ internal fun List<Messages.Originator>.removeOriginatorSignatures(): MutableList
     this.forEachIndexed { index, owner ->
         val ownerWithoutSignaturesBuilder = Messages.Originator.newBuilder()
             .mergeFrom(owner)
-        owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
+        owner.attestationsList.forEachIndexed { attestationIndex, attestation ->
             ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
             ownerWithoutSignaturesBuilder.addAttestations(
                 attestationIndex, Messages.Attestation.newBuilder()
@@ -1131,13 +1127,13 @@ internal fun ByteArray.validateMessageEncryptionSignature(): Boolean {
 internal fun ByteArray.getSerializedMessage(isEncrypted: Boolean, recipientParameters: RecipientParameters? = null) =
     when (isEncrypted) {
         true -> this.getSerializedMessageEncryptedProtocolMessage(recipientParameters)
-        false -> this.getSerializedMessageProtocolMessage()
+        false -> this.getSerializedProtocolMessage()
     }
 
 /**
  * Method to extract serialized message from Messages.ProtocolMessage
  */
-internal fun ByteArray.getSerializedMessageProtocolMessage(): ByteArray {
+internal fun ByteArray.getSerializedProtocolMessage(): ByteArray {
     try {
         val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
         return protocolMessageMessages.serializedMessage.toByteArray()

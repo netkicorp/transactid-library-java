@@ -7,16 +7,10 @@ import com.netki.keymanagement.repo.data.*
 import com.netki.model.Attestation
 import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_INTERNAL_ERROR_PROVIDER
 import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER
-import io.ktor.client.HttpClient
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.post
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
+import io.ktor.client.*
+import io.ktor.client.features.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 
 private const val NETKI_BASE_URL = "https://kyc.myverify.info/"
