@@ -104,13 +104,13 @@ enum class Attestation(id: Int) {
     @SerializedName("countryOfResidence")
     COUNTRY_OF_RESIDENCE(23),
 
-    @JsonProperty("issuingCountry")
-    @SerializedName("issuingCountry")
-    ISSUING_COUNTRY(24),
+    @JsonProperty("countryOfIssue")
+    @SerializedName("countryOfIssue")
+    COUNTRY_OF_ISSUE(24),
 
-    @JsonProperty("nationalIdentifierNumber")
-    @SerializedName("nationalIdentifierNumber")
-    NATIONAL_IDENTIFIER_NUMBER(25),
+    @JsonProperty("countryOfRegistration")
+    @SerializedName("countryOfRegistration")
+    COUNTRY_OF_REGISTRATION(25),
 
     @JsonProperty("nationalIdentifier")
     @SerializedName("nationalIdentifier")
@@ -126,7 +126,7 @@ enum class Attestation(id: Int) {
 
     @JsonProperty("registrationAuthority")
     @SerializedName("registrationAuthority")
-    REGISTRATION_AUTHORITY(29)
+    REGISTRATION_AUTHORITY(29),
 }
 
 /**

@@ -114,12 +114,12 @@ internal class AttestationExtensionKtTest {
             "CN=naturalPerson.countryOfResidence, C=, L=countryCode, O=country, OU=$data, ST="
         )
         assertEquals(
-            Attestation.ISSUING_COUNTRY.toPrincipal(data),
+            Attestation.COUNTRY_OF_ISSUE.toPrincipal(data),
             "CN=nationalIdentifier.countryOfIssue, C=, L=nationalIdentifierType, O=nationalIdentifier, OU=$data, ST="
         )
         assertEquals(
-            Attestation.NATIONAL_IDENTIFIER_NUMBER.toPrincipal(data),
-            "CN=nationalIdentifier.number, C=, L=number, O=documentNumber, OU=$data, ST="
+            Attestation.COUNTRY_OF_REGISTRATION.toPrincipal(data),
+            "CN=legalPersonName.countryOfRegistration, C=, L=legalPersonNameType, O=countryOfRegistration, OU=$data, ST="
         )
         assertEquals(
             Attestation.NATIONAL_IDENTIFIER.toPrincipal(data, IvmsConstraints.TXID),

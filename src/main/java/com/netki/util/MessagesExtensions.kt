@@ -930,8 +930,8 @@ internal fun Attestation.toAttestationType(): Messages.AttestationType {
         Attestation.BIRTH_DATE -> Messages.AttestationType.BIRTH_DATE
         Attestation.BIRTH_PLACE -> Messages.AttestationType.BIRTH_PLACE
         Attestation.COUNTRY_OF_RESIDENCE -> Messages.AttestationType.COUNTRY_OF_RESIDENCE
-        Attestation.ISSUING_COUNTRY -> Messages.AttestationType.ISSUING_COUNTRY
-        Attestation.NATIONAL_IDENTIFIER_NUMBER -> Messages.AttestationType.NATIONAL_IDENTIFIER_NUMBER
+        Attestation.COUNTRY_OF_ISSUE -> Messages.AttestationType.COUNTRY_OF_ISSUE
+        Attestation.COUNTRY_OF_REGISTRATION -> Messages.AttestationType.COUNTRY_OF_REGISTRATION
         Attestation.NATIONAL_IDENTIFIER -> Messages.AttestationType.NATIONAL_IDENTIFIER
         Attestation.ACCOUNT_NUMBER -> Messages.AttestationType.ACCOUNT_NUMBER
         Attestation.CUSTOMER_IDENTIFICATION -> Messages.AttestationType.CUSTOMER_IDENTIFICATION
@@ -968,8 +968,8 @@ internal fun Messages.AttestationType.toAttestation(): Attestation {
         Messages.AttestationType.BIRTH_DATE -> Attestation.BIRTH_DATE
         Messages.AttestationType.BIRTH_PLACE -> Attestation.BIRTH_PLACE
         Messages.AttestationType.COUNTRY_OF_RESIDENCE -> Attestation.COUNTRY_OF_RESIDENCE
-        Messages.AttestationType.ISSUING_COUNTRY -> Attestation.ISSUING_COUNTRY
-        Messages.AttestationType.NATIONAL_IDENTIFIER_NUMBER -> Attestation.NATIONAL_IDENTIFIER_NUMBER
+        Messages.AttestationType.COUNTRY_OF_ISSUE -> Attestation.COUNTRY_OF_ISSUE
+        Messages.AttestationType.COUNTRY_OF_REGISTRATION -> Attestation.COUNTRY_OF_REGISTRATION
         Messages.AttestationType.NATIONAL_IDENTIFIER -> Attestation.NATIONAL_IDENTIFIER
         Messages.AttestationType.ACCOUNT_NUMBER -> Attestation.ACCOUNT_NUMBER
         Messages.AttestationType.CUSTOMER_IDENTIFICATION -> Attestation.CUSTOMER_IDENTIFICATION

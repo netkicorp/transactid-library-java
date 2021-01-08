@@ -248,7 +248,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             data64Characters,
             ivmConstraintValue
         )
-        Attestation.ISSUING_COUNTRY -> String.format(
+        Attestation.COUNTRY_OF_ISSUE -> String.format(
             PRINCIPAL_STRING,
             "nationalIdentifier.countryOfIssue",
             extraData,
@@ -257,12 +257,12 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             data64Characters,
             ivmConstraintValue
         )
-        Attestation.NATIONAL_IDENTIFIER_NUMBER -> String.format(
+        Attestation.COUNTRY_OF_REGISTRATION -> String.format(
             PRINCIPAL_STRING,
-            "nationalIdentifier.number",
+            "legalPersonName.countryOfRegistration",
             extraData,
-            "number",
-            "documentNumber",
+            "legalPersonNameType",
+            "countryOfRegistration",
             data64Characters,
             ivmConstraintValue
         )
