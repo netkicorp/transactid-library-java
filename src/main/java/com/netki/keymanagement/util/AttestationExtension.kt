@@ -36,7 +36,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "legalPersonName.primaryIdentifier",
             extraData,
-            "legalPersonNameType",
+            "legalPersonNameIdentifierType",
             "legalPrimaryName",
             data64Characters,
             ivmConstraintValue
@@ -45,7 +45,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "legalPersonName.secondaryIdentifier",
             extraData,
-            "legalPersonNameType",
+            "legalPersonNameIdentifierType",
             "legalSecondaryName",
             data64Characters,
             ivmConstraintValue
@@ -54,7 +54,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.department",
             extraData,
-            "department",
+            "addressTypeCode",
             "department",
             data64Characters,
             ivmConstraintValue
@@ -63,7 +63,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.subDepartment",
             extraData,
-            "subDepartment",
+            "addressTypeCode",
             "subDepartment",
             data64Characters,
             ivmConstraintValue
@@ -72,7 +72,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.streetName",
             extraData,
-            "streetName",
+            "addressTypeCode",
             "streetName",
             data64Characters,
             ivmConstraintValue
@@ -81,7 +81,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.buildingNumber",
             extraData,
-            "buildingNumber",
+            "addressTypeCode",
             "buildingNumber",
             data64Characters,
             ivmConstraintValue
@@ -90,7 +90,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.buildingName",
             extraData,
-            "buildingName",
+            "addressTypeCode",
             "buildingName",
             data64Characters,
             ivmConstraintValue
@@ -99,7 +99,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.floor",
             extraData,
-            "floor",
+            "addressTypeCode",
             "floor",
             data64Characters,
             ivmConstraintValue
@@ -108,7 +108,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.postBox",
             extraData,
-            "postBox",
+            "addressTypeCode",
             "postBox",
             data64Characters,
             ivmConstraintValue
@@ -117,7 +117,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.room",
             extraData,
-            "room",
+            "addressTypeCode",
             "room",
             data64Characters,
             ivmConstraintValue
@@ -126,7 +126,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.postCode",
             extraData,
-            "postCode",
+            "addressTypeCode",
             "postCode",
             data64Characters,
             ivmConstraintValue
@@ -135,7 +135,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.townName",
             extraData,
-            "townName",
+            "addressTypeCode",
             "townName",
             data64Characters,
             ivmConstraintValue
@@ -144,7 +144,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.townLocationName",
             extraData,
-            "townLocationName",
+            "addressTypeCode",
             "townLocationName",
             data64Characters,
             ivmConstraintValue
@@ -153,7 +153,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.districtName",
             extraData,
-            "districtName",
+            "addressTypeCode",
             "districtName",
             data64Characters,
             ivmConstraintValue
@@ -162,7 +162,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.countrySubDivision",
             extraData,
-            "countrySubDivision",
+            "addressTypeCode",
             "countrySubDivision",
             data64Characters,
             ivmConstraintValue
@@ -171,7 +171,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.addressLine",
             extraData,
-            "addressLine",
+            "addressTypeCode",
             "addressLine",
             data64Characters,
             ivmConstraintValue
@@ -180,26 +180,26 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "address.country",
             extraData,
-            "country",
+            "addressTypeCode",
             "country",
             data64Characters,
             ivmConstraintValue
         )
-        Attestation.NATURAL_PERSON_FIRST_NAME -> String.format(
+        Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER -> String.format(
             PRINCIPAL_STRING,
             "naturalName.secondaryIdentifier",
             extraData,
             "naturalPersonNameType",
-            "naturalPersonFirstName",
+            "naturalPersonSecondaryIdentifier",
             data64Characters,
             ivmConstraintValue
         )
-        Attestation.NATURAL_PERSON_LAST_NAME -> String.format(
+        Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER -> String.format(
             PRINCIPAL_STRING,
             "naturalName.primaryIdentifier",
             extraData,
             "naturalPersonNameType",
-            "naturalPersonLastName",
+            "naturalPersonPrimaryIdentffier",
             data64Characters,
             ivmConstraintValue
         )
@@ -295,10 +295,10 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
         )
         Attestation.REGISTRATION_AUTHORITY -> String.format(
             PRINCIPAL_STRING,
-            "registrationAuthority",
+            "GLEIFregistrationAuthorityName",
             extraData,
-            "registrationAuthority",
-            "registrationAuthority",
+            "GLEIFregistrationAuthority",
+            "GLEIFregistrationAuthority",
             data64Characters,
             ivmConstraintValue
         )
