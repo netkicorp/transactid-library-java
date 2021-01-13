@@ -50,6 +50,15 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             data64Characters,
             ivmConstraintValue
         )
+        Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> String.format(
+            PRINCIPAL_STRING,
+            "legalPersonName.phoneticNameIdentifier",
+            extraData,
+            "legalPersonNameidentifierType",
+            "phoneticNameIdentifier",
+            data64Characters,
+            ivmConstraintValue
+        )
         Attestation.ADDRESS_DEPARTMENT -> String.format(
             PRINCIPAL_STRING,
             "address.department",
@@ -203,6 +212,15 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             data64Characters,
             ivmConstraintValue
         )
+        Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> String.format(
+            PRINCIPAL_STRING,
+            "naturalPersonName.phoneticNameIdentifier",
+            extraData,
+            "naturalPersonNameidentifierType",
+            "phoneticNameIdentifier",
+            data64Characters,
+            ivmConstraintValue
+        )
         Attestation.BENEFICIARY_PERSON_FIRST_NAME -> String.format(
             PRINCIPAL_STRING,
             "beneficiaryName.secondaryIdentifier",
@@ -295,10 +313,10 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
         )
         Attestation.REGISTRATION_AUTHORITY -> String.format(
             PRINCIPAL_STRING,
-            "GLEIFregistrationAuthorityName",
+            "registrationAuthorityName",
             extraData,
-            "GLEIFregistrationAuthority",
-            "GLEIFregistrationAuthority",
+            "registrationAuthority",
+            "registrationAuthority",
             data64Characters,
             ivmConstraintValue
         )
