@@ -32,21 +32,12 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
     }
 
     return when (this) {
-        Attestation.LEGAL_PERSON_PRIMARY_NAME -> String.format(
+        Attestation.LEGAL_PERSON_NAME -> String.format(
             PRINCIPAL_STRING,
-            "legalPersonName.primaryIdentifier",
+            "legalPersonName",
             extraData,
             "legalPersonNameType",
-            "legalPrimaryName",
-            data64Characters,
-            ivmConstraintValue
-        )
-        Attestation.LEGAL_PERSON_SECONDARY_NAME -> String.format(
-            PRINCIPAL_STRING,
-            "legalPersonName.secondaryIdentifier",
-            extraData,
-            "legalPersonNameType",
-            "legalSecondaryName",
+            "legalPersonName",
             data64Characters,
             ivmConstraintValue
         )
