@@ -36,7 +36,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "legalPersonName.primaryIdentifier",
             extraData,
-            "legalPersonNameIdentifierType",
+            "legalPersonNameType",
             "legalPrimaryName",
             data64Characters,
             ivmConstraintValue
@@ -45,7 +45,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "legalPersonName.secondaryIdentifier",
             extraData,
-            "legalPersonNameIdentifierType",
+            "legalPersonNameType",
             "legalSecondaryName",
             data64Characters,
             ivmConstraintValue
@@ -54,7 +54,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             PRINCIPAL_STRING,
             "legalPersonName.phoneticNameIdentifier",
             extraData,
-            "legalPersonNameidentifierType",
+            "legalPersonNameType",
             "phoneticNameIdentifier",
             data64Characters,
             ivmConstraintValue
