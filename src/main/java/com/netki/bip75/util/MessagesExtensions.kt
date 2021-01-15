@@ -537,7 +537,7 @@ internal fun Messages.Attestation.toPkiData(): PkiData = PkiData(
  */
 @Throws(IllegalArgumentException::class)
 internal fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters): GeneratedMessageV3 {
-    return when (val senderPkiType = this.getMessagePkiType()) {
+    return when (this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.signWithSender(senderParameters)
@@ -591,7 +591,7 @@ internal fun GeneratedMessageV3.sign(privateKeyPem: String): String {
  * @return true if yes, false otherwise.
  */
 internal fun GeneratedMessageV3.validateMessageSignature(signature: String): Boolean {
-    return when (val senderPkiType = this.getMessagePkiType()) {
+    return when (this.getMessagePkiType()) {
         PkiType.NONE -> true
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.validateSignature(signature)
@@ -627,7 +627,7 @@ internal fun Messages.PaymentRequest.validateSignature(signature: String): Boole
  * @return Unsigned message.
  */
 internal fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessageV3 {
-    return when (val senderPkiType = this.getMessagePkiType()) {
+    return when (this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.removeSenderSignature()

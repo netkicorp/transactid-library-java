@@ -13,7 +13,7 @@ data class AttestationInformation constructor(
     /**
      * The type of IVMS constraints
      */
-    val ivmsConstraints: IvmsConstraints?,
+    val ivmsConstraint: IvmsConstraint,
 
     /**
      * Data associated to the attestation.

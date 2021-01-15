@@ -40,7 +40,7 @@ internal class KeyManagementNetkiService(
         val csrsAttestations = attestationsInformation.map {
             CsrAttestation(
                 CryptoModule.csrObjectToPem(
-                    CryptoModule.generateCSR(it.attestation.toPrincipal(it.data, it.ivmsConstraints), keyPair)
+                    CryptoModule.generateCSR(it.attestation.toPrincipal(it.data, it.ivmsConstraint), keyPair)
                 ),
                 it.attestation,
                 CryptoModule.objectToPublicKeyPem(keyPair.public)

@@ -960,17 +960,17 @@ internal object TestData {
         val ATTESTATIONS_INFORMATION = listOf(
             AttestationInformation(
                 Attestation.LEGAL_PERSON_NAME,
-                IvmsConstraints.LEGL,
+                IvmsConstraint.LEGL,
                 "This is the LEGAL_PERSON_PRIMARY_NAME"
             ),
             AttestationInformation(
                 Attestation.ADDRESS_STREET_NAME,
-                IvmsConstraints.HOME,
+                IvmsConstraint.HOME,
                 "This is the ADDRESS_STREET_NAME"
             ),
             AttestationInformation(
                 Attestation.ADDRESS_ADDRESS_LINE,
-                IvmsConstraints.BIZZ,
+                IvmsConstraint.BIZZ,
                 "This is the ADDRESS_ADDRESS_LINE"
             )
         )

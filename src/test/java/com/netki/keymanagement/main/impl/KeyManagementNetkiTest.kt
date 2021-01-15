@@ -7,7 +7,7 @@ import com.netki.keymanagement.repo.impl.NetkiCertificateProvider
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
 import com.netki.model.Attestation
 import com.netki.model.AttestationInformation
-import com.netki.model.IvmsConstraints
+import com.netki.model.IvmsConstraint
 import com.netki.security.CryptoModule
 import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER
 import com.netki.util.TestData
@@ -60,7 +60,7 @@ internal class KeyManagementNetkiTest {
     fun `Generate certificate for attestations with invalid data`() {
         val attestationInformation = AttestationInformation(
             Attestation.LEGAL_PERSON_NAME,
-            IvmsConstraints.LEGL,
+            IvmsConstraint.LEGL,
             "This is invalid data #$#$#$"
         )
         val attestationInformationInvalid = listOf(attestationInformation)
