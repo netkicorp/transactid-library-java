@@ -2,6 +2,8 @@ package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
+import com.netki.bip75.util.getSerializedMessage
+import com.netki.bip75.util.toAttestationType
 import com.netki.exceptions.*
 import com.netki.model.*
 import com.netki.security.CertificateValidator
@@ -48,6 +50,96 @@ internal class InvoiceRequestProcessorTest {
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
             attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+        )
+
+        val invoiceRequestBinary = invoiceRequestProcessor.create(invoiceRequestParameters)
+
+        assert(invoiceRequestProcessor.isValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and some empty values 1`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = SenderParameters(),
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS,
+            recipientParameters = RecipientParameters()
+        )
+
+        val invoiceRequestBinary = invoiceRequestProcessor.create(invoiceRequestParameters)
+
+        assert(invoiceRequestProcessor.isValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and some empty values 2`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = SenderParameters(
+                pkiDataParameters = PkiDataParameters(),
+                evCertificatePem = TestData.KeyPairs.EV_CERT
+            ),
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS,
+            recipientParameters = RecipientParameters(chainAddress = "chain_address")
+        )
+
+        val invoiceRequestBinary = invoiceRequestProcessor.create(invoiceRequestParameters)
+
+        assert(invoiceRequestProcessor.isValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and some empty values 3`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = SenderParameters(
+                pkiDataParameters = PkiDataParameters(),
+                evCertificatePem = TestData.KeyPairs.EV_CERT
+            ),
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS,
+            recipientParameters = RecipientParameters(chainAddress = "chain_address")
         )
 
         val invoiceRequestBinary = invoiceRequestProcessor.create(invoiceRequestParameters)
@@ -234,7 +326,7 @@ internal class InvoiceRequestProcessorTest {
     }
 
     @Test
-    fun `Create and validate InvoiceRequestBinary, Owners with PkiData but invalid certificate chain and Sender with PkiData`() {
+    fun `Create and validate InvoiceRequestBinary, Originators with PkiData but invalid certificate chain and Sender with PkiData`() {
         val originators = listOf(
             TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256_INVALID_CERTIFICATE,
             TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
@@ -260,7 +352,7 @@ internal class InvoiceRequestProcessorTest {
             assert(invoiceRequestProcessor.isValid(invoiceRequestBinary))
         }
 
-        assert(exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(TestData.Attestations.INVALID_ATTESTATION.name))
+        assert(exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA.format(TestData.Attestations.INVALID_ATTESTATION.name))
     }
 
     @Test
@@ -542,7 +634,7 @@ internal class InvoiceRequestProcessorTest {
     }
 
     @Test
-    fun `Create and validate InvoiceRequestBinary, Owners and Sender with PkiData and invalid Owner signature`() {
+    fun `Create and validate InvoiceRequestBinary, Originator and Sender with PkiData and invalid Originator signature`() {
         val originators = listOf(
             TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
             TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
@@ -567,24 +659,24 @@ internal class InvoiceRequestProcessorTest {
         val invoiceRequestCorrupted = Messages.InvoiceRequest.newBuilder()
             .mergeFrom(invoiceRequestBinary.getSerializedMessage(false))
 
-        val ownersWithInvalidSignature = mutableListOf<Messages.Originator>()
+        val originatorsWithInvalidSignature = mutableListOf<Messages.Originator>()
         invoiceRequestCorrupted.originatorsList.forEachIndexed { index, originator ->
-            val ownerWithoutSignaturesBuilder = Messages.Originator.newBuilder()
+            val originatorWithoutSignaturesBuilder = Messages.Originator.newBuilder()
                 .mergeFrom(originator)
             originator.attestationsList.forEachIndexed { attestationIndex, attestation ->
-                ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
-                ownerWithoutSignaturesBuilder.addAttestations(
+                originatorWithoutSignaturesBuilder.removeAttestations(attestationIndex)
+                originatorWithoutSignaturesBuilder.addAttestations(
                     attestationIndex, Messages.Attestation.newBuilder()
                         .mergeFrom(attestation)
                         .setAttestation(TestData.Attestations.INVALID_ATTESTATION.toAttestationType())
                 )
                     .build()
             }
-            ownersWithInvalidSignature.add(index, ownerWithoutSignaturesBuilder.build())
+            originatorsWithInvalidSignature.add(index, originatorWithoutSignaturesBuilder.build())
         }
 
         invoiceRequestCorrupted.clearOriginators()
-        invoiceRequestCorrupted.addAllOriginators(ownersWithInvalidSignature)
+        invoiceRequestCorrupted.addAllOriginators(originatorsWithInvalidSignature)
 
         val protocolMessageCorrupted = Messages.ProtocolMessage.newBuilder()
             .setVersion(1)
@@ -600,7 +692,38 @@ internal class InvoiceRequestProcessorTest {
             assert(invoiceRequestProcessor.isValid(protocolMessageCorrupted))
         }
 
-        assert(exception.message == ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(TestData.Attestations.INVALID_ATTESTATION.name))
+        assert(exception.message == ErrorInformation.SIGNATURE_VALIDATION_INVALID_ORIGINATOR_SIGNATURE.format(TestData.Attestations.INVALID_ATTESTATION.name))
+    }
+
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Beneficiaries with PkiData but invalid certificate chain and Sender with PkiData`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE
+        )
+        val sender = TestData.Senders.SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+        )
+
+        val invoiceRequestBinary = invoiceRequestProcessor.create(invoiceRequestParameters)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(invoiceRequestProcessor.isValid(invoiceRequestBinary))
+        }
+
+        assert(exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(TestData.Attestations.INVALID_ATTESTATION.name))
     }
 
     @Test
@@ -949,5 +1072,40 @@ internal class InvoiceRequestProcessorTest {
                 assert(!output.addressInformation?.latestTransactionTime.isNullOrBlank())
             }
         }
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, with invalid EV cert`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_NONE
+        )
+
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = SenderParameters(
+                pkiDataParameters = PkiDataParameters(),
+                evCertificatePem = TestData.KeyPairs.CLIENT_CERTIFICATE_CHAIN_TWO
+            ),
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS,
+            recipientParameters = RecipientParameters(chainAddress = "chain_address")
+        )
+
+        val invoiceRequestBinary = invoiceRequestProcessor.create(invoiceRequestParameters)
+
+        val exception = assertThrows(InvalidCertificateException::class.java) {
+            assert(invoiceRequestProcessor.isValid(invoiceRequestBinary))
+        }
+
+        assert(exception.message == ErrorInformation.CERTIFICATE_VALIDATION_EV_NOT_VALID)
     }
 }

@@ -2,6 +2,9 @@ package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
+import com.netki.bip75.util.*
+import com.netki.bip75.util.toMessageBeneficiaryBuilderWithoutAttestations
+import com.netki.bip75.util.toMessageInvoiceRequestBuilderUnsigned
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.exceptions.InvalidSignatureException
@@ -121,7 +124,7 @@ internal class InvoiceRequestProcessor(
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
-                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )
@@ -132,7 +135,7 @@ internal class InvoiceRequestProcessor(
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
-                        ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                        ErrorInformation.SIGNATURE_VALIDATION_INVALID_ORIGINATOR_SIGNATURE.format(
                             attestationMessage.attestation
                         )
                     )
@@ -140,7 +143,7 @@ internal class InvoiceRequestProcessor(
             }
         }
 
-        messageInvoiceRequestUnsigned.originatorsList.forEach { beneficiaryMessage ->
+        messageInvoiceRequestUnsigned.beneficiariesList.forEach { beneficiaryMessage ->
             beneficiaryMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
@@ -149,7 +152,7 @@ internal class InvoiceRequestProcessor(
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
-                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )

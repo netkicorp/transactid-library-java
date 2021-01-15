@@ -1,5 +1,7 @@
 package com.netki.keymanagement.config
 
+import com.bettercloud.vault.Vault
+import com.bettercloud.vault.VaultConfig
 import com.netki.keymanagement.driver.KeyManagementDriver
 import com.netki.keymanagement.driver.impl.VaultDriver
 import com.netki.keymanagement.main.KeyManagement
@@ -46,7 +48,14 @@ internal object KeyManagementFactory {
         val certificateProvider: CertificateProvider =
             NetkiCertificateProvider(client, authorizationCertificateProviderKey, authorizationCertificateProviderUrl)
 
-        val keyManagementDriver: KeyManagementDriver = VaultDriver(authorizationSecureStorageKey, addressSecureStorage)
+        val config: VaultConfig = VaultConfig()
+            .address(addressSecureStorage)
+            .token(authorizationSecureStorageKey)
+            .build()
+
+        val vault = Vault(config)
+
+        val keyManagementDriver: KeyManagementDriver = VaultDriver(vault)
 
         val keyManagementService: KeyManagementService =
             KeyManagementNetkiService(certificateProvider, keyManagementDriver)

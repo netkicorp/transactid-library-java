@@ -16,16 +16,8 @@ private const val CERTIFICATE_KEY = "certificate_key"
 private const val PRIVATE_KEY_KEY = "private_key_key"
 
 internal class VaultDriver(
-    authorizationToken: String,
-    address: String
+    private val vault: Vault
 ) : KeyManagementDriver {
-
-    private val config: VaultConfig = VaultConfig()
-        .address(address)
-        .token(authorizationToken)
-        .build()
-
-    private val vault = Vault(config)
 
     /**
      * {@inheritDoc}

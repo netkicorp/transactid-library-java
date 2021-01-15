@@ -2,7 +2,10 @@ package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
+import com.netki.bip75.util.getSerializedMessage
+import com.netki.bip75.util.toAttestationType
 import com.netki.exceptions.EncryptionException
+import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidObjectException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.MessageType
@@ -32,7 +35,6 @@ internal class PaymentProcessorTest {
         paymentProcessor = PaymentProcessor(mockAddressInformationService, certificateValidator)
     }
 
-
     @Test
     fun `Create and validate PaymentBinary`() {
         val originators = listOf(
@@ -44,6 +46,31 @@ internal class PaymentProcessorTest {
         )
         val paymentParameters = PaymentParameters(
             merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = TestData.Payment.Output.OUTPUTS,
+            memo = TestData.Payment.MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
+
+        val paymentBinary = paymentProcessor.create(paymentParameters)
+
+        assert(paymentProcessor.isValid(paymentBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentBinary with empty values`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val paymentParameters = PaymentParameters(
             transactions = arrayListOf(
                 "transaction1".toByteArray(),
                 "transaction2".toByteArray()
@@ -343,6 +370,144 @@ internal class PaymentProcessorTest {
     fun `Validate invalid PaymentBinary`() {
         assertThrows(InvalidObjectException::class.java) {
             paymentProcessor.isValid("fakePaymentBinary".toByteArray())
+        }
+    }
+
+    @Test
+    fun `Create and validate PaymentBinary with originator certificate not valid`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256_INVALID_CERTIFICATE,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = TestData.Payment.Output.OUTPUTS,
+            memo = TestData.Payment.MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
+
+        val paymentBinary = paymentProcessor.create(paymentParameters)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(paymentProcessor.isValid(paymentBinary))
+        }
+
+        assert(
+            exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
+    }
+
+    @Test
+    fun `Create and validate PaymentBinary with beneficiaries certificate not valid`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE
+        )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = TestData.Payment.Output.OUTPUTS,
+            memo = TestData.Payment.MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
+
+        val paymentBinary = paymentProcessor.create(paymentParameters)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(paymentProcessor.isValid(paymentBinary))
+        }
+
+        assert(
+            exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
+    }
+
+    @Test
+    fun `Create and validate PaymentBinary with invalid Originator signature`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = TestData.Payment.Output.OUTPUTS,
+            memo = TestData.Payment.MEMO,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
+
+        val paymentBinary = paymentProcessor.create(paymentParameters)
+
+        val paymentCorrupted = Messages.Payment.newBuilder()
+            .mergeFrom(paymentBinary.getSerializedMessage(false))
+
+        val originatorWithInvalidSignature = mutableListOf<Messages.Originator>()
+        paymentCorrupted.originatorsList.forEachIndexed { index, originator ->
+            val originatorWithoutSignaturesBuilder = Messages.Originator.newBuilder()
+                .mergeFrom(originator)
+            originator.attestationsList.forEachIndexed { attestationIndex, attestation ->
+                originatorWithoutSignaturesBuilder.removeAttestations(attestationIndex)
+                originatorWithoutSignaturesBuilder.addAttestations(
+                    attestationIndex, Messages.Attestation.newBuilder()
+                        .mergeFrom(attestation)
+                        .setAttestation(TestData.Attestations.INVALID_ATTESTATION.toAttestationType())
+                )
+                    .build()
+            }
+            originatorWithInvalidSignature.add(index, originatorWithoutSignaturesBuilder.build())
+        }
+
+        paymentCorrupted.clearOriginators()
+        paymentCorrupted.addAllOriginators(originatorWithInvalidSignature)
+
+        val protocolMessageCorrupted = Messages.ProtocolMessage.newBuilder()
+            .setVersion(1)
+            .setStatusCode(StatusCode.OK.code)
+            .setMessageType(Messages.ProtocolMessageType.INVOICE_REQUEST)
+            .setSerializedMessage(paymentCorrupted.build().toByteString())
+            .setStatusMessage("test")
+            .setIdentifier("random".toByteString())
+            .build()
+            .toByteArray()
+
+        val exception = assertThrows(InvalidSignatureException::class.java) {
+            assert(paymentProcessor.isValid(protocolMessageCorrupted))
+        }
+        assert(
+            exception.message == ErrorInformation.SIGNATURE_VALIDATION_INVALID_ORIGINATOR_SIGNATURE.format(TestData.Attestations.INVALID_ATTESTATION.name)
+        )
+    }
+
+    @Test
+    fun `Test parseWithAddressInfo not implemented`() {
+        assertThrows(NotImplementedError::class.java) {
+            paymentProcessor.parseWithAddressesInfo("test".toByteArray())
         }
     }
 }

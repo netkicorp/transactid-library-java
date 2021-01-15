@@ -1,4 +1,4 @@
-package com.netki.util
+package com.netki.bip75.util
 
 import com.google.protobuf.ByteString
 import com.google.protobuf.GeneratedMessageV3
@@ -9,8 +9,11 @@ import com.netki.exceptions.InvalidOwnersException
 import com.netki.model.*
 import com.netki.security.CryptoModule
 import com.netki.security.EncryptionModule
+import com.netki.util.ErrorInformation
 import com.netki.util.ErrorInformation.ENCRYPTION_INVALID_ERROR
 import com.netki.util.ErrorInformation.PARSE_BINARY_MESSAGE_INVALID_INPUT
+import com.netki.util.toByteString
+import com.netki.util.toStringLocal
 import java.sql.Timestamp
 import java.util.*
 
@@ -29,8 +32,8 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setAmount(this.amount ?: 0)
         .setMemo(this.memo)
         .setNotificationUrl(this.notificationUrl)
-        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
-        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
+        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value ?: PkiType.NONE.value)
+        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString() ?: "".toByteString())
         .setSenderSignature("".toByteString())
         .setSenderEvCert(senderParameters.evCertificatePem?.toByteString() ?: "".toByteString())
 
@@ -163,8 +166,8 @@ internal fun Messages.PaymentDetails.toPaymentRequest(
     val paymentRequestBuilder = Messages.PaymentRequest.newBuilder()
         .setPaymentDetailsVersion(paymentParametersVersion)
         .setSerializedPaymentDetails(this.toByteString())
-        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
-        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
+        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value ?: PkiType.NONE.value)
+        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString() ?: "".toByteString())
         .setSenderSignature("".toByteString())
 
     attestationsRequested.forEach {
@@ -186,7 +189,7 @@ internal fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.Paymen
         .setExpires(this.expires?.time ?: 0)
         .setMemo(this.memo)
         .setPaymentUrl(this.paymentUrl)
-        .setMerchantData(this.merchantData?.toByteString())
+        .setMerchantData(this.merchantData?.toByteString() ?: "".toByteString())
 
     this.beneficiariesAddresses.forEach { output ->
         messagePaymentDetailsBuilder.addBeneficiariesAddresses(output.toMessageOutput())
@@ -228,7 +231,7 @@ internal fun ByteString.toMessagePaymentDetails(): Messages.PaymentDetails = try
  */
 internal fun PaymentParameters.toMessagePaymentBuilder(): Messages.Payment.Builder {
     val messagePaymentBuilder = Messages.Payment.newBuilder()
-        .setMerchantData(this.merchantData?.toByteString())
+        .setMerchantData(this.merchantData?.toByteString() ?: "".toByteString())
         .setMemo(this.memo)
 
     this.transactions.forEach { transaction ->
@@ -372,52 +375,6 @@ internal fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuil
     .build()
 
 /**
- * Transform BeneficiaryParameters object to Messages.Beneficiary object.
- *
- * @return Messages.Beneficiary.
- */
-internal fun BeneficiaryParameters.toMessageBeneficiary(): Messages.Beneficiary {
-    val messageBeneficiaryBuilder = Messages.Beneficiary.newBuilder()
-        .setPrimaryForTransaction(this.isPrimaryForTransaction)
-
-    this.pkiDataParametersSets.forEachIndexed { index, pkiData ->
-        val messageAttestation = Messages.Attestation.newBuilder()
-            .setAttestation(pkiData.attestation?.toAttestationType())
-            .setPkiType(pkiData.type.value)
-            .setPkiData(pkiData.certificatePem.toByteString())
-            .setSignature("".toByteString())
-            .build()
-
-        messageBeneficiaryBuilder.addAttestations(index, messageAttestation)
-    }
-
-    return messageBeneficiaryBuilder.build()
-}
-
-/**
- * Transform OriginatorParameters object to Messages.Originator object.
- *
- * @return Messages.Originator.
- */
-internal fun OriginatorParameters.toMessageOriginator(): Messages.Originator {
-    val messageOriginatorBuilder = Messages.Originator.newBuilder()
-        .setPrimaryForTransaction(this.isPrimaryForTransaction)
-
-    this.pkiDataParametersSets.forEachIndexed { index, pkiData ->
-        val messageAttestation = Messages.Attestation.newBuilder()
-            .setAttestation(pkiData.attestation?.toAttestationType())
-            .setPkiType(pkiData.type.value)
-            .setPkiData(pkiData.certificatePem.toByteString())
-            .setSignature("".toByteString())
-            .build()
-
-        messageOriginatorBuilder.addAttestations(index, messageAttestation)
-    }
-
-    return messageOriginatorBuilder.build()
-}
-
-/**
  * Transform BeneficiaryParameters object to Messages.Beneficiary.Builder object.
  *
  * @return Messages.Beneficiary.
@@ -442,7 +399,7 @@ internal fun OriginatorParameters.toMessageOriginatorBuilderWithoutAttestations(
 internal fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): Messages.Attestation {
     val messageAttestationUnsignedBuilder = Messages.Attestation.newBuilder()
         .setPkiType(this.type.value)
-        .setPkiData(this.certificatePem.toByteString())
+        .setPkiData(this.certificatePem?.toByteString() ?: "".toByteString())
         .setSignature("".toByteString())
 
     this.attestation?.let {
@@ -453,7 +410,7 @@ internal fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): 
 
     return when {
         this.type == PkiType.X509SHA256 && requireSignature -> {
-            val signature = messageAttestationUnsigned.sign(this.privateKeyPem)
+            val signature = messageAttestationUnsigned.sign(this.privateKeyPem!!)
             Messages.Attestation.newBuilder()
                 .mergeFrom(messageAttestationUnsigned)
                 .setSignature(signature.toByteString())
@@ -587,7 +544,6 @@ internal fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters):
             is Messages.PaymentRequest -> this.signWithSender(senderParameters)
             else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to sign message")
         }
-        else -> throw IllegalArgumentException("PkiType: $senderPkiType, not supported")
     }
 }
 
@@ -620,25 +576,6 @@ internal fun Messages.PaymentRequest.signWithSender(senderParameters: SenderPara
 }
 
 /**
- * Sign a GeneratedMessageV3 with all the attestations in a List of Owners.
- *
- * @return Map with signatures per user and attestations.
- */
-internal fun List<OwnerParameters>.signMessage(message: GeneratedMessageV3): OwnerSignatures {
-    val ownersSignatures = OwnerSignatures()
-    this.forEachIndexed { index, ownerParameters ->
-        val signatures = mutableMapOf<Attestation, String>()
-        for (pkiData in ownerParameters.pkiDataParametersSets) {
-            if (pkiData.attestation != null && pkiData.type != PkiType.NONE) {
-                signatures[pkiData.attestation] = message.sign(pkiData.privateKeyPem)
-            }
-        }
-        ownersSignatures[index] = signatures
-    }
-    return ownersSignatures
-}
-
-/**
  * Sign the Hash256 value of a Messages object.
  *
  * @return Signature.
@@ -661,7 +598,6 @@ internal fun GeneratedMessageV3.validateMessageSignature(signature: String): Boo
             is Messages.PaymentRequest -> this.validateSignature(signature)
             else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to validate sender signature")
         }
-        else -> throw IllegalArgumentException("PkiType: $senderPkiType, not supported")
     }
 }
 
@@ -698,7 +634,6 @@ internal fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessage
             is Messages.PaymentRequest -> this.removeSenderSignature()
             else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to remove sender signature")
         }
-        else -> throw IllegalArgumentException("PkiType: $senderPkiType, not supported")
     }
 }
 
@@ -723,108 +658,6 @@ internal fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRe
         .mergeFrom(this)
         .setSenderSignature("".toByteString())
         .build()
-
-/**
- * Get all the signatures In a list of Beneficiaries including the certificate.
- *
- * @return OwnerSignaturesWithCertificate.
- */
-internal fun List<Messages.Beneficiary>.getSignaturesBeneficiary(): List<OwnerSignaturesWithCertificate> {
-    val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
-    this.forEach { owner ->
-        val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
-        owner.attestationsList.forEach { attestation ->
-            when (attestation.pkiType) {
-                PkiType.NONE.value -> {
-                    // nothing to do here
-                }
-                else -> {
-                    ownerSignaturesWithCertificate[attestation.attestation.toAttestation()] = Pair(
-                        CryptoModule.certificatePemToClientCertificate(attestation.pkiData.toStringLocal()),
-                        attestation.signature.toStringLocal()
-                    )
-                }
-            }
-        }
-        listOwnerSignaturesWithCertificate.add(ownerSignaturesWithCertificate)
-    }
-    return listOwnerSignaturesWithCertificate
-}
-
-/**
- * Get all the signatures In a list of Owners including the certificate.
- *
- * @return OwnerSignaturesWithCertificate.
- */
-internal fun List<Messages.Originator>.getSignaturesOriginator(): List<OwnerSignaturesWithCertificate> {
-    val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
-    this.forEach { owner ->
-        val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
-        owner.attestationsList.forEach { attestation ->
-            when (attestation.pkiType) {
-                PkiType.NONE.value -> {
-                    // nothing to do here
-                }
-                else -> {
-                    ownerSignaturesWithCertificate[attestation.attestation.toAttestation()] = Pair(
-                        CryptoModule.certificatePemToClientCertificate(attestation.pkiData.toStringLocal()),
-                        attestation.signature.toStringLocal()
-                    )
-                }
-            }
-        }
-        listOwnerSignaturesWithCertificate.add(ownerSignaturesWithCertificate)
-    }
-    return listOwnerSignaturesWithCertificate
-}
-
-/**
- * Remove all the signatures in a list of Beneficiaries.
- *
- * @return MutableList<Messages.Beneficiary> without signatures.
- */
-internal fun List<Messages.Beneficiary>.removeBeneficiarySignatures(): MutableList<Messages.Beneficiary> {
-    val beneficiaryWithoutSignature = mutableListOf<Messages.Beneficiary>()
-    this.forEachIndexed { index, owner ->
-        val ownerWithoutSignaturesBuilder = Messages.Beneficiary.newBuilder()
-            .mergeFrom(owner)
-        owner.attestationsList.forEachIndexed { attestationIndex, attestation ->
-            ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
-            ownerWithoutSignaturesBuilder.addAttestations(
-                attestationIndex, Messages.Attestation.newBuilder()
-                    .mergeFrom(attestation)
-                    .setSignature("".toByteString())
-                    .build()
-            )
-        }
-        beneficiaryWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
-    }
-    return beneficiaryWithoutSignature
-}
-
-/**
- * Remove all the signatures in a list of Originators.
- *
- * @return MutableList<Messages.Originator> without signatures.
- */
-internal fun List<Messages.Originator>.removeOriginatorSignatures(): MutableList<Messages.Originator> {
-    val originatorWithoutSignature = mutableListOf<Messages.Originator>()
-    this.forEachIndexed { index, owner ->
-        val ownerWithoutSignaturesBuilder = Messages.Originator.newBuilder()
-            .mergeFrom(owner)
-        owner.attestationsList.forEachIndexed { attestationIndex, attestation ->
-            ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
-            ownerWithoutSignaturesBuilder.addAttestations(
-                attestationIndex, Messages.Attestation.newBuilder()
-                    .mergeFrom(attestation)
-                    .setSignature("".toByteString())
-                    .build()
-            )
-        }
-        originatorWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
-    }
-    return originatorWithoutSignature
-}
 
 /**
  * Validate that a List<Owners> is valid.

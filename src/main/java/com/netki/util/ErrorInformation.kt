@@ -6,11 +6,14 @@ object ErrorInformation {
     const val OWNERS_VALIDATION_MULTIPLE_PRIMARY_OWNERS = "There can be only one primary %s"
     const val OWNERS_VALIDATION_EMPTY_ERROR = "There should be at least one %s for this message"
     const val SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE = "Sender signature is not valid"
-    const val SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE = "Owner signature is not valid for attestation %s"
+    const val SIGNATURE_VALIDATION_INVALID_ORIGINATOR_SIGNATURE = "Originator signature is not valid for attestation %s"
+    const val SIGNATURE_VALIDATION_INVALID_BENEFICIARY_SIGNATURE = "Beneficiary signature is not valid for attestation %s"
     const val CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA =
         "Sender certificate does not belong to any trusted CA"
-    const val CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA =
-        "Owner certificate for attestation %s does not belong to any trusted CA"
+    const val CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA =
+        "Beneficiary certificate for attestation %s does not belong to any trusted CA"
+    const val CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA =
+        "Originator certificate for attestation %s does not belong to any trusted CA"
     const val CERTIFICATE_VALIDATION_CERTIFICATE_CHAINS_NOT_FOUND =
         "There is not certificate chains available (.cer files), make sure to put them on resources/certificates"
     const val CERTIFICATE_VALIDATION_NOT_CORRECT_CERTIFICATE_ERROR = "Certificate: %s, is not a valid %s certificate"

@@ -1,5 +1,6 @@
 package com.netki.util
 
+import com.netki.bip75.util.validate
 import com.netki.exceptions.InvalidOwnersException
 import com.netki.model.BeneficiaryParameters
 import com.netki.model.OriginatorParameters
