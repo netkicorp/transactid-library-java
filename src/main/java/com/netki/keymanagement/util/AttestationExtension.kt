@@ -127,8 +127,8 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             data64Characters,
             extraData,
             "addressTypeCode",
-            "postCode",
-            "address.postCode",
+            "postcode",
+            "address.postcode",
             ivmConstraintValue
         )
         Attestation.ADDRESS_TOWN_NAME -> String.format(
