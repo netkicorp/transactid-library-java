@@ -783,14 +783,14 @@ internal object TestData {
 
     object PkiData {
         val PKI_DATA_ONE_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = Attestation.LEGAL_PERSON_SECONDARY_NAME,
+            attestation = Attestation.LEGAL_PERSON_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_ONE,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
             type = PkiType.X509SHA256
         )
 
         val PKI_DATA_TWO_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            attestation = Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO,
             type = PkiType.X509SHA256
@@ -829,7 +829,7 @@ internal object TestData {
         )
 
         val PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE = PkiDataParameters(
-            attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            attestation = Attestation.LEGAL_PERSON_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE,
             type = PkiType.X509SHA256
@@ -840,8 +840,8 @@ internal object TestData {
         val INVALID_ATTESTATION = Attestation.ADDRESS_DISTRICT_NAME
 
         val REQUESTED_ATTESTATIONS = listOf(
-            Attestation.LEGAL_PERSON_PRIMARY_NAME,
-            Attestation.LEGAL_PERSON_SECONDARY_NAME,
+            Attestation.LEGAL_PERSON_NAME,
+            Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER,
             Attestation.ADDRESS_DEPARTMENT,
             Attestation.ADDRESS_POSTBOX
         )
@@ -918,7 +918,7 @@ internal object TestData {
 
     object CertificateGeneration {
         val ATTESTATIONS_REQUESTED = listOf(
-            Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            Attestation.LEGAL_PERSON_NAME,
             Attestation.ADDRESS_STREET_NAME,
             Attestation.ADDRESS_ADDRESS_LINE
         )
@@ -926,7 +926,7 @@ internal object TestData {
         val ATTESTATIONS_SUBMITTED = AttestationResponse("message", "123457890")
 
         val CSRS_ATTESTATIONS = listOf(
-            CsrAttestation("csr_1", Attestation.LEGAL_PERSON_PRIMARY_NAME, "public_key_1"),
+            CsrAttestation("csr_1", Attestation.LEGAL_PERSON_NAME, "public_key_1"),
             CsrAttestation("csr_2", Attestation.ADDRESS_STREET_NAME, "public_key_2"),
             CsrAttestation("csr_3", Attestation.ADDRESS_ADDRESS_LINE, "public_key_3")
         )
@@ -937,7 +937,7 @@ internal object TestData {
             count = 3,
             certificates = listOf(
                 com.netki.keymanagement.repo.data.Certificate(
-                    attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
+                    attestation = Attestation.LEGAL_PERSON_NAME,
                     certificate = CLIENT_CERTIFICATE_CHAIN_ONE,
                     id = 1234,
                     isActive = true
@@ -959,7 +959,7 @@ internal object TestData {
 
         val ATTESTATIONS_INFORMATION = listOf(
             AttestationInformation(
-                Attestation.LEGAL_PERSON_PRIMARY_NAME,
+                Attestation.LEGAL_PERSON_NAME,
                 IvmsConstraints.LEGL,
                 "This is the LEGAL_PERSON_PRIMARY_NAME"
             ),

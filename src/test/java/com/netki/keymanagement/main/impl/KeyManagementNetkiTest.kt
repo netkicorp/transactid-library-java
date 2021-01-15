@@ -59,7 +59,7 @@ internal class KeyManagementNetkiTest {
     @Test
     fun `Generate certificate for attestations with invalid data`() {
         val attestationInformation = AttestationInformation(
-            Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            Attestation.LEGAL_PERSON_NAME,
             IvmsConstraints.LEGL,
             "This is invalid data #$#$#$"
         )
