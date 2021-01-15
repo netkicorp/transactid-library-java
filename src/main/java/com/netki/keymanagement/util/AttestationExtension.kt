@@ -381,9 +381,5 @@ internal fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) =
     Attestation.COUNTRY_OF_REGISTRATION -> ivmsConstraints == IvmsConstraints.CountryCode
     Attestation.COUNTRY_OF_ISSUE -> ivmsConstraints == IvmsConstraints.CountryCode
     Attestation.COUNTRY_OF_RESIDENCE -> ivmsConstraints == IvmsConstraints.CountryCode
-
-
-
-
     else -> ivmsConstraints == null
 }
