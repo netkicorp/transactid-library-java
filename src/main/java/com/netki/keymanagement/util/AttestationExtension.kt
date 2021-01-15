@@ -212,21 +212,21 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
             "naturalPersonName.phoneticNameIdentifier",
             ivmConstraintValue
         )
-        Attestation.BIRTH_DATE -> String.format(
+        Attestation.DATE_OF_BIRTH -> String.format(
             PRINCIPAL_STRING,
             data64Characters,
             extraData,
-            "dateInPast",
-            "birthdate",
+            "dateOfBirth",
+            "dateOfBirth",
             "naturalPerson.dateOfBirth",
             ivmConstraintValue
         )
-        Attestation.BIRTH_PLACE -> String.format(
+        Attestation.PLACE_OF_BIRTH -> String.format(
             PRINCIPAL_STRING,
             data64Characters,
             extraData,
-            "countryCode",
-            "country",
+            "placeOfBirth",
+            "placeOfBirth",
             "naturalPerson.placeOfBirth",
             ivmConstraintValue
         )
@@ -376,10 +376,10 @@ internal fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) =
     Attestation.REGISTRATION_AUTHORITY -> ivmsConstraints == IvmsConstraints.TEXT
     Attestation.ACCOUNT_NUMBER -> ivmsConstraints == IvmsConstraints.TEXT
     Attestation.CUSTOMER_IDENTIFICATION -> ivmsConstraints == IvmsConstraints.TEXT
-    Attestation.BIRTH_DATE -> ivmsConstraints == IvmsConstraints.TEXT
-    Attestation.BIRTH_PLACE -> ivmsConstraints == IvmsConstraints.CountryCode
-    Attestation.COUNTRY_OF_REGISTRATION -> ivmsConstraints == IvmsConstraints.CountryCode
-    Attestation.COUNTRY_OF_ISSUE -> ivmsConstraints == IvmsConstraints.CountryCode
-    Attestation.COUNTRY_OF_RESIDENCE -> ivmsConstraints == IvmsConstraints.CountryCode
+    Attestation.DATE_OF_BIRTH -> ivmsConstraints == IvmsConstraints.DATE
+    Attestation.PLACE_OF_BIRTH -> ivmsConstraints == IvmsConstraints.COUNTRYCODE
+    Attestation.COUNTRY_OF_REGISTRATION -> ivmsConstraints == IvmsConstraints.COUNTRYCODE
+    Attestation.COUNTRY_OF_ISSUE -> ivmsConstraints == IvmsConstraints.COUNTRYCODE
+    Attestation.COUNTRY_OF_RESIDENCE -> ivmsConstraints == IvmsConstraints.COUNTRYCODE
     else -> ivmsConstraints == null
 }
