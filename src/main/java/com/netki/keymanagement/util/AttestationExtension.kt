@@ -376,7 +376,13 @@ internal fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) =
     Attestation.REGISTRATION_AUTHORITY -> ivmsConstraints == IvmsConstraints.TEXT
     Attestation.ACCOUNT_NUMBER -> ivmsConstraints == IvmsConstraints.TEXT
     Attestation.CUSTOMER_IDENTIFICATION -> ivmsConstraints == IvmsConstraints.TEXT
+    Attestation.BIRTH_DATE -> ivmsConstraints == IvmsConstraints.TEXT
+    Attestation.BIRTH_PLACE -> ivmsConstraints == IvmsConstraints.CountryCode
     Attestation.COUNTRY_OF_REGISTRATION -> ivmsConstraints == IvmsConstraints.CountryCode
+    Attestation.COUNTRY_OF_ISSUE -> ivmsConstraints == IvmsConstraints.CountryCode
+    Attestation.COUNTRY_OF_RESIDENCE -> ivmsConstraints == IvmsConstraints.CountryCode
+
+
 
 
     else -> ivmsConstraints == null
