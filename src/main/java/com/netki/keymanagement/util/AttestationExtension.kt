@@ -34,311 +34,332 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraints: IvmsConstrai
     return when (this) {
         Attestation.LEGAL_PERSON_NAME -> String.format(
             PRINCIPAL_STRING,
-            "legalPersonName",
+            data64Characters,
             extraData,
             "legalPersonNameType",
             "legalPersonName",
-            data64Characters,
+            "legalPerson.legalPersonName",
             ivmConstraintValue
         )
         Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> String.format(
             PRINCIPAL_STRING,
-            "legalPersonName.phoneticNameIdentifier",
+            data64Characters,
             extraData,
             "legalPersonNameType",
             "phoneticNameIdentifier",
-            data64Characters,
+            "legalPerson.phoneticNameIdentifier",
             ivmConstraintValue
         )
         Attestation.ADDRESS_DEPARTMENT -> String.format(
             PRINCIPAL_STRING,
-            "address.department",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "department",
-            data64Characters,
+            "address.department",
             ivmConstraintValue
         )
         Attestation.ADDRESS_SUB_DEPARTMENT -> String.format(
             PRINCIPAL_STRING,
-            "address.subDepartment",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "subDepartment",
-            data64Characters,
+            "address.subDepartment",
             ivmConstraintValue
         )
         Attestation.ADDRESS_STREET_NAME -> String.format(
             PRINCIPAL_STRING,
-            "address.streetName",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "streetName",
-            data64Characters,
+            "address.streetName",
             ivmConstraintValue
         )
         Attestation.ADDRESS_BUILDING_NUMBER -> String.format(
             PRINCIPAL_STRING,
-            "address.buildingNumber",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "buildingNumber",
-            data64Characters,
+            "address.buildingNumber",
             ivmConstraintValue
         )
         Attestation.ADDRESS_BUILDING_NAME -> String.format(
             PRINCIPAL_STRING,
-            "address.buildingName",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "buildingName",
-            data64Characters,
+            "address.buildingName",
             ivmConstraintValue
         )
         Attestation.ADDRESS_FLOOR -> String.format(
             PRINCIPAL_STRING,
-            "address.floor",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "floor",
-            data64Characters,
+            "address.floor",
             ivmConstraintValue
         )
         Attestation.ADDRESS_POSTBOX -> String.format(
             PRINCIPAL_STRING,
-            "address.postBox",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "postBox",
-            data64Characters,
+            "address.postBox",
             ivmConstraintValue
         )
         Attestation.ADDRESS_ROOM -> String.format(
             PRINCIPAL_STRING,
-            "address.room",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "room",
-            data64Characters,
+            "address.room",
             ivmConstraintValue
         )
         Attestation.ADDRESS_POSTCODE -> String.format(
             PRINCIPAL_STRING,
-            "address.postCode",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "postCode",
-            data64Characters,
+            "address.postCode",
             ivmConstraintValue
         )
         Attestation.ADDRESS_TOWN_NAME -> String.format(
             PRINCIPAL_STRING,
-            "address.townName",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "townName",
-            data64Characters,
+            "address.townName",
             ivmConstraintValue
         )
         Attestation.ADDRESS_TOWN_LOCATION_NAME -> String.format(
             PRINCIPAL_STRING,
-            "address.townLocationName",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "townLocationName",
-            data64Characters,
+            "address.townLocationName",
             ivmConstraintValue
         )
         Attestation.ADDRESS_DISTRICT_NAME -> String.format(
             PRINCIPAL_STRING,
-            "address.districtName",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "districtName",
-            data64Characters,
+            "address.districtName",
             ivmConstraintValue
         )
         Attestation.ADDRESS_COUNTRY_SUB_DIVISION -> String.format(
             PRINCIPAL_STRING,
-            "address.countrySubDivision",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "countrySubDivision",
-            data64Characters,
+            "address.countrySubDivision",
             ivmConstraintValue
         )
         Attestation.ADDRESS_ADDRESS_LINE -> String.format(
             PRINCIPAL_STRING,
-            "address.addressLine",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "addressLine",
-            data64Characters,
+            "address.addressLine",
             ivmConstraintValue
         )
         Attestation.ADDRESS_COUNTRY -> String.format(
             PRINCIPAL_STRING,
-            "address.country",
+            data64Characters,
             extraData,
             "addressTypeCode",
             "country",
-            data64Characters,
-            ivmConstraintValue
-        )
-        Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER -> String.format(
-            PRINCIPAL_STRING,
-            "naturalName.secondaryIdentifier",
-            extraData,
-            "naturalPersonNameType",
-            "naturalPersonSecondaryIdentifier",
-            data64Characters,
+            "address.country",
             ivmConstraintValue
         )
         Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER -> String.format(
             PRINCIPAL_STRING,
-            "naturalName.primaryIdentifier",
+            data64Characters,
             extraData,
             "naturalPersonNameType",
             "naturalPersonPrimaryIdentffier",
+            "naturalName.primaryIdentifier",
+            ivmConstraintValue
+        )
+        Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER -> String.format(
+            PRINCIPAL_STRING,
             data64Characters,
+            extraData,
+            "naturalPersonNameType",
+            "naturalPersonSecondaryIdentifier",
+            "naturalName.secondaryIdentifier",
             ivmConstraintValue
         )
         Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> String.format(
             PRINCIPAL_STRING,
-            "naturalPersonName.phoneticNameIdentifier",
+            data64Characters,
             extraData,
             "naturalPersonNameidentifierType",
             "phoneticNameIdentifier",
-            data64Characters,
-            ivmConstraintValue
-        )
-        Attestation.BENEFICIARY_PERSON_FIRST_NAME -> String.format(
-            PRINCIPAL_STRING,
-            "beneficiaryName.secondaryIdentifier",
-            extraData,
-            "beneficiaryPersonNameType",
-            "beneficiaryPersonFirstName",
-            data64Characters,
-            ivmConstraintValue
-        )
-        Attestation.BENEFICIARY_PERSON_LAST_NAME -> String.format(
-            PRINCIPAL_STRING,
-            "beneficiaryName.primaryIdentifier",
-            extraData,
-            "beneficiaryPersonNameType",
-            "beneficiaryPersonLastName",
-            data64Characters,
+            "naturalPersonName.phoneticNameIdentifier",
             ivmConstraintValue
         )
         Attestation.BIRTH_DATE -> String.format(
             PRINCIPAL_STRING,
-            "naturalPerson.dateOfBirth",
+            data64Characters,
             extraData,
             "dateInPast",
             "birthdate",
-            data64Characters,
+            "naturalPerson.dateOfBirth",
             ivmConstraintValue
         )
         Attestation.BIRTH_PLACE -> String.format(
             PRINCIPAL_STRING,
-            "naturalPerson.placeOfBirth",
+            data64Characters,
             extraData,
             "countryCode",
             "country",
-            data64Characters,
+            "naturalPerson.placeOfBirth",
             ivmConstraintValue
         )
         Attestation.COUNTRY_OF_RESIDENCE -> String.format(
             PRINCIPAL_STRING,
-            "naturalPerson.countryOfResidence",
+            data64Characters,
             extraData,
             "countryCode",
             "country",
-            data64Characters,
+            "naturalPerson.countryOfResidence",
             ivmConstraintValue
         )
         Attestation.COUNTRY_OF_ISSUE -> String.format(
             PRINCIPAL_STRING,
-            "nationalIdentifier.countryOfIssue",
+            data64Characters,
             extraData,
             "nationalIdentifierType",
             "nationalIdentifier",
-            data64Characters,
+            "nationalIdentifier.countryOfIssue",
             ivmConstraintValue
         )
         Attestation.COUNTRY_OF_REGISTRATION -> String.format(
             PRINCIPAL_STRING,
-            "legalPersonName.countryOfRegistration",
+            data64Characters,
             extraData,
             "legalPersonNameType",
             "countryOfRegistration",
-            data64Characters,
+            "legalPersonName.countryOfRegistration",
             ivmConstraintValue
         )
         Attestation.NATIONAL_IDENTIFIER -> String.format(
             PRINCIPAL_STRING,
-            "nationalIdentifier.documentType",
+            data64Characters,
             extraData,
             "nationalIdentifierType",
-            "documentType",
-            data64Characters,
-            ivmConstraintValue
-        )
-        Attestation.ACCOUNT_NUMBER -> String.format(
-            PRINCIPAL_STRING,
-            "accountNumber",
-            extraData,
-            "accountNumber",
-            "accountNumber",
-            data64Characters,
+            "nationalIdentifier",
+            "nationalIdentification.nationalIdentifier",
             ivmConstraintValue
         )
         Attestation.CUSTOMER_IDENTIFICATION -> String.format(
             PRINCIPAL_STRING,
-            "customerIdentification",
+            data64Characters,
             extraData,
             "customerIdentification",
             "customerIdentification",
-            data64Characters,
+            "legalPerson.customerIdentification",
             ivmConstraintValue
         )
         Attestation.REGISTRATION_AUTHORITY -> String.format(
             PRINCIPAL_STRING,
-            "registrationAuthorityName",
+            data64Characters,
             extraData,
             "registrationAuthority",
             "registrationAuthority",
+            "nationalIdentification.registrationAuthorityName",
+            ivmConstraintValue
+        )
+        Attestation.ACCOUNT_NUMBER -> String.format(
+            PRINCIPAL_STRING,
             data64Characters,
+            extraData,
+            "accountNumber",
+            "accountNumber",
+            "beneficiary.accountNumber",
             ivmConstraintValue
         )
     }
 }
 
 internal fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) = when (this) {
-    Attestation.LEGAL_PERSON_PRIMARY_NAME,
-    Attestation.LEGAL_PERSON_SECONDARY_NAME,
-    Attestation.NATURAL_PERSON_FIRST_NAME,
-    Attestation.NATURAL_PERSON_LAST_NAME,
-    Attestation.BENEFICIARY_PERSON_FIRST_NAME,
-    Attestation.BENEFICIARY_PERSON_LAST_NAME -> ivmsConstraints == IvmsConstraints.ALIA ||
+    Attestation.LEGAL_PERSON_NAME -> ivmsConstraints == IvmsConstraints.LEGL ||
+            ivmsConstraints == IvmsConstraints.SHRT ||
+            ivmsConstraints == IvmsConstraints.TRAD
+    Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> ivmsConstraints == IvmsConstraints.LEGL ||
+            ivmsConstraints == IvmsConstraints.SHRT ||
+            ivmsConstraints == IvmsConstraints.TRAD     
+    Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER -> ivmsConstraints == IvmsConstraints.ALIA ||
             ivmsConstraints == IvmsConstraints.BIRT ||
             ivmsConstraints == IvmsConstraints.MAID ||
             ivmsConstraints == IvmsConstraints.LEGL ||
             ivmsConstraints == IvmsConstraints.MISC
-    Attestation.ADDRESS_DEPARTMENT,
-    Attestation.ADDRESS_SUB_DEPARTMENT,
-    Attestation.ADDRESS_STREET_NAME,
-    Attestation.ADDRESS_BUILDING_NUMBER,
-    Attestation.ADDRESS_BUILDING_NAME,
-    Attestation.ADDRESS_FLOOR,
-    Attestation.ADDRESS_POSTBOX,
-    Attestation.ADDRESS_ROOM,
-    Attestation.ADDRESS_POSTCODE,
-    Attestation.ADDRESS_TOWN_NAME,
-    Attestation.ADDRESS_TOWN_LOCATION_NAME,
-    Attestation.ADDRESS_DISTRICT_NAME,
-    Attestation.ADDRESS_COUNTRY_SUB_DIVISION,
-    Attestation.ADDRESS_ADDRESS_LINE,
+    Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER -> ivmsConstraints == IvmsConstraints.ALIA ||
+            ivmsConstraints == IvmsConstraints.BIRT ||
+            ivmsConstraints == IvmsConstraints.MAID ||
+            ivmsConstraints == IvmsConstraints.LEGL ||
+            ivmsConstraints == IvmsConstraints.MISC
+    Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> ivmsConstraints == IvmsConstraints.ALIA ||
+            ivmsConstraints == IvmsConstraints.BIRT ||
+            ivmsConstraints == IvmsConstraints.MAID ||
+            ivmsConstraints == IvmsConstraints.LEGL ||
+            ivmsConstraints == IvmsConstraints.MISC
+    Attestation.ADDRESS_DEPARTMENT -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_SUB_DEPARTMENT -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_STREET_NAME -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_BUILDING_NUMBER -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_BUILDING_NAME -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_FLOOR -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_POSTBOX -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_ROOM -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_POSTCODE -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_TOWN_NAME -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_TOWN_LOCATION_NAME -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_DISTRICT_NAME -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_COUNTRY_SUB_DIVISION -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
+    Attestation.ADDRESS_ADDRESS_LINE -> ivmsConstraints == IvmsConstraints.GEOG ||
+            ivmsConstraints == IvmsConstraints.BIZZ ||
+            ivmsConstraints == IvmsConstraints.HOME
     Attestation.ADDRESS_COUNTRY -> ivmsConstraints == IvmsConstraints.GEOG ||
             ivmsConstraints == IvmsConstraints.BIZZ ||
             ivmsConstraints == IvmsConstraints.HOME
@@ -352,5 +373,11 @@ internal fun Attestation.validateConstraint(ivmsConstraints: IvmsConstraints?) =
             ivmsConstraints == IvmsConstraints.IDCD ||
             ivmsConstraints == IvmsConstraints.LEIX ||
             ivmsConstraints == IvmsConstraints.MISC
+    Attestation.REGISTRATION_AUTHORITY -> ivmsConstraints == IvmsConstraints.TEXT
+    Attestation.ACCOUNT_NUMBER -> ivmsConstraints == IvmsConstraints.TEXT
+    Attestation.CUSTOMER_IDENTIFICATION -> ivmsConstraints == IvmsConstraints.TEXT
+    Attestation.COUNTRY_OF_REGISTRATION -> ivmsConstraints == IvmsConstraints.CountryCode
+
+
     else -> ivmsConstraints == null
 }
