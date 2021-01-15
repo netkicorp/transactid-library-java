@@ -906,8 +906,8 @@ internal fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotN
  */
 internal fun Attestation.toAttestationType(): Messages.AttestationType {
     return when (this) {
-        Attestation.LEGAL_PERSON_PRIMARY_NAME -> Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME
-        Attestation.LEGAL_PERSON_SECONDARY_NAME -> Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME
+        Attestation.LEGAL_PERSON_NAME -> Messages.AttestationType.LEGAL_PERSON_NAME
+        Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Messages.AttestationType.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER
         Attestation.ADDRESS_DEPARTMENT -> Messages.AttestationType.ADDRESS_DEPARTMENT
         Attestation.ADDRESS_SUB_DEPARTMENT -> Messages.AttestationType.ADDRESS_SUB_DEPARTMENT
         Attestation.ADDRESS_STREET_NAME -> Messages.AttestationType.ADDRESS_STREET_NAME
@@ -923,12 +923,11 @@ internal fun Attestation.toAttestationType(): Messages.AttestationType {
         Attestation.ADDRESS_COUNTRY_SUB_DIVISION -> Messages.AttestationType.ADDRESS_COUNTRY_SUB_DIVISION
         Attestation.ADDRESS_ADDRESS_LINE -> Messages.AttestationType.ADDRESS_ADDRESS_LINE
         Attestation.ADDRESS_COUNTRY -> Messages.AttestationType.ADDRESS_COUNTRY
-        Attestation.NATURAL_PERSON_FIRST_NAME -> Messages.AttestationType.NATURAL_PERSON_FIRST_NAME
-        Attestation.NATURAL_PERSON_LAST_NAME -> Messages.AttestationType.NATURAL_PERSON_LAST_NAME
-        Attestation.BENEFICIARY_PERSON_FIRST_NAME -> Messages.AttestationType.BENEFICIARY_PERSON_FIRST_NAME
-        Attestation.BENEFICIARY_PERSON_LAST_NAME -> Messages.AttestationType.BENEFICIARY_PERSON_LAST_NAME
-        Attestation.BIRTH_DATE -> Messages.AttestationType.BIRTH_DATE
-        Attestation.BIRTH_PLACE -> Messages.AttestationType.BIRTH_PLACE
+        Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER -> Messages.AttestationType.NATURAL_PERSON_PRIMARY_IDENTIFIER
+        Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER -> Messages.AttestationType.NATURAL_PERSON_SECONDARY_IDENTIFIER
+        Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Messages.AttestationType.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER
+        Attestation.DATE_OF_BIRTH -> Messages.AttestationType.DATE_OF_BIRTH
+        Attestation.PLACE_OF_BIRTH -> Messages.AttestationType.PLACE_OF_BIRTH
         Attestation.COUNTRY_OF_RESIDENCE -> Messages.AttestationType.COUNTRY_OF_RESIDENCE
         Attestation.COUNTRY_OF_ISSUE -> Messages.AttestationType.COUNTRY_OF_ISSUE
         Attestation.COUNTRY_OF_REGISTRATION -> Messages.AttestationType.COUNTRY_OF_REGISTRATION
@@ -944,8 +943,8 @@ internal fun Attestation.toAttestationType(): Messages.AttestationType {
  */
 internal fun Messages.AttestationType.toAttestation(): Attestation {
     return when (this) {
-        Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME -> Attestation.LEGAL_PERSON_PRIMARY_NAME
-        Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME -> Attestation.LEGAL_PERSON_SECONDARY_NAME
+        Messages.AttestationType.LEGAL_PERSON_NAME -> Attestation.LEGAL_PERSON_NAME
+        Messages.AttestationType.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER
         Messages.AttestationType.ADDRESS_DEPARTMENT -> Attestation.ADDRESS_DEPARTMENT
         Messages.AttestationType.ADDRESS_SUB_DEPARTMENT -> Attestation.ADDRESS_SUB_DEPARTMENT
         Messages.AttestationType.ADDRESS_STREET_NAME -> Attestation.ADDRESS_STREET_NAME
@@ -961,12 +960,11 @@ internal fun Messages.AttestationType.toAttestation(): Attestation {
         Messages.AttestationType.ADDRESS_COUNTRY_SUB_DIVISION -> Attestation.ADDRESS_COUNTRY_SUB_DIVISION
         Messages.AttestationType.ADDRESS_ADDRESS_LINE -> Attestation.ADDRESS_ADDRESS_LINE
         Messages.AttestationType.ADDRESS_COUNTRY -> Attestation.ADDRESS_COUNTRY
-        Messages.AttestationType.NATURAL_PERSON_FIRST_NAME -> Attestation.NATURAL_PERSON_FIRST_NAME
-        Messages.AttestationType.NATURAL_PERSON_LAST_NAME -> Attestation.NATURAL_PERSON_LAST_NAME
-        Messages.AttestationType.BENEFICIARY_PERSON_FIRST_NAME -> Attestation.BENEFICIARY_PERSON_FIRST_NAME
-        Messages.AttestationType.BENEFICIARY_PERSON_LAST_NAME -> Attestation.BENEFICIARY_PERSON_LAST_NAME
-        Messages.AttestationType.BIRTH_DATE -> Attestation.BIRTH_DATE
-        Messages.AttestationType.BIRTH_PLACE -> Attestation.BIRTH_PLACE
+        Messages.AttestationType.NATURAL_PERSON_PRIMARY_IDENTIFIER -> Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER
+        Messages.AttestationType.NATURAL_PERSON_SECONDARY_IDENTIFIER -> Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER
+        Messages.AttestationType.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER
+        Messages.AttestationType.DATE_OF_BIRTH -> Attestation.DATE_OF_BIRTH
+        Messages.AttestationType.PLACE_OF_BIRTH -> Attestation.PLACE_OF_BIRTH
         Messages.AttestationType.COUNTRY_OF_RESIDENCE -> Attestation.COUNTRY_OF_RESIDENCE
         Messages.AttestationType.COUNTRY_OF_ISSUE -> Attestation.COUNTRY_OF_ISSUE
         Messages.AttestationType.COUNTRY_OF_REGISTRATION -> Attestation.COUNTRY_OF_REGISTRATION
