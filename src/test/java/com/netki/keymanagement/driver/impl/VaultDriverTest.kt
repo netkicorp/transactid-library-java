@@ -8,6 +8,8 @@ import com.bettercloud.vault.response.LogicalResponse
 import com.bettercloud.vault.rest.RestResponse
 import com.netki.exceptions.KeyManagementStoreException
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -107,5 +109,45 @@ internal class VaultDriverTest {
         Assertions.assertThrows(KeyManagementStoreException::class.java) {
             vaultDriver.storePrivateKeyPem(privateKeyId, privateKeyPem)
         }
+    }
+
+    @Test
+    fun `Test fetch certificate PEM successfully`() {
+        val mockLogicalResponse = Mockito.mock(LogicalResponse::class.java)
+        Mockito.`when`(mockVault.logical()).thenReturn(mockLogical)
+        Mockito.`when`(mockLogical.read("$CERTS_SCHEMA/$certificateId")).thenReturn(mockLogicalResponse)
+        Mockito.`when`(mockLogicalResponse.data).thenReturn(mutableMapOf(CERTIFICATE_KEY to certificatePem))
+
+        assertNotNull(vaultDriver.fetchCertificatePem(certificateId))
+    }
+
+    @Test
+    fun `Test fetch certificate PEM not existing`() {
+        val mockLogicalResponse = Mockito.mock(LogicalResponse::class.java)
+        Mockito.`when`(mockVault.logical()).thenReturn(mockLogical)
+        Mockito.`when`(mockLogical.read("$CERTS_SCHEMA/$certificateId")).thenReturn(mockLogicalResponse)
+        Mockito.`when`(mockLogicalResponse.data).thenReturn(mutableMapOf())
+
+        assertNull(vaultDriver.fetchCertificatePem(certificateId))
+    }
+
+    @Test
+    fun `Test fetch privateKey PEM successfully`() {
+        val mockLogicalResponse = Mockito.mock(LogicalResponse::class.java)
+        Mockito.`when`(mockVault.logical()).thenReturn(mockLogical)
+        Mockito.`when`(mockLogical.read("$PRIVATE_KEY_SCHEMA/$privateKeyId")).thenReturn(mockLogicalResponse)
+        Mockito.`when`(mockLogicalResponse.data).thenReturn(mutableMapOf(PRIVATE_KEY_KEY to privateKeyPem))
+
+        assertNotNull(vaultDriver.fetchPrivateKeyPem(privateKeyId))
+    }
+
+    @Test
+    fun `Test fetch privateKey PEM not existing`() {
+        val mockLogicalResponse = Mockito.mock(LogicalResponse::class.java)
+        Mockito.`when`(mockVault.logical()).thenReturn(mockLogical)
+        Mockito.`when`(mockLogical.read("$PRIVATE_KEY_SCHEMA/$privateKeyId")).thenReturn(mockLogicalResponse)
+        Mockito.`when`(mockLogicalResponse.data).thenReturn(mutableMapOf())
+
+        assertNull(vaultDriver.fetchPrivateKeyPem(privateKeyId))
     }
 }
