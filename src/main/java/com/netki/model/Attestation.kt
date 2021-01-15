@@ -8,13 +8,13 @@ import com.google.gson.annotations.SerializedName
  */
 enum class Attestation(id: Int) {
 
-    @JsonProperty("legalPersonPrimaryIdentifier")
-    @SerializedName("legalPersonPrimaryIdentifier")
-    LEGAL_PERSON_PRIMARY_NAME(0),
+    @JsonProperty("legalPersonName")
+    @SerializedName("legalPersonName")
+    LEGAL_PERSON_NAME(0),
 
-    @JsonProperty("legalPersonSecondaryIdentifier")
-    @SerializedName("legalPersonSecondaryIdentifier")
-    LEGAL_PERSON_SECONDARY_NAME(1),
+    @JsonProperty("legalPersonPhoneticNameIdentifier")
+    @SerializedName("legalPersonPhoneticNameIdentifier")
+    LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER(1),
 
     @JsonProperty("addressDepartment")
     @SerializedName("addressDepartment")
@@ -76,57 +76,53 @@ enum class Attestation(id: Int) {
     @SerializedName("addressCountry")
     ADDRESS_COUNTRY(16),
 
-    @JsonProperty("naturalPersonFirstName")
-    @SerializedName("naturalPersonFirstName")
-    NATURAL_PERSON_FIRST_NAME(17),
+    @JsonProperty("naturalPersonPrimaryIdentifier")
+    @SerializedName("naturalPersonPrimaryIdentifier")
+    NATURAL_PERSON_PRIMARY_IDENTIFIER(17),
 
-    @JsonProperty("naturalPersonLastName")
-    @SerializedName("naturalPersonLastName")
-    NATURAL_PERSON_LAST_NAME(18),
+    @JsonProperty("naturalPersonSecondaryIdentifier")
+    @SerializedName("naturalPersonSecondaryIdentifier")
+    NATURAL_PERSON_SECONDARY_IDENTIFIER(18),
 
-    @JsonProperty("beneficiaryPersonFirstName")
-    @SerializedName("beneficiaryPersonFirstName")
-    BENEFICIARY_PERSON_FIRST_NAME(19),
+    @JsonProperty("naturalPersonPhoneticNameIdentifier")
+    @SerializedName("naturalPersonPhoneticNameIdentifier")
+    NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER(19),
 
-    @JsonProperty("beneficiaryPersonLastName")
-    @SerializedName("beneficiaryPersonLastName")
-    BENEFICIARY_PERSON_LAST_NAME(20),
+    @JsonProperty("dateOfBirth")
+    @SerializedName("dateOfBirth")
+    DATE_OF_BIRTH(20),
 
-    @JsonProperty("birthDate")
-    @SerializedName("birthDate")
-    BIRTH_DATE(21),
-
-    @JsonProperty("birthPlace")
-    @SerializedName("birthPlace")
-    BIRTH_PLACE(22),
+    @JsonProperty("placeOfBirth")
+    @SerializedName("placeOfBirth")
+    PLACE_OF_BIRTH(21),
 
     @JsonProperty("countryOfResidence")
     @SerializedName("countryOfResidence")
-    COUNTRY_OF_RESIDENCE(23),
+    COUNTRY_OF_RESIDENCE(22),
 
     @JsonProperty("countryOfIssue")
     @SerializedName("countryOfIssue")
-    COUNTRY_OF_ISSUE(24),
+    COUNTRY_OF_ISSUE(23),
 
     @JsonProperty("countryOfRegistration")
     @SerializedName("countryOfRegistration")
-    COUNTRY_OF_REGISTRATION(25),
+    COUNTRY_OF_REGISTRATION(24),
 
     @JsonProperty("nationalIdentifier")
     @SerializedName("nationalIdentifier")
-    NATIONAL_IDENTIFIER(26),
+    NATIONAL_IDENTIFIER(25),
 
     @JsonProperty("accountNumber")
     @SerializedName("accountNumber")
-    ACCOUNT_NUMBER(27),
+    ACCOUNT_NUMBER(26),
 
     @JsonProperty("customerIdentification")
     @SerializedName("customerIdentification")
-    CUSTOMER_IDENTIFICATION(28),
+    CUSTOMER_IDENTIFICATION(27),
 
     @JsonProperty("registrationAuthority")
     @SerializedName("registrationAuthority")
-    REGISTRATION_AUTHORITY(29),
+    REGISTRATION_AUTHORITY(28),
 }
 
 /**
@@ -149,5 +145,10 @@ enum class IvmsConstraints {
     TXID,
     SOCS,
     IDCD,
-    LEIX
+    LEIX,
+    SHRT,
+    TRAD,
+    TEXT,
+    DATE,
+    COUNTRYCODE
 }
