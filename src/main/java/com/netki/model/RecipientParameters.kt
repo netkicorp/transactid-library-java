@@ -10,7 +10,7 @@ data class RecipientParameters @JvmOverloads constructor(
     val vaspName: String? = "",
 
     /**
-     * Recipient's vasp name.
+     * Recipient's chain address.
      */
     val chainAddress: String? = "",
 

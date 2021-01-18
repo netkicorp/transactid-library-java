@@ -6,8 +6,8 @@ import com.netki.bip75.processor.impl.PaymentProcessor
 import com.netki.bip75.processor.impl.PaymentRequestProcessor
 import com.netki.bip75.service.Bip75Service
 import com.netki.model.*
-import com.netki.util.changeStatus
-import com.netki.util.extractProtocolMessageMetadata
+import com.netki.bip75.util.changeStatus
+import com.netki.bip75.util.extractProtocolMessageMetadata
 
 /**
  * {@inheritDoc}

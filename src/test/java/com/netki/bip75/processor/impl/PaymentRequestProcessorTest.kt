@@ -2,10 +2,14 @@ package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
+import com.netki.bip75.util.getSerializedMessage
+import com.netki.bip75.util.toAttestationType
 import com.netki.exceptions.*
 import com.netki.model.*
 import com.netki.security.CertificateValidator
-import com.netki.util.*
+import com.netki.util.ErrorInformation
+import com.netki.util.TestData
+import com.netki.util.toByteString
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -44,6 +48,28 @@ internal class PaymentRequestProcessorTest {
             merchantData = "merchant data",
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+        )
+
+        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters)
+
+        assert(paymentRequestProcessor.isValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData and missing values`() {
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            TestData.Beneficiaries.NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = SenderParameters(),
             attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
         )
 
@@ -231,7 +257,7 @@ internal class PaymentRequestProcessorTest {
     }
 
     @Test
-    fun `Create and validate PaymentRequestBinary, Owners with PkiData but invalid certificate chain and Sender with PkiData`() {
+    fun `Create and validate PaymentRequestBinary, Beneficiaries with PkiData but invalid certificate chain and Sender with PkiData`() {
         val beneficiaries = listOf(
             TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE,
             TestData.Beneficiaries.NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
@@ -256,7 +282,11 @@ internal class PaymentRequestProcessorTest {
             assert(paymentRequestProcessor.isValid(paymentRequestBinary))
         }
 
-        assert(exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(TestData.Attestations.INVALID_ATTESTATION.name))
+        assert(
+            exception.message == ErrorInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
     }
 
     @Test
@@ -331,24 +361,24 @@ internal class PaymentRequestProcessorTest {
         val paymentRequestCorrupted = Messages.PaymentRequest.newBuilder()
             .mergeFrom(paymentRequestBinary.getSerializedMessage(false))
 
-        val ownersWithInvalidSignature = mutableListOf<Messages.Beneficiary>()
+        val beneficiariesWithInvalidSignature = mutableListOf<Messages.Beneficiary>()
         paymentRequestCorrupted.beneficiariesList.forEachIndexed { index, beneficiary ->
-            val ownerWithoutSignaturesBuilder = Messages.Beneficiary.newBuilder()
+            val beneficiaryWithoutSignaturesBuilder = Messages.Beneficiary.newBuilder()
                 .mergeFrom(beneficiary)
             beneficiary.attestationsList.forEachIndexed { attestationIndex, attestation ->
-                ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
-                ownerWithoutSignaturesBuilder.addAttestations(
+                beneficiaryWithoutSignaturesBuilder.removeAttestations(attestationIndex)
+                beneficiaryWithoutSignaturesBuilder.addAttestations(
                     attestationIndex, Messages.Attestation.newBuilder()
                         .mergeFrom(attestation)
                         .setAttestation(TestData.Attestations.INVALID_ATTESTATION.toAttestationType())
                 )
                     .build()
             }
-            ownersWithInvalidSignature.add(index, ownerWithoutSignaturesBuilder.build())
+            beneficiariesWithInvalidSignature.add(index, beneficiaryWithoutSignaturesBuilder.build())
         }
 
         paymentRequestCorrupted.clearBeneficiaries()
-        paymentRequestCorrupted.addAllBeneficiaries(ownersWithInvalidSignature)
+        paymentRequestCorrupted.addAllBeneficiaries(beneficiariesWithInvalidSignature)
 
 
         val protocolMessageCorrupted = Messages.ProtocolMessage.newBuilder()
@@ -366,7 +396,7 @@ internal class PaymentRequestProcessorTest {
             assert(paymentRequestProcessor.isValid(protocolMessageCorrupted))
         }
 
-        assert(exception.message == ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(TestData.Attestations.INVALID_ATTESTATION.name))
+        assert(exception.message == ErrorInformation.SIGNATURE_VALIDATION_INVALID_BENEFICIARY_SIGNATURE.format(TestData.Attestations.INVALID_ATTESTATION.name))
     }
 
     @Test

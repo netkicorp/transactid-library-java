@@ -241,5 +241,14 @@ internal class PaymentAckProcessorTest {
         assert(!paymentAck.protocolMessageMetadata.senderPublicKeyPem.isNullOrBlank())
         assert(!paymentAck.protocolMessageMetadata.signature.isNullOrBlank())
         assert(paymentAck.protocolMessageMetadata.nonce!! > 0L)
+        assertTrue(paymentAck.payment.beneficiaries.size == TestData.Payment.PAYMENT.beneficiaries.size)
+    }
+
+
+    @Test
+    fun `Test parseWithAddressInfo not implemented`() {
+        assertThrows(NotImplementedError::class.java) {
+            paymentAckProcessor.parseWithAddressesInfo("test".toByteArray())
+        }
     }
 }

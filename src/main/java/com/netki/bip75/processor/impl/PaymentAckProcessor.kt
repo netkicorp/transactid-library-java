@@ -1,6 +1,10 @@
 package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
+import com.netki.bip75.util.*
+import com.netki.bip75.util.toMessagePaymentAck
+import com.netki.bip75.util.toProtocolMessage
+import com.netki.bip75.util.toProtocolMessageEncrypted
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator

@@ -1,6 +1,9 @@
 package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
+import com.netki.bip75.util.*
+import com.netki.bip75.util.toMessageBeneficiaryBuilderWithoutAttestations
+import com.netki.bip75.util.toMessagePaymentBuilder
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
@@ -85,7 +88,7 @@ internal class PaymentProcessor(
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
-                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )
@@ -96,7 +99,7 @@ internal class PaymentProcessor(
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
-                        ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                        ErrorInformation.SIGNATURE_VALIDATION_INVALID_ORIGINATOR_SIGNATURE.format(
                             attestationMessage.attestation
                         )
                     )
@@ -104,7 +107,7 @@ internal class PaymentProcessor(
             }
         }
 
-        payment.originatorsList.forEach { beneficiaryMessage ->
+        payment.beneficiariesList.forEach { beneficiaryMessage ->
             beneficiaryMessage.attestationsList.forEach { attestationMessage ->
                 val isCertificateOwnerChainValid = validateCertificate(
                     attestationMessage.getAttestationPkiType(),
@@ -113,7 +116,7 @@ internal class PaymentProcessor(
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
-                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )

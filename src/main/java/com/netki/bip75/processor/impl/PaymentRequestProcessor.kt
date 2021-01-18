@@ -2,6 +2,10 @@ package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
+import com.netki.bip75.util.*
+import com.netki.bip75.util.toMessageBeneficiaryBuilderWithoutAttestations
+import com.netki.bip75.util.toMessagePaymentDetails
+import com.netki.bip75.util.toPaymentRequest
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
@@ -102,7 +106,7 @@ internal class PaymentRequestProcessor(
 
                 check(isCertificateOwnerChainValid) {
                     throw InvalidCertificateChainException(
-                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA.format(
+                        ErrorInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
                             attestationMessage.attestation
                         )
                     )
@@ -113,7 +117,7 @@ internal class PaymentRequestProcessor(
 
                 check(isSignatureValid) {
                     throw InvalidSignatureException(
-                        ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE.format(
+                        ErrorInformation.SIGNATURE_VALIDATION_INVALID_BENEFICIARY_SIGNATURE.format(
                             attestationMessage.attestation
                         )
                     )
