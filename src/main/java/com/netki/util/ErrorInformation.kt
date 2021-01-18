@@ -47,4 +47,7 @@ object ErrorInformation {
     const val ENCRYPTION_INVALID_ERROR = "Unable to decrypt the message with the given keys, error: %s"
     const val DECRYPTION_MISSING_RECIPIENT_KEYS_ERROR =
         "To decrypt the message you need to have the recipient's private key in your RecipientParameters.EncryptionParameters object."
+    const val SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR = "To transfer to Sygna VASP, the sygnaTransferId field should not be empty"
+    const val SYGNA_VALIDATION_ENCRYPTED_ORIGINATORS_EMPTY_ERROR = "To transfer to Sygna VASP, the sygnaEncryptedOriginators field should not be empty"
+    const val SYGNA_VALIDATION_ENCRYPTED_BENEFICIARIES_EMPTY_ERROR = "To transfer to Sygna VASP, the sygnaEncryptedBeneficiaries field should not be empty"
 }

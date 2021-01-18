@@ -3,9 +3,7 @@ package com.netki.util
 import com.google.protobuf.ByteString
 import com.google.protobuf.GeneratedMessageV3
 import com.netki.bip75.protocol.Messages
-import com.netki.exceptions.EncryptionException
-import com.netki.exceptions.InvalidObjectException
-import com.netki.exceptions.InvalidOwnersException
+import com.netki.exceptions.*
 import com.netki.model.*
 import com.netki.security.CryptoModule
 import com.netki.security.EncryptionModule
@@ -23,7 +21,8 @@ import java.util.*
 internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
     senderParameters: SenderParameters,
     attestationsRequested: List<Attestation>,
-    recipientParameters: RecipientParameters?
+    recipientParameters: RecipientParameters?,
+    sygnaParameters: SygnaParameters?
 ): Messages.InvoiceRequest.Builder {
     val invoiceRequestBuilder = Messages.InvoiceRequest.newBuilder()
         .setAmount(this.amount ?: 0)
@@ -45,6 +44,13 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
     recipientParameters?.let {
         invoiceRequestBuilder.recipientChainAddress = recipientParameters.chainAddress ?: ""
         invoiceRequestBuilder.recipientVaspName = recipientParameters.vaspName
+    }
+
+    sygnaParameters?.let {
+        invoiceRequestBuilder.sygnaTransferId = it.sygnaTransferId ?: ""
+        invoiceRequestBuilder.sygnaEncryptedOriginators =
+            it.sygnaEncryptedOriginators?.hexStringToByteString() ?: "".toByteString()
+        invoiceRequestBuilder.sygnaApiKey = it.sygnaApiKey ?: ""
     }
 
     return invoiceRequestBuilder
@@ -90,7 +96,11 @@ internal fun Messages.InvoiceRequest.toInvoiceRequest(protocolMessageMetadata: P
         senderEvCert = this.senderEvCert.toStringLocal(),
         recipientVaspName = this.recipientVaspName,
         recipientChainAddress = this.recipientChainAddress,
-        protocolMessageMetadata = protocolMessageMetadata
+        protocolMessageMetadata = protocolMessageMetadata,
+        sygnaTransferId = this.sygnaTransferId,
+        sygnaEncryptedOriginators = this.sygnaEncryptedOriginators?.toHex(),
+        sygnaApiKey = this.sygnaApiKey
+
     )
 }
 
@@ -144,7 +154,9 @@ internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: P
         senderPkiType = this.senderPkiType.getType(),
         senderPkiData = this.senderPkiData.toStringLocal(),
         senderSignature = this.senderSignature.toStringLocal(),
-        protocolMessageMetadata = protocolMessageMetadata
+        protocolMessageMetadata = protocolMessageMetadata,
+        sygnaTransferId = this.sygnaTransferId,
+        sygnaEncryptedBeneficiaries = this.sygnaEncryptedBeneficiaries?.toHex()
     )
 }
 
@@ -158,7 +170,8 @@ internal fun Messages.PaymentRequest.toPaymentRequest(protocolMessageMetadata: P
 internal fun Messages.PaymentDetails.toPaymentRequest(
     senderParameters: SenderParameters,
     paymentParametersVersion: Int,
-    attestationsRequested: List<Attestation>
+    attestationsRequested: List<Attestation>,
+    sygnaParameters: SygnaParameters?
 ): Messages.PaymentRequest.Builder {
     val paymentRequestBuilder = Messages.PaymentRequest.newBuilder()
         .setPaymentDetailsVersion(paymentParametersVersion)
@@ -169,6 +182,12 @@ internal fun Messages.PaymentDetails.toPaymentRequest(
 
     attestationsRequested.forEach {
         paymentRequestBuilder.addAttestationsRequested(it.toAttestationType())
+    }
+
+    sygnaParameters?.let {
+        paymentRequestBuilder.sygnaTransferId = it.sygnaTransferId ?: ""
+        paymentRequestBuilder.sygnaEncryptedBeneficiaries =
+            it.sygnaEncryptedBeneficiaries?.hexStringToByteString() ?: "".toByteString()
     }
 
     return paymentRequestBuilder
@@ -185,7 +204,7 @@ internal fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.Paymen
         .setTime(this.time.time)
         .setExpires(this.expires?.time ?: 0)
         .setMemo(this.memo)
-        .setPaymentUrl(this.paymentUrl)
+        .setPaymentUrl(this.paymentUrl?:"")
         .setMerchantData(this.merchantData?.toByteString())
 
     this.beneficiariesAddresses.forEach { output ->
@@ -239,6 +258,10 @@ internal fun PaymentParameters.toMessagePaymentBuilder(): Messages.Payment.Build
         messagePaymentBuilder.addRefundTo(output.toMessageOutput())
     }
 
+    this.sygnaParameters?.let {
+        messagePaymentBuilder.sygnaTransferId = it.sygnaTransferId ?: ""
+    }
+
     return messagePaymentBuilder
 }
 
@@ -267,6 +290,8 @@ internal fun Payment.toMessagePayment(): Messages.Payment {
     this.originators.forEach { originator ->
         messagePaymentBuilder.addOriginators(originator.toMessageOriginator())
     }
+
+    messagePaymentBuilder.sygnaTransferId = this.sygnaTransferId ?: ""
 
     return messagePaymentBuilder.build()
 }
@@ -304,7 +329,8 @@ internal fun Messages.Payment.toPayment(protocolMessageMetadata: ProtocolMessage
         memo = this.memo,
         beneficiaries = beneficiaries,
         originators = originators,
-        protocolMessageMetadata = protocolMessageMetadata
+        protocolMessageMetadata = protocolMessageMetadata,
+        sygnaTransferId = this.sygnaTransferId
     )
 }
 
@@ -1253,5 +1279,38 @@ internal fun ByteArray.changeStatus(statusCode: StatusCode, statusMessage: Strin
     } catch (exception: Exception) {
         exception.printStackTrace()
         throw InvalidObjectException(PARSE_BINARY_MESSAGE_INVALID_INPUT.format(exception.message))
+    }
+}
+
+internal fun ByteString.toHex(): String {
+    val byteArray = this.toByteArray()
+    return byteArray.joinToString("") { "%02x".format(it) }
+}
+
+internal fun String.hexStringToByteString(): ByteString {
+    val byteArray = ByteArray(this.length / 2) {
+        this.substring(it * 2, it * 2 + 2).toInt(16).toByte()
+    }
+    return byteArray.toByteString()
+}
+
+/**
+ * Validate that a sygnaParameters is valid.
+ * Is valid, when it has one single primaryOwner.
+ *
+ * @throws InvalidSygnaTransferIDException if sygnaTransferId is not valid.
+ * @throws InvalidOwnersException if sygnaEncryptedOriginators or sygnaEncryptedBeneficiaries is not valid.
+ */
+internal fun SygnaParameters.validate(ownerType: OwnerType?) {
+    if (this.sygnaTransferId.isNullOrBlank()) {
+        throw InvalidSygnaTransferIDException(ErrorInformation.SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR)
+    }
+
+    if ((ownerType?.equals(OwnerType.ORIGINATOR) == true) && this.sygnaEncryptedOriginators.isNullOrBlank()) {
+        throw InvalidSygnaOwnerException(ErrorInformation.SYGNA_VALIDATION_ENCRYPTED_ORIGINATORS_EMPTY_ERROR)
+    }
+
+    if ((ownerType?.equals(OwnerType.BENEFICIARY) == true) && this.sygnaEncryptedBeneficiaries.isNullOrBlank()) {
+        throw InvalidSygnaOwnerException(ErrorInformation.SYGNA_VALIDATION_ENCRYPTED_BENEFICIARIES_EMPTY_ERROR)
     }
 }

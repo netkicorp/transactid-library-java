@@ -48,7 +48,7 @@ data class PaymentRequestParameters @JvmOverloads constructor(
     /**
      * List of beneficiaries for this transaction.
      */
-    val beneficiaryParameters: List<BeneficiaryParameters>,
+    val beneficiaryParameters: List<BeneficiaryParameters> = emptyList(),
 
     /**
      * The sender of the protocol message.
@@ -58,7 +58,7 @@ data class PaymentRequestParameters @JvmOverloads constructor(
     /**
      * List of attestations requested for the transaction.
      */
-    val attestationsRequested: List<Attestation>,
+    val attestationsRequested: List<Attestation> = emptyList(),
 
     /**
      * Information of the recipient of the message.
@@ -73,5 +73,9 @@ data class PaymentRequestParameters @JvmOverloads constructor(
     /**
      * Version of the PaymentDetails message.
      */
-    val paymentParametersVersion: Int = 1
+    val paymentParametersVersion: Int = 1,
+    /**
+     * Sygna specific parameters
+     */
+    val sygnaParameters: SygnaParameters? = null
 )

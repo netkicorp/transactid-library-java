@@ -31,7 +31,7 @@ data class PaymentParameters @JvmOverloads constructor(
     /**
      * List of originators for this transaction.
      */
-    val originatorParameters: List<OriginatorParameters>,
+    val originatorParameters: List<OriginatorParameters>? = emptyList(),
 
     /**
      * List of beneficiaries for this transaction.
@@ -51,5 +51,9 @@ data class PaymentParameters @JvmOverloads constructor(
     /**
      * Status and information of the protocol message status, by default "OK".
      */
-    val messageInformation: MessageInformation = MessageInformation()
+    val messageInformation: MessageInformation = MessageInformation(),
+    /**
+     * Sygna specific parameters
+     */
+    val sygnaParameters: SygnaParameters? = null
 )
