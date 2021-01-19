@@ -22,7 +22,7 @@ internal class AttestationExtensionKtTest {
         )
         assertEquals(
             Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER.toPrincipal(dataOver64Characters, IvmsConstraint.SHRT),
-            "CN=$data64Characters, C=$extraData, L=legalPersonNameType, O=phoneticNameIdentifier, OU=legalPerson.phoneticNameIdentifier, ST=${IvmsConstraint.SHRT}"
+            "CN=$data64Characters, C=$extraData, L=legalPersonNameType, O=legalPersonPhoneticNameIdentifier, OU=legalPerson.phoneticNameIdentifier, ST=${IvmsConstraint.SHRT}"
         )
         assertEquals(
             Attestation.ADDRESS_DEPARTMENT.toPrincipal(dataOver64Characters, IvmsConstraint.GEOG),
@@ -94,7 +94,7 @@ internal class AttestationExtensionKtTest {
         )
         assertEquals(
             Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER.toPrincipal(dataOver64Characters, IvmsConstraint.BIRT),
-            "CN=$data64Characters, C=$extraData, L=naturalPersonNameidentifierType, O=phoneticNameIdentifier, OU=naturalPersonName.phoneticNameIdentifier, ST=${IvmsConstraint.BIRT}"
+            "CN=$data64Characters, C=$extraData, L=naturalPersonNameidentifierType, O=naturalPersonPhoneticNameIdentifier, OU=naturalPersonName.phoneticNameIdentifier, ST=${IvmsConstraint.BIRT}"
         )
         assertEquals(
             Attestation.DATE_OF_BIRTH.toPrincipal(data, IvmsConstraint.DATE),
