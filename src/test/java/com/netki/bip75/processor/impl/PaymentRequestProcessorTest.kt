@@ -22,8 +22,9 @@ import java.sql.Timestamp
 internal class PaymentRequestProcessorTest {
 
     private lateinit var mockAddressInformationService: AddressInformationService
-    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
     private lateinit var paymentRequestProcessor: PaymentRequestProcessor
+    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
+    private val identifier = "this_is_the_identifier"
 
     @BeforeAll
     fun setUp() {
@@ -419,7 +420,7 @@ internal class PaymentRequestProcessorTest {
             attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
         )
 
-        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters)
+        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters, identifier)
 
         val paymentRequest = paymentRequestProcessor.parse(paymentRequestBinary)
 
@@ -450,7 +451,7 @@ internal class PaymentRequestProcessorTest {
         assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
         assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
         assert(!paymentRequest.senderSignature.isNullOrBlank())
-        assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentRequest.protocolMessageMetadata.identifier == identifier)
         assert(paymentRequest.protocolMessageMetadata.version == 1L)
         assert(paymentRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
         assert(paymentRequest.protocolMessageMetadata.statusMessage.isEmpty())
@@ -478,7 +479,7 @@ internal class PaymentRequestProcessorTest {
             messageInformation = TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL
         )
 
-        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters)
+        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters, identifier)
 
         val paymentRequest = paymentRequestProcessor.parse(paymentRequestBinary)
 
@@ -510,7 +511,7 @@ internal class PaymentRequestProcessorTest {
         assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
         assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
         assert(!paymentRequest.senderSignature.isNullOrBlank())
-        assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentRequest.protocolMessageMetadata.identifier == identifier)
         assert(paymentRequest.protocolMessageMetadata.version == 1L)
         assert(paymentRequest.protocolMessageMetadata.statusCode == StatusCode.CANCEL)
         assert(paymentRequest.protocolMessageMetadata.statusMessage == TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL.statusMessage)
@@ -709,7 +710,7 @@ internal class PaymentRequestProcessorTest {
             recipientParameters = TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
 
-        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters)
+        val paymentRequestBinary = paymentRequestProcessor.create(paymentRequestParameters, identifier)
 
         val paymentRequest = paymentRequestProcessor.parse(
             paymentRequestBinary,
@@ -744,7 +745,7 @@ internal class PaymentRequestProcessorTest {
         assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
         assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
         assert(!paymentRequest.senderSignature.isNullOrBlank())
-        assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentRequest.protocolMessageMetadata.identifier == identifier)
         assert(paymentRequest.protocolMessageMetadata.version == 1L)
         assert(paymentRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
         assert(paymentRequest.protocolMessageMetadata.statusMessage.isEmpty())

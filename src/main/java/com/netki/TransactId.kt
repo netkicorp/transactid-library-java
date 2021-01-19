@@ -111,13 +111,14 @@ class TransactId(private var bip75: Bip75) {
      * Create binary PaymentRequest.
      *
      * @param paymentRequestParameters data to create the PaymentRequest.
+     * @param identifier for the transaction, this should be the same than the one included in the Protocol Message wrapping the initial InvoiceRequest.
      * @return binary object of the message created.
      * @throws InvalidOwnersException if the provided list of owners is not valid.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(InvalidOwnersException::class, EncryptionException::class)
-    fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters): ByteArray =
-        bip75.createPaymentRequest(paymentRequestParameters)
+    fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters, identifier: String): ByteArray =
+        bip75.createPaymentRequest(paymentRequestParameters, identifier)
 
     /**
      * Validate if a binary PaymentRequest is valid.
@@ -187,11 +188,13 @@ class TransactId(private var bip75: Bip75) {
      * Create binary Payment.
      *
      * @param paymentParameters data to create the Payment.
+     * @param identifier for the transaction, this should be the same than the one included in the Protocol Message wrapping the initial InvoiceRequest.
      * @return binary object of the message created.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(EncryptionException::class)
-    fun createPayment(paymentParameters: PaymentParameters): ByteArray = bip75.createPayment(paymentParameters)
+    fun createPayment(paymentParameters: PaymentParameters, identifier: String): ByteArray =
+        bip75.createPayment(paymentParameters, identifier)
 
     /**
      * Validate if a binary Payment is valid.
@@ -233,12 +236,13 @@ class TransactId(private var bip75: Bip75) {
      * Create binary PaymentAck.
      *
      * @param paymentAckParameters data to create the PaymentAck.
+     * @param identifier for the transaction, this should be the same than the one included in the Protocol Message wrapping the initial InvoiceRequest.
      * @return binary object of the message created.
      * @throws EncryptionException if there is an error while creating the encrypted message.
      */
     @Throws(EncryptionException::class)
-    fun createPaymentAck(paymentAckParameters: PaymentAckParameters): ByteArray =
-        bip75.createPaymentAck(paymentAckParameters)
+    fun createPaymentAck(paymentAckParameters: PaymentAckParameters, identifier: String): ByteArray =
+        bip75.createPaymentAck(paymentAckParameters, identifier)
 
     /**
      * Validate if a binary PaymentAck is valid.
