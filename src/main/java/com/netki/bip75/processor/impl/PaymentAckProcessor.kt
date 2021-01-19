@@ -2,13 +2,10 @@ package com.netki.bip75.processor.impl
 
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.util.*
-import com.netki.bip75.util.toMessagePaymentAck
-import com.netki.bip75.util.toProtocolMessage
-import com.netki.bip75.util.toProtocolMessageEncrypted
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator
-import com.netki.util.*
+import com.netki.util.ErrorInformation
 
 internal class PaymentAckProcessor(
     addressInformationService: AddressInformationService,
@@ -18,24 +15,17 @@ internal class PaymentAckProcessor(
     /**
      * {@inheritDoc}
      */
-    override fun create(protocolMessageParameters: ProtocolMessageParameters): ByteArray {
+    override fun create(protocolMessageParameters: ProtocolMessageParameters, identifier: String?): ByteArray {
         val paymentAckParameters = protocolMessageParameters as PaymentAckParameters
         val paymentAck = paymentAckParameters.payment.toMessagePaymentAck(paymentAckParameters.memo).toByteArray()
 
-        return when (paymentAckParameters.messageInformation.encryptMessage) {
-            true -> paymentAck.toProtocolMessageEncrypted(
-                MessageType.PAYMENT_ACK,
-                paymentAckParameters.messageInformation,
-                paymentAckParameters.senderParameters,
-                paymentAckParameters.recipientParameters
-            )
-            false -> paymentAck.toProtocolMessage(
-                MessageType.PAYMENT_ACK,
-                paymentAckParameters.messageInformation,
-                paymentAckParameters.senderParameters,
-                paymentAckParameters.recipientParameters
-            )
-        }
+        return paymentAck.toProtocolMessage(
+            MessageType.PAYMENT_ACK,
+            paymentAckParameters.messageInformation,
+            paymentAckParameters.senderParameters,
+            paymentAckParameters.recipientParameters,
+            identifier
+        )
     }
 
     /**

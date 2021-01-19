@@ -3,14 +3,12 @@ package com.netki.bip75.processor.impl
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
 import com.netki.bip75.util.*
-import com.netki.bip75.util.toMessageBeneficiaryBuilderWithoutAttestations
-import com.netki.bip75.util.toMessagePaymentDetails
-import com.netki.bip75.util.toPaymentRequest
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator
-import com.netki.util.*
+import com.netki.util.ErrorInformation
+import com.netki.util.toStringLocal
 
 internal class PaymentRequestProcessor(
     addressInformationService: AddressInformationService,
@@ -20,7 +18,7 @@ internal class PaymentRequestProcessor(
     /**
      * {@inheritDoc}
      */
-    override fun create(protocolMessageParameters: ProtocolMessageParameters): ByteArray {
+    override fun create(protocolMessageParameters: ProtocolMessageParameters, identifier: String?): ByteArray {
         val paymentRequestParameters = protocolMessageParameters as PaymentRequestParameters
         paymentRequestParameters.beneficiaryParameters.validate(true, OwnerType.BENEFICIARY)
 
@@ -46,20 +44,13 @@ internal class PaymentRequestProcessor(
 
         val paymentRequest = messagePaymentRequest.signMessage(paymentRequestParameters.senderParameters).toByteArray()
 
-        return when (paymentRequestParameters.messageInformation.encryptMessage) {
-            true -> paymentRequest.toProtocolMessageEncrypted(
-                MessageType.PAYMENT_REQUEST,
-                paymentRequestParameters.messageInformation,
-                paymentRequestParameters.senderParameters,
-                paymentRequestParameters.recipientParameters
-            )
-            false -> paymentRequest.toProtocolMessage(
-                MessageType.PAYMENT_REQUEST,
-                paymentRequestParameters.messageInformation,
-                paymentRequestParameters.senderParameters,
-                paymentRequestParameters.recipientParameters
-            )
-        }
+        return paymentRequest.toProtocolMessage(
+            MessageType.PAYMENT_REQUEST,
+            paymentRequestParameters.messageInformation,
+            paymentRequestParameters.senderParameters,
+            paymentRequestParameters.recipientParameters,
+            identifier
+        )
     }
 
     /**

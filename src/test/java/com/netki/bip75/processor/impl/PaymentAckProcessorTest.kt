@@ -23,8 +23,9 @@ import org.mockito.Mockito
 internal class PaymentAckProcessorTest {
 
     private lateinit var mockAddressInformationService: AddressInformationService
-    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
     private lateinit var paymentAckProcessor: PaymentAckProcessor
+    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
+    private val identifier = "this_is_the_identifier"
 
     @BeforeAll
     fun setUp() {
@@ -49,7 +50,7 @@ internal class PaymentAckProcessorTest {
             payment = TestData.Payment.PAYMENT,
             memo = TestData.Payment.MEMO_PAYMENT_ACK
         )
-        val paymentBinary = paymentAckProcessor.create(paymentAckParameters)
+        val paymentBinary = paymentAckProcessor.create(paymentAckParameters, identifier)
         val paymentAck = paymentAckProcessor.parse(paymentBinary)
 
         assert(paymentAck.payment.merchantData == TestData.Payment.PAYMENT.merchantData)
@@ -59,7 +60,7 @@ internal class PaymentAckProcessorTest {
         assert(paymentAck.payment.memo == TestData.Payment.PAYMENT.memo)
         assert(paymentAck.payment.protocolMessageMetadata == null)
         assert(paymentAck.memo == TestData.Payment.MEMO_PAYMENT_ACK)
-        assert(!paymentAck.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentAck.protocolMessageMetadata.identifier == identifier)
         assert(paymentAck.protocolMessageMetadata.version == 1L)
         assert(paymentAck.protocolMessageMetadata.statusCode == StatusCode.OK)
         assert(paymentAck.protocolMessageMetadata.statusMessage.isEmpty())
@@ -84,7 +85,7 @@ internal class PaymentAckProcessorTest {
             memo = TestData.Payment.MEMO_PAYMENT_ACK,
             messageInformation = TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL
         )
-        val paymentBinary = paymentAckProcessor.create(paymentAckParameters)
+        val paymentBinary = paymentAckProcessor.create(paymentAckParameters, identifier)
         val paymentAck = paymentAckProcessor.parse(paymentBinary)
 
         assert(paymentAck.payment.merchantData == TestData.Payment.PAYMENT.merchantData)
@@ -94,7 +95,7 @@ internal class PaymentAckProcessorTest {
         assert(paymentAck.payment.memo == TestData.Payment.PAYMENT.memo)
         assert(paymentAck.payment.protocolMessageMetadata == null)
         assert(paymentAck.memo == TestData.Payment.MEMO_PAYMENT_ACK)
-        assert(!paymentAck.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentAck.protocolMessageMetadata.identifier == identifier)
         assert(paymentAck.protocolMessageMetadata.version == 1L)
         assert(paymentAck.protocolMessageMetadata.statusCode == StatusCode.CANCEL)
         assert(paymentAck.protocolMessageMetadata.statusMessage == TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL.statusMessage)
@@ -218,7 +219,7 @@ internal class PaymentAckProcessorTest {
             recipientParameters = TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
 
-        val paymentBinary = paymentAckProcessor.create(paymentAckParameters)
+        val paymentBinary = paymentAckProcessor.create(paymentAckParameters, identifier)
         val paymentAck = paymentAckProcessor.parse(
             paymentBinary,
             TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
@@ -231,7 +232,7 @@ internal class PaymentAckProcessorTest {
         assert(paymentAck.payment.memo == TestData.Payment.PAYMENT.memo)
         assert(paymentAck.payment.protocolMessageMetadata == null)
         assert(paymentAck.memo == TestData.Payment.MEMO_PAYMENT_ACK)
-        assert(!paymentAck.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentAck.protocolMessageMetadata.identifier == identifier)
         assert(paymentAck.protocolMessageMetadata.version == 1L)
         assert(paymentAck.protocolMessageMetadata.statusCode == StatusCode.OK)
         assert(paymentAck.protocolMessageMetadata.messageType == MessageType.PAYMENT_ACK)

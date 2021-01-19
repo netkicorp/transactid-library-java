@@ -5,9 +5,9 @@ import com.netki.bip75.processor.impl.PaymentAckProcessor
 import com.netki.bip75.processor.impl.PaymentProcessor
 import com.netki.bip75.processor.impl.PaymentRequestProcessor
 import com.netki.bip75.service.Bip75Service
-import com.netki.model.*
 import com.netki.bip75.util.changeStatus
 import com.netki.bip75.util.extractProtocolMessageMetadata
+import com.netki.model.*
 
 /**
  * {@inheritDoc}
@@ -50,8 +50,8 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters) =
-        paymentRequestProcessor.create(paymentRequestParameters)
+    override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters, identifier: String) =
+        paymentRequestProcessor.create(paymentRequestParameters, identifier)
 
     /**
      * {@inheritDoc}
@@ -78,7 +78,8 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(paymentParameters: PaymentParameters) = paymentProcessor.create(paymentParameters)
+    override fun createPayment(paymentParameters: PaymentParameters, identifier: String) =
+        paymentProcessor.create(paymentParameters, identifier)
 
     /**
      * {@inheritDoc}
@@ -95,8 +96,8 @@ internal class Bip75ServiceNetki(
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentAck(paymentAckParameters: PaymentAckParameters) =
-        paymentAckProcessor.create(paymentAckParameters)
+    override fun createPaymentAck(paymentAckParameters: PaymentAckParameters, identifier: String) =
+        paymentAckProcessor.create(paymentAckParameters, identifier)
 
     /**
      * {@inheritDoc}

@@ -106,7 +106,7 @@ internal class Bip75ServiceNetkiTest {
             recipientParameters = TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
 
-        val paymentRequestBinary = bip75Service.createPaymentRequest(paymentRequestParameters)
+        val paymentRequestBinary = bip75Service.createPaymentRequest(paymentRequestParameters, "1234")
         val paymentRequest = bip75Service.parsePaymentRequest(
             paymentRequestBinary,
             TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
@@ -182,7 +182,7 @@ internal class Bip75ServiceNetkiTest {
             attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
         )
 
-        val protocolMessageBinary = bip75Service.createPaymentRequest(paymentRequestParameters)
+        val protocolMessageBinary = bip75Service.createPaymentRequest(paymentRequestParameters, "1234")
         val protocolMessageMetadata = bip75Service.getProtocolMessageMetadata(protocolMessageBinary)
 
         assert(protocolMessageMetadata.statusCode == StatusCode.OK)

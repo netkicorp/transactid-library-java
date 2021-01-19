@@ -3,14 +3,13 @@ package com.netki.bip75.processor.impl
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
 import com.netki.bip75.util.*
-import com.netki.bip75.util.toMessageBeneficiaryBuilderWithoutAttestations
-import com.netki.bip75.util.toMessageInvoiceRequestBuilderUnsigned
 import com.netki.exceptions.InvalidCertificateChainException
 import com.netki.exceptions.InvalidCertificateException
 import com.netki.exceptions.InvalidSignatureException
 import com.netki.model.*
 import com.netki.security.CertificateValidator
-import com.netki.util.*
+import com.netki.util.ErrorInformation
+import com.netki.util.toStringLocal
 
 internal class InvoiceRequestProcessor(
     addressInformationService: AddressInformationService,
@@ -20,7 +19,7 @@ internal class InvoiceRequestProcessor(
     /**
      * {@inheritDoc}
      */
-    override fun create(protocolMessageParameters: ProtocolMessageParameters): ByteArray {
+    override fun create(protocolMessageParameters: ProtocolMessageParameters, identifier: String?): ByteArray {
         val invoiceRequestParameters = protocolMessageParameters as InvoiceRequestParameters
         invoiceRequestParameters.originatorParameters.validate(true, OwnerType.ORIGINATOR)
         invoiceRequestParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
@@ -55,20 +54,12 @@ internal class InvoiceRequestProcessor(
         val messageInvoiceRequest = messageInvoiceRequestBuilder.build()
 
         val invoiceRequest = messageInvoiceRequest.signMessage(invoiceRequestParameters.senderParameters).toByteArray()
-        return when (invoiceRequestParameters.messageInformation.encryptMessage) {
-            true -> invoiceRequest.toProtocolMessageEncrypted(
-                MessageType.INVOICE_REQUEST,
-                invoiceRequestParameters.messageInformation,
-                invoiceRequestParameters.senderParameters,
-                invoiceRequestParameters.recipientParameters
-            )
-            false -> invoiceRequest.toProtocolMessage(
-                MessageType.INVOICE_REQUEST,
-                invoiceRequestParameters.messageInformation,
-                invoiceRequestParameters.senderParameters,
-                invoiceRequestParameters.recipientParameters
-            )
-        }
+        return invoiceRequest.toProtocolMessage(
+            MessageType.INVOICE_REQUEST,
+            invoiceRequestParameters.messageInformation,
+            invoiceRequestParameters.senderParameters,
+            invoiceRequestParameters.recipientParameters
+        )
     }
 
     /**

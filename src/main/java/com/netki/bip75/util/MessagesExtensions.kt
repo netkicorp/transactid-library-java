@@ -839,10 +839,17 @@ internal fun ByteArray.toProtocolMessage(
     messageType: MessageType,
     messageInformation: MessageInformation,
     senderParameters: SenderParameters? = null,
-    recipientParameters: RecipientParameters? = null
+    recipientParameters: RecipientParameters? = null,
+    identifier: String? = null
 ) = when (messageInformation.encryptMessage) {
-    true -> this.toProtocolMessageEncrypted(messageType, messageInformation, senderParameters, recipientParameters)
-    false -> this.toProtocolMessageUnencrypted(messageType, messageInformation)
+    true -> this.toProtocolMessageEncrypted(
+        messageType,
+        messageInformation,
+        senderParameters,
+        recipientParameters,
+        identifier
+    )
+    false -> this.toProtocolMessageUnencrypted(messageType, messageInformation, identifier)
 }
 
 /**
@@ -850,7 +857,8 @@ internal fun ByteArray.toProtocolMessage(
  */
 internal fun ByteArray.toProtocolMessageUnencrypted(
     messageType: MessageType,
-    messageInformation: MessageInformation
+    messageInformation: MessageInformation,
+    identifier: String?
 ) = Messages.ProtocolMessage.newBuilder()
     .setVersion(1)
     .setStatusCode(messageInformation.statusCode.code)
@@ -865,7 +873,9 @@ internal fun ByteArray.toProtocolMessageUnencrypted(
     )
     .setSerializedMessage(this.toByteString())
     .setStatusMessage(messageInformation.statusMessage)
-    .setIdentifier(CryptoModule.generateIdentifier(this).toByteString())
+    .setIdentifier(
+        identifier?.let { identifier.toByteString() } ?: CryptoModule.generateIdentifier(this).toByteString()
+    )
     .build()
     .toByteArray()
 
@@ -876,7 +886,8 @@ internal fun ByteArray.toProtocolMessageEncrypted(
     messageType: MessageType,
     messageInformation: MessageInformation,
     senderParameters: SenderParameters? = null,
-    recipientParameters: RecipientParameters? = null
+    recipientParameters: RecipientParameters? = null,
+    identifier: String? = null
 ): ByteArray {
 
     check(recipientParameters?.encryptionParameters?.publicKeyPem != null) {
@@ -914,7 +925,9 @@ internal fun ByteArray.toProtocolMessageEncrypted(
             }
         )
         .setStatusMessage(messageInformation.statusMessage)
-        .setIdentifier(CryptoModule.generateIdentifier(this).toByteString())
+        .setIdentifier(
+            identifier?.let { identifier.toByteString() } ?: CryptoModule.generateIdentifier(this).toByteString()
+        )
         .setReceiverPublicKey(recipientParameters.encryptionParameters.publicKeyPem.toByteString())
         .setSenderPublicKey(senderParameters.encryptionParameters.publicKeyPem.toByteString())
         .setNonce(System.currentTimeMillis() / 1000)

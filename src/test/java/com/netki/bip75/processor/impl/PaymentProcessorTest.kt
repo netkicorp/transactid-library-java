@@ -26,8 +26,9 @@ import org.mockito.Mockito
 internal class PaymentProcessorTest {
 
     private lateinit var mockAddressInformationService: AddressInformationService
-    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
     private lateinit var paymentProcessor: PaymentProcessor
+    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
+    private val identifier = "this_is_the_identifier"
 
     @BeforeAll
     fun setUp() {
@@ -107,7 +108,7 @@ internal class PaymentProcessorTest {
             beneficiaryParameters = beneficiaries
         )
 
-        val paymentBinary = paymentProcessor.create(paymentParameters)
+        val paymentBinary = paymentProcessor.create(paymentParameters, identifier)
         val payment = paymentProcessor.parse(paymentBinary)
 
         assert(payment.merchantData == paymentParameters.merchantData)
@@ -116,7 +117,7 @@ internal class PaymentProcessorTest {
         assert(payment.memo == paymentParameters.memo)
         assert(payment.originators.size == originators.size)
         assert(payment.beneficiaries.size == beneficiaries.size)
-        assert(!payment.protocolMessageMetadata!!.identifier.isBlank())
+        assert(payment.protocolMessageMetadata!!.identifier == identifier)
         assert(payment.protocolMessageMetadata?.version == 1L)
         assert(payment.protocolMessageMetadata?.statusCode == StatusCode.OK)
         assert(payment.protocolMessageMetadata?.statusMessage.isNullOrBlank())
@@ -141,7 +142,7 @@ internal class PaymentProcessorTest {
             beneficiaryParameters = emptyList(),
             messageInformation = TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL
         )
-        val paymentBinary = paymentProcessor.create(paymentParameters)
+        val paymentBinary = paymentProcessor.create(paymentParameters, identifier)
         val payment = paymentProcessor.parse(paymentBinary)
 
         assert(payment.merchantData == paymentParameters.merchantData)
@@ -150,7 +151,7 @@ internal class PaymentProcessorTest {
         assert(payment.memo == paymentParameters.memo)
         assert(payment.originators.size == originators.size)
         assert(payment.beneficiaries.isEmpty())
-        assert(!payment.protocolMessageMetadata!!.identifier.isBlank())
+        assert(payment.protocolMessageMetadata!!.identifier == identifier)
         assert(payment.protocolMessageMetadata?.version == 1L)
         assert(payment.protocolMessageMetadata?.statusCode == StatusCode.CANCEL)
         assert(payment.protocolMessageMetadata?.statusMessage == TestData.MessageInformationData.MESSAGE_INFORMATION_CANCEL.statusMessage)
@@ -345,7 +346,7 @@ internal class PaymentProcessorTest {
             recipientParameters = TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
         )
 
-        val paymentBinary = paymentProcessor.create(paymentParameters)
+        val paymentBinary = paymentProcessor.create(paymentParameters, identifier)
         val payment = paymentProcessor.parse(paymentBinary, TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION)
 
         assert(payment.merchantData == paymentParameters.merchantData)
@@ -354,7 +355,7 @@ internal class PaymentProcessorTest {
         assert(payment.memo == paymentParameters.memo)
         assert(payment.originators.size == originators.size)
         assert(payment.beneficiaries.size == beneficiaries.size)
-        assert(!payment.protocolMessageMetadata?.identifier!!.isBlank())
+        assert(payment.protocolMessageMetadata?.identifier == identifier)
         assert(payment.protocolMessageMetadata?.version == 1L)
         assert(payment.protocolMessageMetadata?.statusCode == StatusCode.OK)
         assert(payment.protocolMessageMetadata?.messageType == MessageType.PAYMENT)
