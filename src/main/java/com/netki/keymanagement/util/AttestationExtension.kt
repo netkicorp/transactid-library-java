@@ -44,7 +44,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraint: IvmsConstrain
             data64Characters,
             extraData,
             "legalPersonNameType",
-            "phoneticNameIdentifier",
+            "legalPersonPhoneticNameIdentifier",
             "legalPerson.phoneticNameIdentifier",
             ivmsConstraint
         )
@@ -206,7 +206,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraint: IvmsConstrain
             data64Characters,
             extraData,
             "naturalPersonNameidentifierType",
-            "phoneticNameIdentifier",
+            "naturalPersonPhoneticNameIdentifier",
             "naturalPersonName.phoneticNameIdentifier",
             ivmsConstraint
         )
