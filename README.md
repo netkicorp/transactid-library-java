@@ -17,7 +17,7 @@ What we provide:
 * Networking layers
 * [Protocol Buffers][4] wiring and definitions
 * Key signing with [EC cryptography][5]
-* Transfer data with a originator VASP in [Sygna Bridge][8]
+* Transfer data from originator VASP in [Sygna Bridge][8]
 
 
 ## Travel Rule
