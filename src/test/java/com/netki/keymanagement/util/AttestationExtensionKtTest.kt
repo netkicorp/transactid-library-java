@@ -86,7 +86,7 @@ internal class AttestationExtensionKtTest {
         )
         assertEquals(
             Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER.toPrincipal(dataOver64Characters, IvmsConstraint.MAID),
-            "CN=$data64Characters, C=$extraData, L=naturalPersonNameType, O=naturalPersonPrimaryIdentffier, OU=naturalName.primaryIdentifier, ST=${IvmsConstraint.MAID}"
+            "CN=$data64Characters, C=$extraData, L=naturalPersonNameType, O=naturalPersonPrimaryIdentifier, OU=naturalName.primaryIdentifier, ST=${IvmsConstraint.MAID}"
         )
         assertEquals(
             Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER.toPrincipal(dataOver64Characters, IvmsConstraint.MISC),
