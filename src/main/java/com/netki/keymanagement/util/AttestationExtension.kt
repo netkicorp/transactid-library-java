@@ -188,7 +188,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraint: IvmsConstrain
             data64Characters,
             extraData,
             "naturalPersonNameType",
-            "naturalPersonPrimaryIdentffier",
+            "naturalPersonPrimaryIdentifier",
             "naturalName.primaryIdentifier",
             ivmsConstraint
         )
@@ -242,7 +242,7 @@ internal fun Attestation.toPrincipal(data: String, ivmsConstraint: IvmsConstrain
             data64Characters,
             extraData,
             "nationalIdentifierType",
-            "nationalIdentifier",
+            "countryOfIssue",
             "nationalIdentifier.countryOfIssue",
             ivmsConstraint
         )

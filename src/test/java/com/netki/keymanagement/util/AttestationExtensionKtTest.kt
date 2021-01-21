@@ -86,7 +86,7 @@ internal class AttestationExtensionKtTest {
         )
         assertEquals(
             Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER.toPrincipal(dataOver64Characters, IvmsConstraint.MAID),
-            "CN=$data64Characters, C=$extraData, L=naturalPersonNameType, O=naturalPersonPrimaryIdentffier, OU=naturalName.primaryIdentifier, ST=${IvmsConstraint.MAID}"
+            "CN=$data64Characters, C=$extraData, L=naturalPersonNameType, O=naturalPersonPrimaryIdentifier, OU=naturalName.primaryIdentifier, ST=${IvmsConstraint.MAID}"
         )
         assertEquals(
             Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER.toPrincipal(dataOver64Characters, IvmsConstraint.MISC),
@@ -110,7 +110,7 @@ internal class AttestationExtensionKtTest {
         )
         assertEquals(
             Attestation.COUNTRY_OF_ISSUE.toPrincipal(data, IvmsConstraint.COUNTRYCODE),
-            "CN=$data, C=, L=nationalIdentifierType, O=nationalIdentifier, OU=nationalIdentifier.countryOfIssue, ST=${IvmsConstraint.COUNTRYCODE}"
+            "CN=$data, C=, L=nationalIdentifierType, O=countryOfIssue, OU=nationalIdentifier.countryOfIssue, ST=${IvmsConstraint.COUNTRYCODE}"
         )
         assertEquals(
             Attestation.COUNTRY_OF_REGISTRATION.toPrincipal(data, IvmsConstraint.COUNTRYCODE),
