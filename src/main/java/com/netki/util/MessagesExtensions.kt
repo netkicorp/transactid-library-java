@@ -1295,8 +1295,7 @@ internal fun String.hexStringToByteString(): ByteString {
 }
 
 /**
- * Validate that a sygnaParameters is valid.
- * Is valid, when it has one single primaryOwner.
+ * Validate if sygnaParameters is valid.
  *
  * @throws InvalidSygnaTransferIDException if sygnaTransferId is not valid.
  * @throws InvalidOwnersException if sygnaEncryptedOriginators or sygnaEncryptedBeneficiaries is not valid.
