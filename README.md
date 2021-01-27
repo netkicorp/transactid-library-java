@@ -16,6 +16,7 @@ What we provide:
 * Networking layers
 * [Protocol Buffers][4] wiring and definitions
 * Key signing with [EC cryptography][5]
+* Transfer data from originator VASP in [Sygna Bridge][8]
 
 
 ## Travel Rule
@@ -57,6 +58,7 @@ A graph of the workflow is probably the best way to visualize what is going on.
 
 ![Transact ID Workflow](images/workflow_transactid.png)
 
+![Transfer with Sygna Bridge Workflow](images/workflow_sygna_bridge.png)
 
 ## Quick Start
 
@@ -906,3 +908,4 @@ data class AddressInformation @JvmOverloads constructor(
 [5]: https://en.wikipedia.org/wiki/Elliptic-curve_cryptography
 [6]: https://www.sec.gov/about/offices/ocie/aml2007/31cfr103.33g.pdf
 [7]: https://www.occ.treas.gov/topics/supervision-and-examination/bsa/index-bsa.html
+[8]: https://developers.sygna.io/reference#bridge-3

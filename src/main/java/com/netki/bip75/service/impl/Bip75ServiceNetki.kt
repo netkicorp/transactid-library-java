@@ -3,9 +3,7 @@ package com.netki.bip75.service.impl
 import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.protocol.Messages
 import com.netki.bip75.service.Bip75Service
-import com.netki.exceptions.InvalidCertificateChainException
-import com.netki.exceptions.InvalidCertificateException
-import com.netki.exceptions.InvalidSignatureException
+import com.netki.exceptions.*
 import com.netki.model.*
 import com.netki.security.CertificateValidator
 import com.netki.util.*
@@ -27,15 +25,19 @@ internal class Bip75ServiceNetki(
      * {@inheritDoc}
      */
     override fun createInvoiceRequest(invoiceRequestParameters: InvoiceRequestParameters): ByteArray {
-
-        invoiceRequestParameters.originatorParameters.validate(true, OwnerType.ORIGINATOR)
-        invoiceRequestParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
+        if(invoiceRequestParameters.sygnaParameters != null){
+            invoiceRequestParameters.sygnaParameters.validate(OwnerType.ORIGINATOR)
+        }else{
+            invoiceRequestParameters.originatorParameters.validate(true, OwnerType.ORIGINATOR)
+            invoiceRequestParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
+        }
 
         val messageInvoiceRequestBuilder =
             invoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
                 invoiceRequestParameters.senderParameters,
                 invoiceRequestParameters.attestationsRequested,
-                invoiceRequestParameters.recipientParameters
+                invoiceRequestParameters.recipientParameters,
+                invoiceRequestParameters.sygnaParameters
             )
 
         invoiceRequestParameters.beneficiaryParameters?.forEach { beneficiary ->
@@ -209,14 +211,19 @@ internal class Bip75ServiceNetki(
      */
     override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters): ByteArray {
 
-        paymentRequestParameters.beneficiaryParameters.validate(true, OwnerType.BENEFICIARY)
+        if(paymentRequestParameters.sygnaParameters != null){
+            paymentRequestParameters.sygnaParameters.validate(OwnerType.BENEFICIARY)
+        }else{
+            paymentRequestParameters.beneficiaryParameters.validate(true, OwnerType.BENEFICIARY)
+        }
 
         val messagePaymentRequestBuilder = paymentRequestParameters
             .toMessagePaymentDetails()
             .toPaymentRequest(
                 paymentRequestParameters.senderParameters,
                 paymentRequestParameters.paymentParametersVersion,
-                paymentRequestParameters.attestationsRequested
+                paymentRequestParameters.attestationsRequested,
+                paymentRequestParameters.sygnaParameters
             )
 
         paymentRequestParameters.beneficiaryParameters.forEach { beneficiary ->
@@ -354,8 +361,12 @@ internal class Bip75ServiceNetki(
      * {@inheritDoc}
      */
     override fun createPayment(paymentParameters: PaymentParameters): ByteArray {
-        paymentParameters.originatorParameters.validate(true, OwnerType.ORIGINATOR)
-        paymentParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
+        if(paymentParameters.sygnaParameters != null){
+            paymentParameters.sygnaParameters.validate(null)
+        }else{
+            paymentParameters.originatorParameters?.validate(true, OwnerType.ORIGINATOR)
+            paymentParameters.beneficiaryParameters?.validate(false, OwnerType.BENEFICIARY)
+        }
 
         val paymentBuilder = paymentParameters.toMessagePaymentBuilder()
 
@@ -369,7 +380,7 @@ internal class Bip75ServiceNetki(
             paymentBuilder.addBeneficiaries(beneficiaryMessage)
         }
 
-        paymentParameters.originatorParameters.forEach { originator ->
+        paymentParameters.originatorParameters?.forEach { originator ->
             val originatorMessage = originator.toMessageOriginatorBuilderWithoutAttestations()
 
             originator.pkiDataParametersSets.forEach { pkiData ->

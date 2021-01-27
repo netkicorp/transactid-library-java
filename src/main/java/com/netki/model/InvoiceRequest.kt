@@ -73,5 +73,17 @@ data class InvoiceRequest @JvmOverloads constructor(
     /**
      * Metadata for the protocol message.
      */
-    val protocolMessageMetadata: ProtocolMessageMetadata
+    val protocolMessageMetadata: ProtocolMessageMetadata,
+    /**
+     * Specific ID for Sygna Bridge
+     */
+    val sygnaTransferId: String? = null,
+    /**
+     * Originators' encrypted account for Sygna Bridge
+     */
+    val sygnaEncryptedOriginators: String? = null,
+    /**
+     * Specific Sygna Bridge API key for /netki
+     */
+    val sygnaApiKey: String? = null
 )

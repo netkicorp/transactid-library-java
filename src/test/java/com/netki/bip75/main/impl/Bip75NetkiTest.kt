@@ -5,13 +5,15 @@ import com.netki.address.info.service.AddressInformationService
 import com.netki.bip75.service.impl.Bip75ServiceNetki
 import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
-import com.netki.model.AddressCurrency
-import com.netki.model.AddressInformation
-import com.netki.model.InvoiceRequestParameters
-import com.netki.model.PaymentRequestParameters
+import com.netki.exceptions.InvalidSygnaOwnerException
+import com.netki.exceptions.InvalidSygnaTransferIDException
+import com.netki.model.*
 import com.netki.security.CertificateValidator
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_INTERNAL_ERROR_PROVIDER
 import com.netki.util.ErrorInformation.ADDRESS_INFORMATION_NOT_AUTHORIZED_ERROR_PROVIDER
+import com.netki.util.ErrorInformation.SYGNA_VALIDATION_ENCRYPTED_BENEFICIARIES_EMPTY_ERROR
+import com.netki.util.ErrorInformation.SYGNA_VALIDATION_ENCRYPTED_ORIGINATORS_EMPTY_ERROR
+import com.netki.util.ErrorInformation.SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR
 import com.netki.util.TestData
 import com.netki.util.TestData.Address.ADDRESS_INFORMATION
 import com.netki.util.TestData.Attestations.REQUESTED_ATTESTATIONS
@@ -22,6 +24,10 @@ import com.netki.util.TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
 import com.netki.util.TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256
 import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
+import com.netki.util.TestData.SygnaParameters.SYGNA_TRANSFER_ID
+import com.netki.util.TestData.SygnaParameters.SYGNA_ENCRYPTED_ORIGINATORS
+import com.netki.util.TestData.SygnaParameters.SYGNA_API_KEY
+import com.netki.util.TestData.SygnaParameters.SYGNA_ENCRYPTED_BENEFICIARIES
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -81,6 +87,56 @@ internal class Bip75NetkiTest {
         assertEquals(invoiceRequest.originatorsAddresses.size, invoiceRequestData.originatorsAddresses.size)
         assertTrue(invoiceRequest.recipientChainAddress.isNullOrBlank())
         assertTrue(invoiceRequest.recipientVaspName.isNullOrBlank())
+        assertTrue(invoiceRequest.sygnaTransferId.isNullOrBlank())
+        assertTrue(invoiceRequest.sygnaEncryptedOriginators.isNullOrBlank())
+        assertTrue(invoiceRequest.sygnaApiKey.isNullOrBlank())
+        invoiceRequest.originatorsAddresses.forEach { output ->
+            run {
+                assert(!output.addressInformation?.identifier.isNullOrBlank())
+                assertNotNull(output.addressInformation?.alerts)
+                assert(!output.addressInformation?.currencyVerbose.isNullOrBlank())
+                assert(!output.addressInformation?.earliestTransactionTime.isNullOrBlank())
+                assert(!output.addressInformation?.latestTransactionTime.isNullOrBlank())
+            }
+        }
+    }
+
+    @Test
+    fun `Create and parse InvoiceRequest binary with Sygna format`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId = SYGNA_TRANSFER_ID,
+            sygnaEncryptedOriginators = SYGNA_ENCRYPTED_ORIGINATORS,
+            sygnaApiKey = SYGNA_API_KEY
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestData = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestData)
+
+        val invoiceRequest = bip75Netki.parseInvoiceRequestWithAddressesInfo(invoiceRequestBinary)
+
+        assertEquals(invoiceRequest.originatorsAddresses.size, invoiceRequestData.originatorsAddresses.size)
+        assertTrue(invoiceRequest.recipientChainAddress.isNullOrBlank())
+        assertTrue(invoiceRequest.recipientVaspName.isNullOrBlank())
+        assertEquals(invoiceRequest.sygnaTransferId, invoiceRequestData.sygnaParameters?.sygnaTransferId)
+        assertEquals(invoiceRequest.sygnaEncryptedOriginators, invoiceRequestData.sygnaParameters?.sygnaEncryptedOriginators)
+        assertEquals(invoiceRequest.sygnaApiKey, invoiceRequestData.sygnaParameters?.sygnaApiKey)
         invoiceRequest.originatorsAddresses.forEach { output ->
             run {
                 assert(!output.addressInformation?.identifier.isNullOrBlank())
@@ -269,6 +325,67 @@ internal class Bip75NetkiTest {
     }
 
     @Test
+    fun `Create and parse InvoiceRequest binary with Sygna Format throwing InvalidSygnaTransferIDException`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val sygnaParameters = SygnaParameters()
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestData = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaTransferIDException::class.java) {
+            transactId.createInvoiceRequest(invoiceRequestData)
+        }
+
+        assert(exception.message != null && exception.message!! == (SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR))
+    }
+
+    @Test
+    fun `Create and parse InvoiceRequest binary with Sygna Format throwing InvalidSygnaOwnerException`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId =  SYGNA_TRANSFER_ID
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestData = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaOwnerException::class.java) {
+            transactId.createInvoiceRequest(invoiceRequestData)
+        }
+
+        assert(exception.message != null && exception.message!! == (SYGNA_VALIDATION_ENCRYPTED_ORIGINATORS_EMPTY_ERROR))
+    }
+
+
+    @Test
     fun `Create and parse PaymentRequest binary and fetch AddressInformation`() {
         `when`(
             mockAddressInformationService.getAddressInformation(
@@ -300,6 +417,8 @@ internal class Bip75NetkiTest {
         val paymentRequest = bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
 
         assertEquals(paymentRequest.beneficiariesAddresses.size, paymentRequestParameters.beneficiariesAddresses.size)
+        assertTrue(paymentRequest.sygnaTransferId.isNullOrBlank())
+        assertTrue(paymentRequest.sygnaEncryptedBeneficiaries.isNullOrBlank())
         paymentRequest.beneficiariesAddresses.forEach { output ->
             run {
                 assert(!output.addressInformation?.identifier.isNullOrBlank())
@@ -348,6 +467,53 @@ internal class Bip75NetkiTest {
                 assert(output.addressInformation?.currencyVerbose.isNullOrBlank())
                 assert(output.addressInformation?.earliestTransactionTime.isNullOrBlank())
                 assert(output.addressInformation?.latestTransactionTime.isNullOrBlank())
+            }
+        }
+    }
+
+    @Test
+    fun `Create and parse PaymentRequest binary with Sygna format`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId =  SYGNA_TRANSFER_ID,
+            sygnaEncryptedBeneficiaries = SYGNA_ENCRYPTED_BENEFICIARIES
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val paymentRequestBinary = bip75Netki.createPaymentRequest(paymentRequestParameters)
+
+        val paymentRequest = bip75Netki.parsePaymentRequestWithAddressesInfo(paymentRequestBinary)
+
+        assertEquals(paymentRequest.beneficiariesAddresses.size, paymentRequestParameters.beneficiariesAddresses.size)
+        assertEquals(paymentRequest.sygnaTransferId, paymentRequestParameters.sygnaParameters?.sygnaTransferId)
+        assertEquals(paymentRequest.sygnaEncryptedBeneficiaries, paymentRequestParameters.sygnaParameters?.sygnaEncryptedBeneficiaries)
+
+        paymentRequest.beneficiariesAddresses.forEach { output ->
+            run {
+                assert(!output.addressInformation?.identifier.isNullOrBlank())
+                assertNotNull(output.addressInformation?.alerts)
+                assert(!output.addressInformation?.currencyVerbose.isNullOrBlank())
+                assert(!output.addressInformation?.earliestTransactionTime.isNullOrBlank())
+                assert(!output.addressInformation?.latestTransactionTime.isNullOrBlank())
             }
         }
     }
@@ -437,6 +603,72 @@ internal class Bip75NetkiTest {
         }
 
         assert(exception.message != null && exception.message!!.contains("Provider internal error for address:"))
+    }
+
+    @Test
+    fun `Create and parse PaymentRequest binary with Sygna format throwing InvalidSygnaTransferIDException`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val sygnaParameters = SygnaParameters()
+        val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaTransferIDException::class.java) {
+            bip75Netki.createPaymentRequest(paymentRequestParameters)
+        }
+
+        assert(exception.message != null && exception.message!! == SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR)
+    }
+
+    @Test
+    fun `Create and parse PaymentRequest binary with Sygna format throwing InvalidSygnaOwnerException`() {
+        `when`(
+            mockAddressInformationService.getAddressInformation(
+                any(AddressCurrency::class.java),
+                anyString()
+            )
+        ).thenReturn(ADDRESS_INFORMATION)
+
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId =  SYGNA_TRANSFER_ID
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaOwnerException::class.java) {
+            bip75Netki.createPaymentRequest(paymentRequestParameters)
+        }
+
+        assert(exception.message != null && exception.message!! == SYGNA_VALIDATION_ENCRYPTED_BENEFICIARIES_EMPTY_ERROR)
     }
 
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)

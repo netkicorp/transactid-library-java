@@ -158,6 +158,24 @@ internal object TestData {
             )
         )
 
+        val SYGNA_PAYMENT = Payment(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            sygnaTransferId = "03509afc922c99b9a0f16e89f4129e9504cf8f5ffb76048aee693aaa29f68b26",
+            protocolMessageMetadata = ProtocolMessageMetadata(
+                1,
+                StatusCode.OK,
+                MessageType.PAYMENT,
+                "",
+                "randomIdentifier"
+            )
+        )
+
         object Output {
             val OUTPUTS = listOf(
                 Output(1000, "Script 1", AddressCurrency.BITCOIN),
@@ -998,5 +1016,12 @@ internal object TestData {
             CryptoModule.objectToPrivateKeyPem(keysSender.private),
             CryptoModule.objectToPublicKeyPem(keysSender.public)
         )
+    }
+
+    object SygnaParameters {
+        const val SYGNA_TRANSFER_ID = "03509afc922c99b9a0f16e89f4129e9504cf8f5ffb76048aee693aaa29f68b26"
+        const val SYGNA_ENCRYPTED_ORIGINATORS = "df94fd292fdbb3e23b512334ded22169b4a483a6269f9add2e3fcf"
+        const val SYGNA_ENCRYPTED_BENEFICIARIES = "16a7bdd4420ab592da5a868f9913a9572b5f58fb2a5b289f7f53"
+        const val SYGNA_API_KEY = "092ce11d949af34d439b2fc40c2e9d4c80c19e01a2c955661096671d23a6c57a"
     }
 }
