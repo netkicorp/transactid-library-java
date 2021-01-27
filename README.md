@@ -1,4 +1,3 @@
-# Netki Readme
 # TransactID Library Java Edition
 
 ![Netki Logo](images/netki.png)
