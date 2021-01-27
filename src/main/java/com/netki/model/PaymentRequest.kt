@@ -76,5 +76,13 @@ data class PaymentRequest @JvmOverloads constructor(
     /**
      * Metadata for the protocol message.
      */
-    val protocolMessageMetadata: ProtocolMessageMetadata
+    val protocolMessageMetadata: ProtocolMessageMetadata,
+    /**
+     * Specific ID for Sygna Bridge
+     */
+    val sygnaTransferId: String? = null,
+    /**
+     * Beneficiaries' encrypted account for Sygna Bridge
+     */
+    val sygnaEncryptedBeneficiaries: String? = null
 )

@@ -1,10 +1,7 @@
 package com.netki
 
 import com.netki.bip75.protocol.Messages
-import com.netki.exceptions.EncryptionException
-import com.netki.exceptions.InvalidCertificateChainException
-import com.netki.exceptions.InvalidObjectException
-import com.netki.exceptions.InvalidSignatureException
+import com.netki.exceptions.*
 import com.netki.model.*
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_OWNER_CERTIFICATE_CA
 import com.netki.util.ErrorInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA
@@ -12,6 +9,9 @@ import com.netki.util.ErrorInformation.ENCRYPTION_MISSING_RECIPIENT_KEYS_ERROR
 import com.netki.util.ErrorInformation.ENCRYPTION_MISSING_SENDER_KEYS_ERROR
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_OWNER_SIGNATURE
 import com.netki.util.ErrorInformation.SIGNATURE_VALIDATION_INVALID_SENDER_SIGNATURE
+import com.netki.util.ErrorInformation.SYGNA_VALIDATION_ENCRYPTED_BENEFICIARIES_EMPTY_ERROR
+import com.netki.util.ErrorInformation.SYGNA_VALIDATION_ENCRYPTED_ORIGINATORS_EMPTY_ERROR
+import com.netki.util.ErrorInformation.SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR
 import com.netki.util.TestData
 import com.netki.util.TestData.Attestations.INVALID_ATTESTATION
 import com.netki.util.TestData.Attestations.REQUESTED_ATTESTATIONS
@@ -33,12 +33,17 @@ import com.netki.util.TestData.Payment.MEMO
 import com.netki.util.TestData.Payment.MEMO_PAYMENT_ACK
 import com.netki.util.TestData.Payment.Output.OUTPUTS
 import com.netki.util.TestData.Payment.PAYMENT
+import com.netki.util.TestData.Payment.SYGNA_PAYMENT
 import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS
 import com.netki.util.TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
 import com.netki.util.TestData.Senders.SENDER_PKI_NONE
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
 import com.netki.util.TestData.Senders.SENDER_PKI_X509SHA256_WITH_ENCRYPTION
+import com.netki.util.TestData.SygnaParameters.SYGNA_API_KEY
+import com.netki.util.TestData.SygnaParameters.SYGNA_ENCRYPTED_BENEFICIARIES
+import com.netki.util.TestData.SygnaParameters.SYGNA_ENCRYPTED_ORIGINATORS
+import com.netki.util.TestData.SygnaParameters.SYGNA_TRANSFER_ID
 import com.netki.util.getSerializedMessage
 import com.netki.util.toAttestationType
 import com.netki.util.toByteString
@@ -746,6 +751,103 @@ internal class TransactIdTest {
     }
 
     @Test
+    fun `Create and parse InvoiceRequestBinary with Sygna format to InvoiceRequest`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId = SYGNA_TRANSFER_ID,
+            sygnaEncryptedOriginators = SYGNA_ENCRYPTED_ORIGINATORS,
+            sygnaApiKey = SYGNA_API_KEY
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = OUTPUTS,
+            originatorParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val invoiceRequestBinary = transactId.createInvoiceRequest(invoiceRequestParameters)
+
+        val invoiceRequest = transactId.parseInvoiceRequest(invoiceRequestBinary)
+
+        assert(invoiceRequestParameters.amount == invoiceRequest.amount)
+        assert(invoiceRequestParameters.memo == invoiceRequest.memo)
+        assert(invoiceRequestParameters.notificationUrl == invoiceRequest.notificationUrl)
+        assert(REQUESTED_ATTESTATIONS.size == invoiceRequest.attestationsRequested.size)
+        assert(OUTPUTS.size == invoiceRequest.originatorsAddresses.size)
+
+        assert(sender.pkiDataParameters?.type == invoiceRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == invoiceRequest.senderPkiData)
+        assert(!invoiceRequest.senderSignature.isNullOrBlank())
+        assert(!invoiceRequest.protocolMessageMetadata.identifier.isBlank())
+        assert(invoiceRequest.protocolMessageMetadata.version == 1L)
+        assert(invoiceRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
+        assert(invoiceRequest.protocolMessageMetadata.statusMessage.isEmpty())
+        assert(invoiceRequest.protocolMessageMetadata.messageType == MessageType.INVOICE_REQUEST)
+        assert(!invoiceRequest.senderEvCert.isNullOrBlank())
+
+        assert(sygnaParameters.sygnaTransferId == invoiceRequest.sygnaTransferId)
+        assert(sygnaParameters.sygnaEncryptedOriginators == invoiceRequest.sygnaEncryptedOriginators)
+        assert(sygnaParameters.sygnaApiKey == invoiceRequest.sygnaApiKey)
+
+        assertTrue(transactId.isInvoiceRequestValid(invoiceRequestBinary))
+    }
+
+    @Test
+    fun `Create and parse InvoiceRequestBinary with Sygna format to InvoiceRequest, SygnaParameters with invalid sygnaTransferId`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaEncryptedOriginators = SYGNA_ENCRYPTED_ORIGINATORS,
+            sygnaApiKey = SYGNA_API_KEY
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = OUTPUTS,
+            originatorParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaTransferIDException::class.java) {
+            transactId.createInvoiceRequest(invoiceRequestParameters)
+        }
+
+        assert(exception.message == SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR)
+    }
+
+    @Test
+    fun `Create and parse InvoiceRequestBinary with Sygna format to InvoiceRequest, sygnaParameters with invalid sygnaEncryptedOriginators`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId = SYGNA_TRANSFER_ID,
+            sygnaApiKey = SYGNA_API_KEY
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = OUTPUTS,
+            originatorParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaOwnerException::class.java) {
+            transactId.createInvoiceRequest(invoiceRequestParameters)
+        }
+
+        assert(exception.message == SYGNA_VALIDATION_ENCRYPTED_ORIGINATORS_EMPTY_ERROR)
+    }
+
+
+    @Test
     fun `Create and validate PaymentRequestBinary, Owners and Sender with PkiData`() {
         val beneficiaries = listOf(
             PRIMARY_BENEFICIARY_PKI_X509SHA256,
@@ -1430,6 +1532,108 @@ internal class TransactIdTest {
     }
 
     @Test
+    fun `Create and parse PaymentRequestBinary with Sygna format to PaymentRequest`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId = SYGNA_TRANSFER_ID,
+            sygnaEncryptedBeneficiaries =  SYGNA_ENCRYPTED_BENEFICIARIES
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val paymentRequestBinary = transactId.createPaymentRequest(paymentRequestParameters)
+
+        val paymentRequest = transactId.parsePaymentRequest(paymentRequestBinary)
+
+        assert(paymentRequest.network == paymentRequestParameters.network)
+        assert(paymentRequest.time == paymentRequestParameters.time)
+        assert(paymentRequest.expires == paymentRequestParameters.expires)
+        assert(paymentRequest.memo == paymentRequestParameters.memo)
+        assert(paymentRequest.paymentUrl == paymentRequestParameters.paymentUrl)
+        assert(paymentRequest.merchantData == paymentRequestParameters.merchantData)
+        assert(paymentRequest.beneficiariesAddresses.size == paymentRequestParameters.beneficiariesAddresses.size)
+
+        assert(sender.pkiDataParameters?.type == paymentRequest.senderPkiType)
+        assert(sender.pkiDataParameters?.certificatePem == paymentRequest.senderPkiData)
+        assert(!paymentRequest.senderSignature.isNullOrBlank())
+        assert(!paymentRequest.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentRequest.protocolMessageMetadata.version == 1L)
+        assert(paymentRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
+        assert(paymentRequest.protocolMessageMetadata.statusMessage.isEmpty())
+        assert(paymentRequest.protocolMessageMetadata.messageType == MessageType.PAYMENT_REQUEST)
+
+        assert(paymentRequest.sygnaTransferId == paymentRequestParameters.sygnaParameters?.sygnaTransferId)
+        assert(paymentRequest.sygnaEncryptedBeneficiaries == paymentRequestParameters.sygnaParameters?.sygnaEncryptedBeneficiaries)
+
+        assertTrue(transactId.isPaymentRequestValid(paymentRequestBinary))
+    }
+
+    @Test
+    fun `Create and parse PaymentRequestBinary to PaymentRequest with Sygna format, SygnaParameters with invalid sygnaTransferId`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaEncryptedBeneficiaries =  SYGNA_ENCRYPTED_BENEFICIARIES
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaTransferIDException::class.java) {
+            transactId.createPaymentRequest(paymentRequestParameters)
+        }
+
+        assert(exception.message == SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR)
+    }
+
+    @Test
+    fun `Create and parse PaymentRequestBinary to PaymentRequest with Sygna format, SygnaParameters with invalid sygnaEncryptedBeneficiaries`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId =  SYGNA_TRANSFER_ID
+        )
+        val sender = SENDER_PKI_X509SHA256
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = emptyList(),
+            senderParameters = sender,
+            attestationsRequested = REQUESTED_ATTESTATIONS,
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaOwnerException::class.java) {
+            transactId.createPaymentRequest(paymentRequestParameters)
+        }
+
+        assert(exception.message == SYGNA_VALIDATION_ENCRYPTED_BENEFICIARIES_EMPTY_ERROR)
+    }
+
+    @Test
     fun `Create and validate PaymentBinary`() {
         val originators = listOf(
             PRIMARY_ORIGINATOR_PKI_X509SHA256,
@@ -1738,6 +1942,62 @@ internal class TransactIdTest {
     }
 
     @Test
+    fun `Create and parse PaymentBinary with Sygna format to Payment`() {
+        val sygnaParameters = SygnaParameters(
+            sygnaTransferId =  SYGNA_TRANSFER_ID
+        )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = emptyList(),
+            sygnaParameters = sygnaParameters
+        )
+
+        val paymentBinary = transactId.createPayment(paymentParameters)
+        val payment = transactId.parsePayment(paymentBinary)
+
+        assert(payment.merchantData == paymentParameters.merchantData)
+        assert(payment.transactions.size == paymentParameters.transactions.size)
+        assert(payment.outputs == paymentParameters.outputs)
+        assert(payment.memo == paymentParameters.memo)
+        assert(!payment.protocolMessageMetadata!!.identifier.isBlank())
+        assert(payment.protocolMessageMetadata?.version == 1L)
+        assert(payment.protocolMessageMetadata?.statusCode == StatusCode.OK)
+        assert(payment.protocolMessageMetadata?.statusMessage.isNullOrBlank())
+        assert(payment.protocolMessageMetadata?.messageType == MessageType.PAYMENT)
+        assert(payment.sygnaTransferId == sygnaParameters.sygnaTransferId)
+
+        assertTrue(transactId.isPaymentValid(paymentBinary))
+    }
+
+    @Test
+    fun `Create and parse PaymentBinary with Sygna format to Payment, sygnaParameters with invalid sygnaTransferId`() {
+        val sygnaParameters = SygnaParameters()
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = OUTPUTS,
+            memo = MEMO,
+            originatorParameters = emptyList(),
+            sygnaParameters = sygnaParameters
+        )
+
+        val exception = assertThrows(InvalidSygnaTransferIDException::class.java) {
+            transactId.createPayment(paymentParameters)
+        }
+
+        assert(exception.message == SYGNA_VALIDATION_TRANSFER_ID_EMPTY_ERROR)
+    }
+
+    @Test
     fun `Create and validate PaymentAckBinary`() {
         val paymentAckParameters = PaymentAckParameters(
             payment = PAYMENT,
@@ -1933,6 +2193,31 @@ internal class TransactIdTest {
         assert(!paymentAck.protocolMessageMetadata.senderPublicKeyPem.isNullOrBlank())
         assert(!paymentAck.protocolMessageMetadata.signature.isNullOrBlank())
         assert(paymentAck.protocolMessageMetadata.nonce!! > 0L)
+    }
+
+    @Test
+    fun `Create and parse PaymentAckBinary to PaymentAck with Sygna format`() {
+        val paymentAckParameters = PaymentAckParameters(
+            payment = SYGNA_PAYMENT,
+            memo = MEMO_PAYMENT_ACK
+        )
+        val paymentBinary = transactId.createPaymentAck(paymentAckParameters)
+        val paymentAck = transactId.parsePaymentAck(paymentBinary)
+
+        assert(paymentAck.payment.merchantData == SYGNA_PAYMENT.merchantData)
+        assert(paymentAck.payment.transactions.size == SYGNA_PAYMENT.transactions.size)
+        assert(paymentAck.payment.outputs == SYGNA_PAYMENT.outputs)
+        assert(paymentAck.payment.memo == SYGNA_PAYMENT.memo)
+        assert(paymentAck.payment.protocolMessageMetadata == null)
+        assert(paymentAck.memo == MEMO_PAYMENT_ACK)
+        assert(!paymentAck.protocolMessageMetadata.identifier.isBlank())
+        assert(paymentAck.protocolMessageMetadata.version == 1L)
+        assert(paymentAck.protocolMessageMetadata.statusCode == StatusCode.OK)
+        assert(paymentAck.protocolMessageMetadata.statusMessage.isEmpty())
+        assert(paymentAck.protocolMessageMetadata.messageType == MessageType.PAYMENT_ACK)
+        assert(paymentAck.payment.sygnaTransferId == SYGNA_PAYMENT.sygnaTransferId)
+
+        assertTrue(transactId.isPaymentAckValid(paymentBinary))
     }
 
     @Test
