@@ -58,4 +58,4 @@ data class InvoiceRequestParameters @JvmOverloads constructor(
      * Status and information of the protocol message status, by default "OK".
      */
     val messageInformation: MessageInformation = MessageInformation()
-)
+) : ProtocolMessageParameters

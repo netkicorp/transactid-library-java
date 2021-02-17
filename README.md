@@ -240,12 +240,14 @@ Create an object for sending like so:
  * Create binary PaymentRequest.
  *
  * @param paymentRequestParameters data to create the PaymentRequest.
+ * @param identifier for the transaction, this should be the same than the one included in the Protocol Message wrapping the initial InvoiceRequest.
  * @return binary object of the message created.
  * @throws InvalidOwnersException if the provided list of owners is not valid.
  * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(InvalidOwnersException::class, EncryptionException::class)
-fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters): ByteArray
+fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters, identifier: String): ByteArray =
+    bip75.createPaymentRequest(paymentRequestParameters)
 ```
 
 [For detailed documentation of PaymentRequestParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/PaymentRequestParameters.kt)
@@ -348,11 +350,13 @@ Create an object for sending like so:
  * Create binary Payment.
  *
  * @param paymentParameters data to create the Payment.
+ * @param identifier for the transaction, this should be the same than the one included in the Protocol Message wrapping the initial InvoiceRequest.
  * @return binary object of the message created.
  * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(EncryptionException::class)
-fun createPayment(paymentParameters: PaymentParameters): ByteArray
+fun createPayment(paymentParameters: PaymentParameters, identifier: String): ByteArray =
+    bip75.createPayment(paymentParameters)
 ```
 
 [For detailed documentation of PaymentParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/PaymentParameters.kt)
@@ -422,11 +426,13 @@ Create an object for sending like so:
  * Create binary PaymentAck.
  *
  * @param paymentAckParameters data to create the PaymentAck.
+ * @param identifier for the transaction, this should be the same than the one included in the Protocol Message wrapping the initial InvoiceRequest.
  * @return binary object of the message created.
  * @throws EncryptionException if there is an error while creating the encrypted message.
  */
 @Throws(EncryptionException::class)
-fun createPaymentAck(paymentAckParameters: PaymentAckParameters): ByteArray
+fun createPaymentAck(paymentAckParameters: PaymentAckParameters, identifier: String): ByteArray =
+    bip75.createPaymentAck(paymentAckParameters)
 ```
 
 [For detailed documentation of PaymentAckParameters click here.](https://github.com/netkicorp/transactid-library-java/blob/master/src/main/java/com/netki/model/PaymentAckParameters.kt)
@@ -490,7 +496,7 @@ To be able to change the status of a protocol message you can do it using the fo
  */
 @Throws(InvalidObjectException::class)
 @JvmOverloads
-fun changeStatusMessageProtocol(
+fun changeStatusProtocolMessage(
     protocolMessage: ByteArray,
     statusCode: StatusCode,
     statusMessage: String = ""

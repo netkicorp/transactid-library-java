@@ -6,5 +6,6 @@ package com.netki.exceptions
  */
 class InvalidSignatureException : Exception {
     constructor(message: String?) : super(message)
+
     constructor(message: String?, cause: Throwable?) : super(message, cause)
 }

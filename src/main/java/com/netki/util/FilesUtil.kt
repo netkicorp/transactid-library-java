@@ -15,7 +15,14 @@ internal object FilesUtil {
     fun getFilesFromDirectory(directoryPath: String): List<File> {
         val folder = File(directoryPath)
         return when (folder.exists()) {
-            true -> folder.listFiles()?.toList() ?: emptyList()
+            true -> {
+                val listFiles = folder.listFiles()?.toList() ?: throw FileNotFoundException("File $directoryPath is not a directory")
+                if (listFiles.isEmpty()) {
+                    throw FileNotFoundException("Directory $directoryPath empty")
+                } else {
+                    listFiles
+                }
+            }
             else -> throw FileNotFoundException("Directory $directoryPath not found")
         }
     }

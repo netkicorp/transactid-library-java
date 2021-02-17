@@ -1,4 +1,4 @@
-package com.netki.util
+package com.netki.bip75.util
 
 import com.google.protobuf.ByteString
 import com.google.protobuf.GeneratedMessageV3
@@ -9,8 +9,11 @@ import com.netki.exceptions.InvalidOwnersException
 import com.netki.model.*
 import com.netki.security.CryptoModule
 import com.netki.security.EncryptionModule
+import com.netki.util.ErrorInformation
 import com.netki.util.ErrorInformation.ENCRYPTION_INVALID_ERROR
 import com.netki.util.ErrorInformation.PARSE_BINARY_MESSAGE_INVALID_INPUT
+import com.netki.util.toByteString
+import com.netki.util.toStringLocal
 import java.sql.Timestamp
 import java.util.*
 
@@ -29,8 +32,8 @@ internal fun InvoiceRequestParameters.toMessageInvoiceRequestBuilderUnsigned(
         .setAmount(this.amount ?: 0)
         .setMemo(this.memo)
         .setNotificationUrl(this.notificationUrl)
-        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
-        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
+        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value ?: PkiType.NONE.value)
+        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString() ?: "".toByteString())
         .setSenderSignature("".toByteString())
         .setSenderEvCert(senderParameters.evCertificatePem?.toByteString() ?: "".toByteString())
 
@@ -163,8 +166,8 @@ internal fun Messages.PaymentDetails.toPaymentRequest(
     val paymentRequestBuilder = Messages.PaymentRequest.newBuilder()
         .setPaymentDetailsVersion(paymentParametersVersion)
         .setSerializedPaymentDetails(this.toByteString())
-        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value)
-        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString())
+        .setSenderPkiType(senderParameters.pkiDataParameters?.type?.value ?: PkiType.NONE.value)
+        .setSenderPkiData(senderParameters.pkiDataParameters?.certificatePem?.toByteString() ?: "".toByteString())
         .setSenderSignature("".toByteString())
 
     attestationsRequested.forEach {
@@ -186,7 +189,7 @@ internal fun PaymentRequestParameters.toMessagePaymentDetails(): Messages.Paymen
         .setExpires(this.expires?.time ?: 0)
         .setMemo(this.memo)
         .setPaymentUrl(this.paymentUrl)
-        .setMerchantData(this.merchantData?.toByteString())
+        .setMerchantData(this.merchantData?.toByteString() ?: "".toByteString())
 
     this.beneficiariesAddresses.forEach { output ->
         messagePaymentDetailsBuilder.addBeneficiariesAddresses(output.toMessageOutput())
@@ -228,7 +231,7 @@ internal fun ByteString.toMessagePaymentDetails(): Messages.PaymentDetails = try
  */
 internal fun PaymentParameters.toMessagePaymentBuilder(): Messages.Payment.Builder {
     val messagePaymentBuilder = Messages.Payment.newBuilder()
-        .setMerchantData(this.merchantData?.toByteString())
+        .setMerchantData(this.merchantData?.toByteString() ?: "".toByteString())
         .setMemo(this.memo)
 
     this.transactions.forEach { transaction ->
@@ -329,7 +332,6 @@ internal fun ByteArray.toMessagePayment(): Messages.Payment = try {
 internal fun Messages.PaymentACK.toPaymentAck(protocolMessageMetadata: ProtocolMessageMetadata): PaymentAck =
     PaymentAck(this.payment.toPayment(), this.memo, protocolMessageMetadata)
 
-
 /**
  * Transform binary PaymentACK to Messages.PaymentACK.
  *
@@ -373,52 +375,6 @@ internal fun Output.toMessageOutput(): Messages.Output = Messages.Output.newBuil
     .build()
 
 /**
- * Transform BeneficiaryParameters object to Messages.Beneficiary object.
- *
- * @return Messages.Beneficiary.
- */
-internal fun BeneficiaryParameters.toMessageBeneficiary(): Messages.Beneficiary {
-    val messageBeneficiaryBuilder = Messages.Beneficiary.newBuilder()
-        .setPrimaryForTransaction(this.isPrimaryForTransaction)
-
-    this.pkiDataParametersSets.forEachIndexed { index, pkiData ->
-        val messageAttestation = Messages.Attestation.newBuilder()
-            .setAttestation(pkiData.attestation?.toAttestationType())
-            .setPkiType(pkiData.type.value)
-            .setPkiData(pkiData.certificatePem.toByteString())
-            .setSignature("".toByteString())
-            .build()
-
-        messageBeneficiaryBuilder.addAttestations(index, messageAttestation)
-    }
-
-    return messageBeneficiaryBuilder.build()
-}
-
-/**
- * Transform OriginatorParameters object to Messages.Originator object.
- *
- * @return Messages.Originator.
- */
-internal fun OriginatorParameters.toMessageOriginator(): Messages.Originator {
-    val messageOriginatorBuilder = Messages.Originator.newBuilder()
-        .setPrimaryForTransaction(this.isPrimaryForTransaction)
-
-    this.pkiDataParametersSets.forEachIndexed { index, pkiData ->
-        val messageAttestation = Messages.Attestation.newBuilder()
-            .setAttestation(pkiData.attestation?.toAttestationType())
-            .setPkiType(pkiData.type.value)
-            .setPkiData(pkiData.certificatePem.toByteString())
-            .setSignature("".toByteString())
-            .build()
-
-        messageOriginatorBuilder.addAttestations(index, messageAttestation)
-    }
-
-    return messageOriginatorBuilder.build()
-}
-
-/**
  * Transform BeneficiaryParameters object to Messages.Beneficiary.Builder object.
  *
  * @return Messages.Beneficiary.
@@ -443,7 +399,7 @@ internal fun OriginatorParameters.toMessageOriginatorBuilderWithoutAttestations(
 internal fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): Messages.Attestation {
     val messageAttestationUnsignedBuilder = Messages.Attestation.newBuilder()
         .setPkiType(this.type.value)
-        .setPkiData(this.certificatePem.toByteString())
+        .setPkiData(this.certificatePem?.toByteString() ?: "".toByteString())
         .setSignature("".toByteString())
 
     this.attestation?.let {
@@ -454,7 +410,7 @@ internal fun PkiDataParameters.toMessageAttestation(requireSignature: Boolean): 
 
     return when {
         this.type == PkiType.X509SHA256 && requireSignature -> {
-            val signature = messageAttestationUnsigned.sign(this.privateKeyPem)
+            val signature = messageAttestationUnsigned.sign(this.privateKeyPem!!)
             Messages.Attestation.newBuilder()
                 .mergeFrom(messageAttestationUnsigned)
                 .setSignature(signature.toByteString())
@@ -481,7 +437,6 @@ internal fun Messages.Attestation.validateMessageSignature(requireSignature: Boo
     }
     else -> true
 }
-
 
 /**
  * Remove the signature from Messages.Attestation object.
@@ -541,7 +496,6 @@ internal fun Beneficiary.toMessageBeneficiary(): Messages.Beneficiary {
     return messageBeneficiary.build()
 }
 
-
 /**
  * Transform Owner to Messages.Owner object.
  *
@@ -564,7 +518,6 @@ internal fun Originator.toMessageOriginator(): Messages.Originator {
     return messageOriginator.build()
 }
 
-
 /**
  * Transform Messages.Attestation to PkiData object.
  *
@@ -584,14 +537,13 @@ internal fun Messages.Attestation.toPkiData(): PkiData = PkiData(
  */
 @Throws(IllegalArgumentException::class)
 internal fun GeneratedMessageV3.signMessage(senderParameters: SenderParameters): GeneratedMessageV3 {
-    return when (val senderPkiType = this.getMessagePkiType()) {
+    return when (this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.signWithSender(senderParameters)
             is Messages.PaymentRequest -> this.signWithSender(senderParameters)
             else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to sign message")
         }
-        else -> throw IllegalArgumentException("PkiType: $senderPkiType, not supported")
     }
 }
 
@@ -624,25 +576,6 @@ internal fun Messages.PaymentRequest.signWithSender(senderParameters: SenderPara
 }
 
 /**
- * Sign a GeneratedMessageV3 with all the attestations in a List of Owners.
- *
- * @return Map with signatures per user and attestations.
- */
-internal fun List<OwnerParameters>.signMessage(message: GeneratedMessageV3): OwnerSignatures {
-    val ownersSignatures = OwnerSignatures()
-    this.forEachIndexed { index, ownerParameters ->
-        val signatures = mutableMapOf<Attestation, String>()
-        for (pkiData in ownerParameters.pkiDataParametersSets) {
-            if (pkiData.attestation != null && pkiData.type != PkiType.NONE) {
-                signatures[pkiData.attestation] = message.sign(pkiData.privateKeyPem)
-            }
-        }
-        ownersSignatures[index] = signatures
-    }
-    return ownersSignatures
-}
-
-/**
  * Sign the Hash256 value of a Messages object.
  *
  * @return Signature.
@@ -658,14 +591,13 @@ internal fun GeneratedMessageV3.sign(privateKeyPem: String): String {
  * @return true if yes, false otherwise.
  */
 internal fun GeneratedMessageV3.validateMessageSignature(signature: String): Boolean {
-    return when (val senderPkiType = this.getMessagePkiType()) {
+    return when (this.getMessagePkiType()) {
         PkiType.NONE -> true
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.validateSignature(signature)
             is Messages.PaymentRequest -> this.validateSignature(signature)
             else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to validate sender signature")
         }
-        else -> throw IllegalArgumentException("PkiType: $senderPkiType, not supported")
     }
 }
 
@@ -695,14 +627,13 @@ internal fun Messages.PaymentRequest.validateSignature(signature: String): Boole
  * @return Unsigned message.
  */
 internal fun GeneratedMessageV3.removeMessageSenderSignature(): GeneratedMessageV3 {
-    return when (val senderPkiType = this.getMessagePkiType()) {
+    return when (this.getMessagePkiType()) {
         PkiType.NONE -> this
         PkiType.X509SHA256 -> when (this) {
             is Messages.InvoiceRequest -> this.removeSenderSignature()
             is Messages.PaymentRequest -> this.removeSenderSignature()
             else -> throw IllegalArgumentException("Message: ${this.javaClass}, not supported to remove sender signature")
         }
-        else -> throw IllegalArgumentException("PkiType: $senderPkiType, not supported")
     }
 }
 
@@ -727,108 +658,6 @@ internal fun Messages.PaymentRequest.removeSenderSignature(): Messages.PaymentRe
         .mergeFrom(this)
         .setSenderSignature("".toByteString())
         .build()
-
-/**
- * Get all the signatures In a list of Beneficiaries including the certificate.
- *
- * @return OwnerSignaturesWithCertificate.
- */
-internal fun List<Messages.Beneficiary>.getSignaturesBeneficiary(): List<OwnerSignaturesWithCertificate> {
-    val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
-    this.forEach { owner ->
-        val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
-        owner.attestationsList.forEach { attestation ->
-            when (attestation.pkiType) {
-                PkiType.NONE.value -> {
-                    // nothing to do here
-                }
-                else -> {
-                    ownerSignaturesWithCertificate[attestation.attestation.toAttestation()] = Pair(
-                        CryptoModule.certificatePemToClientCertificate(attestation.pkiData.toStringLocal()),
-                        attestation.signature.toStringLocal()
-                    )
-                }
-            }
-        }
-        listOwnerSignaturesWithCertificate.add(ownerSignaturesWithCertificate)
-    }
-    return listOwnerSignaturesWithCertificate
-}
-
-/**
- * Get all the signatures In a list of Owners including the certificate.
- *
- * @return OwnerSignaturesWithCertificate.
- */
-internal fun List<Messages.Originator>.getSignaturesOriginator(): List<OwnerSignaturesWithCertificate> {
-    val listOwnerSignaturesWithCertificate = mutableListOf<OwnerSignaturesWithCertificate>()
-    this.forEach { owner ->
-        val ownerSignaturesWithCertificate = OwnerSignaturesWithCertificate()
-        owner.attestationsList.forEach { attestation ->
-            when (attestation.pkiType) {
-                PkiType.NONE.value -> {
-                    // nothing to do here
-                }
-                else -> {
-                    ownerSignaturesWithCertificate[attestation.attestation.toAttestation()] = Pair(
-                        CryptoModule.certificatePemToClientCertificate(attestation.pkiData.toStringLocal()),
-                        attestation.signature.toStringLocal()
-                    )
-                }
-            }
-        }
-        listOwnerSignaturesWithCertificate.add(ownerSignaturesWithCertificate)
-    }
-    return listOwnerSignaturesWithCertificate
-}
-
-/**
- * Remove all the signatures in a list of Beneficiaries.
- *
- * @return MutableList<Messages.Beneficiary> without signatures.
- */
-internal fun List<Messages.Beneficiary>.removeBeneficiarySignatures(): MutableList<Messages.Beneficiary> {
-    val beneficiaryWithoutSignature = mutableListOf<Messages.Beneficiary>()
-    this.forEachIndexed { index, owner ->
-        val ownerWithoutSignaturesBuilder = Messages.Beneficiary.newBuilder()
-            .mergeFrom(owner)
-        owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
-            ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
-            ownerWithoutSignaturesBuilder.addAttestations(
-                attestationIndex, Messages.Attestation.newBuilder()
-                    .mergeFrom(attestation)
-                    .setSignature("".toByteString())
-                    .build()
-            )
-        }
-        beneficiaryWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
-    }
-    return beneficiaryWithoutSignature
-}
-
-/**
- * Remove all the signatures in a list of Originators.
- *
- * @return MutableList<Messages.Originator> without signatures.
- */
-internal fun List<Messages.Originator>.removeOriginatorSignatures(): MutableList<Messages.Originator> {
-    val originatorWithoutSignature = mutableListOf<Messages.Originator>()
-    this.forEachIndexed { index, owner ->
-        val ownerWithoutSignaturesBuilder = Messages.Originator.newBuilder()
-            .mergeFrom(owner)
-        owner.attestationsList.forEachIndexed() { attestationIndex, attestation ->
-            ownerWithoutSignaturesBuilder.removeAttestations(attestationIndex)
-            ownerWithoutSignaturesBuilder.addAttestations(
-                attestationIndex, Messages.Attestation.newBuilder()
-                    .mergeFrom(attestation)
-                    .setSignature("".toByteString())
-                    .build()
-            )
-        }
-        originatorWithoutSignature.add(index, ownerWithoutSignaturesBuilder.build())
-    }
-    return originatorWithoutSignature
-}
 
 /**
  * Validate that a List<Owners> is valid.
@@ -910,8 +739,8 @@ internal fun Messages.Attestation.getAttestationPkiType(): PkiType = requireNotN
  */
 internal fun Attestation.toAttestationType(): Messages.AttestationType {
     return when (this) {
-        Attestation.LEGAL_PERSON_PRIMARY_NAME -> Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME
-        Attestation.LEGAL_PERSON_SECONDARY_NAME -> Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME
+        Attestation.LEGAL_PERSON_NAME -> Messages.AttestationType.LEGAL_PERSON_NAME
+        Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Messages.AttestationType.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER
         Attestation.ADDRESS_DEPARTMENT -> Messages.AttestationType.ADDRESS_DEPARTMENT
         Attestation.ADDRESS_SUB_DEPARTMENT -> Messages.AttestationType.ADDRESS_SUB_DEPARTMENT
         Attestation.ADDRESS_STREET_NAME -> Messages.AttestationType.ADDRESS_STREET_NAME
@@ -927,15 +756,14 @@ internal fun Attestation.toAttestationType(): Messages.AttestationType {
         Attestation.ADDRESS_COUNTRY_SUB_DIVISION -> Messages.AttestationType.ADDRESS_COUNTRY_SUB_DIVISION
         Attestation.ADDRESS_ADDRESS_LINE -> Messages.AttestationType.ADDRESS_ADDRESS_LINE
         Attestation.ADDRESS_COUNTRY -> Messages.AttestationType.ADDRESS_COUNTRY
-        Attestation.NATURAL_PERSON_FIRST_NAME -> Messages.AttestationType.NATURAL_PERSON_FIRST_NAME
-        Attestation.NATURAL_PERSON_LAST_NAME -> Messages.AttestationType.NATURAL_PERSON_LAST_NAME
-        Attestation.BENEFICIARY_PERSON_FIRST_NAME -> Messages.AttestationType.BENEFICIARY_PERSON_FIRST_NAME
-        Attestation.BENEFICIARY_PERSON_LAST_NAME -> Messages.AttestationType.BENEFICIARY_PERSON_LAST_NAME
-        Attestation.BIRTH_DATE -> Messages.AttestationType.BIRTH_DATE
-        Attestation.BIRTH_PLACE -> Messages.AttestationType.BIRTH_PLACE
+        Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER -> Messages.AttestationType.NATURAL_PERSON_PRIMARY_IDENTIFIER
+        Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER -> Messages.AttestationType.NATURAL_PERSON_SECONDARY_IDENTIFIER
+        Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Messages.AttestationType.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER
+        Attestation.DATE_OF_BIRTH -> Messages.AttestationType.DATE_OF_BIRTH
+        Attestation.PLACE_OF_BIRTH -> Messages.AttestationType.PLACE_OF_BIRTH
         Attestation.COUNTRY_OF_RESIDENCE -> Messages.AttestationType.COUNTRY_OF_RESIDENCE
-        Attestation.ISSUING_COUNTRY -> Messages.AttestationType.ISSUING_COUNTRY
-        Attestation.NATIONAL_IDENTIFIER_NUMBER -> Messages.AttestationType.NATIONAL_IDENTIFIER_NUMBER
+        Attestation.COUNTRY_OF_ISSUE -> Messages.AttestationType.COUNTRY_OF_ISSUE
+        Attestation.COUNTRY_OF_REGISTRATION -> Messages.AttestationType.COUNTRY_OF_REGISTRATION
         Attestation.NATIONAL_IDENTIFIER -> Messages.AttestationType.NATIONAL_IDENTIFIER
         Attestation.ACCOUNT_NUMBER -> Messages.AttestationType.ACCOUNT_NUMBER
         Attestation.CUSTOMER_IDENTIFICATION -> Messages.AttestationType.CUSTOMER_IDENTIFICATION
@@ -948,8 +776,8 @@ internal fun Attestation.toAttestationType(): Messages.AttestationType {
  */
 internal fun Messages.AttestationType.toAttestation(): Attestation {
     return when (this) {
-        Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME -> Attestation.LEGAL_PERSON_PRIMARY_NAME
-        Messages.AttestationType.LEGAL_PERSON_SECONDARY_NAME -> Attestation.LEGAL_PERSON_SECONDARY_NAME
+        Messages.AttestationType.LEGAL_PERSON_NAME -> Attestation.LEGAL_PERSON_NAME
+        Messages.AttestationType.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER
         Messages.AttestationType.ADDRESS_DEPARTMENT -> Attestation.ADDRESS_DEPARTMENT
         Messages.AttestationType.ADDRESS_SUB_DEPARTMENT -> Attestation.ADDRESS_SUB_DEPARTMENT
         Messages.AttestationType.ADDRESS_STREET_NAME -> Attestation.ADDRESS_STREET_NAME
@@ -965,15 +793,14 @@ internal fun Messages.AttestationType.toAttestation(): Attestation {
         Messages.AttestationType.ADDRESS_COUNTRY_SUB_DIVISION -> Attestation.ADDRESS_COUNTRY_SUB_DIVISION
         Messages.AttestationType.ADDRESS_ADDRESS_LINE -> Attestation.ADDRESS_ADDRESS_LINE
         Messages.AttestationType.ADDRESS_COUNTRY -> Attestation.ADDRESS_COUNTRY
-        Messages.AttestationType.NATURAL_PERSON_FIRST_NAME -> Attestation.NATURAL_PERSON_FIRST_NAME
-        Messages.AttestationType.NATURAL_PERSON_LAST_NAME -> Attestation.NATURAL_PERSON_LAST_NAME
-        Messages.AttestationType.BENEFICIARY_PERSON_FIRST_NAME -> Attestation.BENEFICIARY_PERSON_FIRST_NAME
-        Messages.AttestationType.BENEFICIARY_PERSON_LAST_NAME -> Attestation.BENEFICIARY_PERSON_LAST_NAME
-        Messages.AttestationType.BIRTH_DATE -> Attestation.BIRTH_DATE
-        Messages.AttestationType.BIRTH_PLACE -> Attestation.BIRTH_PLACE
+        Messages.AttestationType.NATURAL_PERSON_PRIMARY_IDENTIFIER -> Attestation.NATURAL_PERSON_PRIMARY_IDENTIFIER
+        Messages.AttestationType.NATURAL_PERSON_SECONDARY_IDENTIFIER -> Attestation.NATURAL_PERSON_SECONDARY_IDENTIFIER
+        Messages.AttestationType.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER -> Attestation.NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER
+        Messages.AttestationType.DATE_OF_BIRTH -> Attestation.DATE_OF_BIRTH
+        Messages.AttestationType.PLACE_OF_BIRTH -> Attestation.PLACE_OF_BIRTH
         Messages.AttestationType.COUNTRY_OF_RESIDENCE -> Attestation.COUNTRY_OF_RESIDENCE
-        Messages.AttestationType.ISSUING_COUNTRY -> Attestation.ISSUING_COUNTRY
-        Messages.AttestationType.NATIONAL_IDENTIFIER_NUMBER -> Attestation.NATIONAL_IDENTIFIER_NUMBER
+        Messages.AttestationType.COUNTRY_OF_ISSUE -> Attestation.COUNTRY_OF_ISSUE
+        Messages.AttestationType.COUNTRY_OF_REGISTRATION -> Attestation.COUNTRY_OF_REGISTRATION
         Messages.AttestationType.NATIONAL_IDENTIFIER -> Attestation.NATIONAL_IDENTIFIER
         Messages.AttestationType.ACCOUNT_NUMBER -> Attestation.ACCOUNT_NUMBER
         Messages.AttestationType.CUSTOMER_IDENTIFICATION -> Attestation.CUSTOMER_IDENTIFICATION
@@ -1012,10 +839,17 @@ internal fun ByteArray.toProtocolMessage(
     messageType: MessageType,
     messageInformation: MessageInformation,
     senderParameters: SenderParameters? = null,
-    recipientParameters: RecipientParameters? = null
+    recipientParameters: RecipientParameters? = null,
+    identifier: String? = null
 ) = when (messageInformation.encryptMessage) {
-    true -> this.toProtocolMessageEncrypted(messageType, messageInformation, senderParameters, recipientParameters)
-    false -> this.toProtocolMessageUnencrypted(messageType, messageInformation)
+    true -> this.toProtocolMessageEncrypted(
+        messageType,
+        messageInformation,
+        senderParameters,
+        recipientParameters,
+        identifier
+    )
+    false -> this.toProtocolMessageUnencrypted(messageType, messageInformation, identifier)
 }
 
 /**
@@ -1023,7 +857,8 @@ internal fun ByteArray.toProtocolMessage(
  */
 internal fun ByteArray.toProtocolMessageUnencrypted(
     messageType: MessageType,
-    messageInformation: MessageInformation
+    messageInformation: MessageInformation,
+    identifier: String?
 ) = Messages.ProtocolMessage.newBuilder()
     .setVersion(1)
     .setStatusCode(messageInformation.statusCode.code)
@@ -1038,7 +873,9 @@ internal fun ByteArray.toProtocolMessageUnencrypted(
     )
     .setSerializedMessage(this.toByteString())
     .setStatusMessage(messageInformation.statusMessage)
-    .setIdentifier(CryptoModule.generateIdentifier(this).toByteString())
+    .setIdentifier(
+        identifier?.let { identifier.toByteString() } ?: CryptoModule.generateIdentifier(this).toByteString()
+    )
     .build()
     .toByteArray()
 
@@ -1049,7 +886,8 @@ internal fun ByteArray.toProtocolMessageEncrypted(
     messageType: MessageType,
     messageInformation: MessageInformation,
     senderParameters: SenderParameters? = null,
-    recipientParameters: RecipientParameters? = null
+    recipientParameters: RecipientParameters? = null,
+    identifier: String? = null
 ): ByteArray {
 
     check(recipientParameters?.encryptionParameters?.publicKeyPem != null) {
@@ -1087,7 +925,9 @@ internal fun ByteArray.toProtocolMessageEncrypted(
             }
         )
         .setStatusMessage(messageInformation.statusMessage)
-        .setIdentifier(CryptoModule.generateIdentifier(this).toByteString())
+        .setIdentifier(
+            identifier?.let { identifier.toByteString() } ?: CryptoModule.generateIdentifier(this).toByteString()
+        )
         .setReceiverPublicKey(recipientParameters.encryptionParameters.publicKeyPem.toByteString())
         .setSenderPublicKey(senderParameters.encryptionParameters.publicKeyPem.toByteString())
         .setNonce(System.currentTimeMillis() / 1000)
@@ -1131,13 +971,13 @@ internal fun ByteArray.validateMessageEncryptionSignature(): Boolean {
 internal fun ByteArray.getSerializedMessage(isEncrypted: Boolean, recipientParameters: RecipientParameters? = null) =
     when (isEncrypted) {
         true -> this.getSerializedMessageEncryptedProtocolMessage(recipientParameters)
-        false -> this.getSerializedMessageProtocolMessage()
+        false -> this.getSerializedProtocolMessage()
     }
 
 /**
  * Method to extract serialized message from Messages.ProtocolMessage
  */
-internal fun ByteArray.getSerializedMessageProtocolMessage(): ByteArray {
+internal fun ByteArray.getSerializedProtocolMessage(): ByteArray {
     try {
         val protocolMessageMessages = Messages.ProtocolMessage.parseFrom(this)
         return protocolMessageMessages.serializedMessage.toByteArray()

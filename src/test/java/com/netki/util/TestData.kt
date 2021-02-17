@@ -34,6 +34,7 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.bc.BcDigestCalculatorProvider
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
+import org.mockito.Mockito
 import java.math.BigInteger
 import java.security.*
 import java.security.cert.Certificate
@@ -95,10 +96,10 @@ internal object TestData {
         }
 
         private fun createAuthorityKeyId(publicKey: PublicKey): AuthorityKeyIdentifier {
-            val publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
-            val digCalc = BcDigestCalculatorProvider().get(AlgorithmIdentifier(OIWObjectIdentifiers.idSHA1));
+            val publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.encoded)
+            val digCalc = BcDigestCalculatorProvider().get(AlgorithmIdentifier(OIWObjectIdentifiers.idSHA1))
 
-            return X509ExtensionUtils(digCalc).createAuthorityKeyIdentifier(publicKeyInfo);
+            return X509ExtensionUtils(digCalc).createAuthorityKeyIdentifier(publicKeyInfo)
         }
 
     }
@@ -782,14 +783,14 @@ internal object TestData {
 
     object PkiData {
         val PKI_DATA_ONE_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = Attestation.LEGAL_PERSON_SECONDARY_NAME,
+            attestation = Attestation.LEGAL_PERSON_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_ONE,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_ONE,
             type = PkiType.X509SHA256
         )
 
         val PKI_DATA_TWO_OWNER_X509SHA256 = PkiDataParameters(
-            attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            attestation = Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO,
             type = PkiType.X509SHA256
@@ -828,7 +829,7 @@ internal object TestData {
         )
 
         val PKI_DATA_ONE_OWNER_X509SHA256_BUNDLE_CERTIFICATE = PkiDataParameters(
-            attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            attestation = Attestation.LEGAL_PERSON_NAME,
             privateKeyPem = CLIENT_PRIVATE_KEY_CHAIN_TWO,
             certificatePem = CLIENT_CERTIFICATE_CHAIN_TWO_BUNDLE,
             type = PkiType.X509SHA256
@@ -839,8 +840,8 @@ internal object TestData {
         val INVALID_ATTESTATION = Attestation.ADDRESS_DISTRICT_NAME
 
         val REQUESTED_ATTESTATIONS = listOf(
-            Attestation.LEGAL_PERSON_PRIMARY_NAME,
-            Attestation.LEGAL_PERSON_SECONDARY_NAME,
+            Attestation.LEGAL_PERSON_NAME,
+            Attestation.LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER,
             Attestation.ADDRESS_DEPARTMENT,
             Attestation.ADDRESS_POSTBOX
         )
@@ -865,7 +866,7 @@ internal object TestData {
             updatedAt = "2010-01-01 12:12:12"
         )
 
-        val MERKLE_JSON_RESPONSE = "{\n" +
+        const val MERKLE_JSON_RESPONSE = "{\n" +
                 "    \"identifier\": \"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\n" +
                 "    \"currency\": 1,\n" +
                 "    \"currency_verbose\": \"Ethereum\",\n" +
@@ -917,7 +918,7 @@ internal object TestData {
 
     object CertificateGeneration {
         val ATTESTATIONS_REQUESTED = listOf(
-            Attestation.LEGAL_PERSON_PRIMARY_NAME,
+            Attestation.LEGAL_PERSON_NAME,
             Attestation.ADDRESS_STREET_NAME,
             Attestation.ADDRESS_ADDRESS_LINE
         )
@@ -925,7 +926,7 @@ internal object TestData {
         val ATTESTATIONS_SUBMITTED = AttestationResponse("message", "123457890")
 
         val CSRS_ATTESTATIONS = listOf(
-            CsrAttestation("csr_1", Attestation.LEGAL_PERSON_PRIMARY_NAME, "public_key_1"),
+            CsrAttestation("csr_1", Attestation.LEGAL_PERSON_NAME, "public_key_1"),
             CsrAttestation("csr_2", Attestation.ADDRESS_STREET_NAME, "public_key_2"),
             CsrAttestation("csr_3", Attestation.ADDRESS_ADDRESS_LINE, "public_key_3")
         )
@@ -936,7 +937,7 @@ internal object TestData {
             count = 3,
             certificates = listOf(
                 com.netki.keymanagement.repo.data.Certificate(
-                    attestation = Attestation.LEGAL_PERSON_PRIMARY_NAME,
+                    attestation = Attestation.LEGAL_PERSON_NAME,
                     certificate = CLIENT_CERTIFICATE_CHAIN_ONE,
                     id = 1234,
                     isActive = true
@@ -958,18 +959,18 @@ internal object TestData {
 
         val ATTESTATIONS_INFORMATION = listOf(
             AttestationInformation(
-                Attestation.LEGAL_PERSON_PRIMARY_NAME,
-                IvmsConstraints.LEGL,
+                Attestation.LEGAL_PERSON_NAME,
+                IvmsConstraint.LEGL,
                 "This is the LEGAL_PERSON_PRIMARY_NAME"
             ),
             AttestationInformation(
                 Attestation.ADDRESS_STREET_NAME,
-                IvmsConstraints.HOME,
+                IvmsConstraint.HOME,
                 "This is the ADDRESS_STREET_NAME"
             ),
             AttestationInformation(
                 Attestation.ADDRESS_ADDRESS_LINE,
-                IvmsConstraints.BIZZ,
+                IvmsConstraint.BIZZ,
                 "This is the ADDRESS_ADDRESS_LINE"
             )
         )
@@ -999,4 +1000,7 @@ internal object TestData {
             CryptoModule.objectToPublicKeyPem(keysSender.public)
         )
     }
+
+    fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }
+

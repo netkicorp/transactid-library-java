@@ -1,5 +1,7 @@
 package com.netki.keymanagement.config
 
+import com.bettercloud.vault.Vault
+import com.bettercloud.vault.VaultConfig
 import com.netki.keymanagement.driver.KeyManagementDriver
 import com.netki.keymanagement.driver.impl.VaultDriver
 import com.netki.keymanagement.main.KeyManagement
@@ -8,11 +10,10 @@ import com.netki.keymanagement.repo.CertificateProvider
 import com.netki.keymanagement.repo.impl.NetkiCertificateProvider
 import com.netki.keymanagement.service.KeyManagementService
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.HttpTimeout
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
 
 /**
  * Factory to generate KeyManagement instance.
@@ -47,7 +48,14 @@ internal object KeyManagementFactory {
         val certificateProvider: CertificateProvider =
             NetkiCertificateProvider(client, authorizationCertificateProviderKey, authorizationCertificateProviderUrl)
 
-        val keyManagementDriver: KeyManagementDriver = VaultDriver(authorizationSecureStorageKey, addressSecureStorage)
+        val config: VaultConfig = VaultConfig()
+            .address(addressSecureStorage)
+            .token(authorizationSecureStorageKey)
+            .build()
+
+        val vault = Vault(config)
+
+        val keyManagementDriver: KeyManagementDriver = VaultDriver(vault)
 
         val keyManagementService: KeyManagementService =
             KeyManagementNetkiService(certificateProvider, keyManagementDriver)

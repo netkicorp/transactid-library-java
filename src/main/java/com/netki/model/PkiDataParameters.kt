@@ -13,12 +13,12 @@ data class PkiDataParameters @JvmOverloads constructor(
     /**
      * PrivateKey in PEM format.
      */
-    val privateKeyPem: String,
+    val privateKeyPem: String? = null,
 
     /**
      * Certificate in PEM format associated with PrivateKey.
      */
-    val certificatePem: String,
+    val certificatePem: String? = null,
 
     /**
      * Type of the Pki data associated.

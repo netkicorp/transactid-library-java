@@ -38,8 +38,8 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters) =
-        bip75Service.createPaymentRequest(paymentRequestParameters)
+    override fun createPaymentRequest(paymentRequestParameters: PaymentRequestParameters, identifier: String) =
+        bip75Service.createPaymentRequest(paymentRequestParameters, identifier)
 
     /**
      * {@inheritDoc}
@@ -65,7 +65,8 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPayment(paymentParameters: PaymentParameters) = bip75Service.createPayment(paymentParameters)
+    override fun createPayment(paymentParameters: PaymentParameters, identifier: String) =
+        bip75Service.createPayment(paymentParameters, identifier)
 
     /**
      * {@inheritDoc}
@@ -82,8 +83,8 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun createPaymentAck(paymentAckParameters: PaymentAckParameters) =
-        bip75Service.createPaymentAck(paymentAckParameters)
+    override fun createPaymentAck(paymentAckParameters: PaymentAckParameters, identifier: String) =
+        bip75Service.createPaymentAck(paymentAckParameters, identifier)
 
     /**
      * {@inheritDoc}
@@ -100,11 +101,11 @@ internal class Bip75Netki(private val bip75Service: Bip75Service) : Bip75 {
     /**
      * {@inheritDoc}
      */
-    override fun changeStatusMessageProtocol(
+    override fun changeStatusProtocolMessage(
         protocolMessage: ByteArray,
         statusCode: StatusCode,
         statusMessage: String
-    ) = bip75Service.changeStatusMessageProtocol(protocolMessage, statusCode, statusMessage)
+    ) = bip75Service.changeStatusProtocolMessage(protocolMessage, statusCode, statusMessage)
 
     /**
      * {@inheritDoc}

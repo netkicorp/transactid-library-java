@@ -9,14 +9,10 @@ import com.netki.util.TestData.CertificateGeneration.CERTIFICATE_ATTESTATION_RES
 import com.netki.util.TestData.CertificateGeneration.CSRS_ATTESTATIONS
 import com.netki.util.TestData.CertificateGeneration.TRANSACTION_ID
 import com.netki.util.fullUrl
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.headersOf
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.features.json.*
+import io.ktor.http.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -32,7 +28,7 @@ internal class NetkiCertificateProviderTest {
     private lateinit var netkiCertificateProvider: NetkiCertificateProvider
     private lateinit var client: HttpClient
 
-    val key = "fake_key"
+    private val key = "fake_key"
     private val gson = Gson()
 
     @BeforeAll

@@ -143,13 +143,13 @@ public final class Messages {
   public enum AttestationType
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>LEGAL_PERSON_PRIMARY_NAME = 0;</code>
+     * <code>LEGAL_PERSON_NAME = 0;</code>
      */
-    LEGAL_PERSON_PRIMARY_NAME(0),
+    LEGAL_PERSON_NAME(0),
     /**
-     * <code>LEGAL_PERSON_SECONDARY_NAME = 1;</code>
+     * <code>LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER = 1;</code>
      */
-    LEGAL_PERSON_SECONDARY_NAME(1),
+    LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER(1),
     /**
      * <code>ADDRESS_DEPARTMENT = 2;</code>
      */
@@ -211,41 +211,37 @@ public final class Messages {
      */
     ADDRESS_COUNTRY(16),
     /**
-     * <code>NATURAL_PERSON_FIRST_NAME = 17;</code>
+     * <code>NATURAL_PERSON_PRIMARY_IDENTIFIER = 17;</code>
      */
-    NATURAL_PERSON_FIRST_NAME(17),
+    NATURAL_PERSON_PRIMARY_IDENTIFIER(17),
     /**
-     * <code>NATURAL_PERSON_LAST_NAME = 18;</code>
+     * <code>NATURAL_PERSON_SECONDARY_IDENTIFIER = 18;</code>
      */
-    NATURAL_PERSON_LAST_NAME(18),
+    NATURAL_PERSON_SECONDARY_IDENTIFIER(18),
     /**
-     * <code>BENEFICIARY_PERSON_FIRST_NAME = 19;</code>
+     * <code>NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER = 19;</code>
      */
-    BENEFICIARY_PERSON_FIRST_NAME(19),
+    NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER(19),
     /**
-     * <code>BENEFICIARY_PERSON_LAST_NAME = 20;</code>
+     * <code>DATE_OF_BIRTH = 21;</code>
      */
-    BENEFICIARY_PERSON_LAST_NAME(20),
+    DATE_OF_BIRTH(21),
     /**
-     * <code>BIRTH_DATE = 21;</code>
+     * <code>PLACE_OF_BIRTH = 22;</code>
      */
-    BIRTH_DATE(21),
-    /**
-     * <code>BIRTH_PLACE = 22;</code>
-     */
-    BIRTH_PLACE(22),
+    PLACE_OF_BIRTH(22),
     /**
      * <code>COUNTRY_OF_RESIDENCE = 23;</code>
      */
     COUNTRY_OF_RESIDENCE(23),
     /**
-     * <code>ISSUING_COUNTRY = 24;</code>
+     * <code>COUNTRY_OF_ISSUE = 24;</code>
      */
-    ISSUING_COUNTRY(24),
+    COUNTRY_OF_ISSUE(24),
     /**
-     * <code>NATIONAL_IDENTIFIER_NUMBER = 25;</code>
+     * <code>COUNTRY_OF_REGISTRATION = 25;</code>
      */
-    NATIONAL_IDENTIFIER_NUMBER(25),
+    COUNTRY_OF_REGISTRATION(25),
     /**
      * <code>NATIONAL_IDENTIFIER = 26;</code>
      */
@@ -265,13 +261,13 @@ public final class Messages {
     ;
 
     /**
-     * <code>LEGAL_PERSON_PRIMARY_NAME = 0;</code>
+     * <code>LEGAL_PERSON_NAME = 0;</code>
      */
-    public static final int LEGAL_PERSON_PRIMARY_NAME_VALUE = 0;
+    public static final int LEGAL_PERSON_NAME_VALUE = 0;
     /**
-     * <code>LEGAL_PERSON_SECONDARY_NAME = 1;</code>
+     * <code>LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER = 1;</code>
      */
-    public static final int LEGAL_PERSON_SECONDARY_NAME_VALUE = 1;
+    public static final int LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER_VALUE = 1;
     /**
      * <code>ADDRESS_DEPARTMENT = 2;</code>
      */
@@ -333,41 +329,37 @@ public final class Messages {
      */
     public static final int ADDRESS_COUNTRY_VALUE = 16;
     /**
-     * <code>NATURAL_PERSON_FIRST_NAME = 17;</code>
+     * <code>NATURAL_PERSON_PRIMARY_IDENTIFIER = 17;</code>
      */
-    public static final int NATURAL_PERSON_FIRST_NAME_VALUE = 17;
+    public static final int NATURAL_PERSON_PRIMARY_IDENTIFIER_VALUE = 17;
     /**
-     * <code>NATURAL_PERSON_LAST_NAME = 18;</code>
+     * <code>NATURAL_PERSON_SECONDARY_IDENTIFIER = 18;</code>
      */
-    public static final int NATURAL_PERSON_LAST_NAME_VALUE = 18;
+    public static final int NATURAL_PERSON_SECONDARY_IDENTIFIER_VALUE = 18;
     /**
-     * <code>BENEFICIARY_PERSON_FIRST_NAME = 19;</code>
+     * <code>NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER = 19;</code>
      */
-    public static final int BENEFICIARY_PERSON_FIRST_NAME_VALUE = 19;
+    public static final int NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER_VALUE = 19;
     /**
-     * <code>BENEFICIARY_PERSON_LAST_NAME = 20;</code>
+     * <code>DATE_OF_BIRTH = 21;</code>
      */
-    public static final int BENEFICIARY_PERSON_LAST_NAME_VALUE = 20;
+    public static final int DATE_OF_BIRTH_VALUE = 21;
     /**
-     * <code>BIRTH_DATE = 21;</code>
+     * <code>PLACE_OF_BIRTH = 22;</code>
      */
-    public static final int BIRTH_DATE_VALUE = 21;
-    /**
-     * <code>BIRTH_PLACE = 22;</code>
-     */
-    public static final int BIRTH_PLACE_VALUE = 22;
+    public static final int PLACE_OF_BIRTH_VALUE = 22;
     /**
      * <code>COUNTRY_OF_RESIDENCE = 23;</code>
      */
     public static final int COUNTRY_OF_RESIDENCE_VALUE = 23;
     /**
-     * <code>ISSUING_COUNTRY = 24;</code>
+     * <code>COUNTRY_OF_ISSUE = 24;</code>
      */
-    public static final int ISSUING_COUNTRY_VALUE = 24;
+    public static final int COUNTRY_OF_ISSUE_VALUE = 24;
     /**
-     * <code>NATIONAL_IDENTIFIER_NUMBER = 25;</code>
+     * <code>COUNTRY_OF_REGISTRATION = 25;</code>
      */
-    public static final int NATIONAL_IDENTIFIER_NUMBER_VALUE = 25;
+    public static final int COUNTRY_OF_REGISTRATION_VALUE = 25;
     /**
      * <code>NATIONAL_IDENTIFIER = 26;</code>
      */
@@ -406,8 +398,8 @@ public final class Messages {
      */
     public static AttestationType forNumber(int value) {
       switch (value) {
-        case 0: return LEGAL_PERSON_PRIMARY_NAME;
-        case 1: return LEGAL_PERSON_SECONDARY_NAME;
+        case 0: return LEGAL_PERSON_NAME;
+        case 1: return LEGAL_PERSON_PHONETIC_NAME_IDENTIFIER;
         case 2: return ADDRESS_DEPARTMENT;
         case 3: return ADDRESS_SUB_DEPARTMENT;
         case 4: return ADDRESS_STREET_NAME;
@@ -423,15 +415,14 @@ public final class Messages {
         case 14: return ADDRESS_COUNTRY_SUB_DIVISION;
         case 15: return ADDRESS_ADDRESS_LINE;
         case 16: return ADDRESS_COUNTRY;
-        case 17: return NATURAL_PERSON_FIRST_NAME;
-        case 18: return NATURAL_PERSON_LAST_NAME;
-        case 19: return BENEFICIARY_PERSON_FIRST_NAME;
-        case 20: return BENEFICIARY_PERSON_LAST_NAME;
-        case 21: return BIRTH_DATE;
-        case 22: return BIRTH_PLACE;
+        case 17: return NATURAL_PERSON_PRIMARY_IDENTIFIER;
+        case 18: return NATURAL_PERSON_SECONDARY_IDENTIFIER;
+        case 19: return NATURAL_PERSON_PHONETIC_NAME_IDENTIFIER;
+        case 21: return DATE_OF_BIRTH;
+        case 22: return PLACE_OF_BIRTH;
         case 23: return COUNTRY_OF_RESIDENCE;
-        case 24: return ISSUING_COUNTRY;
-        case 25: return NATIONAL_IDENTIFIER_NUMBER;
+        case 24: return COUNTRY_OF_ISSUE;
+        case 25: return COUNTRY_OF_REGISTRATION;
         case 26: return NATIONAL_IDENTIFIER;
         case 27: return ACCOUNT_NUMBER;
         case 28: return CUSTOMER_IDENTIFICATION;
@@ -1513,7 +1504,7 @@ public final class Messages {
               public com.netki.bip75.protocol.Messages.AttestationType convert(java.lang.Integer from) {
                 @SuppressWarnings("deprecation")
                 com.netki.bip75.protocol.Messages.AttestationType result = com.netki.bip75.protocol.Messages.AttestationType.valueOf(from);
-                return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME : result;
+                return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_NAME : result;
               }
             };
     /**
@@ -4843,7 +4834,7 @@ public final class Messages {
               public com.netki.bip75.protocol.Messages.AttestationType convert(java.lang.Integer from) {
                 @SuppressWarnings("deprecation")
                 com.netki.bip75.protocol.Messages.AttestationType result = com.netki.bip75.protocol.Messages.AttestationType.valueOf(from);
-                return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME : result;
+                return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_NAME : result;
               }
             };
     /**
@@ -12009,7 +12000,7 @@ public final class Messages {
     public com.netki.bip75.protocol.Messages.AttestationType getAttestation() {
       @SuppressWarnings("deprecation")
       com.netki.bip75.protocol.Messages.AttestationType result = com.netki.bip75.protocol.Messages.AttestationType.valueOf(attestation_);
-      return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME : result;
+      return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_NAME : result;
     }
 
     public static final int PKI_TYPE_FIELD_NUMBER = 2;
@@ -12531,7 +12522,7 @@ public final class Messages {
       public com.netki.bip75.protocol.Messages.AttestationType getAttestation() {
         @SuppressWarnings("deprecation")
         com.netki.bip75.protocol.Messages.AttestationType result = com.netki.bip75.protocol.Messages.AttestationType.valueOf(attestation_);
-        return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_PRIMARY_NAME : result;
+        return result == null ? com.netki.bip75.protocol.Messages.AttestationType.LEGAL_PERSON_NAME : result;
       }
       /**
        * <pre>
@@ -18994,30 +18985,30 @@ public final class Messages {
       "sage\030\t \001(\t\022\021\n\tsignature\030\n \001(\014*w\n\023Protoco" +
       "lMessageType\022\030\n\024UNKNOWN_MESSAGE_TYPE\020\000\022\023" +
       "\n\017INVOICE_REQUEST\020\001\022\023\n\017PAYMENT_REQUEST\020\002" +
-      "\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMENT_ACK\020\004*\241\006\n\017Attes" +
-      "tationType\022\035\n\031LEGAL_PERSON_PRIMARY_NAME\020" +
-      "\000\022\037\n\033LEGAL_PERSON_SECONDARY_NAME\020\001\022\026\n\022AD" +
-      "DRESS_DEPARTMENT\020\002\022\032\n\026ADDRESS_SUB_DEPART" +
-      "MENT\020\003\022\027\n\023ADDRESS_STREET_NAME\020\004\022\033\n\027ADDRE" +
-      "SS_BUILDING_NUMBER\020\005\022\031\n\025ADDRESS_BUILDING" +
-      "_NAME\020\006\022\021\n\rADDRESS_FLOOR\020\007\022\023\n\017ADDRESS_PO" +
-      "STBOX\020\010\022\020\n\014ADDRESS_ROOM\020\t\022\024\n\020ADDRESS_POS" +
-      "TCODE\020\n\022\025\n\021ADDRESS_TOWN_NAME\020\013\022\036\n\032ADDRES" +
-      "S_TOWN_LOCATION_NAME\020\014\022\031\n\025ADDRESS_DISTRI" +
-      "CT_NAME\020\r\022 \n\034ADDRESS_COUNTRY_SUB_DIVISIO" +
-      "N\020\016\022\030\n\024ADDRESS_ADDRESS_LINE\020\017\022\023\n\017ADDRESS" +
-      "_COUNTRY\020\020\022\035\n\031NATURAL_PERSON_FIRST_NAME\020" +
-      "\021\022\034\n\030NATURAL_PERSON_LAST_NAME\020\022\022!\n\035BENEF" +
-      "ICIARY_PERSON_FIRST_NAME\020\023\022 \n\034BENEFICIAR" +
-      "Y_PERSON_LAST_NAME\020\024\022\016\n\nBIRTH_DATE\020\025\022\017\n\013" +
-      "BIRTH_PLACE\020\026\022\030\n\024COUNTRY_OF_RESIDENCE\020\027\022" +
-      "\023\n\017ISSUING_COUNTRY\020\030\022\036\n\032NATIONAL_IDENTIF" +
-      "IER_NUMBER\020\031\022\027\n\023NATIONAL_IDENTIFIER\020\032\022\022\n" +
-      "\016ACCOUNT_NUMBER\020\033\022\033\n\027CUSTOMER_IDENTIFICA" +
-      "TION\020\034\022\032\n\026REGISTRATION_AUTHORITY\020\035*I\n\014Cu" +
-      "rrencyType\022\013\n\007BITCOIN\020\000\022\014\n\010ETHEREUM\020\001\022\014\n" +
-      "\010LITECOIN\020\002\022\020\n\014BITCOIN_CASH\020\003B$\n\030com.net" +
-      "ki.bip75.protocolB\010Messages"
+      "\022\013\n\007PAYMENT\020\003\022\017\n\013PAYMENT_ACK\020\004*\242\006\n\017Attes" +
+      "tationType\022\025\n\021LEGAL_PERSON_NAME\020\000\022)\n%LEG" +
+      "AL_PERSON_PHONETIC_NAME_IDENTIFIER\020\001\022\026\n\022" +
+      "ADDRESS_DEPARTMENT\020\002\022\032\n\026ADDRESS_SUB_DEPA" +
+      "RTMENT\020\003\022\027\n\023ADDRESS_STREET_NAME\020\004\022\033\n\027ADD" +
+      "RESS_BUILDING_NUMBER\020\005\022\031\n\025ADDRESS_BUILDI" +
+      "NG_NAME\020\006\022\021\n\rADDRESS_FLOOR\020\007\022\023\n\017ADDRESS_" +
+      "POSTBOX\020\010\022\020\n\014ADDRESS_ROOM\020\t\022\024\n\020ADDRESS_P" +
+      "OSTCODE\020\n\022\025\n\021ADDRESS_TOWN_NAME\020\013\022\036\n\032ADDR" +
+      "ESS_TOWN_LOCATION_NAME\020\014\022\031\n\025ADDRESS_DIST" +
+      "RICT_NAME\020\r\022 \n\034ADDRESS_COUNTRY_SUB_DIVIS" +
+      "ION\020\016\022\030\n\024ADDRESS_ADDRESS_LINE\020\017\022\023\n\017ADDRE" +
+      "SS_COUNTRY\020\020\022%\n!NATURAL_PERSON_PRIMARY_I" +
+      "DENTIFIER\020\021\022\'\n#NATURAL_PERSON_SECONDARY_" +
+      "IDENTIFIER\020\022\022+\n\'NATURAL_PERSON_PHONETIC_" +
+      "NAME_IDENTIFIER\020\023\022\021\n\rDATE_OF_BIRTH\020\025\022\022\n\016" +
+      "PLACE_OF_BIRTH\020\026\022\030\n\024COUNTRY_OF_RESIDENCE" +
+      "\020\027\022\024\n\020COUNTRY_OF_ISSUE\020\030\022\033\n\027COUNTRY_OF_R" +
+      "EGISTRATION\020\031\022\027\n\023NATIONAL_IDENTIFIER\020\032\022\022" +
+      "\n\016ACCOUNT_NUMBER\020\033\022\033\n\027CUSTOMER_IDENTIFIC" +
+      "ATION\020\034\022\032\n\026REGISTRATION_AUTHORITY\020\035*I\n\014C" +
+      "urrencyType\022\013\n\007BITCOIN\020\000\022\014\n\010ETHEREUM\020\001\022\014" +
+      "\n\010LITECOIN\020\002\022\020\n\014BITCOIN_CASH\020\003B$\n\030com.ne" +
+      "tki.bip75.protocolB\010Messages"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

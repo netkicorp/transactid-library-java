@@ -1,6 +1,5 @@
 package com.netki.address.info.main.impl
 
-import com.google.gson.Gson
 import com.netki.address.info.repo.impl.MerkleRepo
 import com.netki.address.info.service.impl.AddressInformationNetkiService
 import com.netki.exceptions.AddressProviderErrorException
@@ -8,14 +7,10 @@ import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
 import com.netki.util.TestData.Address.MERKLE_JSON_RESPONSE
 import com.netki.util.fullUrl
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.headersOf
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.features.json.*
+import io.ktor.http.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -36,6 +31,7 @@ internal class AddressInformationNetkiTest {
 
     @BeforeAll
     fun setUp() {
+        // Nothing to do here
     }
 
     @Test
@@ -61,7 +57,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -110,7 +106,7 @@ internal class AddressInformationNetkiTest {
     }
 
     @Test
-    fun `fetch address information that does not exist`() {
+    fun `Fetch address information that does not exist`() {
         client = HttpClient(MockEngine) {
             install(JsonFeature) {
                 serializer = GsonSerializer()
@@ -132,7 +128,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -143,7 +139,7 @@ internal class AddressInformationNetkiTest {
     }
 
     @Test
-    fun `fetch address information with not correct authorization`() {
+    fun `Fetch address information with not correct authorization`() {
         client = HttpClient(MockEngine) {
             install(JsonFeature) {
                 serializer = GsonSerializer()
@@ -165,7 +161,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -177,7 +173,7 @@ internal class AddressInformationNetkiTest {
     }
 
     @Test
-    fun `fetch address information with Provider throwing an error`() {
+    fun `Fetch address information with Provider throwing an internal server error`() {
         client = HttpClient(MockEngine) {
             install(JsonFeature) {
                 serializer = GsonSerializer()
@@ -199,7 +195,7 @@ internal class AddressInformationNetkiTest {
             }
         }
 
-        merkleRepo = MerkleRepo(client, "mock_key", Gson())
+        merkleRepo = MerkleRepo(client, "mock_key")
         addressInformationService = AddressInformationNetkiService(merkleRepo)
         addressInformation = AddressInformationProviderNetki(addressInformationService)
 
@@ -208,5 +204,101 @@ internal class AddressInformationNetkiTest {
         }
 
         assert(exception.message != null && exception.message!!.contains("Provider internal error for address:"))
+    }
+
+    @Test
+    fun `Fetch address information with Provider throwing an unhandled error`() {
+        client = HttpClient(MockEngine) {
+            install(JsonFeature) {
+                serializer = GsonSerializer()
+            }
+            engine {
+                addHandler { request ->
+                    when (request.url.fullUrl) {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
+                            respond(
+                                "{}",
+                                HttpStatusCode.NotImplemented,
+                                headersOf("Content-Type", ContentType.Application.Json.toString())
+                            )
+                        }
+                        else -> error("Unhandled ${request.url.fullUrl}")
+                    }
+                }
+
+            }
+        }
+
+        merkleRepo = MerkleRepo(client, "mock_key")
+        addressInformationService = AddressInformationNetkiService(merkleRepo)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
+
+        Assertions.assertThrows(AddressProviderErrorException::class.java) {
+            addressInformation.getAddressInformation(addressCurrency, address)
+        }
+    }
+
+    @Test
+    fun `Fetch address information with unhandled ClientRequestException`() {
+        client = HttpClient(MockEngine) {
+            install(JsonFeature) {
+                serializer = GsonSerializer()
+            }
+            engine {
+                addHandler { request ->
+                    when (request.url.fullUrl) {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
+                            respond(
+                                "{}",
+                                HttpStatusCode.NotAcceptable,
+                                headersOf("Content-Type", ContentType.Application.Json.toString())
+                            )
+                        }
+                        else -> error("Unhandled ${request.url.fullUrl}")
+                    }
+                }
+
+            }
+        }
+
+        merkleRepo = MerkleRepo(client, "mock_key")
+        addressInformationService = AddressInformationNetkiService(merkleRepo)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
+
+        Assertions.assertThrows(AddressProviderErrorException::class.java) {
+            addressInformation.getAddressInformation(addressCurrency, address)
+        }
+    }
+
+    @Test
+    fun `Fetch address information with unhandled RedirectResponseException`() {
+        client = HttpClient(MockEngine) {
+            install(JsonFeature) {
+                serializer = GsonSerializer()
+            }
+            engine {
+                addHandler { request ->
+                    when (request.url.fullUrl) {
+                        "https://api.merklescience.com/api/v3/addresses/" -> {
+                            respond(
+                                "{}",
+                                HttpStatusCode.PermanentRedirect,
+                                headersOf("Content-Type", ContentType.Application.Json.toString())
+                            )
+                        }
+                        else -> error("Unhandled ${request.url.fullUrl}")
+                    }
+                }
+
+            }
+        }
+
+        merkleRepo = MerkleRepo(client, "mock_key")
+        addressInformationService = AddressInformationNetkiService(merkleRepo)
+        addressInformation = AddressInformationProviderNetki(addressInformationService)
+
+        Assertions.assertThrows(AddressProviderErrorException::class.java) {
+            addressInformation.getAddressInformation(addressCurrency, address)
+        }
     }
 }
