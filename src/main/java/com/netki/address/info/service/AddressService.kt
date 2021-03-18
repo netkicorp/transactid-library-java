@@ -1,14 +1,11 @@
-package com.netki.address.info.main
+package com.netki.address.info.service
 
 import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
 import com.netki.model.AddressInformation
 
-/**
- * Fetch the detailed information about an address.
- */
-interface AddressInformationProvider {
+internal interface AddressService {
 
     /**
      * Fetch the information of a given address.

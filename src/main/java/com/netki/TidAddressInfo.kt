@@ -1,7 +1,7 @@
 package com.netki
 
-import com.netki.address.info.config.AddressInformationFactory
-import com.netki.address.info.main.AddressInformationProvider
+import com.netki.address.info.config.AddressFactory
+import com.netki.address.info.main.Address
 import com.netki.exceptions.AddressProviderErrorException
 import com.netki.exceptions.AddressProviderUnauthorizedException
 import com.netki.model.AddressCurrency
@@ -10,7 +10,7 @@ import com.netki.model.AddressInformation
 /**
  * Fetch the detailed information about an address.
  */
-class TidAddressInfo(private val addressInformationProvider: AddressInformationProvider) {
+class TidAddressInfo(private val address: Address) {
 
     companion object {
         /**
@@ -21,8 +21,8 @@ class TidAddressInfo(private val addressInformationProvider: AddressInformationP
          */
         @JvmStatic
         fun getInstance(authorizationKey: String): TidAddressInfo {
-            val addressInformation = AddressInformationFactory.getInstance(authorizationKey)
-            return TidAddressInfo(addressInformation)
+            val address = AddressFactory.getInstance(authorizationKey)
+            return TidAddressInfo(address)
         }
     }
 
@@ -37,5 +37,5 @@ class TidAddressInfo(private val addressInformationProvider: AddressInformationP
      */
     @Throws(AddressProviderErrorException::class, AddressProviderUnauthorizedException::class)
     fun getAddressInformation(currency: AddressCurrency, address: String): AddressInformation =
-        addressInformationProvider.getAddressInformation(currency, address)
+        this.address.getAddressInformation(currency, address)
 }
