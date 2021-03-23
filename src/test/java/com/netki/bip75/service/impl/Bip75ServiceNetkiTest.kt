@@ -1,53 +1,100 @@
 package com.netki.bip75.service.impl
 
-import com.netki.address.info.service.AddressInformationService
-import com.netki.bip75.processor.impl.InvoiceRequestProcessor
-import com.netki.bip75.processor.impl.PaymentAckProcessor
-import com.netki.bip75.processor.impl.PaymentProcessor
-import com.netki.bip75.processor.impl.PaymentRequestProcessor
-import com.netki.bip75.service.Bip75Service
+import com.netki.exceptions.ExceptionInformation
+import com.netki.exceptions.InvalidCertificateChainException
+import com.netki.message.config.MessageFactory
 import com.netki.model.InvoiceRequestParameters
-import com.netki.model.MessageType
+import com.netki.model.PaymentParameters
 import com.netki.model.PaymentRequestParameters
-import com.netki.model.StatusCode
 import com.netki.security.CertificateValidator
 import com.netki.util.TestData
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito
 import java.sql.Timestamp
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class Bip75ServiceNetkiTest {
 
-    private lateinit var mockAddressInformationService: AddressInformationService
-    private lateinit var invoiceRequestProcessor: InvoiceRequestProcessor
-    private lateinit var paymentRequestProcessor: PaymentRequestProcessor
-    private lateinit var paymentProcessor: PaymentProcessor
-    private lateinit var paymentAckProcessor: PaymentAckProcessor
-    private lateinit var bip75Service: Bip75Service
-    private val certificateValidator = CertificateValidator("src/test/resources/certificates")
+    private lateinit var bip75ServiceNetki: Bip75ServiceNetki
 
     @BeforeAll
     fun setUp() {
-        mockAddressInformationService = Mockito.mock(AddressInformationService::class.java)
-        invoiceRequestProcessor = InvoiceRequestProcessor(mockAddressInformationService, certificateValidator)
-        paymentRequestProcessor = PaymentRequestProcessor(mockAddressInformationService, certificateValidator)
-        paymentProcessor = PaymentProcessor(mockAddressInformationService, certificateValidator)
-        paymentAckProcessor = PaymentAckProcessor(mockAddressInformationService, certificateValidator)
-        bip75Service = Bip75ServiceNetki(
-            invoiceRequestProcessor,
-            paymentRequestProcessor,
-            paymentProcessor,
-            paymentAckProcessor
-        )
+        val message = MessageFactory.getInstance("fake-key")
+        val certificateValidator = CertificateValidator("src/test/resources/certificates")
+        bip75ServiceNetki = Bip75ServiceNetki(message, certificateValidator)
     }
 
     @Test
-    fun `Change status from OK to CANCEL to InvoiceRequest`() {
+    fun `Create and validate InvoiceRequestBinary, Owners with PkiData and Sender with PkiData but invalid certificate chain`() {
         val originators = listOf(
             TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val sender = TestData.Senders.SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+        )
+
+        val invoiceRequestBinary = bip75ServiceNetki.createInvoiceRequest(invoiceRequestParameters)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isInvoiceRequestValid(invoiceRequestBinary))
+        }
+
+        assert(exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+    }
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Beneficiaries with PkiData but invalid certificate chain and Sender with PkiData`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE
+        )
+        val sender = TestData.Senders.SENDER_PKI_X509SHA256
+        val invoiceRequestParameters = InvoiceRequestParameters(
+            amount = 1000,
+            memo = "memo",
+            notificationUrl = "notificationUrl",
+            originatorsAddresses = TestData.Output.OUTPUTS,
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+        )
+
+        val invoiceRequestBinary = bip75ServiceNetki.createInvoiceRequest(invoiceRequestParameters)
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isInvoiceRequestValid(invoiceRequestBinary))
+        }
+
+        assert(
+            exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
+    }
+
+
+    @Test
+    fun `Create and validate InvoiceRequestBinary, Originators with PkiData but invalid certificate chain and Sender with PkiData`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256_INVALID_CERTIFICATE,
             TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
         val beneficiaries = listOf(
@@ -58,42 +105,37 @@ internal class Bip75ServiceNetkiTest {
             amount = 1000,
             memo = "memo",
             notificationUrl = "notificationUrl",
-            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
+            originatorsAddresses = TestData.Output.OUTPUTS,
             originatorParameters = originators,
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
             attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
         )
 
-        val invoiceRequestBinary = bip75Service.createInvoiceRequest(invoiceRequestParameters)
-        val invoiceRequest = bip75Service.parseInvoiceRequest(invoiceRequestBinary)
-        val identifier = invoiceRequest.protocolMessageMetadata.identifier
+        val invoiceRequestBinary = bip75ServiceNetki.createInvoiceRequest(invoiceRequestParameters)
 
-        assert(invoiceRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
-        assert(invoiceRequest.protocolMessageMetadata.statusMessage.isEmpty())
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isInvoiceRequestValid(invoiceRequestBinary))
+        }
 
-        val newStatusCode = StatusCode.CANCEL
-        val newStatusMessage = "Random cancel"
-        val updatedInvoiceRequestBinary =
-            bip75Service.changeStatusProtocolMessage(invoiceRequestBinary, newStatusCode, newStatusMessage)
-        val updatedInvoiceRequest = bip75Service.parseInvoiceRequest(updatedInvoiceRequestBinary)
-
-        assert(updatedInvoiceRequest.protocolMessageMetadata.statusCode == newStatusCode)
-        assert(updatedInvoiceRequest.protocolMessageMetadata.statusMessage == newStatusMessage)
-        assert(updatedInvoiceRequest.protocolMessageMetadata.identifier == invoiceRequest.protocolMessageMetadata.identifier)
-        assert(updatedInvoiceRequest.protocolMessageMetadata.nonce == invoiceRequest.protocolMessageMetadata.nonce)
+        assert(
+            exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
     }
 
+
     @Test
-    fun `Change status from OK to CERTIFICATE_EXPIRED to PaymentRequest Encrypted`() {
+    fun `Create and validate PaymentRequestBinary, Beneficiaries with PkiData but invalid certificate chain and Sender with PkiData`() {
         val beneficiaries = listOf(
-            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE,
             TestData.Beneficiaries.NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
         )
-        val sender = TestData.Senders.SENDER_PKI_X509SHA256_WITH_ENCRYPTION
+        val sender = TestData.Senders.SENDER_PKI_X509SHA256
         val paymentRequestParameters = PaymentRequestParameters(
             network = "main",
-            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
+            beneficiariesAddresses = TestData.Output.OUTPUTS,
             time = Timestamp(System.currentTimeMillis()),
             expires = Timestamp(System.currentTimeMillis()),
             memo = "memo",
@@ -101,92 +143,118 @@ internal class Bip75ServiceNetkiTest {
             merchantData = "merchant data",
             beneficiaryParameters = beneficiaries,
             senderParameters = sender,
-            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS,
-            messageInformation = TestData.MessageInformationData.MESSAGE_INFORMATION_ENCRYPTION,
-            recipientParameters = TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
         )
 
-        val paymentRequestBinary = bip75Service.createPaymentRequest(paymentRequestParameters, "1234")
-        val paymentRequest = bip75Service.parsePaymentRequest(
-            paymentRequestBinary,
-            TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
-        )
-        val identifier = paymentRequest.protocolMessageMetadata.identifier
-        val encryptedMessage = paymentRequest.protocolMessageMetadata.encryptedMessage
+        val paymentRequestBinary = bip75ServiceNetki.createPaymentRequest(paymentRequestParameters, "12345")
 
-        assert(paymentRequest.protocolMessageMetadata.statusCode == StatusCode.OK)
-        assert(paymentRequest.protocolMessageMetadata.statusMessage.isEmpty())
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isPaymentRequestValid(paymentRequestBinary))
+        }
 
-        val newStatusCode = StatusCode.CERTIFICATE_EXPIRED
-        val newStatusMessage = "Random cancel"
-        val updatedPaymentRequestBinary =
-            bip75Service.changeStatusProtocolMessage(paymentRequestBinary, newStatusCode, newStatusMessage)
-        val updatedPaymentRequest =
-            bip75Service.parsePaymentRequest(
-                updatedPaymentRequestBinary,
-                TestData.Recipients.RECIPIENTS_PARAMETERS_WITH_ENCRYPTION
+        assert(
+            exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
             )
-
-        assert(updatedPaymentRequest.protocolMessageMetadata.statusCode == newStatusCode)
-        assert(updatedPaymentRequest.protocolMessageMetadata.statusMessage == newStatusMessage)
-        assert(updatedPaymentRequest.protocolMessageMetadata.identifier == identifier)
-        assert(updatedPaymentRequest.protocolMessageMetadata.encryptedMessage == encryptedMessage)
-        assert(updatedPaymentRequest.protocolMessageMetadata.identifier == updatedPaymentRequest.protocolMessageMetadata.identifier)
-        assert(updatedPaymentRequest.protocolMessageMetadata.nonce == updatedPaymentRequest.protocolMessageMetadata.nonce)
+        )
     }
 
     @Test
-    fun `Create InvoiceRequestBinary and extract protocolMessageMetadata`() {
+    fun `Create and validate PaymentRequestBinary, Owners with PkiData and Sender with PkiData but invalid certificate chain`() {
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256,
+            TestData.Beneficiaries.NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val sender = TestData.Senders.SENDER_PKI_X509SHA256_INVALID_CERTIFICATE
+        val paymentRequestParameters = PaymentRequestParameters(
+            network = "main",
+            beneficiariesAddresses = TestData.Output.OUTPUTS,
+            time = Timestamp(System.currentTimeMillis()),
+            expires = Timestamp(System.currentTimeMillis()),
+            memo = "memo",
+            paymentUrl = "www.payment.url/test",
+            merchantData = "merchant data",
+            beneficiaryParameters = beneficiaries,
+            senderParameters = sender,
+            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+        )
+
+        val paymentRequestBinary = bip75ServiceNetki.createPaymentRequest(paymentRequestParameters, "12345")
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isPaymentRequestValid(paymentRequestBinary))
+        }
+
+        assert(exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
+    }
+
+
+    @Test
+    fun `Create and validate PaymentBinary with originator certificate not valid`() {
+        val originators = listOf(
+            TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256_INVALID_CERTIFICATE,
+            TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
+        )
+        val beneficiaries = listOf(
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256
+        )
+        val paymentParameters = PaymentParameters(
+            merchantData = "merchant data",
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = TestData.Output.OUTPUTS,
+            memo = "memo",
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
+        )
+
+        val paymentBinary = bip75ServiceNetki.createPayment(paymentParameters, "12345")
+
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isPaymentValid(paymentBinary))
+        }
+
+        assert(
+            exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_ORIGINATOR_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
+    }
+
+    @Test
+    fun `Create and validate PaymentBinary with beneficiaries certificate not valid`() {
         val originators = listOf(
             TestData.Originators.PRIMARY_ORIGINATOR_PKI_X509SHA256,
             TestData.Originators.NO_PRIMARY_ORIGINATOR_PKI_X509SHA256
         )
-        val sender = TestData.Senders.SENDER_PKI_X509SHA256
-
-        val invoiceRequestParameters = InvoiceRequestParameters(
-            amount = 1000,
-            memo = "memo",
-            notificationUrl = "notificationUrl",
-            originatorsAddresses = TestData.Payment.Output.OUTPUTS,
-            originatorParameters = originators,
-            beneficiaryParameters = emptyList(),
-            senderParameters = sender,
-            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
-        )
-
-        val protocolMessageBinary = bip75Service.createInvoiceRequest(invoiceRequestParameters)
-        val protocolMessageMetadata = bip75Service.getProtocolMessageMetadata(protocolMessageBinary)
-
-        assert(protocolMessageMetadata.statusCode == StatusCode.OK)
-        assert(protocolMessageMetadata.statusMessage.isEmpty())
-        assert(protocolMessageMetadata.messageType == MessageType.INVOICE_REQUEST)
-    }
-
-    @Test
-    fun `Create PaymentRequestBinary and extract protocolMessageMetadata`() {
         val beneficiaries = listOf(
-            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256,
-            TestData.Beneficiaries.NO_PRIMARY_BENEFICIARY_PKI_X509SHA256
+            TestData.Beneficiaries.PRIMARY_BENEFICIARY_PKI_X509SHA256_INVALID_CERTIFICATE
         )
-        val sender = TestData.Senders.SENDER_PKI_X509SHA256
-        val paymentRequestParameters = PaymentRequestParameters(
-            network = "main",
-            beneficiariesAddresses = TestData.Payment.Output.OUTPUTS,
-            time = Timestamp(System.currentTimeMillis()),
-            expires = Timestamp(System.currentTimeMillis()),
-            memo = "memo",
-            paymentUrl = "www.payment.url/test",
+        val paymentParameters = PaymentParameters(
             merchantData = "merchant data",
-            beneficiaryParameters = beneficiaries,
-            senderParameters = sender,
-            attestationsRequested = TestData.Attestations.REQUESTED_ATTESTATIONS
+            transactions = arrayListOf(
+                "transaction1".toByteArray(),
+                "transaction2".toByteArray()
+            ),
+            outputs = TestData.Output.OUTPUTS,
+            memo = "memo",
+            originatorParameters = originators,
+            beneficiaryParameters = beneficiaries
         )
 
-        val protocolMessageBinary = bip75Service.createPaymentRequest(paymentRequestParameters, "1234")
-        val protocolMessageMetadata = bip75Service.getProtocolMessageMetadata(protocolMessageBinary)
+        val paymentBinary = bip75ServiceNetki.createPayment(paymentParameters, "12345")
 
-        assert(protocolMessageMetadata.statusCode == StatusCode.OK)
-        assert(protocolMessageMetadata.statusMessage.isEmpty())
-        assert(protocolMessageMetadata.messageType == MessageType.PAYMENT_REQUEST)
+        val exception = assertThrows(InvalidCertificateChainException::class.java) {
+            assert(bip75ServiceNetki.isPaymentValid(paymentBinary))
+        }
+
+        assert(
+            exception.message == ExceptionInformation.CERTIFICATE_VALIDATION_INVALID_BENEFICIARY_CERTIFICATE_CA.format(
+                TestData.Attestations.INVALID_ATTESTATION.name
+            )
+        )
     }
+
 }
