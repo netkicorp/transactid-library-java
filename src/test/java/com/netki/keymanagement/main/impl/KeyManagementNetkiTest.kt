@@ -1,23 +1,18 @@
 package com.netki.keymanagement.main.impl
 
 import com.netki.exceptions.*
+import com.netki.keygeneration.main.KeyGeneration
 import com.netki.keymanagement.driver.impl.VaultDriver
-import com.netki.keymanagement.repo.data.CertificateAttestationResponse
-import com.netki.keymanagement.repo.impl.NetkiCertificateProvider
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
-import com.netki.model.Attestation
-import com.netki.model.AttestationInformation
-import com.netki.model.IvmsConstraint
-import com.netki.security.CryptoModule
-import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER
+import com.netki.security.toCertificate
+import com.netki.security.toPrivateKey
 import com.netki.util.TestData
-import com.netki.util.TestData.CertificateGeneration.ATTESTATIONS_INFORMATION
-import com.netki.util.TestData.CertificateGeneration.ATTESTATIONS_REQUESTED
-import com.netki.util.TestData.CertificateGeneration.CERTIFICATE_ATTESTATION_RESPONSE
-import com.netki.util.TestData.CertificateGeneration.CSRS_ATTESTATIONS
-import com.netki.util.TestData.CertificateGeneration.TRANSACTION_ID
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
@@ -29,71 +24,20 @@ internal class KeyManagementNetkiTest {
 
     private lateinit var keyManagement: KeyManagementNetki
     private lateinit var mockDriver: VaultDriver
-    private lateinit var mockCertificateProvider: NetkiCertificateProvider
+    private lateinit var mockKeyGeneration: KeyGeneration
 
     @BeforeAll
     fun setUp() {
         mockDriver = Mockito.mock(VaultDriver::class.java)
-        mockCertificateProvider = Mockito.mock(NetkiCertificateProvider::class.java)
-        val keyManagementService = KeyManagementNetkiService(mockCertificateProvider, mockDriver)
+        mockKeyGeneration = Mockito.mock(KeyGeneration::class.java)
+        val keyManagementService = KeyManagementNetkiService(mockKeyGeneration, mockDriver)
         keyManagement = KeyManagementNetki(keyManagementService)
     }
 
     @BeforeEach
     fun resetMock() {
         Mockito.reset(mockDriver)
-        Mockito.reset(mockCertificateProvider)
-    }
-
-    @Test
-    fun `Generate certificate for attestations successfully`() {
-        `when`(mockCertificateProvider.requestTransactionId(ATTESTATIONS_REQUESTED)).thenReturn(TRANSACTION_ID)
-        doNothing().`when`(mockCertificateProvider).submitCsrsAttestations(TRANSACTION_ID, CSRS_ATTESTATIONS)
-        `when`(mockCertificateProvider.getCertificates(TRANSACTION_ID)).thenReturn(CERTIFICATE_ATTESTATION_RESPONSE)
-
-        val attestationCertificate = keyManagement.generateCertificates(ATTESTATIONS_INFORMATION)
-
-        assertEquals(attestationCertificate.size, CERTIFICATE_ATTESTATION_RESPONSE.count)
-    }
-
-    @Test
-    fun `Generate certificate for attestations with invalid data`() {
-        val attestationInformation = AttestationInformation(
-            Attestation.LEGAL_PERSON_NAME,
-            IvmsConstraint.LEGL,
-            "This is invalid data #$#$#$"
-        )
-        val attestationInformationInvalid = listOf(attestationInformation)
-
-        val exception = assertThrows(CertificateProviderException::class.java) {
-            keyManagement.generateCertificates(attestationInformationInvalid)
-        }
-
-        assert(
-            exception.message != null && exception.message!!.contains(
-                String.format(
-                    CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER,
-                    attestationInformation.data,
-                    attestationInformation.attestation
-                )
-            )
-        )
-    }
-
-    @Test
-    fun `Generate certificate for attestations returning empty list of certificates`() {
-        `when`(mockCertificateProvider.requestTransactionId(ATTESTATIONS_REQUESTED)).thenReturn(TRANSACTION_ID)
-        doNothing().`when`(mockCertificateProvider).submitCsrsAttestations(TRANSACTION_ID, CSRS_ATTESTATIONS)
-        `when`(mockCertificateProvider.getCertificates(TRANSACTION_ID)).thenReturn(
-            CertificateAttestationResponse(
-                0,
-                emptyList()
-            )
-        )
-
-        val attestationCertificate = keyManagement.generateCertificates(ATTESTATIONS_INFORMATION)
-
-        assertTrue(attestationCertificate.isEmpty())
+        Mockito.reset(mockKeyGeneration)
     }
 
     @Test
@@ -133,7 +77,7 @@ internal class KeyManagementNetkiTest {
         doNothing().`when`(mockDriver).storeCertificatePem(anyString(), anyString())
 
         val certificateObject =
-            CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM) as X509Certificate
+            TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM.toCertificate() as X509Certificate
         val idResult = keyManagement.storeCertificate(certificateObject)
 
         assert(!idResult.isBlank())
@@ -141,11 +85,11 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store certificate object driver error`() {
-       `when`(mockDriver.storeCertificatePem (anyString(), Mockito.anyString()))
+        `when`(mockDriver.storeCertificatePem(anyString(), Mockito.anyString()))
             .thenThrow(RuntimeException("Random exception"))
 
         val certificateObject =
-            CryptoModule.certificatePemToObject(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM) as X509Certificate
+            TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM.toCertificate() as X509Certificate
         val exception = assertThrows(KeyManagementStoreException::class.java) {
             keyManagement.storeCertificate(certificateObject)
         }
@@ -164,7 +108,7 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key on PEM format invalid private key`() {
-         doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
+        doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
 
         val exception = assertThrows(InvalidPrivateKeyException::class.java) {
             keyManagement.storePrivateKeyPem("this is not a valid private key")
@@ -187,9 +131,9 @@ internal class KeyManagementNetkiTest {
 
     @Test
     fun `Store private key object successfully`() {
-         doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
+        doNothing().`when`(mockDriver).storePrivateKeyPem(Mockito.anyString(), Mockito.anyString())
 
-        val privateKeyObject = CryptoModule.privateKeyPemToObject(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
+        val privateKeyObject = TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE.toPrivateKey()
         val idResult = keyManagement.storePrivateKey(privateKeyObject)
 
         assert(!idResult.isBlank())
@@ -200,7 +144,7 @@ internal class KeyManagementNetkiTest {
         `when`(mockDriver.storePrivateKeyPem(Mockito.anyString(), Mockito.anyString()))
             .thenThrow(RuntimeException("Random exception"))
 
-        val privateKeyObject = CryptoModule.privateKeyPemToObject(TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE)
+        val privateKeyObject = TestData.KeyPairs.CLIENT_PRIVATE_KEY_CHAIN_ONE.toPrivateKey()
         val exception = assertThrows(KeyManagementStoreException::class.java) {
             keyManagement.storePrivateKey(privateKeyObject)
         }
