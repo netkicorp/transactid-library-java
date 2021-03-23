@@ -29,7 +29,7 @@ internal class Bip75ServiceNetki(
      * {@inheritDoc}
      */
     override fun parseInvoiceRequest(invoiceRequestBinary: ByteArray, recipientParameters: RecipientParameters?) =
-        message.parseInvoiceRequest(invoiceRequestBinary)
+        message.parseInvoiceRequest(invoiceRequestBinary, recipientParameters)
 
     /**
      * {@inheritDoc}
@@ -46,7 +46,7 @@ internal class Bip75ServiceNetki(
         invoiceRequestBinary: ByteArray,
         recipientParameters: RecipientParameters?
     ): Boolean {
-        val invoiceRequest = parseInvoiceRequest(invoiceRequestBinary)
+        val invoiceRequest = parseInvoiceRequest(invoiceRequestBinary, recipientParameters)
 
         check(validateCertificateChain(invoiceRequest.senderPkiData, invoiceRequest.senderPkiType)) {
             throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
@@ -98,7 +98,7 @@ internal class Bip75ServiceNetki(
         paymentRequestBinary: ByteArray,
         recipientParameters: RecipientParameters?
     ): Boolean {
-        val paymentRequest = parsePaymentRequest(paymentRequestBinary)
+        val paymentRequest = parsePaymentRequest(paymentRequestBinary, recipientParameters)
 
         check(validateCertificateChain(paymentRequest.senderPkiData, paymentRequest.senderPkiType)) {
             throw InvalidCertificateChainException(CERTIFICATE_VALIDATION_INVALID_SENDER_CERTIFICATE_CA)
@@ -131,7 +131,7 @@ internal class Bip75ServiceNetki(
      * {@inheritDoc}
      */
     override fun isPaymentValid(paymentBinary: ByteArray, recipientParameters: RecipientParameters?): Boolean {
-        val payment = parsePayment(paymentBinary)
+        val payment = parsePayment(paymentBinary, recipientParameters)
 
         payment.originators.forEach { originator ->
             originator.pkiDataSet.forEach { attestation ->
