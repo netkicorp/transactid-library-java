@@ -3,9 +3,11 @@ package com.netki.util
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.io.File
 import java.io.FileNotFoundException
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class FilesUtilTest {
 
     @Test

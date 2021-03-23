@@ -65,13 +65,19 @@ Installation of the Netki TransactID Travel Rule Library is straight forward. We
 
 ### Maven Users
 
-If you are using maven you can download the latest JAR or grab via [Maven][3]:
+If you are using maven you can download the latest JARs or grab via [Maven][3]:
 
 ```xml
 <dependency>
     <groupId>com.netki</groupId>
+    <artifactId>transactid-core</artifactId>
+    <version>${latest_version}</version>
+    <type>pom</type>
+</dependency>
+<dependency>
+    <groupId>com.netki</groupId>
     <artifactId>transactid</artifactId>
-    <version>0.1.0-alphaX</version>
+    <version>${latest_version}</version>
     <type>pom</type>
 </dependency>
 ```
@@ -79,7 +85,8 @@ If you are using maven you can download the latest JAR or grab via [Maven][3]:
 ### Gradle Users
 
 ```sh
-compile group: 'com.netki', name: 'transactid', version: '0.1.0-alphaX', ext: 'pom'
+compile group: 'com.netki', name: 'transactid-core', version: '${latest_version}', ext: 'pom'
+compile group: 'com.netki', name: 'transactid', version: '${latest_version}', ext: 'pom'
 ```
 
 ## Adding jcenter

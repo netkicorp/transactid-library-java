@@ -1,88 +1,42 @@
 package com.netki.keymanagement.service.impl
 
 import com.netki.exceptions.*
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE_NOT_FOUND
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY_NOT_FOUND
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_ERROR_STORING_CERTIFICATE
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_ERROR_STORING_PRIVATE_KEY
+import com.netki.exceptions.ExceptionInformation.KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION
+import com.netki.keygeneration.main.KeyGeneration
 import com.netki.keymanagement.driver.KeyManagementDriver
-import com.netki.keymanagement.repo.CertificateProvider
-import com.netki.keymanagement.repo.data.CsrAttestation
 import com.netki.keymanagement.service.KeyManagementService
-import com.netki.keymanagement.util.toPrincipal
-import com.netki.model.AttestationCertificate
 import com.netki.model.AttestationInformation
-import com.netki.security.CryptoModule
-import com.netki.util.ErrorInformation.CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_CERTIFICATE_NOT_FOUND
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_FETCHING_PRIVATE_KEY_NOT_FOUND
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_STORING_CERTIFICATE
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_ERROR_STORING_PRIVATE_KEY
-import com.netki.util.ErrorInformation.KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION
-import com.netki.util.isAlphaNumeric
+import com.netki.security.toCertificate
+import com.netki.security.toPemFormat
+import com.netki.security.toPrivateKey
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
 import java.util.*
 
 internal class KeyManagementNetkiService(
-    private val certificateProvider: CertificateProvider,
+    private val keyGeneration: KeyGeneration,
     private val driver: KeyManagementDriver
 ) : KeyManagementService {
 
     /**
      * {@inheritDoc}
      */
-    override fun generateCertificates(attestationsInformation: List<AttestationInformation>): List<AttestationCertificate> {
-        validateAttestationData(attestationsInformation)
-        val transactionId = certificateProvider.requestTransactionId(attestationsInformation.map { it.attestation })
-
-        val keyPair = CryptoModule.generateKeyPair()
-
-        val csrsAttestations = attestationsInformation.map {
-            CsrAttestation(
-                CryptoModule.csrObjectToPem(
-                    CryptoModule.generateCSR(it.attestation.toPrincipal(it.data, it.ivmsConstraint), keyPair)
-                ),
-                it.attestation,
-                CryptoModule.objectToPublicKeyPem(keyPair.public)
-            )
-        }
-
-        certificateProvider.submitCsrsAttestations(transactionId, csrsAttestations)
-        val certificates = certificateProvider.getCertificates(transactionId)
-
-        return if (certificates.count == 0) {
-            emptyList()
-        } else {
-            certificates.certificates.map {
-                AttestationCertificate(
-                    it.attestation!!,
-                    it.certificate!!,
-                    CryptoModule.objectToPrivateKeyPem(keyPair.private)
-                )
-            }
-        }
-    }
-
-    private fun validateAttestationData(attestationsInformation: List<AttestationInformation>) {
-        attestationsInformation.forEach { information ->
-            if (!information.data.isAlphaNumeric()) {
-                throw CertificateProviderException(
-                    String.format(
-                        CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER,
-                        information.data,
-                        information.attestation
-                    )
-                )
-            }
-        }
-    }
+    override fun generateCertificates(attestationsInformation: List<AttestationInformation>) =
+        keyGeneration.generateCertificates(attestationsInformation)
 
     /**
      * {@inheritDoc}
      */
     override fun storeCertificatePem(certificatePem: String): String {
         try {
-            CryptoModule.certificatePemToObject(certificatePem)
+            certificatePem.toCertificate()
         } catch (exception: Exception) {
             throw InvalidCertificateException(KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION.format(exception.message))
         }
@@ -94,7 +48,7 @@ internal class KeyManagementNetkiService(
      */
     override fun storeCertificate(certificate: X509Certificate): String {
         val certificatePem = try {
-            CryptoModule.objectToCertificatePem(certificate)
+            certificate.toPemFormat()
         } catch (exception: Exception) {
             throw InvalidCertificateException(KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION.format(exception.message))
         }
@@ -116,7 +70,7 @@ internal class KeyManagementNetkiService(
      */
     override fun storePrivateKeyPem(privateKeyPem: String): String {
         try {
-            CryptoModule.privateKeyPemToObject(privateKeyPem)
+            privateKeyPem.toPrivateKey()
         } catch (exception: Exception) {
             throw InvalidPrivateKeyException(KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION.format(exception.message))
         }
@@ -128,7 +82,7 @@ internal class KeyManagementNetkiService(
      */
     override fun storePrivateKey(privateKey: PrivateKey): String {
         val privateKeyPem = try {
-            CryptoModule.objectToPrivateKeyPem(privateKey)
+            privateKey.toPemFormat()
         } catch (exception: Exception) {
             throw InvalidPrivateKeyException(KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION.format(exception.message))
         }
@@ -157,7 +111,7 @@ internal class KeyManagementNetkiService(
 
         return certificatePem?.let {
             try {
-                CryptoModule.certificatePemToObject(it)
+                it.toCertificate()
                 it
             } catch (exception: Exception) {
                 throw InvalidCertificateException(KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION.format(exception.message))
@@ -176,7 +130,7 @@ internal class KeyManagementNetkiService(
         }
         return certificatePem?.let {
             try {
-                CryptoModule.certificatePemToObject(it) as X509Certificate
+                it.toCertificate() as X509Certificate
             } catch (exception: Exception) {
                 throw InvalidCertificateException(KEY_MANAGEMENT_CERTIFICATE_INVALID_EXCEPTION.format(exception.message))
             }
@@ -195,7 +149,7 @@ internal class KeyManagementNetkiService(
 
         return privateKeyPem?.let {
             try {
-                CryptoModule.privateKeyPemToObject(it)
+                it.toPrivateKey()
                 it
             } catch (exception: Exception) {
                 throw InvalidPrivateKeyException(KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION.format(exception.message))
@@ -214,7 +168,7 @@ internal class KeyManagementNetkiService(
         }
         return privateKeyPem?.let {
             try {
-                CryptoModule.privateKeyPemToObject(it)
+                it.toPrivateKey()
             } catch (exception: Exception) {
                 throw InvalidPrivateKeyException(KEY_MANAGEMENT_PRIVATE_KEY_INVALID_EXCEPTION.format(exception.message))
             }
