@@ -9,7 +9,7 @@ import java.security.cert.X509Certificate
 internal interface KeyManagementService {
 
     /**
-     * Generate a certificate for each one of the attestations provided.
+     * Generate a key pair for each one of the attestations provided.
      *
      * @param attestationsInformation list of attestations with their corresponding data.
      * @return list of certificate per attestation.

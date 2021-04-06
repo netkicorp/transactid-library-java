@@ -18,6 +18,7 @@ internal object Bip75Factory {
      * Get an instance of Bip75.
      * @param trustStoreLocation is a path in the server where the app is running that contains the valid certificate chains.
      * @param authorizationKey pass this parameter if address information will be required.
+     * @param developmentMode set to true if you are using this library in a sandbox environment.
      * @return Bip75 instance.
      */
     @JvmOverloads
