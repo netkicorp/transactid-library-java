@@ -18,7 +18,8 @@ class TidKms(private val keyManagement: KeyManagement) {
          * Method to get an instance of this class.
          * All the parameters are optional depending the functions that want to be used.
          *
-         * @param authorizationCertificateProviderKey to connect to the certificate provider.
+         * @param authorizationCertificateProviderKey to authorize the connection to the certificate provider.
+         * @param authorizationCertificateProviderUrl to connect to the certificate provider.
          * @param authorizationSecureStorageKey to connect to the secure storage.
          * @param addressSecureStorage to connect to the secure storage.
          * @return instance of TidKms.
