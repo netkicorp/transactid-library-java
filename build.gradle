@@ -8,7 +8,7 @@ plugins {
 }
 
 ext {
-    transactIdCoreVersion = "2.0.0-beta1"
+    transactIdCoreVersion = "2.0.0-beta3"
     dokkaVersion = "0.9.17"
     protoVersion = "3.10.0"
     bouncyCastleVersion = "1.67"
@@ -21,7 +21,7 @@ ext {
     kotlinReflectVersion = "1.3.70"
 
     groupId = 'com.netki'
-    versionRelease = '2.0.0-beta1'
+    versionRelease = '2.0.0-beta3'
     artifactId = 'transactid'
 }
 

@@ -1,9 +1,13 @@
 package com.netki.keymanagement.main.impl
 
 import com.netki.exceptions.*
+import com.netki.exceptions.ExceptionInformation.CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER
 import com.netki.keygeneration.main.KeyGeneration
 import com.netki.keymanagement.driver.impl.VaultDriver
 import com.netki.keymanagement.service.impl.KeyManagementNetkiService
+import com.netki.model.Attestation
+import com.netki.model.AttestationInformation
+import com.netki.model.IvmsConstraint
 import com.netki.security.toCertificate
 import com.netki.security.toPrivateKey
 import com.netki.util.TestData
@@ -46,7 +50,7 @@ internal class KeyManagementNetkiTest {
 
         val idResult = keyManagement.storeCertificatePem(TestData.KeyPairs.CLIENT_CERTIFICATE_RANDOM)
 
-        assert(!idResult.isBlank())
+        assert(idResult.isNotBlank())
     }
 
     @Test
@@ -310,6 +314,30 @@ internal class KeyManagementNetkiTest {
         }
 
         assert(exception.message != null && exception.message!!.contains("Private key not found for id"))
+    }
+
+    @Test
+    fun `Generate certificate for attestations with invalid data`() {
+        val attestationInformation = AttestationInformation(
+            Attestation.LEGAL_PERSON_NAME,
+            IvmsConstraint.LEGL,
+            "This is invalid data #$#$#$"
+        )
+        val attestationInformationInvalid = listOf(attestationInformation)
+
+        val exception = assertThrows(CertificateProviderException::class.java) {
+            keyManagement.generateCertificates(attestationInformationInvalid)
+        }
+
+        assert(
+            exception.message != null && exception.message!!.contains(
+                String.format(
+                    CERTIFICATE_INFORMATION_STRING_NOT_CORRECT_ERROR_PROVIDER,
+                    attestationInformation.data,
+                    attestationInformation.attestation
+                )
+            )
+        )
     }
 }
 
